@@ -1,2 +1,2 @@
-console.log("Hei maailma");
+console.log("Hei maailmaa");
 console.log("TESTI");
