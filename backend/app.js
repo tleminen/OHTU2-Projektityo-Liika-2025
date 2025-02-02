@@ -16,7 +16,7 @@ app.use(
   morgan(
     "\n---morgan\nMetodi\tStatus\tVastausaika \n:method\t:status\t:response-time ms\n-\nPituus\tUrl\n:res[content-length]\t:url\n---morgan\n"
   )
-) // HTTP pyyntöjen logitus
+) // HTTP pyyntöjen logitus, tässä voidaan pyytää
 
 //morgan
 //middleware.tokenExtractor
@@ -25,7 +25,7 @@ app.use(
 
 // Testi1, voi poistaa
 app.get("/", (request, response) => {
-  response.send("<h1>Hello World!</h1>")
+  response.send("<h1>Hello World from backend!</h1>")
 }) // Testi1 päättyy
 
 // Loppuun laitetaan unknownEndpoint ja virheenKorjaus
