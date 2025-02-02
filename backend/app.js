@@ -3,12 +3,9 @@ const app = express()
 const cors = require("cors")
 const morgan = require("morgan")
 const middleware = require("./utils/middleware")
+const { connectDB, sequelize } = require("./utils/database")
 
-/**
- * Aluksi muodostetaan tietokantayhteys:
- */
-
-//TODO: Muodosta tietokantayhteys
+connectDB() // Muodostetaan tietokantayhteys
 
 // Käynnistetään middlewaret
 app.use(cors()) //cros-origin homma
@@ -29,5 +26,7 @@ app.get("/", (request, response) => {
 
 // Loppuun laitetaan unknownEndpoint ja virheenKorjaus
 app.use(middleware.unknownEndpoint)
+
+sequelize.sync() // Tietokannan synkronointi
 
 module.exports = app
