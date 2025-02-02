@@ -2,6 +2,7 @@ const express = require("express")
 const app = express()
 const cors = require("cors")
 const morgan = require("morgan")
+const middleware = require("./utils/middleware")
 
 /**
  * Aluksi muodostetaan tietokantayhteys:
@@ -11,10 +12,9 @@ const morgan = require("morgan")
 
 // Käynnistetään middlewaret
 app.use(cors()) //cros-origin homma
-app.use(express.json)
 app.use(
   morgan(
-    "\n---morgan\nMetodi\tStatus\tVastausaika \n:method\t:status\t:response-time ms\n-\nPituus\tUrl\n:res[content-length]\t:url\n-\nSisältö: :kontentti\n---morgan\n"
+    "\n---morgan\nMetodi\tStatus\tVastausaika \n:method\t:status\t:response-time ms\n-\nPituus\tUrl\n:res[content-length]\t:url\n---morgan\n"
   )
 ) // HTTP pyyntöjen logitus
 
@@ -23,6 +23,12 @@ app.use(
 
 // Tähän tulee routerit kuten app.use('api/login', loginRouter)
 
+// Testi1, voi poistaa
+app.get("/", (request, response) => {
+  response.send("<h1>Hello World!</h1>")
+}) // Testi1 päättyy
+
 // Loppuun laitetaan unknownEndpoint ja virheenKorjaus
+app.use(middleware.unknownEndpoint)
 
 module.exports = app
