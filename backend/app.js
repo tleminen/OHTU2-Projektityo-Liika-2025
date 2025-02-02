@@ -18,7 +18,6 @@ app.use(
   )
 ) // HTTP pyyntöjen logitus, tässä voidaan pyytää
 
-//morgan
 //middleware.tokenExtractor
 
 // Tähän tulee routerit kuten app.use('api/login', loginRouter)
