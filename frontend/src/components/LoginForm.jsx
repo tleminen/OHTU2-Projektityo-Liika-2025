@@ -1,7 +1,10 @@
-import { use } from 'react'
+import { useSelector } from 'react-redux'
 import { useState } from 'react'
+import translations from "../assets/translation.js"
 
 const LoginForm = () => {
+    const language = useSelector((state) => state.language.language)
+    const t = translations[language] 
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
 
@@ -15,7 +18,7 @@ const LoginForm = () => {
 
             <form OnSubmit={handleSubmit}>
                 <div>
-                    <label>Käyttäjänimi:</label>
+                    <label>{t.username}</label>
                     <input
                     type="text"
                     value={username}
@@ -25,7 +28,7 @@ const LoginForm = () => {
                     />
                 </div>
                 <div>
-                    <label>Salasana:</label>
+                    <label>{t.password}</label>
                     <input
                     type= "password"
                     value={password}
@@ -34,7 +37,7 @@ const LoginForm = () => {
                     placeholder='kirjoita salasana tähän'
                     />
                     </div>
-                <button type ="submit">Kirjaudu sisään</button>
+                <button type ="submit">{t.login}</button>
             </form>
         </div>
     )
