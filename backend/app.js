@@ -18,7 +18,6 @@ app.use(
 //middleware.tokenExtractor
 
 // Tähän tulee routerit kuten app.use('api/login', loginRouter)
-// Testikoodia backend TÄMÄN RIVIN SAA POISTAA
 
 // Testi1, voi poistaa
 app.get("/", (request, response) => {
