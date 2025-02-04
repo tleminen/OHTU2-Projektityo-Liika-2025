@@ -4,16 +4,11 @@ import "leaflet/dist/leaflet.css"
 import "../../App.css"
 
 const Map = () => {
-  
   useEffect(() => {
-    
-    /*
     const mapContainer = document.createElement("div")
     mapContainer.id = "map"
-    mapContainer.style.height = "400px"
-    mapContainer.style.width = "100%"
     document.body.appendChild(mapContainer)
-    */
+
     console.log(`map useEffect`)
     // Luo karttaelementti kun komponentti mounttaa
     const map = L.map("map", {
@@ -28,11 +23,10 @@ const Map = () => {
     }).addTo(map)
 
     return () => {
-      // Tuhoa karttaelementti kun komponentti unmounttaa
+      // Tuhoaa karttaelementin kun komponentti unmounttaa
       map.remove()
     }
   }, [])
-  return <div id="map"></div>
 }
 
 export default Map
