@@ -24,7 +24,7 @@ const LoginForm = () => {
                     value={username}
                     name='username'
                     onChange={(e) => setUsername(e.target.value)}
-                    placeholder='kirjoita käyttäjänimi tähän'
+                    placeholder={t.username_ph}
                     />
                 </div>
                 <div>
@@ -34,7 +34,7 @@ const LoginForm = () => {
                     value={password}
                     name='password'
                     onChange={(e) => setPassword(e.target.value)}
-                    placeholder='kirjoita salasana tähän'
+                    placeholder={t.password_ph}
                     />
                     </div>
                 <button type ="submit">{t.login}</button>
