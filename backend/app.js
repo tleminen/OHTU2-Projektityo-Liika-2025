@@ -4,7 +4,7 @@ const cors = require("cors");
 const morgan = require("morgan");
 const middleware = require("./utils/middleware");
 const { connectDB, sequelize } = require("./utils/database");
-console.log("Hello World");
+
 connectDB(); // Muodostetaan tietokantayhteys
 
 // Käynnistetään middlewaret
