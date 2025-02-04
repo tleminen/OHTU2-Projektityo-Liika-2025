@@ -1,19 +1,19 @@
-const express = require("express")
-const app = express()
-const cors = require("cors")
-const morgan = require("morgan")
-const middleware = require("./utils/middleware")
-const { connectDB, sequelize } = require("./utils/database")
-
-connectDB() // Muodostetaan tietokantayhteys
+const express = require("express");
+const app = express();
+const cors = require("cors");
+const morgan = require("morgan");
+const middleware = require("./utils/middleware");
+const { connectDB, sequelize } = require("./utils/database");
+console.log("Hello World");
+connectDB(); // Muodostetaan tietokantayhteys
 
 // Käynnistetään middlewaret
-app.use(cors()) //cros-origin homma
+app.use(cors()); //cros-origin homma
 app.use(
   morgan(
     "\n---morgan\nMetodi\tStatus\tVastausaika \n:method\t:status\t:response-time ms\n-\nPituus\tUrl\n:res[content-length]\t:url\n---morgan\n"
   )
-) // HTTP pyyntöjen logitus, tässä voidaan pyytää
+); // HTTP pyyntöjen logitus, tässä voidaan pyytää
 
 //middleware.tokenExtractor
 
@@ -21,12 +21,12 @@ app.use(
 
 // Testi1, voi poistaa
 app.get("/", (request, response) => {
-  response.send("<h1>Hello World from backend!</h1>")
-}) // Testi1 päättyy
+  response.send("<h1>Hello World from backend!</h1>");
+}); // Testi1 päättyy
 
 // Loppuun laitetaan unknownEndpoint ja virheenKorjaus
-app.use(middleware.unknownEndpoint)
+app.use(middleware.unknownEndpoint);
 
-sequelize.sync() // Tietokannan synkronointi
+sequelize.sync(); // Tietokannan synkronointi
 
-module.exports = app
+module.exports = app;
