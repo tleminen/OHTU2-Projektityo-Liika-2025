@@ -11,7 +11,9 @@ const Login = () => {
     <div className="Login">
       <Header />
       <LoginForm />
-      <div class="forgot-password-text"><ul>{t.forgot_pw}</ul></div>
+      <div className="forgot-password-text">
+        <ul>{t.forgot_pw}</ul>
+      </div>
       <button className="back-btn"></button>
       <Footer />
     </div>
