@@ -6,11 +6,13 @@ const LoginForm = () => {
   const language = useSelector((state) => state.language.language)
   const t = translations[language]
   const [username, setUsername] = useState("")
+  const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const [passwordAgain, setPasswordAgain] = useState("")
 
   const handleSubmit = (event) => {
     event.preventDefault()
-    console.log("Login attempt:", { username, password })
+    console.log("Register attempt:", { username, email, password, passwordAgain })
   }
 
   return (
@@ -27,6 +29,16 @@ const LoginForm = () => {
           />
         </div>
         <div>
+          <label>{t.email}</label>
+          <input
+            type="text"
+            value={email}
+            name="email"
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder={t.email}
+          />
+        </div>
+        <div>
           <label>{t.password}</label>
           <input
             type="password"
@@ -36,10 +48,20 @@ const LoginForm = () => {
             placeholder={t.password}
           />
         </div>
-        <button type="submit">{t.login}</button>
+        <div>
+          <label>{t.passwordAgain}</label>
+          <input
+            type="password"
+            value={passwordAgain}
+            name="passwordAgain"
+            onChange={(e) => setPasswordAgain(e.target.value)}
+            placeholder={t.passwordAgain}
+          />
+        </div>
+        <button type="submit">{t.register}</button>
       </form>
     </div>
   )
 }
 
-export default LoginForm
+export default RegisterForm

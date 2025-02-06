@@ -1,5 +1,5 @@
 import Header from "../header"
-import LoginForm from "../loginView/LoginForm"
+import LoginForm from "../loginView/loginForm"
 import Map from "../mapView/map"
 import Footer from '../footer';
 const Frontpage = () => {
