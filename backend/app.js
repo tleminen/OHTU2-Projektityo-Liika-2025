@@ -7,7 +7,6 @@ const { connectDB, sequelize } = require("./utils/database")
 const fs = require("fs")
 
 const logStream = fs.createWriteStream("./logs/access.log", { flags: "a" })
-
 connectDB() // Muodostetaan tietokantayhteys
 
 // Käynnistetään middlewaret
