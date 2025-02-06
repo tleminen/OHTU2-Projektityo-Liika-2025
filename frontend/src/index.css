@@ -208,3 +208,7 @@ h3 {
   /* Infokomponentin tyylit */
   margin-left: 10px;
 }
+
+.forgot-password-text {
+  margin: 0 10px;
+}
