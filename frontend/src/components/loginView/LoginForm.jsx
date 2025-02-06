@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux'
 import { useState } from 'react'
-import translations from "../assets/translation.js"
+import translations from "../../assets/translation.js"
 
 const LoginForm = () => {
     const language = useSelector((state) => state.language.language)
