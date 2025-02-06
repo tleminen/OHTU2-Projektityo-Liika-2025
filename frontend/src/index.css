@@ -13,11 +13,6 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-#map {
-  height: 400px;
-  width: 100%;
-}
-
 a {
   font-weight: 500;
   color: #646cff;
@@ -91,6 +86,11 @@ button:focus-visible {
   font-size: 2.5em;
   line-height: 1;
   align-items: center;
+}
+
+.containerX {
+  display: flex;
+  gap: 10px;
 }
 
 /*rekisteröinnille ja kirjautumiselle painikkeet kesken*/
@@ -171,6 +171,16 @@ h3 {
   color: #1a1a1a;
 }
 
+.header {
+  background-color: #f0f0f0; /* Esimerkkiväri */
+  align-items: center;
+  justify-content: stretch;
+  text-align: center; /* Teksti keskelle */
+  position: fixed; /* Jos haluat footerin pysyvän sivun alareunassa */
+  top: 0; /* Jos haluat footerin pysyvän sivun alareunassa */
+  width: 100%;
+}
+
 /*painikkeiden teksti*/
 .buttonheader {
   font-size: large;
@@ -178,7 +188,7 @@ h3 {
 }
 
 /*Kartalle olio*/
-#map {
+.map {
   width: 100%;
   height: 400px;
 }
@@ -186,21 +196,24 @@ h3 {
 .footer {
   background-color: #f0f0f0; /* Esimerkkiväri */
   padding: 20px;
+  align-items: center;
+  justify-content: space-around;
   text-align: center; /* Teksti keskelle */
   position: fixed; /* Jos haluat footerin pysyvän sivun alareunassa */
   bottom: 0; /* Jos haluat footerin pysyvän sivun alareunassa */
-  width: 100%; /* Jos haluat footerin pysyvän sivun alareunassa */
+  width: 100%;
 }
 
 .footer-content {
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 10px;
 }
 
 .flag-selection {
   /* Lippuvalinnan tyylit */
-  margin-right: 10px;
+  margin-right: 0px;
 }
 
 .footer-text {
@@ -210,7 +223,7 @@ h3 {
 
 .info {
   /* Infokomponentin tyylit */
-  margin-left: 10px;
+  margin-left: 0px;
 }
 
 .forgot-password-text {

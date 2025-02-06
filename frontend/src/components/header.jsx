@@ -8,8 +8,8 @@ const Header = () => {
   const t = translations[language]
 
   return (
-    <div>
-      <img src={logo} alt="Logo" width={300} height={200} />
+    <div className="header">
+      <img src={logo} alt="Logo" width={100} height={100} />
     </div>
   )
 }
