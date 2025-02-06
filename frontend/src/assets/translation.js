@@ -1,6 +1,7 @@
 const translations = {
   en: {
     email: "Email",
+    forgot_pw: "Forgot password?",
     login: "Log in",
     login2: "Log in",
     password: "Password",
@@ -13,6 +14,7 @@ const translations = {
   },
   fi: {
     email: "Sähköposti",
+    forgot_pw: "Unohtuiko salasana?",
     login: "Kirjaudu",
     login2: "Kirjaudu sisään",
     password: "Salasana",
