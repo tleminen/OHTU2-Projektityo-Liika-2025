@@ -99,3 +99,33 @@ button {
 button {
   border-radius: 20px;
 }
+
+.footer {
+  background-color: #f0f0f0; /* Esimerkkiväri */
+  padding: 20px;
+  text-align: center; /* Teksti keskelle */
+  position: fixed; /* Jos haluat footerin pysyvän sivun alareunassa */
+  bottom: 0; /* Jos haluat footerin pysyvän sivun alareunassa */
+  width: 100%; /* Jos haluat footerin pysyvän sivun alareunassa */
+}
+
+.footer-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flag-selection {
+  /* Lippuvalinnan tyylit */
+  margin-right: 10px;
+}
+
+.footer-text {
+  /* Tekstin tyylit */
+  margin: 0 10px;
+}
+
+.info {
+  /* Infokomponentin tyylit */
+  margin-left: 10px;
+}
