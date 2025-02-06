@@ -1,9 +1,11 @@
-import LoginForm from "../LoginForm"
+import Header from "../header"
+import LoginForm from "../loginView/LoginForm"
 import Map from "../mapView/map"
 const Frontpage = () => {
   return (
     
     <div>
+      <Header/>
       <h1>Frontpage placeholder</h1>
       <LoginForm/>
       <div>
