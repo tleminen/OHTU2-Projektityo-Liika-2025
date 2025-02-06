@@ -16,7 +16,7 @@ const Register = () => {
         <br />
         {t.login2}
       </p>
-      <p></p>
+      <a href="/" className="back-btn"></a>
       <Footer />
     </div>
   )
