@@ -4,16 +4,19 @@ const cors = require("cors")
 const morgan = require("morgan")
 const middleware = require("./utils/middleware")
 const { connectDB, sequelize } = require("./utils/database")
+const fs = require("fs")
+
+const logStream = fs.createWriteStream("./logs/access.log", { flags: "a" })
 
 connectDB() // Muodostetaan tietokantayhteys
 
 // Käynnistetään middlewaret
 app.use(cors()) //cros-origin homma
 app.use(
-  morgan(
-    "\n---morgan\nMetodi\tStatus\tVastausaika \n:method\t:status\t:response-time ms\n-\nPituus\tUrl\n:res[content-length]\t:url\n---morgan\n"
-  )
-) // HTTP pyyntöjen logitus, tässä voidaan pyytää
+  morgan("combined", {
+    stream: logStream,
+  })
+) // HTTP pyyntöjen logitus
 
 //middleware.tokenExtractor
 
