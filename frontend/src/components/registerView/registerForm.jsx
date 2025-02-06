@@ -2,7 +2,7 @@ import { useSelector } from "react-redux"
 import { useState } from "react"
 import translations from "../../assets/translation.js"
 
-const LoginForm = () => {
+const RegisterForm = () => {
   const language = useSelector((state) => state.language.language)
   const t = translations[language]
   const [username, setUsername] = useState("")
@@ -24,7 +24,6 @@ const LoginForm = () => {
     <div>
       <form onSubmit={handleSubmit}>
         <div>
-          <label>{t.username}</label>
           <input
             type="text"
             value={username}
@@ -52,7 +51,6 @@ const LoginForm = () => {
           />
         </div>
         <div>
-          <label>{t.passwordAgain}</label>
           <input
             type="password"
             value={passwordAgain}

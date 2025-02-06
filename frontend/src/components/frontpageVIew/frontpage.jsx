@@ -1,5 +1,5 @@
 import Header from "../header"
-import Map from "../mapView/map"
+import mapImage from "../../assets/map_kuvituskuva.png"
 import Footer from "../footer"
 import { useNavigate } from "react-router-dom"
 import { useSelector } from "react-redux"
@@ -15,7 +15,13 @@ const Frontpage = () => {
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
       <Header />
-      <Map />
+      <img
+        src={mapImage}
+        alt="Map"
+        width={100}
+        height={100}
+        onClick={() => navigateTo("map")}
+      />
       <div className="containerX">
         <button onClick={() => navigateTo("login")}>{t.login}</button>
         <button onClick={() => navigateTo("register")}>{t.register}</button>
