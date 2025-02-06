@@ -228,3 +228,28 @@ h3 {
   /* Infokomponentin tyylit */
   margin-left: 10px;
 }
+
+info-btn {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: #5271ff;
+  color: white;
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s, box-shadow 0.3s;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2); /*varjo efekti*/
+}
+
+info-btn:hover {
+  background-color: #ffffff;
+  color: #5271ff;
+  box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.3);
+  border: 2px solid #5271ff;
+}
