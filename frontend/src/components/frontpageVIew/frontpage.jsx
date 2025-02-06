@@ -1,17 +1,28 @@
 import Header from "../header"
 import Map from "../mapView/map"
 import Footer from "../footer"
+import { useNavigate } from "react-router-dom"
+import { useSelector } from "react-redux"
+import translations from "../../assets/translation"
 const Frontpage = () => {
+  const navigate = useNavigate()
+  const navigateTo = (path) => {
+    navigate(`/${path}`)
+  }
+  const language = useSelector((state) => state.language.language)
+  const t = translations[language]
+
   return (
-    <div>
+    <div style={{ display: "flex", flexDirection: "column" }}>
       <Header />
-      <h1>Frontpage placeholder</h1>
-      <div>
-        <Map />
+      <Map />
+      <div className="containerX">
+        <button onClick={() => navigateTo("login")}>{t.login}</button>
+        <button onClick={() => navigateTo("register")}>{t.register}</button>
       </div>
+
       <div>
-        {" "}
-        <Footer />{" "}
+        <Footer />
       </div>
     </div>
   )
