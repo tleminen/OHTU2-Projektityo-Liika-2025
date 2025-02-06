@@ -45,7 +45,7 @@ button {
   font-family: inherit;
   color: #ffffff;
   text-transform: uppercase;
-  background-color: rgb(0, 162, 154);
+  background-color: #0097b2;
   cursor: pointer;
   transition: background-color 0.25s, color 0.25s;
   display: flex;
@@ -54,39 +54,59 @@ button {
 }
 button:hover {
   background-color: #ffffff;
-  color: rgb(0, 162, 154);
-  border-color: rgb(0, 162, 154);
+  color: #0097b2;
+  border-color: #0097b2;
 }
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
-/*Takaisinpaluu painike*/
-.back-btn {
+/*Takaisinpaluun painike*/
+back-btn {
   border-radius: 10px;
-  border: 2px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
+  background-color: #0097b2;
   color: #ffffff;
+  text-align: center;
+  font-size: 1em;
+  font-family: inherit;
+  font-weight: 500;
   text-transform: uppercase;
-  background-color: rgb(0, 162, 154);
+  padding: 20px;
+  width: 120px;
+  transition: all 0.2s;
   cursor: pointer;
-  transition: background-color 0.25s, color 0.25s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  margin: 20px;
 }
-.back-btn:hover {
+
+back-btn span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.3s;
+}
+
+back-btn span:after {
+  content: "\00ab";
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  left: -20px;
+  transition: 0.2s;
+}
+
+back-btn:hover span {
+  padding-left: 25px;
+}
+
+back-btn:hover span:after {
+  opacity: 1;
+  left: 0;
+}
+back-btn:hover {
   background-color: #ffffff;
-  color: rgb(0, 162, 154);
-  border-color: rgb(0, 162, 154);
-}
-.back-btn:focus,
-.back-btn:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+  color: #0097b2;
+  border: 2px solid #0097b2;
 }
 
 /*rekisteröinnille ja kirjautumiselle painikkeet kesken*/
@@ -107,7 +127,7 @@ button {
   padding: 10px;
   font-size: 1em;
   font-family: inherit;
-  border: 2px solid rgb(0, 162, 154);
+  border: 2px solid #0097b2;
   border-radius: 10px;
   background-color: #ffffff;
   color: #1a1a1a;
@@ -119,11 +139,11 @@ button {
   justify-content: center;
 }
 .input-field:hover {
-  border-color: rgb(0, 140, 132);
+  border-color: #0097b2;
 }
 .input-field:focus {
-  border-color: rgb(0, 162, 154);
-  box-shadow: 0 0 8px rgba(0, 162, 154, 0.5);
+  border-color: #0097b2;
+  box-shadow: 0 0 8px #0097b2;
 }
 .input-field::placeholder {
   color: rgb(150, 150, 150);
@@ -139,7 +159,7 @@ button {
   font-size: 1.2em;
   font-family: inherit;
   text-transform: uppercase;
-  border: 3px solid rgb(150, 150, 150);
+  border: 3px solid #0097b2;
   border-radius: 10px;
   background-color: #ffffff;
   color: #1a1a1a;
@@ -158,7 +178,7 @@ h1 {
 /*asiateksti ja alaotsikko*/
 h2 {
   font-size: medium;
-  color: rgb(0, 162, 154);
+  color: #0097b2;
 }
 
 /*pienempi asiateksti*/
@@ -180,7 +200,7 @@ h3 {
 }
 
 .footer {
-  background-color: #f0f0f0; /* Esimerkkiväri */
+  background-color: #d9d9d9;
   padding: 20px;
   text-align: center; /* Teksti keskelle */
   position: fixed; /* Jos haluat footerin pysyvän sivun alareunassa */
