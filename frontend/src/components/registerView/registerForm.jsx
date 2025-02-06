@@ -12,7 +12,12 @@ const LoginForm = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault()
-    console.log("Register attempt:", { username, email, password, passwordAgain })
+    console.log("Register attempt:", {
+      username,
+      email,
+      password,
+      passwordAgain,
+    })
   }
 
   return (
@@ -29,7 +34,6 @@ const LoginForm = () => {
           />
         </div>
         <div>
-          <label>{t.email}</label>
           <input
             type="text"
             value={email}
@@ -39,7 +43,6 @@ const LoginForm = () => {
           />
         </div>
         <div>
-          <label>{t.password}</label>
           <input
             type="password"
             value={password}

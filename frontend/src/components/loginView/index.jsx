@@ -4,9 +4,11 @@ import LoginForm from "./LoginForm"
 import Footer from "../footer"
 import { useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
+import { useState } from "react"
 
 const Login = () => {
   const navigate = useNavigate()
+  const [emailForm, setEmailForm] = useState(false)
   const handler = () => {
     navigate("/")
   }
@@ -18,8 +20,17 @@ const Login = () => {
       <Header />
       <LoginForm />
       <div className="forgot-password-text">
-        <ul>{t.forgot_pw}</ul>
+        <a href="#" onClick={() => setEmailForm(!emailForm)}>
+          {t.forgot_pw}
+        </a>
       </div>
+      {emailForm && (
+        <form>
+          <input type="text" name="changePassword" placeholder={t.email} />
+          <button>{t.reset_pw}</button>
+        </form>
+      )}
+
       <button className="back-btn" onClick={handler}></button>
       <Footer />
     </div>
