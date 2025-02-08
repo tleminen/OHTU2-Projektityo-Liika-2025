@@ -13,17 +13,18 @@ userRouter.post("/", async (req, res) => {
     // pituusvaatimus v0.1
 
     const saltRounds = 10
-    const passwordHash = await bcrypt.hash(password, saltRounds)
+    const passwordhash = await bcrypt.hash(password, saltRounds)
 
     try {
       const savedUser = await User.create({
-        username,
-        passwordHash,
-        role,
-        email,
+        Username: username,
+        Password: passwordhash,
+        Role: role,
+        Email: email,
       })
       res.status(201).json(savedUser)
-    } catch {
+    } catch (error) {
+      console.log("PostgreSQL Error:", error)
       res.status(400).send({ error: `Error occured during user creation` })
     }
   } else {
