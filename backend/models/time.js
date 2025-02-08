@@ -1,33 +1,13 @@
-const Time = sequelize.define(
-  "Time",
-  {
-    StartTime: {
-      type: DataTypes.DATE,
-      allowNull: false,
-    },
-    EndTime: {
-      type: DataTypes.DATE,
-      allowNull: false,
-    },
-    EventID: {
-      type: DataTypes.INTEGER,
-      references: {
-        model: "Events",
-        key: "EventID",
-      },
-    },
-  },
-  {
-    tableName: "Time",
-    timestamps: false,
-  }
-)
+const { DataTypes } = require("sequelize")
+const { sequelize } = require("../utils/database")
+const Events = require("./events")
 
-Time.associate = (models) => {
-  Time.belongsTo(models.Events, {
-    foreignKey: "EventID",
-    as: "event",
-  })
-}
+const Time = sequelize.define("Time", {
+  StartTime: { type: DataTypes.DATE, allowNull: false },
+  EndTime: { type: DataTypes.DATE, allowNull: false },
+})
 
-module.exports = { Time }
+// Yhteys tapahtumiin
+Time.belongsTo(Events, { foreignKey: "EventID" })
+
+module.exports = Time

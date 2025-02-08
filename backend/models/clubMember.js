@@ -1,38 +1,12 @@
-const ClubMember = sequelize.define(
-  "ClubMember",
-  {
-    UserID: {
-      type: DataTypes.INTEGER,
-      references: {
-        model: "Users",
-        key: "UserID",
-      },
-      primaryKey: true,
-    },
-    ClubID: {
-      type: DataTypes.INTEGER,
-      references: {
-        model: "Club",
-        key: "ClubID",
-      },
-      primaryKey: true,
-    },
-  },
-  {
-    tableName: "ClubMember",
-    timestamps: false,
-  }
-)
+const { DataTypes } = require("sequelize")
+const { sequelize } = require("../utils/database")
+const Users = require("./users")
+const Club = require("./club")
 
-ClubMember.associate = (models) => {
-  ClubMember.belongsTo(models.Users, {
-    foreignKey: "UserID",
-    as: "user",
-  })
-  ClubMember.belongsTo(models.Club, {
-    foreignKey: "ClubID",
-    as: "club",
-  })
-}
+const ClubMember = sequelize.define("ClubMember", {}, { timestamps: false })
 
-module.exports = { ClubMember }
+// Moni-moneen yhteys käyttäjien ja kerhojen välillä
+Users.belongsToMany(Club, { through: ClubMember, foreignKey: "UserID" })
+Club.belongsToMany(Users, { through: ClubMember, foreignKey: "ClubID" })
+
+module.exports = ClubMember

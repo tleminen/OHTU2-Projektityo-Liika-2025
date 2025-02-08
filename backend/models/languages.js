@@ -1,20 +1,13 @@
-const Languages = sequelize.define(
-  "Languages",
-  {
-    LanguageID: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: true,
-    },
-    Language: {
-      type: DataTypes.STRING(3),
-      allowNull: false,
-    },
-  },
-  {
-    tableName: "Languages",
-    timestamps: false,
-  }
-)
+const { DataTypes } = require("sequelize")
+const { sequelize } = require("../utils/database")
 
-module.exports = { Languages }
+const Languages = sequelize.define("Languages", {
+  LanguageID: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    primaryKey: true,
+  },
+  Language: { type: DataTypes.STRING(3), allowNull: false },
+})
+
+module.exports = Languages

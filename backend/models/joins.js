@@ -1,38 +1,12 @@
-const Joins = sequelize.define(
-  "Joins",
-  {
-    UserID: {
-      type: DataTypes.INTEGER,
-      references: {
-        model: "Users",
-        key: "UserID",
-      },
-      primaryKey: true,
-    },
-    EventID: {
-      type: DataTypes.INTEGER,
-      references: {
-        model: "Events",
-        key: "EventID",
-      },
-      primaryKey: true,
-    },
-  },
-  {
-    tableName: "Joins",
-    timestamps: false,
-  }
-)
+const { DataTypes } = require("sequelize")
+const { sequelize } = require("../utils/database")
+const Users = require("./users")
+const Events = require("./events")
 
-Joins.associate = (models) => {
-  Joins.belongsTo(models.Users, {
-    foreignKey: "UserID",
-    as: "user",
-  })
-  Joins.belongsTo(models.Events, {
-    foreignKey: "EventID",
-    as: "event",
-  })
-}
+const Joins = sequelize.define("Joins", {}, { timestamps: false })
 
-module.exports = { Joins }
+// Moni-moneen yhteys käyttäjien ja tapahtumien välillä
+Users.belongsToMany(Events, { through: Joins, foreignKey: "UserID" })
+Events.belongsToMany(Users, { through: Joins, foreignKey: "EventID" })
+
+module.exports = Joins

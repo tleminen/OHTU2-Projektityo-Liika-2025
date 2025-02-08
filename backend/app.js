@@ -5,12 +5,15 @@ const morgan = require("morgan")
 const middleware = require("./utils/middleware")
 const { connectDB, sequelize } = require("./utils/database")
 const fs = require("fs")
+const userRouter = require("./controllers/users")
 
 const logStream = fs.createWriteStream("./logs/access.log", { flags: "a" })
 connectDB() // Muodostetaan tietokantayhteys
+sequelize.sync({ alter: true }) // Tietokannan synkronointi
 
 // Käynnistetään middlewaret
 app.use(cors()) //cros-origin homma
+app.use(express.json()) // JSON-body parseri
 app.use(
   morgan("combined", {
     stream: logStream,
@@ -20,6 +23,8 @@ app.use(
 //middleware.tokenExtractor
 
 // Tähän tulee routerit kuten app.use('api/login', loginRouter)
+//app.use(`/api/login`,)
+app.use(`/api/users`, userRouter)
 
 // Testi1, voi poistaa
 app.get("/", (request, response) => {
@@ -28,7 +33,5 @@ app.get("/", (request, response) => {
 
 // Loppuun laitetaan unknownEndpoint ja virheenKorjaus
 app.use(middleware.unknownEndpoint)
-
-sequelize.sync() // Tietokannan synkronointi
 
 module.exports = app
