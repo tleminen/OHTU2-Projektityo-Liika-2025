@@ -1,13 +1,14 @@
-import { useDispatch, useSelector } from "react-redux"
+import { useSelector } from "react-redux"
 import { useState } from "react"
-import { setUser } from "../../store/userSlice.js"
 import translations from "../../assets/translation.js"
 import loginService from "../../services/loginService.js"
+import { useNavigate } from "react-router-dom"
 
 const LoginForm = () => {
-  const dispatch = useDispatch()
   const language = useSelector((state) => state.language.language)
   const t = translations[language]
+  const navigate = useNavigate()
+
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
 
@@ -19,10 +20,9 @@ const LoginForm = () => {
         username,
         password,
       })
-
-      console.log("teksti" + user)
-
-      dispatch(setUser(user.username))
+      console.log("token saatu:" + user.token)
+      window.localStorage.setItem("loggedUser", JSON.stringify(user))
+      navigate(`/`)
     } catch (error) {
       console.log(error)
     }
