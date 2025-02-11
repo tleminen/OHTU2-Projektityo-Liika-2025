@@ -1,3 +1,5 @@
+import termsOfServiceText from "./termsOfServiceText"
+import infoText from "./infoText";
 const translations = {
   en: {
     activity: "Activity",
@@ -6,6 +8,8 @@ const translations = {
     back: "Back",
     email: "Email",
     forgot_pw: "Forgot password?",
+    info: "Info",
+    info_txt: infoText.getText("en"),
     location: "Location",
     login: "Log in",
     login2: "Log in",
@@ -16,7 +20,10 @@ const translations = {
     ready_account: "Already have an account?",
     register: "Register",
     reset_pw: "Reset password",
+    selectedLanguage: "Language",
+    startLocation: "Start location",
     terms_of_service: "Terms of service",
+    terms_of_service_txt: termsOfServiceText.getText("en"),
     username: "Username",
   },
   fi: {
@@ -26,6 +33,8 @@ const translations = {
     description: "Kuvaus",
     email: "Sähköposti",
     forgot_pw: "Unohtuiko salasana?",
+    info: "Info",
+    info_txt: infoText.getText("fi"),
     location: "Sijainti",
     login: "Kirjaudu",
     login2: "Kirjaudu sisään",
@@ -36,9 +45,11 @@ const translations = {
     ready_account: "Onko sinulla jo tili?",
     register: "Rekisteröidy",
     reset_pw: "Palauta salasana",
+    selectedLanguage: "Oletus-sijainti",
+    startLocation: "Oletus-sijainti",
     terms_of_service: "Käyttöehdot",
+    terms_of_service_txt: termsOfServiceText.getText("fi"),
     username: "Käyttäjätunnus",
-    username_ph: "Käyttäjätunnus",
   },
 };
 
