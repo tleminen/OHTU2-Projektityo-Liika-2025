@@ -1,9 +1,11 @@
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { useState } from "react"
+import { setUser } from "../../store/userSlice.js"
 import translations from "../../assets/translation.js"
 import loginService from "../../services/loginService.js"
 
 const LoginForm = () => {
+  const dispatch = useDispatch()
   const language = useSelector((state) => state.language.language)
   const t = translations[language]
   const [username, setUsername] = useState("")
@@ -17,7 +19,10 @@ const LoginForm = () => {
         username,
         password,
       })
-      window.localStorage.setItem("loggedUser", JSON.stringify(user)) // TÄmä pois ja tallennus storeen!!
+
+      console.log("teksti" + user)
+
+      dispatch(setUser(user.username))
     } catch (error) {
       console.log(error)
     }
