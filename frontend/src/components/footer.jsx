@@ -1,8 +1,6 @@
 import "../index.css";
 import { useSelector } from "react-redux";
 import translations from "../assets/translation.js";
-import Select from "react-select";
-import { useState } from "react";
 import FlagSelection from "./flagSelection.jsx";
 
 const Footer = () => {
