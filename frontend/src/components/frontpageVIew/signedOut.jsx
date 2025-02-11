@@ -12,8 +12,8 @@ const SignedOut = () => {
   }
   return (
     <div className="containerX">
-      <button onClick={() => navigateTo("login")}>{t.login}</button>
-      <button onClick={() => navigateTo("register")}>{t.register}</button>
+      <button className="registerandlogin-btn" onClick={() => navigateTo("login")}>{t.login}</button>
+      <button className="registerandlogin-btn" onClick={() => navigateTo("register")}>{t.register}</button>
     </div>
   )
 }

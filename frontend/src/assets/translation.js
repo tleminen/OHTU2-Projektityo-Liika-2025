@@ -1,4 +1,5 @@
 import termsOfServiceText from "./termsOfServiceText"
+import infoText from "./infoText";
 const translations = {
   en: {
     activity: "Activity",
@@ -7,6 +8,8 @@ const translations = {
     back: "Back",
     email: "Email",
     forgot_pw: "Forgot password?",
+    info: "Info",
+    info_txt: infoText.getText("en"),
     location: "Location",
     login: "Log in",
     login2: "Log in",
@@ -30,6 +33,8 @@ const translations = {
     description: "Kuvaus",
     email: "Sähköposti",
     forgot_pw: "Unohtuiko salasana?",
+    info: "Info",
+    info_txt: infoText.getText("fi"),
     location: "Sijainti",
     login: "Kirjaudu",
     login2: "Kirjaudu sisään",
