@@ -11,6 +11,7 @@ const LoginForm = () => {
 
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
+  const [showPassword, setShowPassword] = useState(false)
 
   const handleSubmit = async (event) => {
     event.preventDefault()
@@ -28,6 +29,10 @@ const LoginForm = () => {
     }
   }
 
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword)
+  }
+
   return (
     <div>
       <form onSubmit={handleSubmit}>
@@ -41,15 +46,24 @@ const LoginForm = () => {
             placeholder={t.username}
           />
         </div>
-        <div>
+        <div className="password-input-container">
           <input
-            type="password"
+            type={showPassword ? "text" : "password"}
             className="input-field"
             value={password}
             name="password"
             onChange={(e) => setPassword(e.target.value)}
             placeholder={t.password}
           />
+          <button
+            type="button"
+            className="password-toggle-button"
+            onClick={togglePasswordVisibility}
+          >
+            <span className="material-symbols-outlined">
+              {showPassword ? "visibility_off" : "visibility"}
+            </span>
+          </button>
         </div>
         <button type="submit">{t.login}</button>
       </form>
