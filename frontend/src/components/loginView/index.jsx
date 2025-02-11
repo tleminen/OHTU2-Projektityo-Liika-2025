@@ -17,7 +17,7 @@ const Login = () => {
   const t = translations[language]
 
   return (
-    <div className="Login">
+    <div className="login">
       <Header />
       <LoginForm />
       <div className="forgot-password-text">
