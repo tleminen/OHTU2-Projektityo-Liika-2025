@@ -46,6 +46,7 @@ button {
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.5);
 }
 button:hover {
   background-color: #ffffff;
@@ -58,7 +59,7 @@ button:focus-visible {
 }
 
 /*Takaisinpaluun painike*/
-back-btn {
+.back-btn {
   border-radius: 10px;
   background-color: #0097b2;
   color: #ffffff;
@@ -74,16 +75,17 @@ back-btn {
   transition: all 0.2s;
   cursor: pointer;
   margin: 20px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.5);
 }
 
-back-btn span {
+.back-btn span {
   cursor: pointer;
   display: inline-block;
   position: relative;
   transition: 0.3s;
 }
 
-back-btn span:after {
+.back-btn span:after {
   content: "\00ab";
   position: absolute;
   opacity: 0;
@@ -92,41 +94,47 @@ back-btn span:after {
   transition: 0.2s;
 }
 
-back-btn:hover span {
+.back-btn:hover span {
   padding-left: 25px;
 }
 
-back-btn:hover span:after {
+.back-btn:hover span:after {
   opacity: 1;
   left: 0;
   transition: background-color 0.25s, color 0.25s;
   align-items: center;
   justify-content: center;
 }
-back-btn:hover {
+.back-btn:hover {
   background-color: #ffffff;
   color: #0097b2;
   border: 2px solid #0097b2;
+  transition: background-color 0.3s, box-shadow 0.3s;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.5);
 }
 
+/*
 .back-btn::before {
   content: "🢤";
   font-size: 2.5em;
   line-height: 1;
   align-items: center;
 }
+*/
 
 .containerX {
   display: flex;
   gap: 10px;
 }
 
+/*
 .back-btn::before {
   content: "🢤";
   font-size: 2.5em;
   line-height: 1;
   align-items: center;
 }
+*/
 
 .containerX {
   display: flex;

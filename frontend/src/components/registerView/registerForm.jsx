@@ -1,24 +1,24 @@
-import { useSelector } from "react-redux"
-import { useState } from "react"
-import translations from "../../assets/translation.js"
+import { useSelector } from "react-redux";
+import { useState } from "react";
+import translations from "../../assets/translation.js";
 
 const RegisterForm = () => {
-  const language = useSelector((state) => state.language.language)
-  const t = translations[language]
-  const [username, setUsername] = useState("")
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [passwordAgain, setPasswordAgain] = useState("")
+  const language = useSelector((state) => state.language.language);
+  const t = translations[language];
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordAgain, setPasswordAgain] = useState("");
 
   const handleSubmit = (event) => {
-    event.preventDefault()
+    event.preventDefault();
     console.log("Register attempt:", {
       username,
       email,
       password,
       passwordAgain,
-    })
-  }
+    });
+  };
 
   return (
     <div>
@@ -26,6 +26,7 @@ const RegisterForm = () => {
         <div>
           <input
             type="text"
+            class="input-field"
             value={username}
             name="username"
             onChange={(e) => setUsername(e.target.value)}
@@ -35,6 +36,7 @@ const RegisterForm = () => {
         <div>
           <input
             type="text"
+            class="input-field"
             value={email}
             name="email"
             onChange={(e) => setEmail(e.target.value)}
@@ -44,6 +46,7 @@ const RegisterForm = () => {
         <div>
           <input
             type="password"
+            class="input-field"
             value={password}
             name="password"
             onChange={(e) => setPassword(e.target.value)}
@@ -53,6 +56,7 @@ const RegisterForm = () => {
         <div>
           <input
             type="password"
+            class="input-field"
             value={passwordAgain}
             name="passwordAgain"
             onChange={(e) => setPasswordAgain(e.target.value)}
@@ -62,7 +66,7 @@ const RegisterForm = () => {
         <button type="submit">{t.register}</button>
       </form>
     </div>
-  )
-}
+  );
+};
 
-export default RegisterForm
+export default RegisterForm;

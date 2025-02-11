@@ -1,5 +1,6 @@
 const translations = {
   en: {
+    back: "Back",
     email: "Email",
     forgot_pw: "Forgot password?",
     login: "Log in",
@@ -14,6 +15,7 @@ const translations = {
     username: "Username",
   },
   fi: {
+    back: "Takaisin",
     email: "Sähköposti",
     forgot_pw: "Unohtuiko salasana?",
     login: "Kirjaudu",
@@ -28,6 +30,6 @@ const translations = {
     username: "Käyttäjätunnus",
     username_ph: "Käyttäjätunnus",
   },
-}
+};
 
-export default translations
+export default translations;
