@@ -1,13 +1,13 @@
-import "../index.css"
-import { useSelector } from "react-redux"
-import translations from "../assets/translation.js"
-import Select from "react-select"
-import { useState } from "react"
-import FlagSelection from "./flagSelection.jsx"
+import "../index.css";
+import { useSelector } from "react-redux";
+import translations from "../assets/translation.js";
+import Select from "react-select";
+import { useState } from "react";
+import FlagSelection from "./flagSelection.jsx";
 
 const Footer = () => {
-  const language = useSelector((state) => state.language.language)
-  const t = translations[language]
+  const language = useSelector((state) => state.language.language);
+  const t = translations[language];
   return (
     <footer className="footer">
       <div className="footer-content">
@@ -24,18 +24,17 @@ const Footer = () => {
         </div>
       </div>
     </footer>
-  )
-}
-
+  );
+};
 
 // Esimerkki infokomponentista (korvaa omalla toteutuksellasi)
 const Info = () => {
   return (
     <div>
+      <info-btn>i</info-btn>
       {/* Tähän inforakenteen logiikka ja ulkoasu */}
-      <p>Info tulossa...</p>
     </div>
-  )
-}
+  );
+};
 
-export default Footer
+export default Footer;

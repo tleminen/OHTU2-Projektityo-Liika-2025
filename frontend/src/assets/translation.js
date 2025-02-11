@@ -3,6 +3,7 @@ const translations = {
     activity: "Activity",
     dateAndTime: "Date and time",
     description: "Description",
+    back: "Back",
     email: "Email",
     forgot_pw: "Forgot password?",
     location: "Location",
@@ -20,6 +21,7 @@ const translations = {
   },
   fi: {
     activity: "Laji",
+    back: "Takaisin",
     dateAndTime: "Aika",
     description: "Kuvaus",
     email: "Sähköposti",
@@ -38,6 +40,6 @@ const translations = {
     username: "Käyttäjätunnus",
     username_ph: "Käyttäjätunnus",
   },
-}
+};
 
-export default translations
+export default translations;

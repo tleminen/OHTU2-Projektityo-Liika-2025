@@ -1,17 +1,17 @@
-import { useSelector } from "react-redux"
-import { useState } from "react"
-import translations from "../../assets/translation.js"
+import { useSelector } from "react-redux";
+import { useState } from "react";
+import translations from "../../assets/translation.js";
 
 const LoginForm = () => {
-  const language = useSelector((state) => state.language.language)
-  const t = translations[language]
-  const [username, setUsername] = useState("")
-  const [password, setPassword] = useState("")
+  const language = useSelector((state) => state.language.language);
+  const t = translations[language];
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleSubmit = (event) => {
-    event.preventDefault()
-    console.log("Login attempt:", { username, password })
-  }
+    event.preventDefault();
+    console.log("Login attempt:", { username, password });
+  };
 
   return (
     <div>
@@ -19,6 +19,7 @@ const LoginForm = () => {
         <div>
           <input
             type="text"
+            className="input-field"
             value={username}
             name="username"
             onChange={(e) => setUsername(e.target.value)}
@@ -28,6 +29,7 @@ const LoginForm = () => {
         <div>
           <input
             type="password"
+            className="input-field"
             value={password}
             name="password"
             onChange={(e) => setPassword(e.target.value)}
@@ -37,7 +39,7 @@ const LoginForm = () => {
         <button type="submit">{t.login}</button>
       </form>
     </div>
-  )
-}
+  );
+};
 
-export default LoginForm
+export default LoginForm;
