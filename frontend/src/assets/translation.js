@@ -16,6 +16,8 @@ const translations = {
     ready_account: "Already have an account?",
     register: "Register",
     reset_pw: "Reset password",
+    selectedLanguage: "Language",
+    startLocation: "Start location",
     terms_of_service: "Terms of service",
     username: "Username",
   },
@@ -36,9 +38,10 @@ const translations = {
     ready_account: "Onko sinulla jo tili?",
     register: "Rekisteröidy",
     reset_pw: "Palauta salasana",
+    selectedLanguage: "Oletus-sijainti",
+    startLocation: "Oletus-sijainti",
     terms_of_service: "Käyttöehdot",
     username: "Käyttäjätunnus",
-    username_ph: "Käyttäjätunnus",
   },
 };
 
