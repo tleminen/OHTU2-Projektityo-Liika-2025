@@ -11,10 +11,11 @@ const Login = () => {
   const [emailForm, setEmailForm] = useState(false)
   const handler = () => {
     navigate("/")
-  }
+  };
 
   const language = useSelector((state) => state.language.language)
   const t = translations[language]
+
   return (
     <div className="Login">
       <Header />
