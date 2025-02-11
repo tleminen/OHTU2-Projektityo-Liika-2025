@@ -39,7 +39,7 @@ const Frontpage = () => {
           alt="Map"
           onClick={() => navigateTo("map")}
         />
-        <SignedOut />
+        {singedOrNot(user)}
       </div>
       <Footer />
     </div>
