@@ -1,24 +1,29 @@
-import { useSelector } from "react-redux";
-import { useState } from "react";
-import translations from "../../assets/translation.js";
+import { useSelector } from "react-redux"
+import { useState } from "react"
+import translations from "../../assets/translation.js"
 
 const RegisterForm = () => {
-  const language = useSelector((state) => state.language.language);
-  const t = translations[language];
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [passwordAgain, setPasswordAgain] = useState("");
+  const language = useSelector((state) => state.language.language)
+  const t = translations[language]
+  const [username, setUsername] = useState("")
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [passwordAgain, setPasswordAgain] = useState("")
+  const [showPassword, setShowPassword] = useState(false)
 
   const handleSubmit = (event) => {
-    event.preventDefault();
+    event.preventDefault()
     console.log("Register attempt:", {
       username,
       email,
       password,
       passwordAgain,
-    });
-  };
+    })
+  }
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword)
+  }
 
   return (
     <div>
@@ -33,40 +38,48 @@ const RegisterForm = () => {
             placeholder={t.username}
           />
         </div>
-        <div>
+        <div className="password-input-container">
           <input
-            type="text"
-            className="input-field"
-            value={email}
-            name="email"
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder={t.email}
-          />
-        </div>
-        <div>
-          <input
-            type="password"
+            type={showPassword ? "text" : "password"}
             className="input-field"
             value={password}
             name="password"
             onChange={(e) => setPassword(e.target.value)}
             placeholder={t.password}
           />
+          <button
+            type="button"
+            className="password-toggle-button"
+            onClick={togglePasswordVisibility}
+          >
+            <span className="material-symbols-outlined">
+              {showPassword ? "visibility_off" : "visibility"}
+            </span>
+          </button>
         </div>
-        <div>
+        <div className="password-input-container">
           <input
-            type="password"
+            type={showPassword ? "text" : "password"}
             className="input-field"
             value={passwordAgain}
             name="passwordAgain"
-            onChange={(e) => setPasswordAgain(e.target.value)}
+            onChange={(e) => setPassword(e.target.value)}
             placeholder={t.passwordAgain}
           />
+          <button
+            type="button"
+            className="password-toggle-button"
+            onClick={togglePasswordVisibility}
+          >
+            <span className="material-symbols-outlined">
+              {showPassword ? "visibility_off" : "visibility"}
+            </span>
+          </button>
         </div>
         <button type="submit">{t.register}</button>
       </form>
     </div>
-  );
-};
+  )
+}
 
-export default RegisterForm;
+export default RegisterForm
