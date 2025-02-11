@@ -26,7 +26,7 @@ const RegisterForm = () => {
         <div>
           <input
             type="text"
-            class="input-field"
+            className="input-field"
             value={username}
             name="username"
             onChange={(e) => setUsername(e.target.value)}
@@ -36,7 +36,7 @@ const RegisterForm = () => {
         <div>
           <input
             type="text"
-            class="input-field"
+            className="input-field"
             value={email}
             name="email"
             onChange={(e) => setEmail(e.target.value)}
@@ -46,7 +46,7 @@ const RegisterForm = () => {
         <div>
           <input
             type="password"
-            class="input-field"
+            className="input-field"
             value={password}
             name="password"
             onChange={(e) => setPassword(e.target.value)}
@@ -56,7 +56,7 @@ const RegisterForm = () => {
         <div>
           <input
             type="password"
-            class="input-field"
+            className="input-field"
             value={passwordAgain}
             name="passwordAgain"
             onChange={(e) => setPasswordAgain(e.target.value)}

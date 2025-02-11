@@ -142,14 +142,32 @@ button:focus-visible {
 }
 
 /*rekisteröinnille ja kirjautumiselle painikkeet kesken*/
-.register-btn,
+.registerandlogin-btn,
 button {
-  border-radius: 20px;
+  border-radius: 10px;
+  border: 2px solid transparent;
+  padding: 0.3em 0.6em;
+  font-size: 1.5em;
+  font-weight: 500;
+  font-family: inherit;
+  color: #ffffff;
+  text-transform: uppercase;
+  background-color: #0097b2;
+  cursor: pointer;
+  transition: background-color 0.25s, color 0.25s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.5);
 }
-
-.login-btn,
-button {
-  border-radius: 20px;
+button:hover {
+  background-color: #ffffff;
+  color: #0097b2;
+  border-color: #0097b2;
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
 }
 
 /* Perustyylit käyttäjän muokattavalle tekstikentälle */
@@ -233,6 +251,14 @@ h3 {
 .buttonheader {
   font-size: large;
   color: #ffffff;
+}
+
+/*kartan kuvalle aloitusnäkymässä olio*/
+.map-image {
+  width: 100%;
+  height: auto; /* Skaalaa korkeuden automaattisesti leveyden mukaan */
+  max-height: 90vh; /* Estää kuvan kasvamasta liian korkeaksi */
+  object-fit: cover;
 }
 
 /*Kartalle olio*/

@@ -1,25 +1,24 @@
-import Header from "../header"
-import mapImage from "../../assets/map_kuvituskuva.png"
-import Footer from "../footer"
-import { useNavigate } from "react-router-dom"
-import { useSelector } from "react-redux"
-import translations from "../../assets/translation"
+import Header from "../header";
+import mapImage from "../../assets/map_kuvituskuva.png";
+import Footer from "../footer";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import translations from "../../assets/translation";
 const Frontpage = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const navigateTo = (path) => {
-    navigate(`/${path}`)
-  }
-  const language = useSelector((state) => state.language.language)
-  const t = translations[language]
+    navigate(`/${path}`);
+  };
+  const language = useSelector((state) => state.language.language);
+  const t = translations[language];
 
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
       <Header />
       <img
         src={mapImage}
+        className="map-image"
         alt="Map"
-        width={100}
-        height={100}
         onClick={() => navigateTo("map")}
       />
       <div className="containerX">
@@ -31,7 +30,7 @@ const Frontpage = () => {
         <Footer />
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Frontpage
+export default Frontpage;
