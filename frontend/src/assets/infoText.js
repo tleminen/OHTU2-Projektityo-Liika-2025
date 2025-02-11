@@ -1,11 +1,11 @@
-class termsOfServiceText {
+class infoText {
     constructor() {
         this.enText = `
-          This is the English terms of service text.
+          This is the English info text.
           You can write long text here. `;
     
         this.fiText = `
-          Tämä on suomenkielinen käyttöehtojen teksti.
+          Tämä on suomenkielinen info teksti.
           Voit kirjoittaa pitkää tekstiä tähän.`;
       };
     
@@ -20,4 +20,4 @@ class termsOfServiceText {
       }
 }
 
-export default new termsOfServiceText
+export default new infoText
