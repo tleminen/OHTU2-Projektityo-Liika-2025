@@ -16,7 +16,9 @@ const SignedIn = ({ setUser }) => {
 
   return (
     <div>
-      <button onClick={() => handler()}>{t.logOut}</button>
+      <button className="registerandlogin-btn" onClick={() => handler()}>
+        {t.logOut}
+      </button>
     </div>
   )
 }
