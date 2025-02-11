@@ -142,8 +142,7 @@ button:focus-visible {
 }
 
 /*rekisteröinnille ja kirjautumiselle painikkeet kesken*/
-.registerandlogin-btn,
-button {
+.registerandlogin-btn {
   border-radius: 10px;
   border: 2px solid transparent;
   padding: 0.3em 0.6em;
@@ -255,10 +254,13 @@ h3 {
 
 /*kartan kuvalle aloitusnäkymässä olio*/
 .map-image {
-  width: 100%;
-  height: auto; /* Skaalaa korkeuden automaattisesti leveyden mukaan */
-  max-height: 90vh; /* Estää kuvan kasvamasta liian korkeaksi */
-  object-fit: cover;
+  width: 90%; /* Skaalaa kuvan 90% näytön leveydestä */
+  max-width: 1200px; /* Rajoittaa suurimmalla näytöllä */
+  height: auto; /* Säilyttää mittasuhteet */
+  object-fit: cover; /* Estää kuvan venymisen */
+  display: block; /* Poistaa ylimääräiset marginaalit */
+  margin: 20px auto; /* Keskittää kuvan vaakasuunnassa */
+  border-radius: 10px; /* Pehmeät reunat (valinnainen) */
 }
 
 /*Kartalle olio*/
@@ -302,31 +304,6 @@ h3 {
 
 .forgot-password-text {
   margin: 0 10px;
-}
-
-info-btn {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background-color: #5271ff;
-  color: white;
-  font-size: 24px;
-  font-weight: bold;
-  text-align: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: none;
-  cursor: pointer;
-  transition: background-color 0.3s, box-shadow 0.3s;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2); /*varjo efekti*/
-}
-
-info-btn:hover {
-  background-color: #ffffff;
-  color: #5271ff;
-  box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.3);
-  border: 2px solid #5271ff;
 }
 
 info-btn {

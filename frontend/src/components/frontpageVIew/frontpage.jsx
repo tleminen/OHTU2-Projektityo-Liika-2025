@@ -10,7 +10,12 @@ const Frontpage = () => {
   };
 
   return (
-    <div style={{ display: "flex", flexDirection: "column" }}>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
       <Header />
       <img
         src={mapImage}
