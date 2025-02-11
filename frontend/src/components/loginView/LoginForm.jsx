@@ -21,7 +21,7 @@ const LoginForm = () => {
         username,
         password,
       })
-      console.log("token saatu:" + user.token)
+      console.log(`Tokeni: ${user.token} Käyttäjätunnus: ${user.username}`)
       window.localStorage.setItem("loggedUser", JSON.stringify(user))
       navigate(`/`)
     } catch (error) {

@@ -1,3 +1,4 @@
+const jwt = require("jsonwebtoken")
 const bcrypt = require("bcryptjs")
 const { Router } = require("express")
 const User = require("../models/users")
@@ -5,7 +6,7 @@ const User = require("../models/users")
 const userRouter = Router()
 
 /**
- * Käyttäjän luonti
+ * Uuden käyttäjän rekisteröinti
  */
 userRouter.post("/", async (req, res) => {
   const { username, password, role, email } = req.body
@@ -17,12 +18,25 @@ userRouter.post("/", async (req, res) => {
 
     try {
       const savedUser = await User.create({
+        // Uuden käyttäjän rekisteröinti
         Username: username,
         Password: passwordhash,
         Role: role,
         Email: email,
       })
-      res.status(201).json(savedUser)
+
+      const userForToken = {
+        // Luodaan tokeni käyttäjänimen ja id:n mukaan
+        username: savedUser.Username,
+        id: savedUser.UserID,
+      }
+
+      console.log(JSON.stringify(userForToken))
+      const token = jwt.sign(userForToken, process.env.JWT_SECRET, {
+        // Luodaan tokeni uudelle käyttäjälle heti
+        expiresIn: "60d",
+      })
+      res.status(200).send({ token, username: savedUser.Username })
     } catch (error) {
       console.log("PostgreSQL Error:", error)
       res.status(400).send({ error: `Error occured during user creation` })

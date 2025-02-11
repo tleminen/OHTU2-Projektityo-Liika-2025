@@ -7,7 +7,6 @@ const { connectDB, sequelize } = require("./utils/database")
 const fs = require("fs")
 const userRouter = require("./controllers/users")
 const loginRouter = require("./controllers/login")
-
 const logStream = fs.createWriteStream("./logs/access.log", { flags: "a" })
 connectDB() // Muodostetaan tietokantayhteys
 sequelize.sync({ alter: true }) // Tietokannan synkronointi
@@ -33,18 +32,11 @@ app.use(
     stream: logStream,
   })
 ) // HTTP pyyntöjen logitus
-app.use(morgan(customFormat))
+app.use(morgan(customFormat)) // HTTP pyynnöt terminaaliin
 app.use(middleware.tokenExtractor) // Ekstraktoi tokenin
 
-// Tähän tulee routerit kuten app.use('api/login', loginRouter)
-//app.use(`/api/login`,)
-app.use(`/api/users`, userRouter)
+app.use(`/api/register`, userRouter)
 app.use(`/api/login`, loginRouter)
-
-// Testi1, voi poistaa
-app.get("/", (request, response) => {
-  response.send("<h1>Hello World from backend!</h1>")
-}) // Testi1 päättyy
 
 // Loppuun laitetaan unknownEndpoint ja virheenKorjaus
 app.use(middleware.unknownEndpoint)

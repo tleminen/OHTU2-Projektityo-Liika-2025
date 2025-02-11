@@ -12,25 +12,27 @@ loginRouter.post("/", async (req, res) => {
     const user = await User.findOne({ username })
     const passwordCorrect =
       user === null ? false : await bcrypt.compare(password, user.Password)
-    if (!(User && passwordCorrect)) {
+    if (!(user && passwordCorrect)) {
       return res.status(401).json({
         error: "invalid username or password",
       })
     }
+
+    const userForToken = {
+      username: user.Username,
+      id: user.UserID,
+    }
+
+    console.log(JSON.stringify(userForToken))
+
+    const token = jwt.sign(userForToken, process.env.JWT_SECRET, {
+      expiresIn: "60d",
+    })
+
+    res.status(200).send({ token, username: user.Username })
   } catch (error) {
     console.log(error)
   }
-
-  const userForToken = {
-    username: User.username,
-    id: User.id,
-  }
-
-  const token = jwt.sign(userForToken, process.env.JWT_SECRET, {
-    expiresIn: "60d",
-  })
-
-  res.status(200).send({ token, username: User.username })
 })
 
 module.exports = loginRouter
