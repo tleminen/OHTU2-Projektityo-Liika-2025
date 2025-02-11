@@ -8,7 +8,7 @@ const TermsOfService = () => {
   return (
     <div className="terms-of-service">
       <h2> {t.terms_of_service}</h2>
-      <text>Pippeliii</text>
+      <div>{t.terms_of_service_txt}</div>
     </div>
   )
 }

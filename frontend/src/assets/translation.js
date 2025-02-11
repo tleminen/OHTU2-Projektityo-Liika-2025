@@ -1,3 +1,4 @@
+import termsOfServiceText from "./termsOfServiceText"
 const translations = {
   en: {
     activity: "Activity",
@@ -17,6 +18,7 @@ const translations = {
     register: "Register",
     reset_pw: "Reset password",
     terms_of_service: "Terms of service",
+    terms_of_service_txt: termsOfServiceText.getText("en"),
     username: "Username",
   },
   fi: {
@@ -37,6 +39,7 @@ const translations = {
     register: "Rekisteröidy",
     reset_pw: "Palauta salasana",
     terms_of_service: "Käyttöehdot",
+    terms_of_service_txt: termsOfServiceText.getText("fi"),
     username: "Käyttäjätunnus",
     username_ph: "Käyttäjätunnus",
   },
