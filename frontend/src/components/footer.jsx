@@ -16,7 +16,7 @@ const Footer = () => {
           <FlagSelection />{" "}
         </div>
         <div className="footer-text">
-          <ul>{t.terms_of_service}</ul> {/* linkki käyttöehtoihin */}
+        <a href="/termsOfService">{t.terms_of_service}</a> {/* linkki käyttöehtoihin */}
         </div>
         <div className="info">
           {/* Infokomponentti tähän */}
