@@ -3,6 +3,7 @@ import { useSelector } from "react-redux"
 import translations from "../assets/translation.js"
 import Select from "react-select"
 import { useState } from "react"
+import FlagSelection from "./flagSelection.jsx"
 
 const Footer = () => {
   const language = useSelector((state) => state.language.language)
@@ -12,8 +13,7 @@ const Footer = () => {
       <div className="footer-content">
         <div className="flag-selection">
           {/* Lippuvalintakomponentti tähän */}
-          <Lippuvalinta />{" "}
-          {/* Oletetaan, että komponentin nimi on Lippuvalinta */}
+          <FlagSelection />{" "}
         </div>
         <div className="footer-text">
           <ul>{t.terms_of_service}</ul> {/* linkki käyttöehtoihin */}
@@ -27,33 +27,6 @@ const Footer = () => {
   )
 }
 
-// Esimerkki lippuvalintakomponentista (korvaa omalla toteutuksellasi)
-const Lippuvalinta = () => {
-  const [selectedOption, setSelectedOption] = useState(null)
-
-  const options = [
-    { value: "fi", label: "Suomi" },
-    { value: "en", label: "Englanti" },
-    // TODO: Vaihda hakemaan kielet
-  ]
-
-  const handleChange = (selectedOption) => {
-    setSelectedOption(selectedOption)
-    console.log(`Valittu kieli: ${selectedOption.value}`)
-    // Tässä voitaisiin tehdä toimintoja, jotka liittyvät kielen vaihtamiseen
-  }
-
-  return (
-    <div>
-      <Select
-        menuPlacement="top"
-        value={selectedOption}
-        onChange={handleChange}
-        options={options}
-      />
-    </div>
-  )
-}
 
 // Esimerkki infokomponentista (korvaa omalla toteutuksellasi)
 const Info = () => {
