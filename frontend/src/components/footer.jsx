@@ -1,8 +1,6 @@
 import "../index.css"
 import { useSelector } from "react-redux"
 import translations from "../assets/translation.js"
-import Select from "react-select"
-import { useState } from "react"
 import FlagSelection from "./flagSelection.jsx"
 
 const Footer = () => {
@@ -16,7 +14,7 @@ const Footer = () => {
           <FlagSelection />{" "}
         </div>
         <div className="footer-text">
-          <ul>{t.terms_of_service}</ul> {/* linkki käyttöehtoihin */}
+        <a href="/termsOfService">{t.terms_of_service}</a> {/* linkki käyttöehtoihin */}
         </div>
         <div className="info">
           {/* Infokomponentti tähän */}
