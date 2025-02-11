@@ -1,3 +1,4 @@
+import termsOfServiceText from "./termsOfServiceText"
 const translations = {
   en: {
     activity: "Activity",
@@ -19,6 +20,7 @@ const translations = {
     selectedLanguage: "Language",
     startLocation: "Start location",
     terms_of_service: "Terms of service",
+    terms_of_service_txt: termsOfServiceText.getText("en"),
     username: "Username",
   },
   fi: {
@@ -41,6 +43,7 @@ const translations = {
     selectedLanguage: "Oletus-sijainti",
     startLocation: "Oletus-sijainti",
     terms_of_service: "Käyttöehdot",
+    terms_of_service_txt: termsOfServiceText.getText("fi"),
     username: "Käyttäjätunnus",
   },
 };
