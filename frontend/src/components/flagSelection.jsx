@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Select from 'react-select';
-import changeLanguage  from '../store/languageSlice';
+import { changeLanguage } from '../store/languageSlice';
 
 const FlagSelection = () => {
   const dispatch = useDispatch();
@@ -14,6 +14,8 @@ const FlagSelection = () => {
   ];
 
   const handleChange = (selectedOption) => {
+    console.log(selectedOption);
+    console.log("value "+selectedOption.value);
     dispatch(changeLanguage(selectedOption.value));
   };
 
