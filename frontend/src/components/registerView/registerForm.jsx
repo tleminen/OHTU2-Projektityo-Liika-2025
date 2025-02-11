@@ -10,6 +10,7 @@ const RegisterForm = () => {
   const [password, setPassword] = useState("")
   const [passwordAgain, setPasswordAgain] = useState("")
   const [showPassword, setShowPassword] = useState(false)
+  const [showPasswordAgain, setShowPasswordAgain] = useState(false)
 
   const handleSubmit = (event) => {
     event.preventDefault()
@@ -23,6 +24,9 @@ const RegisterForm = () => {
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword)
+  }
+  const togglePasswordVisibilityAgain = () => {
+    setShowPasswordAgain(!showPasswordAgain)
   }
 
   return (
@@ -59,20 +63,20 @@ const RegisterForm = () => {
         </div>
         <div className="password-input-container">
           <input
-            type={showPassword ? "text" : "password"}
+            type={showPasswordAgain ? "text" : "password"}
             className="input-field"
             value={passwordAgain}
             name="passwordAgain"
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => setPasswordAgain(e.target.value)}
             placeholder={t.passwordAgain}
           />
           <button
             type="button"
             className="password-toggle-button"
-            onClick={togglePasswordVisibility}
+            onClick={togglePasswordVisibilityAgain}
           >
             <span className="material-symbols-outlined">
-              {showPassword ? "visibility_off" : "visibility"}
+              {showPasswordAgain ? "visibility_off" : "visibility"}
             </span>
           </button>
         </div>
