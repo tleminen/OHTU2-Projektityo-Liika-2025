@@ -1,20 +1,20 @@
-import translations from "../../assets/translation";
-import Header from "../header";
-import LoginForm from "./LoginForm";
-import Footer from "../footer";
-import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import translations from "../../assets/translation"
+import Header from "../header"
+import LoginForm from "./LoginForm"
+import Footer from "../footer"
+import { useSelector } from "react-redux"
+import { useNavigate } from "react-router-dom"
+import { useState } from "react"
 
 const Login = () => {
-  const navigate = useNavigate();
-  const [emailForm, setEmailForm] = useState(false);
+  const navigate = useNavigate()
+  const [emailForm, setEmailForm] = useState(false)
   const handler = () => {
-    navigate("/");
-  };
+    navigate("/")
+  }
 
-  const language = useSelector((state) => state.language.language);
-  const t = translations[language];
+  const language = useSelector((state) => state.language.language)
+  const t = translations[language]
   return (
     <div className="Login">
       <Header />
@@ -36,7 +36,7 @@ const Login = () => {
       </button>
       <Footer />
     </div>
-  );
-};
+  )
+}
 
-export default Login;
+export default Login
