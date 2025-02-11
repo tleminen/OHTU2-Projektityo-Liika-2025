@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux"
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import translations from "../../assets/translation.js"
 import { useNavigate } from "react-router-dom"
 import registerService from "../../services/registerService.js"
@@ -14,6 +14,11 @@ const RegisterForm = () => {
   const [passwordAgain, setPasswordAgain] = useState("")
   const [showPassword, setShowPassword] = useState(false)
   const [showPasswordAgain, setShowPasswordAgain] = useState(false)
+
+  const inputRef = useRef(null)
+  useEffect(() => {
+    inputRef.current?.focus()
+  }, [])
 
   const handleSubmit = async (event) => {
     event.preventDefault()
@@ -52,6 +57,7 @@ const RegisterForm = () => {
       <form onSubmit={handleSubmit}>
         <div>
           <input
+            ref={inputRef}
             type="text"
             className="input-field"
             value={username}

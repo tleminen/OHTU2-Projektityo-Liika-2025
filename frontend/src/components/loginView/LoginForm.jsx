@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux"
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import translations from "../../assets/translation.js"
 import loginService from "../../services/loginService.js"
 import { useNavigate } from "react-router-dom"
@@ -12,6 +12,11 @@ const LoginForm = () => {
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
   const [showPassword, setShowPassword] = useState(false)
+
+  const inputRef = useRef(null)
+  useEffect(() => {
+    inputRef.current?.focus()
+  }, [])
 
   const handleSubmit = async (event) => {
     event.preventDefault()
@@ -38,12 +43,14 @@ const LoginForm = () => {
       <form onSubmit={handleSubmit}>
         <div>
           <input
+            ref={inputRef}
             type="text"
             className="input-field"
             value={username}
             name="username"
             onChange={(e) => setUsername(e.target.value)}
             placeholder={t.username}
+            autoComplete="text"
           />
         </div>
         <div className="password-input-container">
@@ -54,6 +61,7 @@ const LoginForm = () => {
             name="password"
             onChange={(e) => setPassword(e.target.value)}
             placeholder={t.password}
+            autoComplete="current-password"
           />
           <button
             type="button"

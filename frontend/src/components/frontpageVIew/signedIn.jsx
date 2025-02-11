@@ -9,7 +9,7 @@ const SignedIn = ({ setUser }) => {
   const navigate = useNavigate()
 
   const handler = () => {
-    window.localStorage.setItem("loggedUser", "")
+    window.localStorage.removeItem("loggedUser")
     setUser(null)
     navigate("/")
   }
