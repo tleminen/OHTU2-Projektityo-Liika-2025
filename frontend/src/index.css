@@ -141,7 +141,6 @@ button:focus-visible {
 
 /*rekisteröinnille ja kirjautumiselle painikkeet kesken*/
 .registerandlogin-btn {
-.registerandlogin-btn {
   border-radius: 10px;
   border: 2px solid transparent;
   padding: 0.3em 0.6em;
