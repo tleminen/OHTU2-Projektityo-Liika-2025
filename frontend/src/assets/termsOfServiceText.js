@@ -15,7 +15,7 @@ class termsOfServiceText {
         } else if (language === 'fi') {
           return this.fiText;
         } else {
-          return this.enText;
+          return this.fiText;
         }
       }
 }
