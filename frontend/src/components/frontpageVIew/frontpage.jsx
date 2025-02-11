@@ -10,24 +10,18 @@ const Frontpage = () => {
   };
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-      }}
-    >
+    <div>
       <Header />
-      <img
-        src={mapImage}
-        className="map-image"
-        alt="Map"
-        onClick={() => navigateTo("map")}
-      />
-      <SignedOut />
-
-      <div>
-        <Footer />
+      <div className="frontpage">
+        <img
+          src={mapImage}
+          className="map-image"
+          alt="Map"
+          onClick={() => navigateTo("map")}
+        />
+        <SignedOut />
       </div>
+      <Footer />
     </div>
   );
 };

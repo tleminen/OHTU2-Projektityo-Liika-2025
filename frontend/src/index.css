@@ -216,21 +216,19 @@ h3 {
   width: 100%;
 }
 
-/*painikkeiden teksti*/
-.buttonheader {
-  font-size: large;
-  color: #ffffff;
-}
-
 /*kartan kuvalle aloitusnäkymässä olio*/
 .map-image {
-  width: 90%; /* Skaalaa kuvan 90% näytön leveydestä */
+  width: 35%; /* Skaalaa kuvan 90% näytön leveydestä */
   max-width: 1200px; /* Rajoittaa suurimmalla näytöllä */
   height: auto; /* Säilyttää mittasuhteet */
   object-fit: cover; /* Estää kuvan venymisen */
   display: block; /* Poistaa ylimääräiset marginaalit */
   margin: 20px auto; /* Keskittää kuvan vaakasuunnassa */
   border-radius: 10px; /* Pehmeät reunat (valinnainen) */
+}
+
+.map-image:hover {
+  cursor: pointer;
 }
 
 /*Kartalle olio*/
