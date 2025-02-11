@@ -1,6 +1,7 @@
 import { useSelector } from "react-redux"
 import { useState } from "react"
 import translations from "../../assets/translation.js"
+import loginService from "../../services/loginService.js"
 
 const LoginForm = () => {
   const language = useSelector((state) => state.language.language)
@@ -8,9 +9,18 @@ const LoginForm = () => {
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault()
     console.log("Login attempt:", { username, password })
+    try {
+      const user = await loginService.login({
+        username,
+        password,
+      })
+      window.localStorage.setItem("loggedUser", JSON.stringify(user)) // TÄmä pois ja tallennus storeen!!
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   return (
