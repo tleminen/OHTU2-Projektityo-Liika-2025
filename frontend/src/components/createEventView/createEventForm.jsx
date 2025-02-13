@@ -7,7 +7,8 @@ const CreateEventForm = () => {
   const language = useSelector((state) => state.language.language)
   const t = translations[language]
   const [activity, setActivity] = useState("")
-  const [dateAndTime, setDateAndTime] = useState("")
+  const [date, setDate] = useState("")
+  const [time, setTime] = useState("")
   const [location, setLocation] = useState("")
   const [minParticipants, setMinParticipants] = useState("")
   const [maxParticipants, setMaxParticipants] = useState("")
@@ -17,7 +18,8 @@ const CreateEventForm = () => {
     event.preventDefault()
     console.log("Create event attempt:", {
       activity,
-      dateAndTime,
+      date,
+      time,
       location,
       minParticipants,
       maxParticipants,
@@ -43,10 +45,19 @@ const CreateEventForm = () => {
         </div>
         <div>
           <input
-            type="text"
-            value={dateAndTime}
+            type="date"
+            value={date}
             name="dateAndTime"
-            onChange={(e) => setDateAndTime(e.target.value)}
+            onChange={(e) => setDate(e.target.value)}
+            placeholder={t.dateAndTime}
+          />
+        </div>
+        <div>
+          <input
+            type="time"
+            value={time}
+            name="dateAndTime"
+            onChange={(e) => setTime(e.target.value)}
             placeholder={t.dateAndTime}
           />
         </div>
@@ -57,7 +68,7 @@ const CreateEventForm = () => {
         </div>
         <div>
           <input
-            type="minParticipants"
+            type="number"
             value={minParticipants}
             name="minParticipants"
             onChange={(e) => setMinParticipants(e.target.value)}
@@ -66,7 +77,7 @@ const CreateEventForm = () => {
         </div>
         <div>
           <input
-            type="maxParticipants"
+            type="number"
             value={maxParticipants}
             name="maxParticipants"
             onChange={(e) => setMaxParticipants(e.target.value)}
