@@ -1,6 +1,7 @@
 import { useSelector } from "react-redux"
 import { useState } from "react"
 import translations from "../../assets/translation.js"
+import LocationMap from "../locationMap.jsx"
 
 const CreateEventForm = () => {
   const language = useSelector((state) => state.language.language)
@@ -20,8 +21,12 @@ const CreateEventForm = () => {
       location,
       minParticipants,
       maxParticipants,
-      description
+      description,
     })
+  }
+
+  const handleLocationChange = (newLocation) => {
+    setLocation(newLocation)
   }
 
   return (
@@ -46,13 +51,7 @@ const CreateEventForm = () => {
           />
         </div>
         <div>
-          <input
-            type="location"
-            value={location}
-            name="location"
-            onChange={(e) => setLocation(e.target.value)}
-            placeholder={t.location}
-          />
+          <LocationMap onLocationChange={handleLocationChange} />
         </div>
         <div>
           <input
@@ -69,11 +68,11 @@ const CreateEventForm = () => {
             value={maxParticipants}
             name="maxParticipants"
             onChange={(e) => setMaxParticipants(e.target.value)}
-            placeholder={t.MaxParticipants}
+            placeholder={t.maxParticipants}
           />
         </div>
         <div>
-          <input
+          <textarea
             type="description"
             value={description}
             name="description"
