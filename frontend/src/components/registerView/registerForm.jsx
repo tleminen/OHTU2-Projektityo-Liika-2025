@@ -119,8 +119,10 @@ const RegisterForm = () => {
           </button>
         </div>
         <br />
-        <h2 style={{ textAlign: "center" }}>{t.setStartLocationInfo}</h2>
-        <LocationMap />
+        <div>
+          <h2 style={{ textAlign: "center" }}>{t.setStartLocationInfo}</h2>
+          <LocationMap />
+        </div>
         <button type="submit">{t.register}</button>
       </form>
     </div>

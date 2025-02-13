@@ -43,7 +43,13 @@ const LocationMap = ({ onLocationChange }) => {
     }
   }, [])
 
-  return <div id="map" className="map"></div>
+  return (
+    <div
+      id="map"
+      className="map"
+      style={{ minHeight: "40vh", flex: "1" }}
+    ></div>
+  )
 }
 
 export default LocationMap
