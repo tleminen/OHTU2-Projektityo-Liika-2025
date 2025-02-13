@@ -51,6 +51,8 @@ const CreateEventForm = () => {
           />
         </div>
         <div>
+          <br />
+          <h2 style={{ textAlign: "center" }}>{t.setEventLocationInfo}</h2>
           <LocationMap onLocationChange={handleLocationChange} />
         </div>
         <div>
