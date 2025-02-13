@@ -6,4 +6,14 @@ const login = async (credentials) => {
   return response.data
 }
 
-export default { login }
+const sendEmail = async (email) => {
+  try {
+      const response = await axios.post(baseUrl + "/login/sendEmail", { email });
+      return response.data;
+    } catch (error) {
+      console.error("Virhe sähköpostin lähetyksessä:", error);
+      throw error; // Heitetään virhe uudelleen, jotta komponentti voi käsitellä sen
+    }
+};
+
+export default { login, sendEmail }
