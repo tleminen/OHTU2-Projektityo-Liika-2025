@@ -1,7 +1,7 @@
 const { DataTypes } = require("sequelize")
 const { sequelize } = require("../utils/database")
 const Users = require("./users")
-const Events = require("./events")
+const Events = require("./Events")
 
 const Joins = sequelize.define("Joins", {}, { timestamps: false })
 
