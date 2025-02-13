@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react"
 import translations from "../../assets/translation.js"
 import { useNavigate } from "react-router-dom"
 import registerService from "../../services/registerService.js"
+import LocationMap from "../locationMap.jsx"
 
 const RegisterForm = () => {
   const language = useSelector((state) => state.language.language)
@@ -117,6 +118,9 @@ const RegisterForm = () => {
             </span>
           </button>
         </div>
+        <br />
+        <h2 style={{ textAlign: "center" }}>{t.setStartLocationInfo}</h2>
+        <LocationMap />
         <button type="submit">{t.register}</button>
       </form>
     </div>
