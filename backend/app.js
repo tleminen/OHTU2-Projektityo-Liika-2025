@@ -54,6 +54,6 @@ app.use(`/api/events`, eventRouter)
 
 // Loppuun laitetaan unknownEndpoint ja virheenKorjaus
 app.use(middleware.unknownEndpoint)
-getEventsNearby(60.1699, 24.9384, 5000).then((events) => console.log(events))
+// getEventsNearby(60.1699, 24.9384, 5000).then((events) => console.log(events))
 
 module.exports = app
