@@ -47,7 +47,7 @@ const translations = {
     ready_account: "Onko sinulla jo tili?",
     register: "Rekisteröidy",
     reset_pw: "Palauta salasana",
-    selectedLanguage: "Oletus-sijainti",
+    selectedLanguage: "Oletus-kieli",
     startLocation: "Oletus-sijainti",
     terms_of_service: "Käyttöehdot",
     terms_of_service_txt: termsOfServiceText.getText("fi"),
