@@ -20,6 +20,7 @@ const userRouter = require("./controllers/users")
 const loginRouter = require("./controllers/login")
 const eventRouter = require("./controllers/events")
 const getEventsNearby = require("./services/getEventsNearby")
+const email = require('./services/email');
 const logStream = fs.createWriteStream("./logs/access.log", { flags: "a" })
 connectDB() // Muodostetaan tietokantayhteys
 sequelize.sync({ alter: true }) // Tietokannan synkronointi
