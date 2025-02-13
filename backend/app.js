@@ -3,11 +3,23 @@ const app = express()
 const cors = require("cors")
 const morgan = require("morgan")
 const middleware = require("./utils/middleware")
-const { connectDB, sequelize } = require("./utils/database")
+const { connectDB } = require("./utils/database")
+const {
+  sequelize,
+  Users,
+  Category,
+  Times,
+  Events,
+  Club,
+  ClubMember,
+  Joins,
+  Languages,
+} = require("./models/index")
 const fs = require("fs")
 const userRouter = require("./controllers/users")
 const loginRouter = require("./controllers/login")
 const eventRouter = require("./controllers/events")
+const getEventsNearby = require("./services/getEventsNearby")
 const logStream = fs.createWriteStream("./logs/access.log", { flags: "a" })
 connectDB() // Muodostetaan tietokantayhteys
 sequelize.sync({ alter: true }) // Tietokannan synkronointi
@@ -42,5 +54,6 @@ app.use(`/api/events`, eventRouter)
 
 // Loppuun laitetaan unknownEndpoint ja virheenKorjaus
 app.use(middleware.unknownEndpoint)
+getEventsNearby(60.1699, 24.9384, 5000).then((events) => console.log(events))
 
 module.exports = app
