@@ -111,29 +111,6 @@ button:focus-visible {
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.5);
 }
 
-/*
-.back-btn::before {
-  content: "🢤";
-  font-size: 2.5em;
-  line-height: 1;
-  align-items: center;
-}
-*/
-
-.containerX {
-  display: flex;
-  gap: 10px;
-}
-
-/*
-.back-btn::before {
-  content: "🢤";
-  font-size: 2.5em;
-  line-height: 1;
-  align-items: center;
-}
-*/
-
 .containerX {
   display: flex;
   gap: 10px;
@@ -251,53 +228,72 @@ h3 {
   color: #1a1a1a;
 }
 
-.header {
-  background-color: #f0f0f0; /* Esimerkkiväri */
-  align-items: center;
-  justify-content: stretch;
-  text-align: center; /* Teksti keskelle */
-  position: fixed; /* Jos haluat footerin pysyvän sivun alareunassa */
-  top: 0; /* Jos haluat footerin pysyvän sivun alareunassa */
-  width: 100%;
+.fullpage {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Koko näkymän korkeus */
 }
 
 /*kartan kuvalle aloitusnäkymässä olio*/
 .map-image {
-  width: 35%; /* Skaalaa kuvan 90% näytön leveydestä */
-  max-width: 1200px; /* Rajoittaa suurimmalla näytöllä */
-  height: auto; /* Säilyttää mittasuhteet */
-  object-fit: cover; /* Estää kuvan venymisen */
-  display: block; /* Poistaa ylimääräiset marginaalit */
-  margin: 20px auto; /* Keskittää kuvan vaakasuunnassa */
-  border-radius: 10px; /* Pehmeät reunat (valinnainen) */
+  max-width: 35%;
+  height: auto;
+  border-radius: 5%;
 }
 
-.map-image:hover {
-  cursor: pointer;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-/*Kartalle olio*/
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* Koko näkymän korkeus */
+}
+
+.header {
+  width: 100vw;
+  height: 80px; /* Muuta halutun kokoiseksi */
+  background-color: #f0f0f0;
+  color: #1a1a1a;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+}
+
 .map {
-  width: 400px;
-  height: 400px;
+  flex: 1; /* Täyttää kaiken käytettävissä olevan tilan */
+  background-color: lightgray; /* Väliaikainen taustaväri */
+  margin-top: 80px; /* Sama kuin headerin korkeus */
 }
 
 .footer {
-  background-color: #d9d9d9;
-  padding: 20px;
+  width: 100vw;
+  height: 100px; /* Muuta halutun kokoiseksi */
+  background-color: #f0f0f0;
+  color: #1a1a1a;
+  display: flex;
+  justify-content: center;
   align-items: center;
-  justify-content: space-around;
-  text-align: center; /* Teksti keskelle */
-  position: fixed; /* Jos haluat footerin pysyvän sivun alareunassa */
-  bottom: 0; /* Jos haluat footerin pysyvän sivun alareunassa */
-  width: 100%;
+  margin: 0;
+  margin-top: auto;
 }
 
 .footer-content {
   display: flex;
-  align-items: center;
   justify-content: center;
-  gap: 10px;
+  align-items: center;
+  gap: 20px; /* Lisää väliä elementtien välille */
+}
+
+.map-image:hover {
+  cursor: pointer;
 }
 
 .flag-selection {
