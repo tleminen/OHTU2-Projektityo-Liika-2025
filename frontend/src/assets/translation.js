@@ -1,8 +1,9 @@
 import termsOfServiceText from "./termsOfServiceText"
-import infoText from "./infoText";
+import infoText from "./infoText"
 const translations = {
   en: {
     activity: "Activity",
+    createEvent: "Create event",
     dateAndTime: "Date and time",
     description: "Description",
     back: "Back",
@@ -14,6 +15,8 @@ const translations = {
     login: "Log in",
     login2: "Log in",
     logOut: "Log out",
+    minParticipants: "Minimum participants",
+    maxParticipants: "Maximum participants",
     participants: "Participants",
     password: "Password",
     password_ph: "Password",
@@ -30,6 +33,7 @@ const translations = {
   fi: {
     activity: "Laji",
     back: "Takaisin",
+    createEvent: "Luo tapahtuma",
     dateAndTime: "Aika",
     description: "Kuvaus",
     email: "Sähköposti",
@@ -40,6 +44,8 @@ const translations = {
     login: "Kirjaudu",
     login2: "Kirjaudu sisään",
     logOut: "Kirjaudu ulos",
+    minParticipants: "Osanottajat vähintään",
+    maxParticipants: "Osanottajat enintään",
     participants: "Osallistujat",
     password: "Salasana",
     password_ph: "Salasana",
@@ -53,6 +59,6 @@ const translations = {
     terms_of_service_txt: termsOfServiceText.getText("fi"),
     username: "Käyttäjätunnus",
   },
-};
+}
 
-export default translations;
+export default translations
