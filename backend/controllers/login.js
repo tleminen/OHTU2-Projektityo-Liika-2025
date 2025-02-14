@@ -41,8 +41,6 @@ loginRouter.post("/sendEmail", async (req, res) => {
   const { email } = req.body
 
   try {
-    // Voit tässä vaiheessa tarkistaa, onko käyttäjä olemassa tietokannassa.
-    // Esimerkiksi:
     const user = await User.findOne({ where: { Email: email } })
     if (!user) {
       return res.status(404).json({ message: "Sähköpostia ei löydy." })

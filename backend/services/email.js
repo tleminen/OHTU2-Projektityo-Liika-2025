@@ -3,7 +3,7 @@ require("dotenv").config()
 
 // Sähköpostin lähetyspalvelun määrittely
 const transporter = nodemailer.createTransport({
-  service: 'outlook', // Tai mikä tahansa sähköpostipalvelu
+  service: 'gmail', // Tai mikä tahansa sähköpostipalvelu
   auth: {
     user: process.env.EMAIL_USER, // Sähköpostiosoite, jota käytetään lähettämiseen
     pass: process.env.EMAIL_PASSWORD, // Sähköpostin salasana tai sovelluskohtainen salasana
