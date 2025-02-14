@@ -6,7 +6,7 @@ const transporter = nodemailer.createTransport({
   service: 'gmail', // Tai mikä tahansa sähköpostipalvelu
   auth: {
     user: process.env.EMAIL_USER, // Sähköpostiosoite, jota käytetään lähettämiseen
-    pass: process.env.EMAIL_PASSWORD, // Sähköpostin salasana tai sovelluskohtainen salasana
+    pass: process.env.EMAIL_PASSWORD, // Sähköpostin sovelluskohtainen salasana
   },
 });
 
