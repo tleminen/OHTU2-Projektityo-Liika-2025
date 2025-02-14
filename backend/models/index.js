@@ -1,10 +1,10 @@
 const { sequelize } = require("../utils/database")
 const Users = require("./users")
-const Category = require("./category")
+const Categories = require("./categories")
 const Times = require("./time")
 const Events = require("./Events")
-const Club = require("./club")
-const ClubMember = require("./clubMember")
+const Clubs = require("./club")
+const ClubMembers = require("./clubMember")
 const Joins = require("./joins")
 const Languages = require("./languages")
 
@@ -12,14 +12,14 @@ const Languages = require("./languages")
 Users.hasMany(Events, { foreignKey: "UserID" })
 Events.belongsTo(Users, { foreignKey: "UserID" })
 
-Category.hasMany(Events, { foreignKey: "CategoryID" })
-Events.belongsTo(Category, { foreignKey: "CategoryID" })
+Categories.hasMany(Events, { foreignKey: "CategoryID" })
+Events.belongsTo(Categories, { foreignKey: "CategoryID" })
 
 Events.hasMany(Times, { foreignKey: "EventID" })
 Times.belongsTo(Events, { foreignKey: "EventID" })
 
-Users.belongsToMany(Club, { through: ClubMember, foreignKey: "UserID" })
-Club.belongsToMany(Users, { through: ClubMember, foreignKey: "ClubID" })
+Users.belongsToMany(Clubs, { through: ClubMembers, foreignKey: "UserID" })
+Clubs.belongsToMany(Users, { through: ClubMembers, foreignKey: "ClubID" })
 
 Users.belongsToMany(Events, { through: Joins, foreignKey: "UserID" })
 Events.belongsToMany(Users, { through: Joins, foreignKey: "EventID" })
@@ -30,11 +30,11 @@ Users.belongsTo(Languages, { foreignKey: "LanguageID" })
 module.exports = {
   sequelize,
   Users,
-  Category,
+  Categories,
   Times,
   Events,
-  Club,
-  ClubMember,
+  Clubs,
+  ClubMembers,
   Joins,
   Languages,
 }

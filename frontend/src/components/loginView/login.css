@@ -5,6 +5,7 @@
   position: fixed; /* Jos haluat footerin pysyvän sivun alareunassa */
   top: 0; /* Jos haluat footerin pysyvän sivun alareunassa */
   width: 100%;
+  padding: 200px; /* POISTA TÄÄ, TÄÄ ON VAAN HÄTÄVARANA TÄSSÄ*/
 }
 
 /*rekisteröinnille ja kirjautumiselle painikkeet kesken*/

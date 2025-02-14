@@ -1,7 +1,7 @@
 const { DataTypes } = require("sequelize")
 const { sequelize } = require("../utils/database")
 const Users = require("./users")
-const Category = require("./category")
+const Categories = require("./categories")
 
 const Events = sequelize.define("Events", {
   EventID: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
@@ -15,6 +15,6 @@ const Events = sequelize.define("Events", {
 
 // Yhteys käyttäjiin ja kategorioihin
 Events.belongsTo(Users, { foreignKey: "UserID" })
-Events.belongsTo(Category, { foreignKey: "CategoryID" })
+Events.belongsTo(Categories, { foreignKey: "CategoriesID" })
 
 module.exports = Events

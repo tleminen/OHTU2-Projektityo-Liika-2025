@@ -1,6 +1,6 @@
 const { Router } = require("express")
 const getEventsNearby = require("../services/getEventsNearby")
-const { Category } = require("../models")
+const { Categories } = require("../models")
 
 const eventRouter = Router()
 
@@ -17,7 +17,7 @@ eventRouter.post("/nearby", async (req, res) => {
 // Hae kaikki kategoriat
 eventRouter.get("/categories", async (req, res) => {
   try {
-    const categories = await Category.findAll()
+    const categories = await Categories.findAll()
     res.json(categories)
   } catch (error) {
     console.error("Virhe haettaessa kategorioita:", error)
