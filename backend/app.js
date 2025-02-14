@@ -57,4 +57,5 @@ app.use(`/api/events`, eventRouter)
 app.use(middleware.unknownEndpoint)
 // getEventsNearby(60.1699, 24.9384, 5000).then((events) => console.log(events))
 
+
 module.exports = app

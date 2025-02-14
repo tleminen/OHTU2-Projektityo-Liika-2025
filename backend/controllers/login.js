@@ -2,6 +2,7 @@ const jwt = require("jsonwebtoken")
 const bcrypt = require("bcryptjs")
 const { Router } = require("express")
 const User = require("../models/users")
+const { sendEmail } = require("../services/email") // Tuo sendEmail-funktio
 
 const loginRouter = Router()
 
@@ -32,6 +33,33 @@ loginRouter.post("/", async (req, res) => {
     res.status(200).send({ token, username: user.Username })
   } catch (error) {
     console.log(error)
+  }
+})
+
+// Reitti salasanan palauttamiseen
+loginRouter.post("/sendEmail", async (req, res) => {
+  const { email } = req.body
+
+  try {
+    // Voit tässä vaiheessa tarkistaa, onko käyttäjä olemassa tietokannassa.
+    // Esimerkiksi:
+    const user = await User.findOne({ where: { Email: email } })
+    if (!user) {
+      return res.status(404).json({ message: "Sähköpostia ei löydy." })
+    }
+    const success = await sendEmail(
+      email,
+      "Salasanan palautus",
+      "Linkki salasanan palauttamiseen: [Linkki]"
+    )
+    if (success) {
+      res.status(200).json({ message: "Sähköposti lähetetty!" })
+    } else {
+      res.status(500).json({ message: "Sähköpostin lähetys epäonnistui." })
+    }
+  } catch (error) {
+    console.error("Virhe:", error)
+    res.status(500).json({ message: "Sähköpostin lähetys epäonnistui." })
   }
 })
 
