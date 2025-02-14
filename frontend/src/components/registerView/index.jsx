@@ -16,13 +16,17 @@ const Register = () => {
   return (
     <div>
       <Header />
-      <RegisterForm />
-      <p>
-        {t.ready_account}
-        <br />
-        <a href="/login">{t.login2}</a>
-      </p>
-      <button href="/" className="back-btn" onClick={handler}></button>
+      <div className="registeration">
+        <RegisterForm />
+        <p>
+          {t.ready_account}
+          <br />
+          <a href="/login">{t.login2}</a>
+        </p>
+        <button href="/" className="back-btn" onClick={handler}>
+          <span>{t.back}</span>
+        </button>
+      </div>
       <Footer />
     </div>
   )

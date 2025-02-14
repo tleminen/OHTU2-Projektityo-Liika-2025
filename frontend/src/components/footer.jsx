@@ -1,67 +1,30 @@
 import "../index.css"
 import { useSelector } from "react-redux"
 import translations from "../assets/translation.js"
-import Select from "react-select"
-import { useState } from "react"
+import FlagSelection from "./flagSelection.jsx"
+import { useNavigate } from "react-router-dom"
 
 const Footer = () => {
+  const navigate = useNavigate()
+  const navigateTo = (path) => {
+    navigate(`/${path}`)
+  }
   const language = useSelector((state) => state.language.language)
   const t = translations[language]
   return (
     <footer className="footer">
       <div className="footer-content">
         <div className="flag-selection">
-          {/* Lippuvalintakomponentti tähän */}
-          <Lippuvalinta />{" "}
-          {/* Oletetaan, että komponentin nimi on Lippuvalinta */}
+          <FlagSelection />
         </div>
         <div className="footer-text">
-          <ul>{t.terms_of_service}</ul> {/* linkki käyttöehtoihin */}
+          <a href="/termsOfService">{t.terms_of_service}</a>
         </div>
-        <div className="info">
-          {/* Infokomponentti tähän */}
-          <Info /> {/* Oletetaan, että komponentin nimi on Info */}
+        <div>
+          <button className="info-btn" onClick={() => navigateTo("info")}>i</button>
         </div>
       </div>
     </footer>
-  )
-}
-
-// Esimerkki lippuvalintakomponentista (korvaa omalla toteutuksellasi)
-const Lippuvalinta = () => {
-  const [selectedOption, setSelectedOption] = useState(null)
-
-  const options = [
-    { value: "fi", label: "Suomi" },
-    { value: "en", label: "Englanti" },
-    // TODO: Vaihda hakemaan kielet
-  ]
-
-  const handleChange = (selectedOption) => {
-    setSelectedOption(selectedOption)
-    console.log(`Valittu kieli: ${selectedOption.value}`)
-    // Tässä voitaisiin tehdä toimintoja, jotka liittyvät kielen vaihtamiseen
-  }
-
-  return (
-    <div>
-      <Select
-        menuPlacement="top"
-        value={selectedOption}
-        onChange={handleChange}
-        options={options}
-      />
-    </div>
-  )
-}
-
-// Esimerkki infokomponentista (korvaa omalla toteutuksellasi)
-const Info = () => {
-  return (
-    <div>
-      {/* Tähän inforakenteen logiikka ja ulkoasu */}
-      <p>Info tulossa...</p>
-    </div>
   )
 }
 

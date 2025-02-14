@@ -1,0 +1,26 @@
+import { useSelector } from "react-redux"
+import translations from "../../assets/translation"
+import { useNavigate } from "react-router-dom"
+
+// eslint-disable-next-line react/prop-types
+const SignedIn = ({ setUser }) => {
+  const language = useSelector((state) => state.language.language)
+  const t = translations[language]
+  const navigate = useNavigate()
+
+  const handler = () => {
+    window.localStorage.removeItem("loggedUser")
+    setUser(null)
+    navigate("/")
+  }
+
+  return (
+    <div>
+      <button className="registerandlogin-btn" onClick={() => handler()}>
+        {t.logOut}
+      </button>
+    </div>
+  )
+}
+
+export default SignedIn

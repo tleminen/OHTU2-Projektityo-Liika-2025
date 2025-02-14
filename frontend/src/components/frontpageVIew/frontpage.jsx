@@ -1,37 +1,51 @@
-import Header from "../header"
-import mapImage from "../../assets/map_kuvituskuva.png"
-import Footer from "../footer"
-import { useNavigate } from "react-router-dom"
-import { useSelector } from "react-redux"
-import translations from "../../assets/translation"
+import Header from "../header";
+import mapImage from "../../assets/map_kuvituskuva.png";
+import Footer from "../footer";
+import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import SignedOut from "./singedOut";
+import SignedIn from "./signedIn";
 const Frontpage = () => {
-  const navigate = useNavigate()
+  const [user, setUser] = useState(window.localStorage.getItem("loggedUser"));
+  const navigate = useNavigate();
   const navigateTo = (path) => {
-    navigate(`/${path}`)
-  }
-  const language = useSelector((state) => state.language.language)
-  const t = translations[language]
+    navigate(`/${path}`);
+  };
+
+  useEffect(() => {
+    const loggedUserSTRING = window.localStorage.getItem("loggedUser");
+    if (loggedUserSTRING) {
+      const user = JSON.parse(loggedUserSTRING);
+      setUser(user);
+    }
+  }, []);
+
+  const singedOrNot = () => {
+    if (user === null) {
+      return <SignedOut />;
+    } else {
+      console.log("tää on: " + user.token);
+      return <SignedIn setUser={setUser} />;
+    }
+  };
 
   return (
-    <div style={{ display: "flex", flexDirection: "column" }}>
+    <div className="fullpage">
       <Header />
-      <img
-        src={mapImage}
-        alt="Map"
-        width={100}
-        height={100}
-        onClick={() => navigateTo("map")}
-      />
-      <div className="containerX">
-        <button onClick={() => navigateTo("login")}>{t.login}</button>
-        <button onClick={() => navigateTo("register")}>{t.register}</button>
+      <div className="frontpage">
+        <div className="map-container">
+          <img
+            src={mapImage}
+            className="map-image"
+            alt="Map"
+            onClick={() => navigateTo("map")}
+          />
+          <div className="button-container">{singedOrNot(user)}</div>
+        </div>
       </div>
-
-      <div>
-        <Footer />
-      </div>
+      <Footer />
     </div>
-  )
-}
+  );
+};
 
-export default Frontpage
+export default Frontpage;

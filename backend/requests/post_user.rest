@@ -1,9 +1,9 @@
-POST http://localhost:3003/api/users
+POST http://localhost:3003/api/register
 Content-Type: application/json
 
 {
-"username": "uassdseaar",
-"password": "passwdord",
+"username": "kayttaja3",
+"password": "salasana",
 "role": 0,
 "email": "testiemaili@testi"
 }
