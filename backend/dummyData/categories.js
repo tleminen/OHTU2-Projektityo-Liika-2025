@@ -3,43 +3,56 @@ module.exports = {
   up: async (queryInterface, sequelize) => {
     return queryInterface.bulkInsert("Categories", [
       {
-        Categories: "Jalkapallo",
+        CategoryID: 1,
+        Category: "Jalkapallo",
       },
       {
-        Categories: "Jääkiekko",
+        CategoryID: 2,
+        Category: "Jääkiekko",
       },
       {
-        Categories: "Sulkapallo",
+        CategoryID: 3,
+        Category: "Sulkapallo",
       },
       {
-        Categories: "Tennis",
+        CategoryID: 4,
+        Category: "Tennis",
       },
       {
-        Categories: "Koripallo",
+        CategoryID: 5,
+        Category: "Koripallo",
       },
       {
-        Categories: "Hiihto",
+        CategoryID: 6,
+        Category: "Hiihto",
       },
       {
-        Categories: "Luistelu",
+        CategoryID: 7,
+        Category: "Luistelu",
       },
       {
-        Categories: "Uinti",
+        CategoryID: 8,
+        Category: "Uinti",
       },
       {
-        Categories: "Kuntosali",
+        CategoryID: 9,
+        Category: "Kuntosali",
       },
       {
-        Categories: "Yleisurheilu",
+        CategoryID: 10,
+        Category: "Yleisurheilu",
       },
       {
-        Categories: "Ratsastus",
+        CategoryID: 11,
+        Category: "Ratsastus",
       },
       {
-        Categories: "Golf",
+        CategoryID: 12,
+        Category: "Golf",
       },
       {
-        Categories: "Baletti",
+        CategoryID: 13,
+        Category: "Baletti",
       },
     ])
   },

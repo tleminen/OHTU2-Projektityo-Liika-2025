@@ -1,14 +1,20 @@
 const { up: upCategories, down: downCategories } = require("./categories")
 const { up: upClubs, down: downClubs } = require("./club")
 const { up: upUsers, down: downUsers } = require("./users")
+const { up: upClubmembers, down: downClubmembers } = require("./clubMember")
+const { up: upEvents, down: downEvents } = require("./events")
 const { sequelize } = require("../utils/database")
 const { queryInterface } = require("../utils/database")
 
-module.exports = resetDB = () => {
-  downCategories(queryInterface, sequelize)
-  downClubs(queryInterface, sequelize)
-  downUsers(queryInterface, sequelize)
-  upCategories(queryInterface, sequelize)
-  upClubs(queryInterface, sequelize)
-  upUsers(queryInterface, sequelize)
+module.exports = resetDB = async () => {
+  await downCategories(queryInterface, sequelize)
+    .then(() => downClubs(queryInterface, sequelize))
+    .then(() => downUsers(queryInterface, sequelize))
+    .then(() => downClubmembers(queryInterface, sequelize))
+    .then(() => downEvents(queryInterface, sequelize))
+    .then(() => upUsers(queryInterface, sequelize))
+    .then(() => upCategories(queryInterface, sequelize))
+    .then(() => upClubs(queryInterface, sequelize))
+    .then(() => upClubmembers(queryInterface, sequelize))
+    .then(() => upEvents(queryInterface, sequelize))
 }

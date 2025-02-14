@@ -9,7 +9,7 @@ const Categories = sequelize.define(
       autoIncrement: true,
       primaryKey: true,
     },
-    Categories: { type: DataTypes.STRING(32), allowNull: false },
+    Category: { type: DataTypes.STRING(32), allowNull: false },
   },
   { timestamps: false }
 )

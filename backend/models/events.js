@@ -15,6 +15,6 @@ const Events = sequelize.define("Events", {
 
 // Yhteys käyttäjiin ja kategorioihin
 Events.belongsTo(Users, { foreignKey: "UserID" })
-Events.belongsTo(Categories, { foreignKey: "CategoriesID" })
+Events.belongsTo(Categories, { foreignKey: "CategoryID" })
 
 module.exports = Events
