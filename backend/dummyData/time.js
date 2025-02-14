@@ -1,3 +1,4 @@
+const Time = require('../models').Time;
 module.exports = {
     up: async (queryInterface, Sequelize) => {
         //Fetch EventID's

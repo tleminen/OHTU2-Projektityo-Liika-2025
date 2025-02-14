@@ -1,3 +1,4 @@
+const ClubMember = require("../models/clubMember");
 module.exports = {
     
     up: async (queryInterface, Sequelize) =>{

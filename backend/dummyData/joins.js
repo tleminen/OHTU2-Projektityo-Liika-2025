@@ -1,3 +1,4 @@
+const Joins = require('../models').Joins; 
 module.exports = { 
     up: async (queryInterface, Sequelize) => {
         //Fetch User and EventID's

@@ -1,3 +1,4 @@
+const User = require('../models').User;
 module.exports = {
     up: async (queryInterface, Sequelize) => {
         return queryInterface.bulkInsert('Users', [
