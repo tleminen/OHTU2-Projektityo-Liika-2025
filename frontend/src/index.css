@@ -111,6 +111,7 @@ button:focus-visible {
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.5);
 }
 
+/*rekisteröinti ja kirjautumispainikkeiden container*/
 .containerX {
   display: flex;
   gap: 10px;
@@ -241,18 +242,24 @@ h3 {
   border-radius: 5%;
 }
 
+.map-image:hover {
+  cursor: pointer;
+}
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+/*kartta-oliolle container*/
 .container {
   display: flex;
   flex-direction: column;
   height: 100vh; /* Koko näkymän korkeus */
 }
 
+/*yläpaneelille tyyli*/
 .header {
   width: 100vw;
   height: 80px; /* Muuta halutun kokoiseksi */
@@ -267,12 +274,14 @@ h3 {
   z-index: 1000;
 }
 
+/*kartta-oliolle tyyli päänäkymään*/
 .map {
   flex: 1; /* Täyttää kaiken käytettävissä olevan tilan */
   background-color: lightgray; /* Väliaikainen taustaväri */
   margin-top: 80px; /* Sama kuin headerin korkeus */
 }
 
+/*ala paneelille tyyli*/
 .footer {
   width: 100vw;
   height: 100px; /* Muuta halutun kokoiseksi */
@@ -285,15 +294,12 @@ h3 {
   margin-top: auto;
 }
 
+/*alapaneelin sisällön tyyli*/
 .footer-content {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 20px; /* Lisää väliä elementtien välille */
-}
-
-.map-image:hover {
-  cursor: pointer;
 }
 
 .flag-selection {
