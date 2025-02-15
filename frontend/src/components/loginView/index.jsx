@@ -20,8 +20,9 @@ const Login = () => {
     e.preventDefault()
 
     try {
-      const response = await loginService.sendEmail(email) // Käytä loginService.sendEmail()
-
+      console.log("Sähköposti: "+email)
+      const response = await loginService.sendEmail(email) 
+      console.log("SendEmail response "+response)
       if (response.message === "Sähköposti lähetetty!") {
         setResetMessage(t.email_sent)
         setEmail("") // Tyhjennä sähköposti-kenttä

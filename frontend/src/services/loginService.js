@@ -7,6 +7,7 @@ const login = async (credentials) => {
 }
 
 const sendEmail = async (email) => {
+  console.log("SendEmail funktion email "+email)
   try {
       const response = await axios.post(baseUrl + "/login/sendEmail", { email });
       return response.data;
