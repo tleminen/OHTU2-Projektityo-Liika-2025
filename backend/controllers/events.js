@@ -4,6 +4,10 @@ const { Categories } = require("../models")
 
 const eventRouter = Router()
 
+/**
+ * Hakee tapahtumat alueelta
+ * Parametrina leveys- ja pituuspiiri, sekä maksimietäisyys pisteestä
+ */
 eventRouter.post("/nearby", async (req, res) => {
   const { latitude, longitude, radius } = req.body
   try {
@@ -12,7 +16,7 @@ eventRouter.post("/nearby", async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: "Jotain meni pieleen" })
   }
-})
+}) // Tapahtumahaku päättyy
 
 // Hae kaikki kategoriat
 eventRouter.get("/categories", async (req, res) => {
@@ -23,6 +27,6 @@ eventRouter.get("/categories", async (req, res) => {
     console.error("Virhe haettaessa kategorioita:", error)
     res.status(500).json({ error: "Internal Server Error" })
   }
-})
+}) // Kategoriahaku päättyy
 
 module.exports = eventRouter

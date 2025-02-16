@@ -46,8 +46,6 @@ userRouter.post("/", async (req, res) => {
       .status(400)
       .send({ error: `Invalid password length of ${password.length}` })
   }
-})
-
-
+}) // Rekisteröinti päättyy
 
 module.exports = userRouter

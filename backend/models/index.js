@@ -8,7 +8,7 @@ const ClubMembers = require("./clubMember")
 const Joins = require("./joins")
 const Languages = require("./languages")
 
-// Määritellään relaatiot
+// Määrittelemällä relaatiot ja viemällä kaikki mallit kerralla, tietokanta rakentuu oikein
 Users.hasMany(Events, { foreignKey: "UserID" })
 Events.belongsTo(Users, { foreignKey: "UserID" })
 

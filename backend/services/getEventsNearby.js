@@ -1,6 +1,7 @@
 const { Op, fn, col, where } = require("sequelize")
 const { Events } = require("../models/Events")
 
+// Tapahtumien hakukyselyn luonti
 const getEventsNearby = async (latitude, longitude, radius) => {
   try {
     const events = await Events.findAll({

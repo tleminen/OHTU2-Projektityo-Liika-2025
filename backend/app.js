@@ -35,10 +35,9 @@ morgan.token("timestamp", () => new Date().toISOString()) // Aikaleima ISO-muodo
 morgan.token("body", (req) => JSON.stringify(req.body)) // Pyynnön body
 morgan.token("user-agent", (req) => req.headers["user-agent"]) // User-Agent
 
-// Mukautettu lokiformaatti
-const customFormat =
+const customFormat = // Mukautettu lokiformaatti terminaaliin
   ':ip [:timestamp] ":method :url" :status - Body: :body - Agent: ":user-agent"'
-const customFormat2 =
+const customFormat2 = // Mukautettu lokiformaatti tiedostoon
   ':ip [:timestamp] ":method :url" :status - Agent: ":user-agent"'
 
 app.use(
@@ -49,6 +48,7 @@ app.use(
 app.use(morgan(customFormat)) // HTTP pyynnöt terminaaliin
 app.use(middleware.tokenExtractor) // Ekstraktoi tokenin
 
+// API routerit
 app.use(`/api/register`, userRouter)
 app.use(`/api/login`, loginRouter)
 app.use(`/api/events`, eventRouter)
