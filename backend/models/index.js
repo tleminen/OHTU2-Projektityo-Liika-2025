@@ -1,7 +1,7 @@
 const { sequelize } = require("../utils/database")
 const Users = require("./users")
 const Categories = require("./categories")
-const Times = require("./time")
+const Times = require("./times")
 const Events = require("./Events")
 const Clubs = require("./club")
 const ClubMembers = require("./clubMember")

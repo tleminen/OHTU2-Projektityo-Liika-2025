@@ -1,6 +1,6 @@
-const Time = require("../models").Time
+const Times = require("../models").Times
 module.exports = {
-  up: async (queryInterface, Sequelize) => {
+  up: async (queryInterface, sequelize) => {
     await queryInterface.bulkInsert("Times", [
       {
         StartTime: "2025-02-16 14:34:47.191+02",
@@ -19,7 +19,7 @@ module.exports = {
       },
     ])
   },
-  down: async (queryInterface, Sequelize) => {
+  down: async (queryInterface, sequelize) => {
     return queryInterface.bulkDelete("Times", null, {})
   },
 }
