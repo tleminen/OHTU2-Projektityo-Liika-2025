@@ -1,37 +1,56 @@
-import { useEffect } from "react";
-import L from "leaflet";
-import "leaflet/dist/leaflet.css";
-import "../../index.css";
-import Header from "../header";
-import Footer from "../footer";
-const Map = () => {
+/* eslint-disable react/prop-types */
+import { useEffect } from "react"
+import L from "leaflet"
+import "leaflet/dist/leaflet.css"
+import "../../index.css"
+import Header from "../header"
+import Footer from "../footer"
+import { useDispatch } from "react-redux"
+import { changeLocation } from "../../store/locationSlice"
+
+const Map = ({ startingLocation }) => {
+  const dispatch = useDispatch()
   useEffect(() => {
-    console.log(`map useEffect`);
+    console.log(`map useEffect`)
     // Luo karttaelementti kun komponentti mounttaa
     const map = L.map("map", {
-      center: [62.6013, 29.7639], // Joensuun koordinaatit
-      zoom: 10,
-    });
+      center: [startingLocation.lat, startingLocation.lng], // Joensuun koordinaatit
+      zoom: startingLocation.zoom,
+    })
 
     // Lisää karttalaatta OpenStreetMapista
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
       attribution:
         '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-    }).addTo(map);
+    }).addTo(map)
+
+    map.on("moveend", () => {
+      const newCenter = map.getCenter() // Kartan keskikohta
+      const zoomLevel = map.getZoom()
+      dispatch(
+        changeLocation({
+          o_lat: startingLocation.lat,
+          o_lng: startingLocation.lng,
+          lat: newCenter.lat,
+          lng: newCenter.lng,
+          zoom: zoomLevel,
+        })
+      )
+      console.log("Uusi keskusta: " + newCenter)
+    })
 
     return () => {
       // Tuhoaa karttaelementin kun komponentti unmounttaa
-      map.remove();
-    };
-  }, []);
-
+      map.remove()
+    }
+  }, [])
   return (
     <div className="container">
       <Header />
       <div id="map" className="map"></div>
       <Footer />
     </div>
-  );
-};
+  )
+}
 
-export default Map;
+export default Map

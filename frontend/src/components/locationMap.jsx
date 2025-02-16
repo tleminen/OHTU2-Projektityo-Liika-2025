@@ -24,7 +24,7 @@ const LocationMap = ({ onLocationChange }) => {
     const centerMarker = L.marker(map.getCenter(), {
       icon: L.icon({
         iconUrl: "/items.png", // Varmista, että kuva löytyy public-kansiosta
-        iconSize: [32, 32],
+        iconSize: [64, 64],
         iconAnchor: [16, 32],
       }),
     }).addTo(map)

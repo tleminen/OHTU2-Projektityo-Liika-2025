@@ -1,9 +1,14 @@
+import { useSelector } from "react-redux"
 import Map from "./map"
 
 const MapView = () => {
+  const startingLocation = useSelector((state) => state.location.location)
+  console.log(startingLocation)
+
   return (
     <div>
-      <Map />
+      <p>Testi</p>
+      <Map startingLocation={startingLocation} />
     </div>
   )
 }
