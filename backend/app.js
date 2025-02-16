@@ -4,7 +4,7 @@ const cors = require("cors")
 const morgan = require("morgan")
 const middleware = require("./utils/middleware")
 const resetDB = require("./dummyData/index")
-const { connectDB } = require("./utils/database")
+const { connectDB, initializeDB } = require("./utils/database")
 const {
   sequelize,
   Users,
@@ -16,14 +16,16 @@ const {
   Joins,
   Languages,
 } = require("./models/index")
+
 const fs = require("fs")
 const userRouter = require("./controllers/users")
 const loginRouter = require("./controllers/login")
 const eventRouter = require("./controllers/events")
 const email = require("./services/email")
 const logStream = fs.createWriteStream("./logs/access.log", { flags: "a" })
-connectDB() // Muodostetaan tietokantayhteys
-sequelize.sync({ alter: true }) // Tietokannan synkronointi
+
+// Tietokantayhteys ja alustus
+initializeDB(true) // Aseta muuttujaan false, mikäli et halua, että tietokanta nollaantuu
 
 // Käynnistetään middlewaret
 app.use(cors()) //cros-origin homma
@@ -56,6 +58,4 @@ app.use(`/api/events`, eventRouter)
 // Loppuun laitetaan unknownEndpoint ja virheenKorjaus
 app.use(middleware.unknownEndpoint)
 
-// End to end testaus:
-resetDB()
 module.exports = app
