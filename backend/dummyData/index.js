@@ -3,6 +3,9 @@ const { up: upClubs, down: downClubs } = require("./club")
 const { up: upUsers, down: downUsers } = require("./users")
 const { up: upClubmembers, down: downClubmembers } = require("./clubMember")
 const { up: upEvents, down: downEvents } = require("./events")
+/*const { up: upJoins, down: downJoins } = require("./joins") */
+/*const { up: upLanguages, down: downLanguages } = require("./languages")*/
+const { up: upTime, down: downTime } = require("./time")
 const { sequelize } = require("../utils/database")
 const { queryInterface } = require("../utils/database")
 
@@ -12,9 +15,14 @@ module.exports = resetDB = async () => {
     .then(() => downUsers(queryInterface, sequelize))
     .then(() => downClubmembers(queryInterface, sequelize))
     .then(() => downEvents(queryInterface, sequelize))
+    /*.then(() => downJoins(queryInterface, sequelize))*/
+    /*.then(() => downLanguages(queryInterface, sequelize))*/
     .then(() => upUsers(queryInterface, sequelize))
     .then(() => upCategories(queryInterface, sequelize))
     .then(() => upClubs(queryInterface, sequelize))
     .then(() => upClubmembers(queryInterface, sequelize))
     .then(() => upEvents(queryInterface, sequelize))
+   /* .then(() => upJoins(queryInterface, sequelize)) */
+   /*.then(() => upLanguages(queryInterface, sequelize))*/
+
 }

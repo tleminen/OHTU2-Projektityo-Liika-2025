@@ -1,43 +1,34 @@
 const Joins = require('../models').Joins; 
 module.exports = { 
-    up: async (queryInterface, Sequelize) => {
-        //Fetch User and EventID's
-        const users = await queryInterface.sequelize.query(
-            'SELECT ID FROM "Users";',
-            {type: queryInterface.sequelize.QueryTypes.SELECT}
-        );
-        const events = await queryInterface.sequelize.query(
-            'SELECT ID FROM "Events";',
-            {type: queryInterface.sequelize.QueryTypes.SELECT}
-        );
-        return queryInterface.bulkInsert('Joins', [
+    up: async (queryInterface, sequelize) => {
+        await queryInterface.bulkInsert('Joins', [
             {
-                UserId: users[0].ID,
-                EventId: events[0].ID,
+                UserId: 1,
+                EventId: 1,
                 createdAt: new Date(),
                 updatedAt: new Date()
             },
             {
-                UserId: users[1].ID,
-                EventId: events[1].ID,
+                UserId: 2,
+                EventId: 2,
                 createdAt: new Date(),
                 updatedAt: new Date()
             },
             {
-                UserId: users[2].ID,
-                ClubId: events[2].ID,
+                UserId: 1,
+                ClubId: 3,
                 createdAt: new Date(),
                 updatedAt: new Date()
             },
             {
-                UserId: users[3].ID,
-                ClubId: events[3].ID,
+                UserId: 1,
+                ClubId: 2,
                 createdAt: new Date(),
                 updatedAt: new Date()
             },
         ]);
     },
-    down: async (queryInterface, Sequelize) => {
+    down: async (queryInterface, sequelize) => {
         return queryInterface.bulkDelete('Joins', null,{});
     }
 };
