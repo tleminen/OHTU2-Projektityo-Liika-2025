@@ -57,5 +57,5 @@ app.use(`/api/events`, eventRouter)
 app.use(middleware.unknownEndpoint)
 
 // End to end testaus:
-resetDB()
+//resetDB()
 module.exports = app

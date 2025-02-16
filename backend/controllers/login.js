@@ -9,10 +9,15 @@ const loginRouter = Router()
 loginRouter.post("/", async (req, res) => {
   const { username, password } = req.body
 
+  console.log(" req body username: "+username)
   try {
-    const user = await User.findOne({ username })
+    const user = await User.findOne({ where: {
+      Username: username
+    } })
+    console.log("Tietokannasta user: "+ user)
     const passwordCorrect =
       user === null ? false : await bcrypt.compare(password, user.Password)
+      console.log("Salasana on true/false = "+passwordCorrect)
     if (!(user && passwordCorrect)) {
       return res.status(401).json({
         error: "invalid username or password",
@@ -24,7 +29,7 @@ loginRouter.post("/", async (req, res) => {
       id: user.UserID,
     }
 
-    console.log(JSON.stringify(userForToken))
+    console.log("JSON: "+JSON.stringify(userForToken))
 
     const token = jwt.sign(userForToken, process.env.JWT_SECRET, {
       expiresIn: "60d",
