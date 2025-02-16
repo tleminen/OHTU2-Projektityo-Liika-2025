@@ -17,6 +17,7 @@ module.exports = resetDB = async () => {
     .then(() => downEvents(queryInterface, sequelize))
     .then(() => downJoins(queryInterface, sequelize))
     .then(() => downLanguages(queryInterface, sequelize))
+    .then(() => downTime(queryInterface, sequelize))
     .then(() => upLanguages(queryInterface, sequelize))
     .then(() => upUsers(queryInterface, sequelize))
     .then(() => upCategories(queryInterface, sequelize))
@@ -24,4 +25,5 @@ module.exports = resetDB = async () => {
     .then(() => upClubmembers(queryInterface, sequelize))
     .then(() => upEvents(queryInterface, sequelize))
     .then(() => upJoins(queryInterface, sequelize))
+    .then(() => upTime(queryInterface, sequelize))
 }
