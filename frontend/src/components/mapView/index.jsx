@@ -2,8 +2,7 @@ import { useSelector } from "react-redux"
 import Map from "./map"
 
 const MapView = () => {
-  const startingLocation = useSelector((state) => state.location.location)
-  console.log(startingLocation)
+  const startingLocation = useSelector((state) => state.location.location) // haetaan kartan aloituskohta
 
   return (
     <div>

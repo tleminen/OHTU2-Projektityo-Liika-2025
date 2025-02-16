@@ -11,10 +11,9 @@ import { changeLocation } from "../../store/locationSlice"
 const Map = ({ startingLocation }) => {
   const dispatch = useDispatch()
   useEffect(() => {
-    console.log(`map useEffect`)
     // Luo karttaelementti kun komponentti mounttaa
     const map = L.map("map", {
-      center: [startingLocation.lat, startingLocation.lng], // Joensuun koordinaatit
+      center: [startingLocation.o_lat, startingLocation.o_lng], // Joensuun koordinaatit
       zoom: startingLocation.zoom,
     })
 
@@ -25,18 +24,18 @@ const Map = ({ startingLocation }) => {
     }).addTo(map)
 
     map.on("moveend", () => {
+      // Tallennetaan kartan nykyinen keskikohta reduxin storeen
       const newCenter = map.getCenter() // Kartan keskikohta
-      const zoomLevel = map.getZoom()
+      const zoomLevel = map.getZoom() // Kartan zoom-level
       dispatch(
         changeLocation({
-          o_lat: startingLocation.lat,
-          o_lng: startingLocation.lng,
+          o_lat: startingLocation.o_lat,
+          o_lng: startingLocation.o_lng,
           lat: newCenter.lat,
           lng: newCenter.lng,
           zoom: zoomLevel,
         })
       )
-      console.log("Uusi keskusta: " + newCenter)
     })
 
     return () => {

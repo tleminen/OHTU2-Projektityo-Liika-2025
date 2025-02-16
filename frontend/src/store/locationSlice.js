@@ -1,7 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit"
 
 const initialState = {
-  location: /*localStorage.getItem("location") ||*/ {
+  // Localstorage on string-muotoinen, siksi stringify ja parse
+  location: JSON.parse(localStorage.getItem("location")) || {
     o_lat: 62.6013,
     o_lng: 29.7639,
     lat: 62.6013,
@@ -18,7 +19,7 @@ const locationSlice = createSlice({
       console.log("vaihdossa: ")
       console.log(action.payload)
       state.location = action.payload
-      localStorage.setItem("location", action.payload)
+      localStorage.setItem("location", JSON.stringify(action.payload))
     },
   },
 })
