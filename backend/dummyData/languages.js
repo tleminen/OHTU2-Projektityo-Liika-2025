@@ -1,20 +1,20 @@
-const Language = require('../models').Language;
+const Languages = require("../models").Languages
 module.exports = {
-    up: (queryInterface, Sequelize) =>{
-        return queryInterface.bulkInsert('Language', [
-            {
-                Language: 'FI',
-            },
-            {
-                Language: 'EN',
-            },
-            {
-                Language: 'SE',
-            },
-        ]);
-    },
-    
-    down: (queryInterface, Sequelize) =>{
-        return queryInterface.bulkDelete('Language', null, {});
-    }
-};
+  up: (queryInterface, sequelize) => {
+    return queryInterface.bulkInsert("Languages", [
+      {
+        Language: "FI",
+      },
+      {
+        Language: "EN",
+      },
+      {
+        Language: "SE",
+      },
+    ])
+  },
+
+  down: (queryInterface, sequelize) => {
+    return queryInterface.bulkDelete("Languages", null, {})
+  },
+}
