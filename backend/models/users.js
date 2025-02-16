@@ -6,7 +6,7 @@ const Users = sequelize.define("Users", {
   UserID: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
   Role: { type: DataTypes.INTEGER, allowNull: false },
   Password: { type: DataTypes.STRING(60), allowNull: false }, // HUOMAUTA TÄSTÄ!!
-  Location: { type: DataTypes.GEOMETRY, allowNull: true },
+  Location: { type: DataTypes.GEOMETRY("POINT", 4326), allowNull: true },
   Email: { type: DataTypes.STRING(40), allowNull: false },
   Username: { type: DataTypes.STRING(16), allowNull: false, unique: true },
   LanguageID: {

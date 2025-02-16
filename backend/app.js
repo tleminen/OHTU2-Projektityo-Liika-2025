@@ -4,7 +4,7 @@ const cors = require("cors")
 const morgan = require("morgan")
 const middleware = require("./utils/middleware")
 const resetDB = require("./dummyData/index")
-const { connectDB, initializeDB } = require("./utils/database")
+const { initializeDB } = require("./utils/database")
 const {
   sequelize,
   Users,

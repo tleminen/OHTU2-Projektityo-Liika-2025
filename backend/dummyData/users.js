@@ -7,7 +7,7 @@ module.exports = {
         Role: 1,
         Password:
           "$2a$10$mleAjfFk8UBYg0xHy78kF.0gyRvCuVC7/zetWcNVxTgIj2Scc/H/O",
-        Location: Sequelize.fn("ST_GeomFromText", "POINT(62.6000 29.7639)"),
+        Location: Sequelize.fn("ST_GeomFromText", "POINT(29.7639 62.6000)"),
         Email: "minervalliko@sapo.fi",
         Username: "kayttaja",
         createdAt: new Date(),
@@ -18,7 +18,7 @@ module.exports = {
         Role: 1,
         Password:
           "$2a$10$VBD3qEwY9bHlvvm6PZZC3Oa2/ui/CmA..Y.Ir9JrEiD8jUVVi9n9W",
-        Location: Sequelize.fn("ST_GeomFromText", "POINT(60.1699 24.9384)"),
+        Location: Sequelize.fn("ST_GeomFromText", "POINT(24.9384 60.1699)"),
         Email: "jorijokine@sapo.fi",
         Username: "kayttaja8",
         createdAt: new Date(),

@@ -3,7 +3,7 @@ module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.bulkInsert("Events", [
       {
-        Location: Sequelize.fn("ST_GeomFromtext", "POINT(62.6000 29.7639)"),
+        Location: Sequelize.fn("ST_GeomFromtext", "POINT(29.7639 62.6000)"),
         Status: "Basic",
         Title: "Jalkapallo",
         UserID: 1,
@@ -13,7 +13,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
-        Location: Sequelize.fn("ST_GeomFromText", "Point(60.1699 24.9384)"),
+        Location: Sequelize.fn("ST_GeomFromText", "Point(24.9384 60.1699)"),
         Status: "Basic",
         Title: "Sulkapallo",
         UserID: 1,
@@ -23,7 +23,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
-        Location: ("ST_GeomFromText", "POINT(62.6000 29.7599)"),
+        Location: ("ST_GeomFromText", "POINT(29.7599 62.6000)"),
         Status: "Basic",
         Title: "Tennis",
         UserID: 4,
