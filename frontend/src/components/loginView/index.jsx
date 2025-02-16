@@ -6,6 +6,7 @@ import { useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import { useState } from "react"
 import loginService from "../../services/loginService.js" // Tuo loginService
+import "./login.css"
 
 const Login = () => {
   const navigate = useNavigate()
@@ -20,9 +21,9 @@ const Login = () => {
     e.preventDefault()
 
     try {
-      console.log("Sähköposti: "+email)
-      const response = await loginService.sendEmail(email) 
-      console.log("SendEmail response "+response)
+      console.log("Sähköposti: " + email)
+      const response = await loginService.sendEmail(email)
+      console.log("SendEmail response " + response)
       if (response.message === "Sähköposti lähetetty!") {
         setResetMessage(t.email_sent)
         setEmail("") // Tyhjennä sähköposti-kenttä
@@ -38,7 +39,7 @@ const Login = () => {
   const language = useSelector((state) => state.language.language)
   const t = translations[language]
   return (
-    <div>
+    <div className="fullpage">
       <Header />
       <div className="login">
         <LoginForm />

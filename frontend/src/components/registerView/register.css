@@ -1,8 +1,16 @@
-.registeration {
+.register {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: center;
+  gap: 8px;
+  align-items: center;
+  margin: auto;
   width: 100%;
+}
+
+.login-form {
+  display: flex;
+  gap: 8px;
 }
 
 /*rekisteröinnille ja kirjautumiselle painikkeet kesken*/

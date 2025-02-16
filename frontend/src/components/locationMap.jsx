@@ -46,7 +46,7 @@ const LocationMap = ({ onLocationChange }) => {
   return (
     <div
       id="map"
-      className="map"
+      className="map-location-setter"
       style={{ minHeight: "40vh", flex: "1" }}
     ></div>
   )

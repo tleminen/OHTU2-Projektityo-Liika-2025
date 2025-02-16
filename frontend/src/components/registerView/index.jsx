@@ -4,6 +4,7 @@ import Footer from "../footer"
 import Header from "../header"
 import translations from "../../assets/translation"
 import RegisterForm from "./registerForm"
+import "../../index.css"
 
 const Register = () => {
   const navigate = useNavigate()
@@ -14,9 +15,9 @@ const Register = () => {
   const t = translations[language]
 
   return (
-    <div>
+    <div className="fullpage">
       <Header />
-      <div className="registeration">
+      <div className="register">
         <RegisterForm />
         <p>
           {t.ready_account}

@@ -3,12 +3,13 @@ import { useEffect } from "react"
 import L from "leaflet"
 import "leaflet/dist/leaflet.css"
 import "../../index.css"
-import Header from "../header"
-import Footer from "../footer"
 import { useDispatch } from "react-redux"
 import { changeLocation } from "../../store/locationSlice"
+import logo from "../../assets/liika_logo.png"
+import { useNavigate } from "react-router-dom"
 
 const Map = ({ startingLocation }) => {
+  const navigate = useNavigate()
   const dispatch = useDispatch()
   useEffect(() => {
     // Luo karttaelementti kun komponentti mounttaa
@@ -43,11 +44,19 @@ const Map = ({ startingLocation }) => {
       map.remove()
     }
   }, [])
+
   return (
-    <div className="container">
-      <Header />
+    <div className="map">
       <div id="map" className="map"></div>
-      <Footer />
+      <div id="overlay">
+        <img
+          src={logo}
+          alt="Logo"
+          width={100}
+          height={100}
+          onClick={() => navigate("/")}
+        />
+      </div>
     </div>
   )
 }

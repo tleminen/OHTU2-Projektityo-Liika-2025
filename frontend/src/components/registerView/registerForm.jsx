@@ -4,6 +4,7 @@ import translations from "../../assets/translation.js"
 import { useNavigate } from "react-router-dom"
 import registerService from "../../services/registerService.js"
 import LocationMap from "../locationMap.jsx"
+import "./register.css"
 
 const RegisterForm = () => {
   const language = useSelector((state) => state.language.language)
@@ -61,7 +62,7 @@ const RegisterForm = () => {
   }
 
   return (
-    <div>
+    <div className="register-form">
       <form onSubmit={handleSubmit}>
         <div>
           <input
@@ -130,7 +131,9 @@ const RegisterForm = () => {
           <h2 style={{ textAlign: "center" }}>{t.setStartLocationInfo}</h2>
           <LocationMap onLocationChange={handleLocationChange} />
         </div>
-        <button type="submit">{t.register}</button>
+        <button type="submit" style={{ margin: "auto" }}>
+          {t.register}
+        </button>
       </form>
     </div>
   )
