@@ -2,16 +2,19 @@ import { useEffect } from "react"
 import L from "leaflet"
 import "leaflet/dist/leaflet.css"
 import "../index.css"
+import { useSelector } from "react-redux"
 
 // eslint-disable-next-line react/prop-types
 const LocationMap = ({ onLocationChange }) => {
+  const startingLocation = useSelector((state) => state.location.location)
+  console.log()
   useEffect(() => {
     console.log("map useEffect")
 
     // Luo karttaelementti kun komponentti mounttaa
     const map = L.map("map", {
-      center: [62.6013, 29.7639], // Joensuun koordinaatit
-      zoom: 10,
+      center: [startingLocation.lat, startingLocation.lng],
+      zoom: 14,
     })
 
     // Lisää OpenStreetMap-laatta
@@ -25,7 +28,7 @@ const LocationMap = ({ onLocationChange }) => {
       icon: L.icon({
         iconUrl: "/items.png", // Varmista, että kuva löytyy public-kansiosta
         iconSize: [64, 64],
-        iconAnchor: [16, 32],
+        iconAnchor: [32, 62],
       }),
     }).addTo(map)
 
