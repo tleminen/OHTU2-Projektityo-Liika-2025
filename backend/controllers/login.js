@@ -34,11 +34,18 @@ loginRouter.post("/", async (req, res) => {
 
     console.log("JSON: " + JSON.stringify(userForToken))
 
+    console.log(user)
+
     const token = jwt.sign(userForToken, process.env.JWT_SECRET, {
       expiresIn: "60d",
     })
 
-    res.status(200).send({ token, username: user.Username })
+    res.status(200).send({
+      token,
+      username: user.Username,
+      location: user.Location.coordinates,
+      language: "fi", // Kovakoodattu, laita kyselyyn populate with language jotenkin
+    })
   } catch (error) {
     console.log(error)
   }

@@ -42,7 +42,13 @@ userRouter.post("/", async (req, res) => {
         // Luodaan tokeni uudelle käyttäjälle heti
         expiresIn: "60d",
       })
-      res.status(200).send({ token, username: savedUser.Username })
+      res
+        .status(200)
+        .send({
+          token,
+          username: savedUser.Username,
+          location: [location.lng, location.lat],
+        })
     } catch (error) {
       console.log("PostgreSQL Error:", error)
       res.status(400).send({ error: `Error occured during user creation` })

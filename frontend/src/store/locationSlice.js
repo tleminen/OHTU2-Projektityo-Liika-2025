@@ -16,7 +16,6 @@ const locationSlice = createSlice({
   initialState,
   reducers: {
     changeLocation: (state, action) => {
-      console.log("vaihdossa: ")
       console.log(action.payload)
       state.location = action.payload
       localStorage.setItem("location", JSON.stringify(action.payload))

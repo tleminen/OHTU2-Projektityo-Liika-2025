@@ -1,15 +1,17 @@
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { useEffect, useRef, useState } from "react"
 import translations from "../../assets/translation.js"
 import { useNavigate } from "react-router-dom"
 import registerService from "../../services/registerService.js"
 import LocationMap from "../locationMap.jsx"
 import "./register.css"
+import { changeLocation } from "../../store/locationSlice.js"
 
 const RegisterForm = () => {
   const language = useSelector((state) => state.language.language)
   const t = translations[language]
   const navigate = useNavigate()
+  const dispatch = useDispatch()
   const [username, setUsername] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
@@ -44,6 +46,17 @@ const RegisterForm = () => {
       })
       console.log("token saatu:" + user.token)
       window.localStorage.setItem("loggedUser", JSON.stringify(user))
+
+      dispatch(
+        changeLocation({
+          o_lat: user.location[1],
+          o_lng: user.location[0],
+          lat: user.location[1],
+          lng: user.location[0],
+          zoom: 14,
+        })
+      ) // Kovakoodattu etäisyys
+
       navigate(`/`)
     } catch (error) {
       console.log(error)
