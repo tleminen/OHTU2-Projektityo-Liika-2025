@@ -1,11 +1,11 @@
 const { DataTypes } = require("sequelize")
 const { sequelize } = require("../utils/database")
 const Users = require("./users")
-const Category = require("./category")
+const Categories = require("./categories")
 
 const Events = sequelize.define("Events", {
   EventID: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
-  Location: { type: DataTypes.GEOMETRY, allowNull: false },
+  Location: { type: DataTypes.GEOMETRY("POINT", 4326), allowNull: false },
   Status: { type: DataTypes.STRING(32), allowNull: false },
   Description: { type: DataTypes.STRING(1700), allowNull: true },
   ParticipantMax: { type: DataTypes.INTEGER, allowNull: true },
@@ -15,6 +15,6 @@ const Events = sequelize.define("Events", {
 
 // Yhteys käyttäjiin ja kategorioihin
 Events.belongsTo(Users, { foreignKey: "UserID" })
-Events.belongsTo(Category, { foreignKey: "CategoryID" })
+Events.belongsTo(Categories, { foreignKey: "CategoryID" })
 
 module.exports = Events

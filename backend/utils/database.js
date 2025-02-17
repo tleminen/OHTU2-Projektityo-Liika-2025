@@ -6,6 +6,8 @@ const sequelize = new Sequelize(process.env.POSTGRESQL_URI, {
   logging: false,
 })
 
+const queryInterface = sequelize.getQueryInterface()
+
 const connectDB = async () => {
   try {
     await sequelize.authenticate()
@@ -15,4 +17,12 @@ const connectDB = async () => {
   }
 }
 
-module.exports = { sequelize, connectDB }
+const initializeDB = async (alustetaan) => {
+  await connectDB().then(() => {
+    if (alustetaan) {
+      sequelize.sync({ alter: true }).then(() => resetDB())
+    }
+  })
+}
+
+module.exports = { sequelize, connectDB, queryInterface, initializeDB }

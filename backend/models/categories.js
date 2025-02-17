@@ -1,17 +1,17 @@
 const { DataTypes } = require("sequelize")
 const { sequelize } = require("../utils/database")
 
-const Languages = sequelize.define(
-  "Languages",
+const Categories = sequelize.define(
+  "Categories",
   {
-    LanguageID: {
+    CategoryID: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
     },
-    Language: { type: DataTypes.STRING(3), allowNull: false },
+    Category: { type: DataTypes.STRING(32), allowNull: false },
   },
   { timestamps: false }
 )
 
-module.exports = Languages
+module.exports = Categories

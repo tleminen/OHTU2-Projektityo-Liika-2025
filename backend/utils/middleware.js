@@ -1,7 +1,9 @@
+// Tuntemattoman api-endpointin käsittely
 const unknownEndpoint = (request, response) => {
   response.status(404).send({ error: "unknown endpoint" })
 }
 
+// Käyttäjän tunnisteen irroittaja
 const tokenExtractor = (request, response, next) => {
   const getTokenFrom = (request) => {
     const authorization = request.get("authorization")
@@ -14,6 +16,7 @@ const tokenExtractor = (request, response, next) => {
   next()
 }
 
+// Käyttäjän tunnistaminen tokenista
 const userExtractor = async (request, response, next) => {
   const decodedToken = jwt.verify(request.token, process.env.SECRET)
   if (!decodedToken.id) {

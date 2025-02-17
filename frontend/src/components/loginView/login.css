@@ -1,9 +1,10 @@
 .login {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: center;
-  position: fixed; /* Jos haluat footerin pysyvän sivun alareunassa */
-  top: 0; /* Jos haluat footerin pysyvän sivun alareunassa */
+  gap: 8px;
+  align-items: center;
+  margin: auto;
   width: 100%;
 }
 
@@ -24,4 +25,9 @@
   align-items: center;
   justify-content: center;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.5);
+}
+
+.login-form {
+  display: flex;
+  gap: 8px;
 }

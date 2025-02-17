@@ -2,6 +2,7 @@ const jwt = require("jsonwebtoken")
 const bcrypt = require("bcryptjs")
 const { Router } = require("express")
 const User = require("../models/users")
+const { Sequelize } = require("sequelize")
 
 const userRouter = Router()
 
@@ -9,7 +10,7 @@ const userRouter = Router()
  * Uuden käyttäjän rekisteröinti
  */
 userRouter.post("/", async (req, res) => {
-  const { username, password, role, email } = req.body
+  const { username, password, role, email, location } = req.body
   if (password.length >= 5 && password.length <= 32) {
     // pituusvaatimus v0.1
 
@@ -23,6 +24,11 @@ userRouter.post("/", async (req, res) => {
         Password: passwordhash,
         Role: role,
         Email: email,
+        Location: Sequelize.fn(
+          "ST_SetSRID",
+          Sequelize.fn("ST_MakePoint", location.lng, location.lat),
+          4326
+        ),
       })
 
       const userForToken = {
@@ -46,6 +52,6 @@ userRouter.post("/", async (req, res) => {
       .status(400)
       .send({ error: `Invalid password length of ${password.length}` })
   }
-})
+}) // Rekisteröinti päättyy
 
 module.exports = userRouter

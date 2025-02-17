@@ -1,12 +1,16 @@
 import termsOfServiceText from "./termsOfServiceText"
-import infoText from "./infoText";
+import infoText from "./infoText"
 const translations = {
   en: {
     activity: "Activity",
+    createEvent: "Create event",
     dateAndTime: "Date and time",
     description: "Description",
     back: "Back",
     email: "Email",
+    email_not_found: "Email not found",
+    email_send_error: "Send error",
+    email_sent: "Email sent",
     forgot_pw: "Forgot password?",
     info: "Info",
     info_txt: infoText.getText("en"),
@@ -14,6 +18,8 @@ const translations = {
     login: "Log in",
     login2: "Log in",
     logOut: "Log out",
+    minParticipants: "Minimum participants",
+    maxParticipants: "Maximum participants",
     participants: "Participants",
     password: "Password",
     password_ph: "Password",
@@ -22,6 +28,8 @@ const translations = {
     register: "Register",
     reset_pw: "Reset password",
     selectedLanguage: "Language",
+    setEventLocationInfo: "Set the location for the event",
+    setStartLocationInfo: "Set the starting location for searching events",
     startLocation: "Start location",
     terms_of_service: "Terms of service",
     terms_of_service_txt: termsOfServiceText.getText("en"),
@@ -30,9 +38,13 @@ const translations = {
   fi: {
     activity: "Laji",
     back: "Takaisin",
+    createEvent: "Luo tapahtuma",
     dateAndTime: "Aika",
     description: "Kuvaus",
     email: "Sähköposti",
+    email_not_found: "Sähköpostia ei löytynyt",
+    email_send_error: "Virhe lähettäessä",
+    email_sent: "Sähköposti lähetetty", 
     forgot_pw: "Unohtuiko salasana?",
     info: "Info",
     info_txt: infoText.getText("fi"),
@@ -40,6 +52,8 @@ const translations = {
     login: "Kirjaudu",
     login2: "Kirjaudu sisään",
     logOut: "Kirjaudu ulos",
+    minParticipants: "Osanottajat vähintään",
+    maxParticipants: "Osanottajat enintään",
     participants: "Osallistujat",
     password: "Salasana",
     password_ph: "Salasana",
@@ -47,12 +61,14 @@ const translations = {
     ready_account: "Onko sinulla jo tili?",
     register: "Rekisteröidy",
     reset_pw: "Palauta salasana",
-    selectedLanguage: "Oletus-sijainti",
+    selectedLanguage: "Oletus-kieli",
+    setEventLocationInfo: "Tapahtuman sijainti",
+    setStartLocationInfo: "Aseta tapahtumakartan aloitussijainti",
     startLocation: "Oletus-sijainti",
     terms_of_service: "Käyttöehdot",
     terms_of_service_txt: termsOfServiceText.getText("fi"),
     username: "Käyttäjätunnus",
   },
-};
+}
 
-export default translations;
+export default translations

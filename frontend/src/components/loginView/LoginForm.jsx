@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react"
 import translations from "../../assets/translation.js"
 import loginService from "../../services/loginService.js"
 import { useNavigate } from "react-router-dom"
+import "./login.css"
 
 const LoginForm = () => {
   const language = useSelector((state) => state.language.language)
@@ -39,7 +40,7 @@ const LoginForm = () => {
   }
 
   return (
-    <div>
+    <div className="login-form">
       <form onSubmit={handleSubmit}>
         <div>
           <input
@@ -73,7 +74,9 @@ const LoginForm = () => {
             </span>
           </button>
         </div>
-        <button type="submit">{t.login}</button>
+        <button type="submit" style={{ margin: "auto" }}>
+          {t.login}
+        </button>
       </form>
     </div>
   )

@@ -3,6 +3,8 @@ import { useEffect, useRef, useState } from "react"
 import translations from "../../assets/translation.js"
 import { useNavigate } from "react-router-dom"
 import registerService from "../../services/registerService.js"
+import LocationMap from "../locationMap.jsx"
+import "./register.css"
 
 const RegisterForm = () => {
   const language = useSelector((state) => state.language.language)
@@ -14,6 +16,7 @@ const RegisterForm = () => {
   const [passwordAgain, setPasswordAgain] = useState("")
   const [showPassword, setShowPassword] = useState(false)
   const [showPasswordAgain, setShowPasswordAgain] = useState(false)
+  const [location, setLocation] = useState("")
 
   const inputRef = useRef(null)
   useEffect(() => {
@@ -27,6 +30,7 @@ const RegisterForm = () => {
       email,
       password,
       passwordAgain,
+      location,
     })
     event.preventDefault()
     console.log("Login attempt:", { username, password })
@@ -36,6 +40,7 @@ const RegisterForm = () => {
         email,
         password,
         role: 0,
+        location,
       })
       console.log("token saatu:" + user.token)
       window.localStorage.setItem("loggedUser", JSON.stringify(user))
@@ -52,8 +57,12 @@ const RegisterForm = () => {
     setShowPasswordAgain(!showPasswordAgain)
   }
 
+  const handleLocationChange = (newLocation) => {
+    setLocation(newLocation)
+  }
+
   return (
-    <div>
+    <div className="register-form">
       <form onSubmit={handleSubmit}>
         <div>
           <input
@@ -117,7 +126,14 @@ const RegisterForm = () => {
             </span>
           </button>
         </div>
-        <button type="submit">{t.register}</button>
+        <br />
+        <div>
+          <h2 style={{ textAlign: "center" }}>{t.setStartLocationInfo}</h2>
+          <LocationMap onLocationChange={handleLocationChange} />
+        </div>
+        <button type="submit" style={{ margin: "auto" }}>
+          {t.register}
+        </button>
       </form>
     </div>
   )

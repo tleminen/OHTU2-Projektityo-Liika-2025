@@ -5,5 +5,9 @@ Content-Type: application/json
 "username": "kayttaja3",
 "password": "salasana",
 "role": 0,
-"email": "testiemaili@testi"
+"email": "testiemaili@testi",
+"location": {
+"lat": 62.6000,
+"lng": 29.7639
+}
 }

@@ -1,1 +1,10 @@
-
+.map-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: auto;
+  width: 80vh;
+  height: 100vh;
+  padding: 0;
+  top: 0;
+}
