@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux"
 import { changeLocation } from "../../store/locationSlice"
 import logo from "../../assets/liika_logo.png"
 import { useNavigate } from "react-router-dom"
+import eventService from "../../services/eventService"
 
 const Map = ({ startingLocation }) => {
   const navigate = useNavigate()
@@ -22,6 +23,11 @@ const Map = ({ startingLocation }) => {
 
   const onClickOwnInfo = () => {
     console.log("Omat tiedot click")
+  }
+
+  const fetchEvents = async () => {
+    const events = await eventService.getEvents(startingLocation)
+    console.log(events) // TODO: HAE SOPIVALTA ALUEELTA TAPAHTUMAT VAI MITEN KANNATTAISI TEHDÄ??
   }
 
   useEffect(() => {

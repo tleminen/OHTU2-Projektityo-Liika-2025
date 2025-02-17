@@ -3,6 +3,7 @@ import { useState } from "react"
 import translations from "../../assets/translation.js"
 import LocationMap from "../locationMap.jsx"
 import "./createEvent.css"
+import Select from "react-select"
 
 const CreateEventForm = () => {
   const language = useSelector((state) => state.language.language)
@@ -32,18 +33,37 @@ const CreateEventForm = () => {
     setLocation(newLocation)
   }
 
+  const categories = useSelector((state) => state.categories.categories)
+
+  const options = () => {
+    try {
+      return categories.map((cat) => ({
+        value: cat.CategoryID,
+        label: cat.Category,
+      }))
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const handleChange = (selectedOption) => {
+    setActivity(selectedOption)
+  }
+
   return (
     <div className="create-event-form">
       <form onSubmit={handleSubmit}>
         <div>
-          <input
-            type="text"
-            value={activity}
-            className="input-field"
-            name="activity"
-            onChange={(e) => setActivity(e.target.value)}
-            placeholder={t.activity}
-          />
+          <div>
+            <Select
+              className="input-field"
+              placeholder={t.activity}
+              value={activity}
+              onChange={handleChange}
+              options={options()}
+              isSearchable={true}
+            />
+          </div>
         </div>
         <div>
           <input
