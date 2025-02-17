@@ -8,9 +8,10 @@
   width: 100%;
 }
 
-.login-form {
+.register-form {
   display: flex;
-  gap: 8px;
+  margin: auto;
+  text-align: center;
 }
 
 /*rekisteröinnille ja kirjautumiselle painikkeet kesken*/

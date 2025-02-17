@@ -2,6 +2,7 @@ import { useSelector } from "react-redux"
 import { useState } from "react"
 import translations from "../../assets/translation.js"
 import LocationMap from "../locationMap.jsx"
+import "./createEvent.css"
 
 const CreateEventForm = () => {
   const language = useSelector((state) => state.language.language)
@@ -32,12 +33,13 @@ const CreateEventForm = () => {
   }
 
   return (
-    <div>
+    <div className="create-event-form">
       <form onSubmit={handleSubmit}>
         <div>
           <input
             type="text"
             value={activity}
+            className="input-field"
             name="activity"
             onChange={(e) => setActivity(e.target.value)}
             placeholder={t.activity}
@@ -48,6 +50,7 @@ const CreateEventForm = () => {
             type="date"
             value={date}
             name="dateAndTime"
+            className="input-field"
             onChange={(e) => setDate(e.target.value)}
             placeholder={t.dateAndTime}
           />
@@ -57,6 +60,7 @@ const CreateEventForm = () => {
             type="time"
             value={time}
             name="dateAndTime"
+            className="input-field"
             onChange={(e) => setTime(e.target.value)}
             placeholder={t.dateAndTime}
           />
@@ -71,6 +75,7 @@ const CreateEventForm = () => {
             type="number"
             value={minParticipants}
             name="minParticipants"
+            className="input-field"
             onChange={(e) => setMinParticipants(e.target.value)}
             placeholder={t.minParticipants}
           />
@@ -80,6 +85,7 @@ const CreateEventForm = () => {
             type="number"
             value={maxParticipants}
             name="maxParticipants"
+            className="input-field"
             onChange={(e) => setMaxParticipants(e.target.value)}
             placeholder={t.maxParticipants}
           />
@@ -89,11 +95,14 @@ const CreateEventForm = () => {
             type="description"
             value={description}
             name="description"
+            className="input-field"
             onChange={(e) => setDescription(e.target.value)}
             placeholder={t.description}
           />
         </div>
-        <button type="submit">{t.createEvent}</button>
+        <button type="submit" style={{ margin: "auto" }}>
+          {t.createEvent}
+        </button>
       </form>
     </div>
   )
