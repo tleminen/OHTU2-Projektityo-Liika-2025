@@ -1,45 +1,53 @@
-import translations from "../../assets/translation"
-import Header from "../header"
-import LoginForm from "./LoginForm"
-import Footer from "../footer"
-import { useSelector } from "react-redux"
-import { useNavigate } from "react-router-dom"
-import { useState } from "react"
-import loginService from "../../services/loginService.js" // Tuo loginService
-import "./login.css"
+import translations from "../../assets/translation";
+import Header from "../header";
+import LoginForm from "./LoginForm";
+import Footer from "../footer";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import loginService from "../../services/loginService.js"; // Tuo loginService
+import "./login.css";
 
 const Login = () => {
-  const navigate = useNavigate()
-  const [emailForm, setEmailForm] = useState(false)
-  const [email, setEmail] = useState("")
-  const [resetMessage, setResetMessage] = useState("")
+  const navigate = useNavigate();
+  const [emailForm, setEmailForm] = useState(false);
+  const [email, setEmail] = useState("");
+  const [resetMessage, setResetMessage] = useState("");
   const handler = () => {
-    navigate("/")
-  }
+    navigate("/");
+  };
 
   const handleEmailSubmit = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
 
     try {
-      console.log("Sähköposti: " + email)
-      const response = await loginService.sendEmail(email)
-      console.log("SendEmail response " + response)
+      console.log("Sähköposti: " + email);
+      const response = await loginService.sendEmail(email);
+      console.log("SendEmail response " + response);
       if (response.message === "Sähköposti lähetetty!") {
-        setResetMessage(t.email_sent)
-        setEmail("") // Tyhjennä sähköposti-kenttä
+        setResetMessage(t.email_sent);
+        setEmail(""); // Tyhjennä sähköposti-kenttä
       } else {
-        setResetMessage(response.message || t.email_not_found)
+        setResetMessage(response.message || t.email_not_found);
       }
     } catch (error) {
-      console.error("Virhe sähköpostin lähetyksessä:", error)
-      setResetMessage(t.email_send_error)
+      console.error("Virhe sähköpostin lähetyksessä:", error);
+      setResetMessage(t.email_send_error);
     }
-  }
+  };
 
-  const language = useSelector((state) => state.language.language)
-  const t = translations[language]
+  const language = useSelector((state) => state.language.language);
+  const t = translations[language];
   return (
-    <div className="fullpage">
+    <div
+      className="fullpage"
+      style={{
+        backgroundImage: "url('/background-logandreg.png')",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+      }}
+    >
       <Header />
       <div className="login">
         <LoginForm />
@@ -69,7 +77,7 @@ const Login = () => {
       </div>
       <Footer />
     </div>
-  )
-}
+  );
+};
 
-export default Login
+export default Login;

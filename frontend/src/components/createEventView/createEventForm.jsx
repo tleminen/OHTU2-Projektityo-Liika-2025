@@ -1,23 +1,23 @@
-import { useSelector } from "react-redux"
-import { useState } from "react"
-import translations from "../../assets/translation.js"
-import LocationMap from "../locationMap.jsx"
-import "./createEvent.css"
-import Select from "react-select"
+import { useSelector } from "react-redux";
+import { useState } from "react";
+import translations from "../../assets/translation.js";
+import LocationMap from "../locationMap.jsx";
+import "./createEvent.css";
+import Select from "react-select";
 
 const CreateEventForm = () => {
-  const language = useSelector((state) => state.language.language)
-  const t = translations[language]
-  const [activity, setActivity] = useState("")
-  const [date, setDate] = useState("")
-  const [time, setTime] = useState("")
-  const [location, setLocation] = useState("")
-  const [minParticipants, setMinParticipants] = useState("")
-  const [maxParticipants, setMaxParticipants] = useState("")
-  const [description, setDescription] = useState("")
+  const language = useSelector((state) => state.language.language);
+  const t = translations[language];
+  const [activity, setActivity] = useState("");
+  const [date, setDate] = useState("");
+  const [time, setTime] = useState("");
+  const [location, setLocation] = useState("");
+  const [minParticipants, setMinParticipants] = useState("");
+  const [maxParticipants, setMaxParticipants] = useState("");
+  const [description, setDescription] = useState("");
 
   const handleSubmit = (event) => {
-    event.preventDefault()
+    event.preventDefault();
     console.log("Create event attempt:", {
       activity,
       date,
@@ -26,29 +26,29 @@ const CreateEventForm = () => {
       minParticipants,
       maxParticipants,
       description,
-    })
-  }
+    });
+  };
 
   const handleLocationChange = (newLocation) => {
-    setLocation(newLocation)
-  }
+    setLocation(newLocation);
+  };
 
-  const categories = useSelector((state) => state.categories.categories)
+  const categories = useSelector((state) => state.categories.categories);
 
   const options = () => {
     try {
       return categories.map((cat) => ({
         value: cat.CategoryID,
         label: cat.Category,
-      }))
+      }));
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
   const handleChange = (selectedOption) => {
-    setActivity(selectedOption)
-  }
+    setActivity(selectedOption);
+  };
 
   return (
     <div className="create-event-form">
@@ -125,7 +125,7 @@ const CreateEventForm = () => {
         </button>
       </form>
     </div>
-  )
-}
+  );
+};
 
-export default CreateEventForm
+export default CreateEventForm;

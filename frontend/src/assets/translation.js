@@ -1,5 +1,5 @@
-import termsOfServiceText from "./termsOfServiceText"
-import infoText from "./infoText"
+import termsOfServiceText from "./termsOfServiceText";
+import infoText from "./infoText";
 const translations = {
   en: {
     activity: "Activity",
@@ -32,6 +32,7 @@ const translations = {
     selectedLanguage: "Language",
     setEventLocationInfo: "Set the location for the event",
     setStartLocationInfo: "Set the starting location for searching events",
+    start: "Press the map to start",
     startLocation: "Start location",
     terms_of_service: "Terms of service",
     terms_of_service_txt: termsOfServiceText.getText("en"),
@@ -46,7 +47,7 @@ const translations = {
     email: "Sähköposti",
     email_not_found: "Sähköpostia ei löytynyt",
     email_send_error: "Virhe lähettäessä",
-    email_sent: "Sähköposti lähetetty", 
+    email_sent: "Sähköposti lähetetty",
     forgot_pw: "Unohtuiko salasana?",
     info: "Info",
     info_txt: infoText.getText("fi"),
@@ -68,11 +69,12 @@ const translations = {
     selectedLanguage: "Oletus-kieli",
     setEventLocationInfo: "Tapahtuman sijainti",
     setStartLocationInfo: "Aseta tapahtumakartan aloitussijainti",
+    start: "Napauta karttaa aloittaaksesi",
     startLocation: "Oletus-sijainti",
     terms_of_service: "Käyttöehdot",
     terms_of_service_txt: termsOfServiceText.getText("fi"),
     username: "Käyttäjätunnus",
   },
-}
+};
 
-export default translations
+export default translations;
