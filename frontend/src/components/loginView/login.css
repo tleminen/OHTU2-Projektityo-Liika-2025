@@ -1,4 +1,54 @@
 .login {
   display: flex;
+  flex-direction: column;
   justify-content: center;
+  gap: 8px;
+  align-items: center;
+  margin: auto;
+  width: 100%;
+  margin-top: 2%;
+}
+
+.login-form {
+  display: flex;
+  gap: 8px;
+}
+
+
+.forms-btn {
+  border-radius: 5px;
+  border: none;
+  padding: 0.8em 5em;
+  position: relative;
+  overflow: hidden;
+  color: #ffffff;
+  background-color: #0097b2;
+  transition: transform 0.6s ease-in-out;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.5);
+  margin: auto;
+  margin-top: 5%;
+  text-transform: uppercase;
+}
+.forms-btn span {
+  position: relative;
+  z-index: 1; /* Tuo teksti napin päälle */
+}
+.forms-btn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 100%;
+  background-color: #007891; /* Muuta väriä tähän */
+  color: #ffffff;
+  transition: width 0.6s ease-in-out; /* Säädä täyttymisnopeutta */
+}
+
+.forms-btn:hover::before {
+  width: 100%;
 }

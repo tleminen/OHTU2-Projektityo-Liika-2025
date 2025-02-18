@@ -5,36 +5,68 @@ import Footer from "../footer"
 import { useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import { useState } from "react"
+import loginService from "../../services/loginService.js" // Tuo loginService
+import "./login.css"
 
 const Login = () => {
   const navigate = useNavigate()
   const [emailForm, setEmailForm] = useState(false)
+  const [email, setEmail] = useState("")
+  const [resetMessage, setResetMessage] = useState("")
   const handler = () => {
     navigate("/")
-  };
+  }
+
+  const handleEmailSubmit = async (e) => {
+    e.preventDefault()
+
+    try {
+      console.log("Sähköposti: " + email)
+      const response = await loginService.sendEmail(email)
+      console.log("SendEmail response " + response)
+      if (response.message === "Sähköposti lähetetty!") {
+        setResetMessage(t.email_sent)
+        setEmail("") // Tyhjennä sähköposti-kenttä
+      } else {
+        setResetMessage(response.message || t.email_not_found)
+      }
+    } catch (error) {
+      console.error("Virhe sähköpostin lähetyksessä:", error)
+      setResetMessage(t.email_send_error)
+    }
+  }
 
   const language = useSelector((state) => state.language.language)
   const t = translations[language]
-
   return (
-    <div className="login">
+    <div className="fullpage">
       <Header />
-      <LoginForm />
-      <div className="forgot-password-text">
-        <a href="#" onClick={() => setEmailForm(!emailForm)}>
-          {t.forgot_pw}
-        </a>
-      </div>
-      {emailForm && (
-        <form>
-          <input type="text" name="changePassword" placeholder={t.email} />
-          <button>{t.reset_pw}</button>
-        </form>
-      )}
+      <div className="login">
+        <LoginForm />
+        <div className="forgot-password-text">
+          <a href="#" onClick={() => setEmailForm(!emailForm)}>
+            {t.forgot_pw}
+          </a>
+        </div>
+        {emailForm && (
+          <form onSubmit={handleEmailSubmit}>
+            <input
+              type="email"
+              name="email"
+              placeholder={t.email}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+            <button type="submit">{t.reset_pw}</button>
+            {resetMessage && <p>{resetMessage}</p>}
+          </form>
+        )}
 
-      <button className="back-btn" onClick={handler}>
-        <span>{t.back}</span>
-      </button>
+        <button className="back-btn" onClick={handler}>
+          <span>{t.back}</span>
+        </button>
+      </div>
       <Footer />
     </div>
   )

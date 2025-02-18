@@ -3,14 +3,29 @@ const app = express()
 const cors = require("cors")
 const morgan = require("morgan")
 const middleware = require("./utils/middleware")
-const { connectDB, sequelize } = require("./utils/database")
+const resetDB = require("./dummyData/index")
+const { initializeDB } = require("./utils/database")
+const {
+  sequelize,
+  Users,
+  Categories,
+  Times,
+  Events,
+  Club,
+  ClubMember,
+  Joins,
+  Languages,
+} = require("./models/index")
+
 const fs = require("fs")
 const userRouter = require("./controllers/users")
 const loginRouter = require("./controllers/login")
-
+const eventRouter = require("./controllers/events")
+const email = require("./services/email")
 const logStream = fs.createWriteStream("./logs/access.log", { flags: "a" })
-connectDB() // Muodostetaan tietokantayhteys
-sequelize.sync({ alter: true }) // Tietokannan synkronointi
+
+// Tietokantayhteys ja alustus
+initializeDB(false) // Aseta muuttujaan false, mikäli et halua, että tietokanta nollaantuu
 
 // Käynnistetään middlewaret
 app.use(cors()) //cros-origin homma
@@ -22,10 +37,9 @@ morgan.token("timestamp", () => new Date().toISOString()) // Aikaleima ISO-muodo
 morgan.token("body", (req) => JSON.stringify(req.body)) // Pyynnön body
 morgan.token("user-agent", (req) => req.headers["user-agent"]) // User-Agent
 
-// Mukautettu lokiformaatti
-const customFormat =
+const customFormat = // Mukautettu lokiformaatti terminaaliin
   ':ip [:timestamp] ":method :url" :status - Body: :body - Agent: ":user-agent"'
-const customFormat2 =
+const customFormat2 = // Mukautettu lokiformaatti tiedostoon
   ':ip [:timestamp] ":method :url" :status - Agent: ":user-agent"'
 
 app.use(
@@ -33,18 +47,13 @@ app.use(
     stream: logStream,
   })
 ) // HTTP pyyntöjen logitus
-app.use(morgan(customFormat))
+app.use(morgan(customFormat)) // HTTP pyynnöt terminaaliin
 app.use(middleware.tokenExtractor) // Ekstraktoi tokenin
 
-// Tähän tulee routerit kuten app.use('api/login', loginRouter)
-//app.use(`/api/login`,)
-app.use(`/api/users`, userRouter)
+// API routerit
+app.use(`/api/register`, userRouter)
 app.use(`/api/login`, loginRouter)
-
-// Testi1, voi poistaa
-app.get("/", (request, response) => {
-  response.send("<h1>Hello World from backend!</h1>")
-}) // Testi1 päättyy
+app.use(`/api/events`, eventRouter)
 
 // Loppuun laitetaan unknownEndpoint ja virheenKorjaus
 app.use(middleware.unknownEndpoint)

@@ -24,29 +24,28 @@ const Frontpage = () => {
     if (user === null) {
       return <SignedOut />
     } else {
-      console.log("tää on: " + user.token)
       return <SignedIn setUser={setUser} />
     }
   }
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-      }}
-    >
+    <div className="fullpage">
       <Header />
-      <img
-        src={mapImage}
-        className="map-image"
-        alt="Map"
-        onClick={() => navigateTo("map")}
-      />
-      {singedOrNot(user)}
-      <div>
-        <Footer />
+      <div className="frontpage">
+        <div className="map-container">
+          <div className="image-wrapper">
+            <span href="/map" className="placeholder" onClick={() => navigate('/map')}>Napauta karttaa aloittaaksesi</span>
+            <img
+              src={mapImage}
+              className="map-image"
+              alt="Map"
+              onClick={() => navigateTo("map")}
+            />
+            </div>
+            <div className="button-container">{singedOrNot(user)}</div>
+        </div>
       </div>
+      <Footer />
     </div>
   )
 }
