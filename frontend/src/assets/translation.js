@@ -25,7 +25,7 @@ const translations = {
     password_ph: "Password",
     passwordAgain: "Password again",
     ready_account: "Already have an account?",
-    register: "Register",
+    register: "Sign up",
     reset_pw: "Reset password",
     selectedLanguage: "Language",
     setEventLocationInfo: "Set the location for the event",
