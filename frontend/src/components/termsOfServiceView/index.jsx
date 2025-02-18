@@ -14,7 +14,7 @@ const TermsOfServiceView = () => {
     navigate("/")
   }
   return (
-    <div>
+    <div className="fullpage">
       <Header />
       <TermsOfService />
       <button href="/" className="back-btn" onClick={handler}>
