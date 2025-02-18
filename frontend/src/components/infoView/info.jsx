@@ -6,7 +6,7 @@ const Info = () => {
   const language = useSelector((state) => state.language.language)
   const t = translations[language]
   return (
-    <div className="info">
+    <div className="text-box">
       <h2> {t.info}</h2>
       <div>{t.info_txt}</div>
     </div>
