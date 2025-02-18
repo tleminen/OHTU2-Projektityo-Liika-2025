@@ -1,6 +1,9 @@
 import { useSelector } from "react-redux"
 import { useState } from "react"
+import LocationMap from "../locationMap.jsx"
+import Select from "react-select"
 import translations from "../../assets/translation.js"
+
 
 const AccountInformationForm = () => {
   const language = useSelector((state) => state.language.language)
@@ -10,6 +13,16 @@ const AccountInformationForm = () => {
   const [password, setPassword] = useState("")
   const [startLocation, setStartLocation] = useState("")
   const [selectedLanguage, setSelectedLanguage] = useState("")
+
+  const options = [
+    { value: "fi", label: "Suomi" },
+    { value: "en", label: "Englanti" },
+    //Lisätään muita kieliä tarvittaessa
+  ]
+
+  const handleChange = (selectedOption) => {
+    console.log(selectedOption.value)
+  }
   
   const handleSubmit = (event) => {
     event.preventDefault()
@@ -20,6 +33,9 @@ const AccountInformationForm = () => {
       startLocation,
       selectedLanguage
     })
+  }
+  const handleLocationChange = (newLocation) => {
+    setLocation(newLocation)
   }
 
   return (
@@ -52,27 +68,22 @@ const AccountInformationForm = () => {
             placeholder={t.password}
           />
         </div>
+        <br />
         <div>
-          <input
-            type="startLocation"
-            value={startLocation}
-            name="startLocation"
-            onChange={(e) => setStartLocation(e.target.value)}
-            placeholder={t.startLocation}
-          />
+          <h2 style={{ textAlign: "center" }}>{t.setStartLocationInfo}</h2>
+          <LocationMap onLocationChange={handleLocationChange} />
         </div>
         <div>
-          <input
-            type="selectedLanguage"
-            value={selectedLanguage}
-            name="selectedLanguage"
-            onChange={(e) => setSelectedLanguage(e.target.value)}
-            placeholder={t.selectedLanguage}
-          />
+        <Select
+        value=""
+        onChange={handleChange}
+        options={options}
+      />
         </div>
         <button type="submit">{t.save}</button>
       </form>
     </div>
+    
   )
 }
 
