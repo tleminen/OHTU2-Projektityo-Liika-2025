@@ -18,7 +18,7 @@ const Register = () => {
     <div
       className="fullpage"
       style={{
-        backgroundImage: "url('/backgroundpicture-registerandlogin.jpg')",
+        backgroundImage: "url('/background-logandreg.png')",
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
