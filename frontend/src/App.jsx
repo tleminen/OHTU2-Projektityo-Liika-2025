@@ -6,6 +6,7 @@ import MapView from "./components/mapView"
 import TermsOfServiceView from "./components/termsOfServiceView"
 import InfoView from "./components/infoView"
 import CreateEventView from "./components/createEventView"
+import AccountInformationForm from "./components/accountInformationView/accountInformationForm"
 
 const App = () => {
   return (
@@ -17,6 +18,7 @@ const App = () => {
       <Route path="/termsOfService" element={<TermsOfServiceView />} />
       <Route path="/info" element={<InfoView />} />
       <Route path="/create_event" element={<CreateEventView />} />
+      <Route path="/own_info" element={<AccountInformationForm />} />
     </Routes>
   )
 }
