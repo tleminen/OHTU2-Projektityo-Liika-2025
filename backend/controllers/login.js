@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken")
 const bcrypt = require("bcryptjs")
+const crypto = require("crypto")
 const { Router } = require("express")
 const User = require("../models/users")
 const { sendEmail } = require("../services/email") // Tuo sendEmail-funktio
@@ -18,6 +19,7 @@ loginRouter.post("/", async (req, res) => {
       },
     })
     console.log("Tietokannasta user: " + user)
+    console.log("salasana: " + password)
     const passwordCorrect =
       user === null ? false : await bcrypt.compare(password, user.Password)
     console.log("Salasana on true/false = " + passwordCorrect)
@@ -60,11 +62,21 @@ loginRouter.post("/sendEmail", async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: "Sähköpostia ei löydy." })
     }
+
+    // 1. Luodaan kertakäyttöinen salasana
+    const tempPassword = Math.random().toString(36).slice(2)
+    const hashedTempPassword = await bcrypt.hash(tempPassword, 10)
+
+    // 2. Tallennetaan kertakäyttöinen salasana tietokantaan
+    user.Password = hashedTempPassword
+    await user.save()
+
     const success = await sendEmail(
       email,
       "Salasanan palautus",
-      "Linkki salasanan palauttamiseen: [Linkki]"
+      `Kertakäyttöinen salasanasi on: ${tempPassword}\n\nKäytä tätä salasanaa kirjautuessasi sisään. Muista vaihtaa salasanasi heti kirjautumisen jälkeen.`
     )
+    
     if (success) {
       res.status(200).json({ message: "Sähköposti lähetetty!" })
     } else {

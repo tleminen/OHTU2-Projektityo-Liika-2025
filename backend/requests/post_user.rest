@@ -2,10 +2,10 @@ POST http://localhost:3003/api/register
 Content-Type: application/json
 
 {
-"username": "kayttaja3",
+"username": "liika",
 "password": "salasana",
 "role": 0,
-"email": "testiemaili@testi",
+"email": "Liika2025@outlook.com",
 "location": {
 "lat": 62.6000,
 "lng": 29.7639
