@@ -2,5 +2,5 @@ POST http://localhost:3003/api/login/sendEmail
 Content-Type: application/json
 
 {
-    "email": "hopjippii@gmail.com"
+    "email": "Liika2025@outlook.com"
 }
