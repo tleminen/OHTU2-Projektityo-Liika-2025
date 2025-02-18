@@ -11,12 +11,35 @@
   align-items: center;
   flex: 1; /* Ottaa kaiken käytettävissä olevan tilan */
   width: 100%;
-  gap: 20px;
-  margin: auto;
+  gap: 90px;
+  margin-top: 50px;
+  padding: 8px;
 }
 
-.buttons-container {
-  display: flex;
-  gap: 15px;
-  margin: auto;
+.image-wrapper {
+  transform: scale(2); /* Suurennetaan 1.5-kertaiseksi */
+  position: relative; /* Mahdollistaa placeholder-tekstin sijoittamisen kuvan päälle */
+  display: flex; /* Käytetään flexboxia */
+  justify-content: center; /* Keskitetään vaakasuunnassa */
+  align-items: center; /* Keskitetään pystysuunnassa */
+}
+
+.placeholder {
+  cursor: pointer;
+  max-width: 50%; /* 50% kuvan leveydestä */
+  width: auto; /* Sallii tekstin skaalautumisen */
+  overflow: hidden;
+  position: absolute; /* Sijoitetaan paikkamerkki kuvan päälle */
+  top: 50%; /* Keskitetään pystysuunnassa */
+  left: 50%; /* Keskitetään vaakasuunnassa */
+  transform: translate(-50%, -50%); /* Korjataan keskitystä */
+  color: rgb(63, 62, 62); /* Musta väri */
+  font-size: 8px;
+  padding: 5px;
+  background-color: rgb(240, 240, 240, 0.5);
+}
+
+
+.map-image {
+  display: block; /* Poistaa kuvan alapuolella olevan tyhjän tilan */
 }

@@ -86,8 +86,8 @@ const LoginForm = () => {
             </span>
           </button>
         </div>
-        <button type="submit" style={{ margin: "auto" }}>
-          {t.login}
+        <button type="submit" className="forms-btn">
+          <span>{t.login}</span>
         </button>
       </form>
     </div>

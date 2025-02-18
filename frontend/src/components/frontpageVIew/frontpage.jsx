@@ -33,13 +33,16 @@ const Frontpage = () => {
       <Header />
       <div className="frontpage">
         <div className="map-container">
-          <img
-            src={mapImage}
-            className="map-image"
-            alt="Map"
-            onClick={() => navigateTo("map")}
-          />
-          <div className="button-container">{singedOrNot(user)}</div>
+          <div className="image-wrapper">
+            <span href="/map" className="placeholder" onClick={() => navigate('/map')}>Napauta karttaa aloittaaksesi</span>
+            <img
+              src={mapImage}
+              className="map-image"
+              alt="Map"
+              onClick={() => navigateTo("map")}
+            />
+            </div>
+            <div className="button-container">{singedOrNot(user)}</div>
         </div>
       </div>
       <Footer />
