@@ -38,11 +38,7 @@ button {
   justify-content: center;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.5);
 }
-button:hover {
-  background-color: #ffffff;
-  color: #0097b2;
-  border-color: #0097b2;
-}
+
 button:focus,
 button:focus-visible {
   outline: none;
@@ -129,6 +125,12 @@ button:focus-visible {
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.5);
 }
 
+.registerandlogin-btn:hover {
+  background-color: #ffffff;
+  color: #0097b2;
+  border-color: #0097b2;
+}
+
 /*infopainikkeelle tyyli*/
 .info-btn {
   width: 50px;
@@ -153,6 +155,100 @@ button:focus-visible {
   color: #5271ff;
   box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.3);
   border: 2px solid #5271ff;
+}
+
+/* Poistopainikkeelle tyyli */
+.delete-btn {
+  display: block;
+  background-color: #db4437;
+  width: 300px;
+  height: 100px;
+  line-height: 100px;
+  margin: auto;
+  color: #fff;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  cursor: pointer;
+  overflow: hidden;
+  border-radius: 5px;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.3);
+  transition: all 0.25s cubic-bezier(0.31, -0.105, 0.43, 1.4);
+}
+.delete-btn span,
+.delete-btn .icon {
+  display: block;
+  height: 100%;
+  text-align: center;
+  position: absolute;
+  top: 0;
+}
+.delete-btn span {
+  width: 72%;
+  line-height: inherit;
+  font-size: 22px;
+  text-transform: uppercase;
+  left: 0;
+  transition: all 0.25s cubic-bezier(0.31, -0.105, 0.43, 1.4);
+}
+.delete-btn span:after {
+  content: "";
+  background-color: #a53125;
+  width: 2px;
+  height: 70%;
+  position: absolute;
+  top: 15%;
+  right: -1px;
+}
+.delete-btn .icon {
+  width: 28%;
+  right: 0;
+  transition: all 0.25s cubic-bezier(0.31, -0.105, 0.43, 1.4);
+}
+.delete-btn .icon .fa {
+  font-size: 30px;
+  vertical-align: middle;
+  transition: all 0.25s cubic-bezier(0.31, -0.105, 0.43, 1.4), height 0.25s ease;
+}
+.delete-btn .icon .fa-remove {
+  height: 36px;
+}
+.delete-btn .icon .fa-check {
+  display: none;
+}
+.delete-btn.success,
+.delete-btn:hover {
+  opacity: 0.9;
+}
+.delete-btn.success span,
+.delete-btn:hover span {
+  left: -72%;
+  opacity: 0;
+}
+.delete-btn.success .icon,
+.delete-btn:hover .icon {
+  width: 100%;
+}
+.delete-btn.success .icon .fa,
+.delete-btn:hover .icon .fa {
+  font-size: 45px;
+}
+.delete-btn.success {
+  background-color: #27ae60;
+}
+.delete-btn.success .icon .fa-remove {
+  display: none;
+}
+.delete-btn.success .icon .fa-check {
+  display: inline-block;
+}
+.delete-btn:hover .icon .fa-remove {
+  height: 46px;
+}
+.delete-btn:active {
+  opacity: 1;
 }
 
 /* Perustyylit käyttäjän muokattavalle tekstikentälle */
