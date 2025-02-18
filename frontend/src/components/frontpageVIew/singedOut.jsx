@@ -13,13 +13,13 @@ const SignedOut = () => {
   return (
     <div className="containerX">
       <button
-        className="registerandlogin-btn"
+        className="login-frontpage-btn"
         onClick={() => navigateTo("login")}
       >
         {t.login}
       </button>
       <button
-        className="registerandlogin-btn"
+        className="register-frontpage-btn"
         onClick={() => navigateTo("register")}
       >
         {t.register}

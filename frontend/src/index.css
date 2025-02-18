@@ -107,28 +107,54 @@ button:focus-visible {
 }
 
 /*rekisteröinnille ja kirjautumiselle painikkeet kesken*/
-.registerandlogin-btn {
+.register-frontpage-btn {
+  position: relative;
+  padding: 15px 45px;
+  background: #0097b2;
   border-radius: 10px;
-  border: 2px solid transparent;
-  padding: 0.3em 0.6em;
-  font-size: 1.5em;
-  font-weight: 500;
-  font-family: inherit;
+  border: 2px solid #194480;
+  outline: 2px solid #194480;
+  outline-offset: -2px;
+  font-size: 1.5rem;
   color: #ffffff;
-  text-transform: uppercase;
-  background-color: #0097b2;
+  font-weight: 500;
   cursor: pointer;
-  transition: background-color 0.25s, color 0.25s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.5);
+  transition: outline-offset 200ms ease;
+}
+.register-frontpage-btn:hover {
+  color: #194480;
+  background: #ffffff;
+  outline-offset: 3px;
+  border: 2px solid #194480;
+  outline: 2px solid #194480;
+}
+.register-frontpage-btn:active {
+  transform: scale(0.95);
 }
 
-.registerandlogin-btn:hover {
-  background-color: #ffffff;
-  color: #0097b2;
-  border-color: #0097b2;
+.login-frontpage-btn {
+  position: relative;
+  padding: 15px 45px;
+  background: #ffffff;
+  border-radius: 10px;
+  border: 2px solid #194480;
+  outline: 2px solid #194480;
+  outline-offset: -2px;
+  font-size: 1.5rem;
+  color: #194480;
+  font-weight: 500;
+  cursor: pointer;
+  transition: outline-offset 200ms ease;
+}
+.login-frontpage-btn:hover {
+  color: #ffffff;
+  background: #0097b2;
+  outline-offset: 3px;
+  border: 2px solid #194480;
+  outline: 2px solid #194480;
+}
+.login-frontpage-btn:active {
+  transform: scale(0.95);
 }
 
 /*infopainikkeelle tyyli*/
