@@ -1,14 +1,16 @@
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { useEffect, useRef, useState } from "react"
 import translations from "../../assets/translation.js"
 import loginService from "../../services/loginService.js"
 import { useNavigate } from "react-router-dom"
 import "./login.css"
+import { changeLocation } from "../../store/locationSlice.js"
 
 const LoginForm = () => {
   const language = useSelector((state) => state.language.language)
   const t = translations[language]
   const navigate = useNavigate()
+  const dispatch = useDispatch()
 
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
@@ -28,7 +30,17 @@ const LoginForm = () => {
         password,
       })
       console.log(`Tokeni: ${user.token} Käyttäjätunnus: ${user.username}`)
+      console.log(user)
       window.localStorage.setItem("loggedUser", JSON.stringify(user))
+      dispatch(
+        changeLocation({
+          o_lat: user.location[1],
+          o_lng: user.location[0],
+          lat: user.location[1],
+          lng: user.location[0],
+          zoom: 14, // Kovakoodattu etäisyys
+        })
+      )
       navigate(`/`)
     } catch (error) {
       console.log(error)
@@ -74,8 +86,8 @@ const LoginForm = () => {
             </span>
           </button>
         </div>
-        <button type="submit" style={{ margin: "auto" }}>
-          {t.login}
+        <button type="submit" className="forms-btn">
+          <span>{t.login}</span>
         </button>
       </form>
     </div>

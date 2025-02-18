@@ -7,10 +7,29 @@ import { useDispatch } from "react-redux"
 import { changeLocation } from "../../store/locationSlice"
 import logo from "../../assets/liika_logo.png"
 import { useNavigate } from "react-router-dom"
+import eventService from "../../services/eventService"
 
 const Map = ({ startingLocation }) => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
+
+  const onClickCreateEvent = () => {
+    navigate("/create_event")
+  }
+
+  const onClickListJoinedEvents = () => {
+    console.log("Listaa liitytyt click")
+  }
+
+  const onClickOwnInfo = () => {
+    console.log("Omat tiedot click")
+  }
+
+  const fetchEvents = async () => {
+    const events = await eventService.getEvents(startingLocation)
+    console.log(events) // TODO: HAE SOPIVALTA ALUEELTA TAPAHTUMAT VAI MITEN KANNATTAISI TEHDÄ??
+  }
+
   useEffect(() => {
     // Luo karttaelementti kun komponentti mounttaa
     const map = L.map("map", {
@@ -23,6 +42,36 @@ const Map = ({ startingLocation }) => {
       attribution:
         '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     }).addTo(map)
+
+    const createEvent = L.control({ position: "topleft" })
+    createEvent.onAdd = () => {
+      const buttonDiv = L.DomUtil.create("div", "button-wrapper")
+
+      buttonDiv.innerHTML = `<button>Lisää tapahtuma</button>`
+      buttonDiv.addEventListener("click", () => onClickCreateEvent())
+      return buttonDiv
+    }
+    createEvent.addTo(map)
+
+    const listJoinedEvents = L.control({ position: "topleft" })
+    listJoinedEvents.onAdd = () => {
+      const buttonDiv = L.DomUtil.create("div", "button-wrapper")
+
+      buttonDiv.innerHTML = `<button>Liityttyjen lista</button>`
+      buttonDiv.addEventListener("click", () => onClickListJoinedEvents())
+      return buttonDiv
+    }
+    listJoinedEvents.addTo(map)
+
+    const ownInfo = L.control({ position: "topleft" })
+    ownInfo.onAdd = () => {
+      const buttonDiv = L.DomUtil.create("div", "button-wrapper")
+
+      buttonDiv.innerHTML = `<button>Omat tiedot</button>`
+      buttonDiv.addEventListener("click", () => onClickOwnInfo())
+      return buttonDiv
+    }
+    ownInfo.addTo(map)
 
     map.on("moveend", () => {
       // Tallennetaan kartan nykyinen keskikohta reduxin storeen

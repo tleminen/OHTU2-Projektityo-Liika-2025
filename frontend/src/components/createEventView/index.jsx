@@ -1,12 +1,13 @@
 import Footer from "../footer"
 import Header from "../header"
 import CreateEventForm from "./createEventForm"
+import "./createEvent.css"
 
 const CreateEventView = () => {
   return (
-    <div className="app">
+    <div className="fullpage">
       <Header />
-      <div className="main-content">
+      <div className="create-event">
         <CreateEventForm />
       </div>
       <footer>

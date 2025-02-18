@@ -1,0 +1,21 @@
+.create-event {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+  align-items: center;
+  margin: auto;
+  width: 100%;
+}
+
+.create-event-form {
+  display: flex;
+  gap: 8px;
+  margin: auto;
+  text-align: center;
+  justify-content: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  width: 100%;
+  flex: 1;
+}

@@ -5,29 +5,51 @@
   gap: 8px;
   align-items: center;
   margin: auto;
+  margin-top: 2%;
   width: 100%;
 }
 
-.login-form {
+.register-form {
   display: flex;
-  gap: 8px;
+  margin: auto;
+  text-align: center;
 }
 
-/*rekisteröinnille ja kirjautumiselle painikkeet kesken*/
-.registerandlogin-btn {
-  border-radius: 10px;
-  border: 2px solid transparent;
-  padding: 0.3em 0.6em;
-  font-size: 1.5em;
-  font-weight: 500;
-  font-family: inherit;
+
+.forms-btn {
+  border-radius: 5px;
+  border: none;
+  padding: 0.8em 5em;
+  position: relative;
+  overflow: hidden;
   color: #ffffff;
-  text-transform: uppercase;
   background-color: #0097b2;
+  transition: transform 0.6s ease-in-out;
   cursor: pointer;
-  transition: background-color 0.25s, color 0.25s;
   display: flex;
   align-items: center;
   justify-content: center;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.5);
+  margin: auto;
+  margin-top: 5%;
+  text-transform: uppercase;
+}
+.forms-btn span {
+  position: relative;
+  z-index: 1; /* Tuo teksti napin päälle */
+}
+.forms-btn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 100%;
+  background-color: #007891; /* Muuta väriä tähän */
+  color: #ffffff;
+  transition: width 0.6s ease-in-out; /* Säädä täyttymisnopeutta */
+}
+
+.forms-btn:hover::before {
+  width: 100%;
 }

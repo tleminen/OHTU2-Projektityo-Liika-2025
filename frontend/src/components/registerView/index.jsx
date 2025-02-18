@@ -19,7 +19,7 @@ const Register = () => {
       <Header />
       <div className="register">
         <RegisterForm />
-        <p>
+        <p style={{ textAlign: "center" }}>
           {t.ready_account}
           <br />
           <a href="/login">{t.login2}</a>
