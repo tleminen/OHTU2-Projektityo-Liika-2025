@@ -11,6 +11,7 @@ const AccountInformationForm = () => {
   const [email, setEmail] = useState("")
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
+  const [newPassword, setNewPassword] = useState("")
   const [startLocation, setStartLocation] = useState("")
   const [selectedLanguage, setSelectedLanguage] = useState("")
 
@@ -57,6 +58,15 @@ const AccountInformationForm = () => {
             name="username"
             onChange={(e) => setUsername(e.target.value)}
             placeholder={t.username}
+          />
+        </div>
+        <div>
+          <input
+            type="text"
+            value={newPassword}
+            name="newPassword"
+            onChange={(e) => setNewPassword(e.target.value)}
+            placeholder={t.newPassword}
           />
         </div>
         <div>
