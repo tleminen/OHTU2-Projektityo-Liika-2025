@@ -1,21 +1,29 @@
-import { useSelector } from "react-redux"
-import { useNavigate } from "react-router-dom"
-import Footer from "../footer"
-import Header from "../header"
-import translations from "../../assets/translation"
-import RegisterForm from "./registerForm"
-import "../../index.css"
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import Footer from "../footer";
+import Header from "../header";
+import translations from "../../assets/translation";
+import RegisterForm from "./registerForm";
+import "../../index.css";
 
 const Register = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const handler = () => {
-    navigate("/")
-  }
-  const language = useSelector((state) => state.language.language)
-  const t = translations[language]
+    navigate("/");
+  };
+  const language = useSelector((state) => state.language.language);
+  const t = translations[language];
 
   return (
-    <div className="fullpage">
+    <div
+      className="fullpage"
+      style={{
+        backgroundImage: "url('/backgroundpicture-registerandlogin.jpg')",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+      }}
+    >
       <Header />
       <div className="register">
         <RegisterForm />
@@ -30,7 +38,7 @@ const Register = () => {
       </div>
       <Footer />
     </div>
-  )
-}
+  );
+};
 
-export default Register
+export default Register;
