@@ -38,9 +38,9 @@ morgan.token("body", (req) => JSON.stringify(req.body)) // Pyynnön body
 morgan.token("user-agent", (req) => req.headers["user-agent"]) // User-Agent
 
 const customFormat = // Mukautettu lokiformaatti terminaaliin
-  ':ip [:timestamp] ":method :url" :status - Body: :body - Agent: ":user-agent"'
+  ':ip [:timestamp] ":method :url" :status - Body: :body - Agent: ":user-agent" - Response time: :response-time ms'
 const customFormat2 = // Mukautettu lokiformaatti tiedostoon
-  ':ip [:timestamp] ":method :url" :status - Agent: ":user-agent"'
+  ':ip [:timestamp] ":method :url" :status - Agent: ":user-agent" - Response time: :response-time ms'
 
 app.use(
   morgan(customFormat2, {
