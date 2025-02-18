@@ -23,6 +23,7 @@ const Map = ({ startingLocation }) => {
 
   const onClickOwnInfo = () => {
     console.log("Omat tiedot click")
+    navigate("/own_info")
   }
 
   const fetchEvents = async () => {
