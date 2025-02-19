@@ -5,7 +5,7 @@ const Categories = require("./categories")
 
 const Events = sequelize.define("Events", {
   EventID: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
-  Location: { type: DataTypes.GEOMETRY("POINT", 4326), allowNull: false },
+  Event_Location: { type: DataTypes.GEOMETRY("POINT", 4326), allowNull: false },
   Status: { type: DataTypes.STRING(32), allowNull: false },
   Description: { type: DataTypes.STRING(1700), allowNull: true },
   ParticipantMax: { type: DataTypes.INTEGER, allowNull: true },
