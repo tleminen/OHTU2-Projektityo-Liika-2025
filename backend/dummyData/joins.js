@@ -4,19 +4,19 @@ module.exports = {
     await queryInterface.bulkInsert("Joins", [
       {
         UserID: 1,
-        EventID: 1,
+        EventID: 10000001,
       },
       {
         UserID: 4,
-        EventID: 2,
+        EventID: 10000001,
       },
       {
         UserID: 1,
-        EventID: 3,
+        EventID: 10000003,
       },
       {
         UserID: 1,
-        EventID: 2,
+        EventID: 10000002,
       },
     ])
   },
