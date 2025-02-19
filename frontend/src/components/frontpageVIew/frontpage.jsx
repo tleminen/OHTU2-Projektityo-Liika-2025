@@ -1,5 +1,5 @@
 import Header from "../header"
-import mapImage from "../../../public/map_kuvituskuva.png"
+import mapImage from "../../assets/map_kuvituskuva.png"
 import Footer from "../footer"
 import { useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react"

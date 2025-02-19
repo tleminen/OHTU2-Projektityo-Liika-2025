@@ -1,11 +1,11 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useState } from "react"
-import L, { layerGroup } from "leaflet"
+import L from "leaflet"
 import "leaflet/dist/leaflet.css"
 import "../../index.css"
 import { useDispatch } from "react-redux"
 import { changeLocation } from "../../store/locationSlice"
-import logo from "../../../public/liika_logo.png"
+import logo from "../../assets/liika_logo.png"
 import { useNavigate } from "react-router-dom"
 import eventService from "../../services/eventService"
 

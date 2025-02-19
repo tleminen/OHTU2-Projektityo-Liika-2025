@@ -1,4 +1,4 @@
-import logo from "../../public/liika_logo.png"
+import logo from "../assets/liika_logo.png"
 import { useNavigate } from "react-router-dom"
 
 const Header = () => {
