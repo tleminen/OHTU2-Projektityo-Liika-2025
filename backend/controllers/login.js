@@ -44,6 +44,7 @@ loginRouter.post("/", async (req, res) => {
 
     res.status(200).send({
       token,
+      userID: user.UserID,
       username: user.Username,
       location: user.Location.coordinates,
       language: "fi", // Kovakoodattu, laita kyselyyn populate with language jotenkin
@@ -76,7 +77,7 @@ loginRouter.post("/sendEmail", async (req, res) => {
       "Salasanan palautus",
       `Kertakäyttöinen salasanasi on: ${tempPassword}\n\nKäytä tätä salasanaa kirjautuessasi sisään. Muista vaihtaa salasanasi heti kirjautumisen jälkeen.`
     )
-    
+
     if (success) {
       res.status(200).json({ message: "Sähköposti lähetetty!" })
     } else {

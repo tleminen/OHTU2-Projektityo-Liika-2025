@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken")
 const bcrypt = require("bcryptjs")
 const { Router } = require("express")
-const User = require("../models/users")
+const Users = require("../models/users")
 const { Sequelize } = require("sequelize")
 
 const userRouter = Router()
@@ -18,7 +18,7 @@ userRouter.post("/", async (req, res) => {
     const passwordhash = await bcrypt.hash(password, saltRounds)
 
     try {
-      const savedUser = await User.create({
+      const savedUser = await Users.create({
         // Uuden käyttäjän rekisteröinti
         Username: username,
         Password: passwordhash,
@@ -42,13 +42,11 @@ userRouter.post("/", async (req, res) => {
         // Luodaan tokeni uudelle käyttäjälle heti
         expiresIn: "60d",
       })
-      res
-        .status(200)
-        .send({
-          token,
-          username: savedUser.Username,
-          location: [location.lng, location.lat],
-        })
+      res.status(200).send({
+        token,
+        username: savedUser.Username,
+        location: [location.lng, location.lat],
+      })
     } catch (error) {
       console.log("PostgreSQL Error:", error)
       res.status(400).send({ error: `Error occured during user creation` })

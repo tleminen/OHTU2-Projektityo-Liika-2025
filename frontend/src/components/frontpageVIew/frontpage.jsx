@@ -17,7 +17,7 @@ const Frontpage = () => {
   const t = translations[language]
 
   useEffect(() => {
-    const loggedUserSTRING = window.localStorage.getItem("loggedUser")
+    const loggedUserSTRING = window.localStorage.getItem("user")
     if (loggedUserSTRING) {
       const user = JSON.parse(loggedUserSTRING)
       setUser(user)

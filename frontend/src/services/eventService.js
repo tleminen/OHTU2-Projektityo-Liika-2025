@@ -11,4 +11,12 @@ const getEvents = async (parameters) => {
   return response.data
 }
 
-export default { getCategories, getEvents }
+const createEvent = async (parameters) => {
+  const response = await axios.post(
+    baseUrl + "/events/create_event",
+    parameters
+  )
+  return response.data
+}
+
+export default { getCategories, getEvents, createEvent }

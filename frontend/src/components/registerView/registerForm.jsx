@@ -87,6 +87,7 @@ const RegisterForm = () => {
             onChange={(e) => setUsername(e.target.value)}
             placeholder={t.username}
             autoComplete="nickname"
+            required={true}
           />
         </div>
         <div>
@@ -98,6 +99,7 @@ const RegisterForm = () => {
             onChange={(e) => setEmail(e.target.value)}
             placeholder={t.email}
             autoComplete="email"
+            required={true}
           />
         </div>
         <div className="password-input-container">
@@ -109,6 +111,7 @@ const RegisterForm = () => {
             onChange={(e) => setPassword(e.target.value)}
             placeholder={t.password}
             autoComplete="new-password"
+            required={true}
           />
           <button
             type="button"
@@ -128,6 +131,7 @@ const RegisterForm = () => {
             name="passwordAgain"
             onChange={(e) => setPasswordAgain(e.target.value)}
             placeholder={t.passwordAgain}
+            required={true}
           />
           <button
             type="button"

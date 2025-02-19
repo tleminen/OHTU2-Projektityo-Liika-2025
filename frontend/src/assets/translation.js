@@ -1,5 +1,5 @@
-import termsOfServiceText from "./termsOfServiceText";
-import infoText from "./infoText";
+import termsOfServiceText from "./termsOfServiceText"
+import infoText from "./infoText"
 const translations = {
   en: {
     activity: "Activity",
@@ -7,10 +7,12 @@ const translations = {
     dateAndTime: "Date and time",
     description: "Description",
     back: "Back",
+    date: "Date",
     email: "Email",
     email_not_found: "Email not found",
     email_send_error: "Send error",
     email_sent: "Email sent",
+    endTime: "Ends at",
     forgot_pw: "Forgot password?",
     info: "Info",
     info_txt: infoText.getText("en"),
@@ -34,8 +36,10 @@ const translations = {
     setStartLocationInfo: "Set the starting location for searching events",
     start: "Press the map to start",
     startLocation: "Start location",
+    startTime: "Starts at",
     terms_of_service: "Terms of service",
     terms_of_service_txt: termsOfServiceText.getText("en"),
+    title: "Title",
     username: "Username",
   },
   fi: {
@@ -44,10 +48,12 @@ const translations = {
     createEvent: "Luo tapahtuma",
     dateAndTime: "Aika",
     description: "Kuvaus",
+    date: "Päivämäärä",
     email: "Sähköposti",
     email_not_found: "Sähköpostia ei löytynyt",
     email_send_error: "Virhe lähettäessä",
     email_sent: "Sähköposti lähetetty",
+    endTime: "Päättymisaika",
     forgot_pw: "Unohtuiko salasana?",
     info: "Info",
     info_txt: infoText.getText("fi"),
@@ -71,10 +77,12 @@ const translations = {
     setStartLocationInfo: "Aseta tapahtumakartan aloitussijainti",
     start: "Napauta karttaa aloittaaksesi",
     startLocation: "Oletus-sijainti",
+    startTime: "Alkasmisaika",
     terms_of_service: "Käyttöehdot",
     terms_of_service_txt: termsOfServiceText.getText("fi"),
+    title: "Otsikko",
     username: "Käyttäjätunnus",
   },
-};
+}
 
-export default translations;
+export default translations

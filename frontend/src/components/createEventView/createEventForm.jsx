@@ -1,60 +1,92 @@
-import { useSelector } from "react-redux";
-import { useState } from "react";
-import translations from "../../assets/translation.js";
-import LocationMap from "../locationMap.jsx";
-import "./createEvent.css";
-import Select from "react-select";
+import { useSelector } from "react-redux"
+import { useState } from "react"
+import translations from "../../assets/translation.js"
+import LocationMap from "../locationMap.jsx"
+import "./createEvent.css"
+import Select from "react-select"
+import eventService from "../../services/eventService.js"
+import { useNavigate } from "react-router-dom"
 
 const CreateEventForm = () => {
-  const language = useSelector((state) => state.language.language);
-  const t = translations[language];
-  const [activity, setActivity] = useState("");
-  const [date, setDate] = useState("");
-  const [time, setTime] = useState("");
-  const [location, setLocation] = useState("");
-  const [minParticipants, setMinParticipants] = useState("");
-  const [maxParticipants, setMaxParticipants] = useState("");
-  const [description, setDescription] = useState("");
+  const language = useSelector((state) => state.language.language)
+  const t = translations[language]
+  const navigate = useNavigate()
+  const [activity, setActivity] = useState({})
+  const [date, setDate] = useState("")
+  const [startTime, setStartTime] = useState("")
+  const [endTime, setEndTime] = useState("")
+  const [event_location, setEventLocation] = useState("")
+  const [title, setTitle] = useState("")
+  const [participantsMin, setParticipantsMin] = useState("")
+  const [participantsMax, setParticipantsMax] = useState("")
+  const [description, setDescription] = useState("")
+  const userID = useSelector((state) => state.user?.user?.userID ?? null) // Tälleen saa hienosti kokeiltua onko undefined ja jos on nii chain-kysely jatkuu
 
   const handleSubmit = (event) => {
-    event.preventDefault();
-    console.log("Create event attempt:", {
-      activity,
-      date,
-      time,
-      location,
-      minParticipants,
-      maxParticipants,
-      description,
-    });
-  };
+    const categoryID = activity.value
+    event.preventDefault()
+    if (!userID) {
+      console.log(
+        "user not logged in! Toteuta rekisteröintihommeli tai miten se menikään?"
+      )
+    } else {
+      try {
+        eventService.createEvent({
+          title,
+          userID,
+          categoryID,
+          date,
+          startTime,
+          endTime,
+          event_location,
+          participantsMin,
+          participantsMax,
+          description,
+        })
+      } catch (error) {
+        console.error("Erron while creating event: " + error)
+      }
+      navigate(`/map`)
+    }
+  }
 
   const handleLocationChange = (newLocation) => {
-    setLocation(newLocation);
-  };
+    setEventLocation(newLocation)
+  }
 
-  const categories = useSelector((state) => state.categories.categories);
+  const categories = useSelector((state) => state.categories.categories)
 
   const options = () => {
     try {
       return categories.map((cat) => ({
         value: cat.CategoryID,
         label: cat.Category,
-      }));
+      }))
     } catch (error) {
-      console.log(error);
+      console.log(error)
     }
-  };
+  }
 
   const handleChange = (selectedOption) => {
-    setActivity(selectedOption);
-  };
+    setActivity(selectedOption)
+  }
 
   return (
     <div className="create-event-form">
       <form onSubmit={handleSubmit}>
         <div>
           <div>
+            <h3>{t.title}</h3>
+            <input
+              type="text"
+              value={title}
+              className="input-field"
+              onChange={(e) => setTitle(e.target.value)}
+              required={true}
+            />
+          </div>
+          <div>
+            <h3>{t.activity}</h3>
             <Select
               className="input-field"
               placeholder={t.activity}
@@ -62,27 +94,44 @@ const CreateEventForm = () => {
               onChange={handleChange}
               options={options()}
               isSearchable={true}
+              required={true}
             />
           </div>
         </div>
         <div>
+          <h3>{t.date}</h3>
           <input
             type="date"
             value={date}
-            name="dateAndTime"
+            name="date"
             className="input-field"
             onChange={(e) => setDate(e.target.value)}
             placeholder={t.dateAndTime}
+            required={true}
           />
         </div>
         <div>
+          <h3>{t.startTime}</h3>
           <input
             type="time"
-            value={time}
-            name="dateAndTime"
+            value={startTime}
+            name="startTime"
             className="input-field"
-            onChange={(e) => setTime(e.target.value)}
+            onChange={(e) => setStartTime(e.target.value)}
             placeholder={t.dateAndTime}
+            required={true}
+          />
+        </div>
+        <div>
+          <h3>{t.endTime}</h3>
+          <input
+            type="time"
+            value={endTime}
+            name="endTime"
+            className="input-field"
+            onChange={(e) => setEndTime(e.target.value)}
+            placeholder={t.dateAndTime}
+            required={true}
           />
         </div>
         <div>
@@ -93,21 +142,23 @@ const CreateEventForm = () => {
         <div>
           <input
             type="number"
-            value={minParticipants}
+            value={participantsMin}
             name="minParticipants"
             className="input-field"
-            onChange={(e) => setMinParticipants(e.target.value)}
+            onChange={(e) => setParticipantsMin(e.target.value)}
             placeholder={t.minParticipants}
+            required={true}
           />
         </div>
         <div>
           <input
             type="number"
-            value={maxParticipants}
+            value={participantsMax}
             name="maxParticipants"
             className="input-field"
-            onChange={(e) => setMaxParticipants(e.target.value)}
+            onChange={(e) => setParticipantsMax(e.target.value)}
             placeholder={t.maxParticipants}
+            required={true}
           />
         </div>
         <div>
@@ -125,7 +176,7 @@ const CreateEventForm = () => {
         </button>
       </form>
     </div>
-  );
-};
+  )
+}
 
-export default CreateEventForm;
+export default CreateEventForm

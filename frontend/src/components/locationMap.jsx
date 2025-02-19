@@ -16,6 +16,7 @@ const LocationMap = ({ onLocationChange }) => {
       center: [startingLocation.lat, startingLocation.lng],
       zoom: 14,
     })
+    onLocationChange([startingLocation.lat, startingLocation.lng])
 
     // Lisää OpenStreetMap-laatta
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {

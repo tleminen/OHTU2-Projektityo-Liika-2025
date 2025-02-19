@@ -5,6 +5,7 @@ import loginService from "../../services/loginService.js"
 import { useNavigate } from "react-router-dom"
 import "./login.css"
 import { changeLocation } from "../../store/locationSlice.js"
+import { changeUser } from "../../store/userSlice.js"
 
 const LoginForm = () => {
   const language = useSelector((state) => state.language.language)
@@ -31,7 +32,13 @@ const LoginForm = () => {
       })
       console.log(`Tokeni: ${user.token} Käyttäjätunnus: ${user.username}`)
       console.log(user)
-      window.localStorage.setItem("loggedUser", JSON.stringify(user))
+      dispatch(
+        changeUser({
+          userID: user.userID,
+          username: user.username,
+          token: user.token,
+        })
+      )
       dispatch(
         changeLocation({
           o_lat: user.location[1],
@@ -64,6 +71,7 @@ const LoginForm = () => {
             onChange={(e) => setUsername(e.target.value)}
             placeholder={t.username}
             autoComplete="text"
+            required={true}
           />
         </div>
         <div className="password-input-container">
@@ -75,6 +83,7 @@ const LoginForm = () => {
             onChange={(e) => setPassword(e.target.value)}
             placeholder={t.password}
             autoComplete="current-password"
+            required={true}
           />
           <button
             type="button"
