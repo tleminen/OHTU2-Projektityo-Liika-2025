@@ -1,0 +1,8 @@
+POST http://localhost:3003/api/events/nearby
+Content-Type: application/json
+
+{
+    "latitude": 60.1699,
+    "longitude": 24.9384,
+    "radius": 390000
+}
