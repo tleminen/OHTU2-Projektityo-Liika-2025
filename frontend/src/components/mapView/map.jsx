@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
-import { useEffect } from "react"
-import L from "leaflet"
+import { useEffect, useState } from "react"
+import L, { layerGroup } from "leaflet"
 import "leaflet/dist/leaflet.css"
 import "../../index.css"
 import { useDispatch } from "react-redux"
@@ -12,18 +12,55 @@ import eventService from "../../services/eventService"
 const Map = ({ startingLocation }) => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const [categoryLayers, setCategoryLayers] = useState({})
 
-  /**
-   * Tapahtumat:
-   */
-  const fetchEvents = async (map) => {
-    const mapCenter = map.getCenter()
-    const eventList = await eventService.getEvents({
-      latitude: mapCenter.lat,
-      longitude: mapCenter.lng,
-      radius: 1000,
-    })
-    console.log(eventList)
+  // Funktio, joka hakee tapahtumat ja lisää markerit layerGroupeihin kategorioittain
+  const refreshMarkers = async (map) => {
+    const center = map.getCenter()
+    try {
+      const eventList = await eventService.getEvents({
+        latitude: center.lat,
+        longitude: center.lng,
+        radius: 1000,
+      })
+      console.log("Haetut tapahtumat:", eventList)
+
+      // Poistetaan kaikki vanhat layerGroupit kartalta
+      Object.values(categoryLayers).forEach((layerGroup) => {
+        map.removeLayer(layerGroup)
+      })
+      // Tyhjennetään layerGroupjen tila
+      setCategoryLayers({})
+
+      // Lisätään markerit uudelleen
+      eventList.forEach((tapahtuma) => {
+        const { coordinates } = tapahtuma.Event_Location
+        const lat = coordinates[1]
+        const lng = coordinates[0]
+        const marker = L.marker([lat, lng]).bindPopup(
+          `<strong>${tapahtuma.Title}</strong><br>${
+            tapahtuma.Description || ""
+          }`
+        )
+        const categoryID = tapahtuma.CategoryID
+        let layerGroup
+        // Jos kyseistä kategorian layerGroupia ei vielä ole, luodaan se // EI TOIMI POISTO
+        if (!categoryLayers[categoryID]) {
+          layerGroup = L.layerGroup().addTo(map)
+          // Päivitetään tila, mutta huomaa, että tämä on asynkronista
+          setCategoryLayers((prev) => ({ ...prev, [categoryID]: layerGroup }))
+        } else {
+          layerGroup = categoryLayers[categoryID]
+        }
+        layerGroup.addLayer(marker)
+      })
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  const onClickRefresh = async (map) => {
+    await refreshMarkers(map)
   }
 
   const onClickCreateEvent = () => {
@@ -37,10 +74,6 @@ const Map = ({ startingLocation }) => {
   const onClickOwnInfo = () => {
     console.log("Omat tiedot click")
     navigate("/own_info")
-  }
-
-  const onClickRefresh = async (map) => {
-    await fetchEvents(map)
   }
 
   useEffect(() => {
