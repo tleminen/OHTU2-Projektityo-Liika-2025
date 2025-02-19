@@ -1,36 +1,36 @@
-import Header from "../header";
-import mapImage from "../../assets/map_kuvituskuva.png";
-import Footer from "../footer";
-import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import SignedOut from "./singedOut";
-import SignedIn from "./signedIn";
-import translations from "../../assets/translation";
+import Header from "../header"
+import mapImage from "../../../public/map_kuvituskuva.png"
+import Footer from "../footer"
+import { useNavigate } from "react-router-dom"
+import { useEffect, useState } from "react"
+import { useSelector } from "react-redux"
+import SignedOut from "./singedOut"
+import SignedIn from "./signedIn"
+import translations from "../../assets/translation"
 const Frontpage = () => {
-  const [user, setUser] = useState(window.localStorage.getItem("loggedUser"));
-  const navigate = useNavigate();
+  const [user, setUser] = useState(window.localStorage.getItem("loggedUser"))
+  const navigate = useNavigate()
   const navigateTo = (path) => {
-    navigate(`/${path}`);
-  };
-  const language = useSelector((state) => state.language.language);
-  const t = translations[language];
+    navigate(`/${path}`)
+  }
+  const language = useSelector((state) => state.language.language)
+  const t = translations[language]
 
   useEffect(() => {
-    const loggedUserSTRING = window.localStorage.getItem("loggedUser");
+    const loggedUserSTRING = window.localStorage.getItem("loggedUser")
     if (loggedUserSTRING) {
-      const user = JSON.parse(loggedUserSTRING);
-      setUser(user);
+      const user = JSON.parse(loggedUserSTRING)
+      setUser(user)
     }
-  }, []);
+  }, [])
 
   const singedOrNot = () => {
     if (user === null) {
-      return <SignedOut />;
+      return <SignedOut />
     } else {
-      return <SignedIn setUser={setUser} />;
+      return <SignedIn setUser={setUser} />
     }
-  };
+  }
 
   return (
     <div
@@ -65,7 +65,7 @@ const Frontpage = () => {
       </div>
       <Footer />
     </div>
-  );
-};
+  )
+}
 
-export default Frontpage;
+export default Frontpage

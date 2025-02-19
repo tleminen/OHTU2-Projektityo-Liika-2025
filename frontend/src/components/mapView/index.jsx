@@ -1,24 +1,23 @@
-import { useDispatch, useSelector } from "react-redux";
-import Map from "./map";
-import "./mapView.css";
-import eventService from "../../services/eventService";
-import { changeCategories } from "../../store/categoriesSlice";
+import { useDispatch, useSelector } from "react-redux"
+import Map from "./map"
+import "./mapView.css"
+import eventService from "../../services/eventService"
+import { changeCategories } from "../../store/categoriesSlice"
 
 const MapView = () => {
-  const startingLocation = useSelector((state) => state.location.location); // haetaan kartan aloituskohta
-  const dispatch = useDispatch();
+  const startingLocation = useSelector((state) => state.location.location) // haetaan kartan aloituskohta
+  const dispatch = useDispatch()
 
   const loadData = async () => {
     try {
-      const categories = await eventService.getCategories();
-      console.log(categories);
-      dispatch(changeCategories(categories));
+      const categories = await eventService.getCategories()
+      dispatch(changeCategories(categories))
     } catch (error) {
-      console.log(error);
+      console.log(error)
     }
-  };
+  }
 
-  loadData();
+  loadData()
 
   return (
     <div
@@ -34,7 +33,7 @@ const MapView = () => {
         <Map startingLocation={startingLocation} />
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default MapView;
+export default MapView
