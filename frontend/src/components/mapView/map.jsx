@@ -62,9 +62,7 @@ const Map = ({ startingLocation }) => {
             tapahtuma.Description || ""
           }`
         )
-        console.log(golf)
         marker.setIcon(golf)
-        console.log(marker)
         const categoryID = tapahtuma.CategoryID
         let layerG
         // Jos kyseistä kategorian layerGroupia ei vielä ole, luodaan se

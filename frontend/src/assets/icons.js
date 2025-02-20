@@ -5,10 +5,10 @@ const ICONANCHOR = [32, 62]
 const POPUPANCHOR = [-3, -76]
 
 export var amerikkalainen_jalkapallo = L.icon({
-  iconUrl: "/assets/lajit/amerikkalainen_jalkapallo.png",
-  iconSize: ICONSIZE,
-  iconAnchor: ICONANCHOR,
-  popupAnchor: POPUPANCHOR,
+  iconUrl: "/assets/lajit/amerikkalainen_jalkapallo.png", // Tulee olla public-kansiossa
+  iconSize: ICONSIZE, // Ikonin koko pixeleinä
+  iconAnchor: ICONANCHOR, // Minkä verran offsettiä painalluskohdasta
+  popupAnchor: POPUPANCHOR, // -""-
 })
 
 export var avantouinti = L.icon({
