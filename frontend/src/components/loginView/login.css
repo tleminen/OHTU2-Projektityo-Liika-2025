@@ -12,6 +12,7 @@
 .login-form {
   display: flex;
   gap: 8px;
+  text-align: center;
 }
 
 .forms-btn {

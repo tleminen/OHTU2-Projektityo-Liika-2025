@@ -62,6 +62,7 @@ const LoginForm = () => {
     <div className="login-form">
       <form onSubmit={handleSubmit}>
         <div>
+          <h3>{t.username}</h3>
           <input
             ref={inputRef}
             type="text"
@@ -74,6 +75,7 @@ const LoginForm = () => {
             required={true}
           />
         </div>
+        <h3>{t.password}</h3>
         <div className="password-input-container">
           <input
             type={showPassword ? "text" : "password"}

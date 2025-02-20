@@ -442,8 +442,7 @@ h3 {
   flex: 1; /* Täyttää kaiken käytettävissä olevan tilan */
   background-color: lightgray; /* Väliaikainen taustaväri */
   height: 350px;
-  width: auto;
-  min-width: 100%;
+  width: 100%;
 }
 
 /*ala paneelille tyyli*/

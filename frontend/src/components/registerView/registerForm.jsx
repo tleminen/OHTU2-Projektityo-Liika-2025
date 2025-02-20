@@ -78,6 +78,7 @@ const RegisterForm = () => {
     <div className="register-form">
       <form onSubmit={handleSubmit}>
         <div>
+          <h3>{t.username}</h3>
           <input
             ref={inputRef}
             type="text"
@@ -91,6 +92,7 @@ const RegisterForm = () => {
           />
         </div>
         <div>
+          <h3>{t.email}</h3>
           <input
             type="email"
             className="input-field"
@@ -102,6 +104,7 @@ const RegisterForm = () => {
             required={true}
           />
         </div>
+        <h3>{t.password}</h3>
         <div className="password-input-container">
           <input
             type={showPassword ? "text" : "password"}
@@ -123,6 +126,7 @@ const RegisterForm = () => {
             </span>
           </button>
         </div>
+        <h3>{t.passwordAgain}</h3>
         <div className="password-input-container">
           <input
             type={showPasswordAgain ? "text" : "password"}
@@ -145,7 +149,7 @@ const RegisterForm = () => {
         </div>
         <br />
         <div>
-          <h2 style={{ textAlign: "center" }}>{t.setStartLocationInfo}</h2>
+          <h3>{t.setStartLocationInfo}</h3>
           <LocationMap onLocationChange={handleLocationChange} />
         </div>
         <button type="submit" className="forms-btn">
