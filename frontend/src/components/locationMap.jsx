@@ -7,10 +7,7 @@ import { useSelector } from "react-redux"
 // eslint-disable-next-line react/prop-types
 const LocationMap = ({ onLocationChange }) => {
   const startingLocation = useSelector((state) => state.location.location)
-  console.log()
   useEffect(() => {
-    console.log("map useEffect")
-
     // Luo karttaelementti kun komponentti mounttaa
     const map = L.map("map", {
       center: [startingLocation.lat, startingLocation.lng],

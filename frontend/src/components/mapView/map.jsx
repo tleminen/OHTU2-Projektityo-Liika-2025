@@ -9,12 +9,13 @@ import logo from "../../assets/liika_logo.png"
 import { useNavigate } from "react-router-dom"
 import eventService from "../../services/eventService"
 import { createRoot } from "react-dom/client"
+import { golf } from "../../assets/icons"
 
 const Map = ({ startingLocation }) => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [timeStamp, setTimeStamp] = useState("") // Aikaleima, milloin päivitetty
-  var layer = []
+  var layer = [] // Layereita käyttäen voidaan toteuttaa suodatus lajeittain myöhemmin!
   const refreshRef = useRef(null)
 
   useEffect(() => {
@@ -61,6 +62,9 @@ const Map = ({ startingLocation }) => {
             tapahtuma.Description || ""
           }`
         )
+        console.log(golf)
+        marker.setIcon(golf)
+        console.log(marker)
         const categoryID = tapahtuma.CategoryID
         let layerG
         // Jos kyseistä kategorian layerGroupia ei vielä ole, luodaan se

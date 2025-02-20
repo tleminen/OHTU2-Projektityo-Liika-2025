@@ -3,6 +3,8 @@ import { useState } from "react"
 import LocationMap from "../locationMap.jsx"
 import Select from "react-select"
 import translations from "../../assets/translation.js"
+import Header from "../header.jsx"
+import Footer from "../footer.jsx"
 
 const AccountInformationForm = () => {
   const language = useSelector((state) => state.language.language)
@@ -16,12 +18,17 @@ const AccountInformationForm = () => {
 
   const options = [
     { value: "fi", label: "Suomi" },
-    { value: "en", label: "Englanti" },
+    { value: "en", label: "English" },
     //Lisätään muita kieliä tarvittaessa
   ]
 
+  const selectedOption = options.find(
+    (option) => option.value === selectedLanguage
+  )
+
   const handleChange = (selectedOption) => {
-    console.log(selectedOption.value)
+    console.log(selectedOption.label)
+    setSelectedLanguage(selectedOption.selectedOption)
   }
 
   const handleSubmit = (event) => {
@@ -39,54 +46,76 @@ const AccountInformationForm = () => {
   }
 
   return (
-    <div>
+    <div className="fullpage">
+      <Header />
+      <h1>
+        Voit muokata omia tietoja täyttämällä ja tallentamalla lomakkeen tiedot
+      </h1>
       <form onSubmit={handleSubmit}>
         <div>
+          <h3>{t.email}</h3>
           <input
+            className="input-field"
             type="text"
             value={email}
             name="email"
             onChange={(e) => setEmail(e.target.value)}
             placeholder={t.email}
+            required={true}
           />
         </div>
         <div>
+          <h3>{t.username}</h3>
           <input
+            className="input-field"
             type="text"
             value={username}
             name="username"
             onChange={(e) => setUsername(e.target.value)}
             placeholder={t.username}
+            required={true}
           />
         </div>
         <div>
+          <h3>{t.newPassword}</h3>
           <input
+            className="input-field"
             type="text"
             value={newPassword}
             name="newPassword"
             onChange={(e) => setNewPassword(e.target.value)}
             placeholder={t.newPassword}
+            autoComplete="new-password"
+          />
+        </div>
+        <br />
+        <div style={{ margin: "10px" }}>
+          <h3>{t.setStartLocationInfo}</h3>
+          <LocationMap onLocationChange={handleLocationChange} />
+        </div>
+        <div>
+          <h3>{t.language}</h3>
+          <Select
+            value={selectedOption}
+            onChange={handleChange}
+            options={options}
           />
         </div>
         <div>
           <input
+            className="input-field"
             type="password"
             value={password}
             name="password"
             onChange={(e) => setPassword(e.target.value)}
             placeholder={t.password}
+            required={true}
+            autoComplete="password"
           />
-        </div>
-        <br />
-        <div>
-          <h2 style={{ textAlign: "center" }}>{t.setStartLocationInfo}</h2>
-          <LocationMap onLocationChange={handleLocationChange} />
-        </div>
-        <div>
-          <Select value="" onChange={handleChange} options={options} />
         </div>
         <button type="submit">{t.save}</button>
       </form>
+      <Footer />
     </div>
   )
 }

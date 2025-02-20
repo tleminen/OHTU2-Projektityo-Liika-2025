@@ -8,7 +8,7 @@ const FlagSelection = () => {
 
   const options = [
     { value: "fi", label: "Suomi" },
-    { value: "en", label: "Englanti" },
+    { value: "en", label: "English" },
     //Lisätään muita kieliä tarvittaessa
   ]
 
