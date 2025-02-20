@@ -8,7 +8,7 @@ module.exports = {
           "POINT(29.7639 62.6000)"
         ),
         Status: "Basic",
-        Title: "Jalkapallo",
+        Title: "Amerikkalainen jalkapallo",
         UserID: 1,
         EventID: 10000001,
         CategoryID: 1,
@@ -21,7 +21,7 @@ module.exports = {
           "Point(24.9384 60.1699)"
         ),
         Status: "Basic",
-        Title: "Sulkapallo",
+        Title: "Biljardi",
         UserID: 1,
         EventID: 10000002,
         CategoryID: 3,
@@ -31,7 +31,7 @@ module.exports = {
       {
         Event_Location: ("ST_GeomFromText", "POINT(29.7599 62.6000)"),
         Status: "Basic",
-        Title: "Tennis",
+        Title: "Golf",
         UserID: 4,
         EventID: 10000003,
         CategoryID: 4,

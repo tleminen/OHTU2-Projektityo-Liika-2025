@@ -18,8 +18,14 @@ const userSlice = createSlice({
       state.user = action.payload
       localStorage.setItem("user", JSON.stringify(action.payload))
     },
+    loadUserFromStorage: (state) => {
+      const storedUser = JSON.parse(localStorage.getItem("user"))
+      if (storedUser) {
+        state.user = storedUser
+      }
+    },
   },
 })
 
-export const { changeUser } = userSlice.actions
+export const { changeUser, loadUserFromStorage } = userSlice.actions
 export default userSlice.reducer

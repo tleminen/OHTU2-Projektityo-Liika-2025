@@ -7,8 +7,16 @@ import TermsOfServiceView from "./components/termsOfServiceView"
 import InfoView from "./components/infoView"
 import CreateEventView from "./components/createEventView"
 import AccountInformationForm from "./components/accountInformationView/accountInformationForm"
+import { useDispatch } from "react-redux"
+import { useEffect } from "react"
+import { loadUserFromStorage } from "./store/userSlice"
 
 const App = () => {
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(loadUserFromStorage())
+  }, [dispatch])
   return (
     <Routes>
       <Route path="/" element={<Frontpage />} />
