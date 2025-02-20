@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import L from "leaflet"
 import "leaflet/dist/leaflet.css"
 import "../../index.css"
@@ -8,29 +8,48 @@ import { changeLocation } from "../../store/locationSlice"
 import logo from "../../assets/liika_logo.png"
 import { useNavigate } from "react-router-dom"
 import eventService from "../../services/eventService"
+import { createRoot } from "react-dom/client"
 
 const Map = ({ startingLocation }) => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const [categoryLayers, setCategoryLayers] = useState({})
+  const [timeStamp, setTimeStamp] = useState("") // Aikaleima, milloin päivitetty
+  var layer = []
+  const refreshRef = useRef(null)
+
+  useEffect(() => {
+    if (refreshRef.current) {
+      refreshRef.current.render(
+        <div className="refresh-stamp">
+          <p>{timeStamp}</p>
+        </div>
+      )
+    }
+  }, [timeStamp])
 
   // Funktio, joka hakee tapahtumat ja lisää markerit layerGroupeihin kategorioittain
   const refreshMarkers = async (map) => {
     const center = map.getCenter()
+    setTimeStamp(new Date().toLocaleTimeString().replaceAll(".", ":")) // Asetetaan milloin haettu viimeksi
+    const bounds = map.getBounds() // Haetaan radiuksen laskemista varten rajat
+    const northWest = bounds.getNorthWest()
+    const southEast = bounds.getSouthEast()
+    const width = northWest.distanceTo([northWest.lat, southEast.lng])
+    const height = northWest.distanceTo([southEast.lat, northWest.lng])
+
     try {
       const eventList = await eventService.getEvents({
         latitude: center.lat,
         longitude: center.lng,
-        radius: 1000,
+        radius: Math.max(Math.max(width, height) / 2, 10000), // Haetaan kartallinen tapahtumia, kuitenkin vähintään 10km
       })
-      console.log("Haetut tapahtumat:", eventList)
 
       // Poistetaan kaikki vanhat layerGroupit kartalta
-      Object.values(categoryLayers).forEach((layerGroup) => {
-        map.removeLayer(layerGroup)
+      layer.forEach((layer) => {
+        map.removeLayer(layer)
       })
       // Tyhjennetään layerGroupjen tila
-      setCategoryLayers({})
+      layer = []
 
       // Lisätään markerit uudelleen
       eventList.forEach((tapahtuma) => {
@@ -43,16 +62,16 @@ const Map = ({ startingLocation }) => {
           }`
         )
         const categoryID = tapahtuma.CategoryID
-        let layerGroup
-        // Jos kyseistä kategorian layerGroupia ei vielä ole, luodaan se // EI TOIMI POISTO
-        if (!categoryLayers[categoryID]) {
-          layerGroup = L.layerGroup().addTo(map)
+        let layerG
+        // Jos kyseistä kategorian layerGroupia ei vielä ole, luodaan se
+        if (!layer[categoryID]) {
+          layerG = L.layerGroup().addTo(map)
           // Päivitetään tila, mutta huomaa, että tämä on asynkronista
-          setCategoryLayers((prev) => ({ ...prev, [categoryID]: layerGroup }))
+          layer[categoryID] = layerG
         } else {
-          layerGroup = categoryLayers[categoryID]
+          layerG = layer[categoryID]
         }
-        layerGroup.addLayer(marker)
+        layerG.addLayer(marker)
       })
     } catch (error) {
       console.error(error)
@@ -89,45 +108,46 @@ const Map = ({ startingLocation }) => {
         '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     }).addTo(map)
 
-    const createEvent = L.control({ position: "topleft" })
-    createEvent.onAdd = () => {
-      const buttonDiv = L.DomUtil.create("div", "button-wrapper")
-
-      buttonDiv.innerHTML = `<button>Lisää tapahtuma</button>`
-      buttonDiv.addEventListener("click", () => onClickCreateEvent())
-      return buttonDiv
+    const pikapainikkeet = L.control({ position: "topleft" })
+    pikapainikkeet.onAdd = () => {
+      const container = L.DomUtil.create("div")
+      const root = createRoot(container)
+      root.render(
+        <div className="pikapainikkeet">
+          <button onClick={() => onClickCreateEvent()}>+_+</button>
+          <button onClick={() => onClickListJoinedEvents()}>\- _-\</button>
+          <button onClick={() => onClickOwnInfo()}>i-i</button>
+        </div>
+      )
+      return container
     }
-    createEvent.addTo(map)
-
-    const listJoinedEvents = L.control({ position: "topleft" })
-    listJoinedEvents.onAdd = () => {
-      const buttonDiv = L.DomUtil.create("div", "button-wrapper")
-
-      buttonDiv.innerHTML = `<button>Liityttyjen lista</button>`
-      buttonDiv.addEventListener("click", () => onClickListJoinedEvents())
-      return buttonDiv
-    }
-    listJoinedEvents.addTo(map)
-
-    const ownInfo = L.control({ position: "topleft" })
-    ownInfo.onAdd = () => {
-      const buttonDiv = L.DomUtil.create("div", "button-wrapper")
-
-      buttonDiv.innerHTML = `<button>Omat tiedot</button>`
-      buttonDiv.addEventListener("click", () => onClickOwnInfo())
-      return buttonDiv
-    }
-    ownInfo.addTo(map)
+    pikapainikkeet.addTo(map)
 
     const refreshEvents = L.control({ position: "topright" })
     refreshEvents.onAdd = () => {
-      const buttonDiv = L.DomUtil.create("div", "button-wrapper")
-
-      buttonDiv.innerHTML = `<button>Päivitä</button>`
-      buttonDiv.addEventListener("click", () => onClickRefresh(map))
-      return buttonDiv
+      const container = L.DomUtil.create("div")
+      const root = createRoot(container)
+      root.render(
+        <div className="refresh-events">
+          <button onClick={() => onClickRefresh(map)}>*Päivitä*</button>
+        </div>
+      )
+      return container
     }
     refreshEvents.addTo(map)
+
+    const refreshStamp = L.control({ position: "topright" })
+    refreshStamp.onAdd = () => {
+      const container = L.DomUtil.create("div")
+      refreshRef.current = createRoot(container)
+      refreshRef.current.render(
+        <div className="refresh-events">
+          <p>{timeStamp}</p>
+        </div>
+      )
+      return container
+    }
+    refreshStamp.addTo(map)
 
     map.on("moveend", () => {
       // Tallennetaan kartan nykyinen keskikohta reduxin storeen

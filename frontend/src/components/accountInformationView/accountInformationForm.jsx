@@ -4,7 +4,6 @@ import LocationMap from "../locationMap.jsx"
 import Select from "react-select"
 import translations from "../../assets/translation.js"
 
-
 const AccountInformationForm = () => {
   const language = useSelector((state) => state.language.language)
   const t = translations[language]
@@ -24,7 +23,7 @@ const AccountInformationForm = () => {
   const handleChange = (selectedOption) => {
     console.log(selectedOption.value)
   }
-  
+
   const handleSubmit = (event) => {
     event.preventDefault()
     console.log("Create event attempt:", {
@@ -32,11 +31,11 @@ const AccountInformationForm = () => {
       username,
       password,
       startLocation,
-      selectedLanguage
+      selectedLanguage,
     })
   }
   const handleLocationChange = (newLocation) => {
-    setLocation(newLocation)
+    setStartLocation(newLocation)
   }
 
   return (
@@ -84,16 +83,11 @@ const AccountInformationForm = () => {
           <LocationMap onLocationChange={handleLocationChange} />
         </div>
         <div>
-        <Select
-        value=""
-        onChange={handleChange}
-        options={options}
-      />
+          <Select value="" onChange={handleChange} options={options} />
         </div>
         <button type="submit">{t.save}</button>
       </form>
     </div>
-    
   )
 }
 
