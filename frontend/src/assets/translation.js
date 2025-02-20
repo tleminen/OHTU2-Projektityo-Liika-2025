@@ -42,6 +42,13 @@ const translations = {
     terms_of_service_txt: termsOfServiceText.getText("en"),
     title: "Title",
     username: "Username",
+    validation_min_username: "Username must be at least 5 characters",
+    validation_max_username: "Username must be no more than 15 characters",
+    validation_min_psw: "Password must be at least 8 characters",
+    validation_max_psw: "Password must be no more than 32 characters",
+    validation_min_email: "Email address must be at least 5 characters",
+    validation_max_email: "Email address must be no more than 40 characters",
+    validation_email_at_sign: "Email address must contain the @ symbol",
   },
   fi: {
     activity: "Laji",
@@ -84,6 +91,13 @@ const translations = {
     terms_of_service_txt: termsOfServiceText.getText("fi"),
     title: "Otsikko",
     username: "Käyttäjätunnus",
+    validation_min_username: "Käyttäjätunnuksen on oltava vähintään 5 merkkiä",
+    validation_max_username: "Käyttäjätunnuksen on oltava enintään 15 merkkiä",
+    validation_min_psw: "Salasanan on oltava vähintään 8 merkkiä",
+    validation_max_psw: "Salasanan on oltava enintään 32 merkkiä",
+    validation_min_email: "Sähköpostiosoitteen on oltava vähintään 5 merkkiä",
+    validation_max_email: "Sähköpostiosoitteen on oltava enintään 40 merkkiä",
+    validation_email_at_sign: "Sähköpostiosoitteen täytyy sisältää @-merkki",
   },
 }
 
