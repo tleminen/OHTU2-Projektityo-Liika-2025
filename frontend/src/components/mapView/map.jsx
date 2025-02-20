@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useRef, useState } from "react"
 import L from "leaflet"
+import "leaflet.markercluster"
 import "leaflet/dist/leaflet.css"
 import "../../index.css"
 import { useDispatch } from "react-redux"
@@ -9,18 +10,19 @@ import logo from "../../assets/liika_logo.png"
 import { useNavigate } from "react-router-dom"
 import eventService from "../../services/eventService"
 import { createRoot } from "react-dom/client"
-import { golf } from "../../assets/icons"
+import { selectIcon } from "../../assets/icons"
+import { categoryGroups } from "./categoryGroups"
 
 const Map = ({ startingLocation }) => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [timeStamp, setTimeStamp] = useState("") // Aikaleima, milloin päivitetty
-  var layer = [] // Layereita käyttäen voidaan toteuttaa suodatus lajeittain myöhemmin!
-  const refreshRef = useRef(null)
+  const timestampRef = useRef(null)
+  const markerClusterGroup = L.markerClusterGroup()
 
   useEffect(() => {
-    if (refreshRef.current) {
-      refreshRef.current.render(
+    if (timestampRef.current) {
+      timestampRef.current.render(
         <div className="refresh-stamp">
           <p>{timeStamp}</p>
         </div>
@@ -45,12 +47,12 @@ const Map = ({ startingLocation }) => {
         radius: Math.max(Math.max(width, height) / 2, 10000), // Haetaan kartallinen tapahtumia, kuitenkin vähintään 10km
       })
 
-      // Poistetaan kaikki vanhat layerGroupit kartalta
-      layer.forEach((layer) => {
-        map.removeLayer(layer)
-      })
-      // Tyhjennetään layerGroupjen tila
-      layer = []
+      // Tyhjentää kaikki categoryGroupit ja poistaa ne kartalta
+      for (const key in categoryGroups) {
+        categoryGroups[key].forEach((element) => {
+          markerClusterGroup.removeLayer(element)
+        })
+      }
 
       // Lisätään markerit uudelleen
       eventList.forEach((tapahtuma) => {
@@ -62,18 +64,13 @@ const Map = ({ startingLocation }) => {
             tapahtuma.Description || ""
           }`
         )
-        marker.setIcon(golf)
         const categoryID = tapahtuma.CategoryID
-        let layerG
-        // Jos kyseistä kategorian layerGroupia ei vielä ole, luodaan se
-        if (!layer[categoryID]) {
-          layerG = L.layerGroup().addTo(map)
-          // Päivitetään tila, mutta huomaa, että tämä on asynkronista
-          layer[categoryID] = layerG
-        } else {
-          layerG = layer[categoryID]
+
+        marker.setIcon(selectIcon(categoryID))
+        if (categoryGroups[categoryID]) {
+          categoryGroups[categoryID].push(marker) // Lisätään markkeri oman categorian ryhmäänsä
         }
-        layerG.addLayer(marker)
+        markerClusterGroup.addLayer(marker)
       })
     } catch (error) {
       console.error(error)
@@ -100,7 +97,7 @@ const Map = ({ startingLocation }) => {
   useEffect(() => {
     // Luo karttaelementti kun komponentti mounttaa
     const map = L.map("map", {
-      center: [startingLocation.o_lat, startingLocation.o_lng], // Joensuun koordinaatit
+      center: [startingLocation.o_lat, startingLocation.o_lng],
       zoom: startingLocation.zoom,
     })
 
@@ -141,8 +138,8 @@ const Map = ({ startingLocation }) => {
     const refreshStamp = L.control({ position: "topright" })
     refreshStamp.onAdd = () => {
       const container = L.DomUtil.create("div")
-      refreshRef.current = createRoot(container)
-      refreshRef.current.render(
+      timestampRef.current = createRoot(container)
+      timestampRef.current.render(
         <div className="refresh-events">
           <p>{timeStamp}</p>
         </div>
@@ -165,6 +162,8 @@ const Map = ({ startingLocation }) => {
         })
       )
     })
+
+    map.addLayer(markerClusterGroup)
 
     return () => {
       // Tuhoaa karttaelementin kun komponentti unmounttaa
