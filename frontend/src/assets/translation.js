@@ -48,13 +48,13 @@ const translations = {
     validation_max_psw: "Password must be no more than 32 characters",
     validation_min_email: "Email address must be at least 5 characters",
     validation_max_email: "Email address must be no more than 40 characters",
-    validation_email_at_sign: "Email address must contain the @ symbol",
+    validation_email_at_sign: "invalid email",
     validation_username: "Username required",
     validation_psw: "Password required",
     validation_email: "Email required",
     validation_psw_match: "Passwords don't match",
     validation_psw_again: "Confirm password",
-    
+
   },
   fi: {
     activity: "Laji",
@@ -103,13 +103,17 @@ const translations = {
     validation_max_psw: "Salasanan on oltava enintään 32 merkkiä",
     validation_min_email: "Sähköpostiosoitteen on oltava vähintään 5 merkkiä",
     validation_max_email: "Sähköpostiosoitteen on oltava enintään 40 merkkiä",
-    validation_email_at_sign: "Sähköpostiosoitteen täytyy sisältää @-merkki",
+    validation_email_at_sign: "Virheellinen sähköposti",
     validation_username: "Käyttäjätunnus vaaditaan",
     validation_psw: "Salasana vaaditaan",
     validation_email: "Sähköposti vaaditaan",
     validation_psw_match: "Salasanat ei täsmää",
     validation_psw_again: "Vahvista salasana",
-
+    validation_psw_small: "Salasanassa on oltava pieni kirjain",
+    validation_psw_big: "Salasanassa on oltava iso kirjain",
+    validation_psw_number: "Salasanassa on oltava numero",
+    validation_psw_special: "Salasanassa on oltava erikoismerkki",
+    validation_psw_all: "Salasana saa sisältää vain kirjaimia, numeroita ja erikoismerkkejä "
   },
 }
 

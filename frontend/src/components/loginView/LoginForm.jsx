@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom"
 import "./login.css"
 import { changeLocation } from "../../store/locationSlice.js"
 import { changeUser } from "../../store/userSlice.js"
+import { loginValidation } from "../../utils/validationSchemas.js"
 
 const LoginForm = () => {
   const language = useSelector((state) => state.language.language)
@@ -16,6 +17,11 @@ const LoginForm = () => {
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
   const [showPassword, setShowPassword] = useState(false)
+  const [errors, setErrors] = useState({})
+
+
+  // Tallennetaan muuttujaan return arvo
+  const schema = loginValidation();
 
   const inputRef = useRef(null)
   useEffect(() => {
@@ -24,33 +30,52 @@ const LoginForm = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault()
-    console.log("Login attempt:", { username, password })
+
     try {
-      const user = await loginService.login({
-        username,
-        password,
-      })
-      console.log(`Tokeni: ${user.token} Käyttäjätunnus: ${user.username}`)
-      console.log(user)
-      dispatch(
-        changeUser({
-          userID: user.userID,
-          username: user.username,
-          token: user.token,
-        })
+      await schema.validate(
+        { username, password },
+        { abortEarly: false }
       )
-      dispatch(
-        changeLocation({
-          o_lat: user.location[1],
-          o_lng: user.location[0],
-          lat: user.location[1],
-          lng: user.location[0],
-          zoom: 14, // Kovakoodattu etäisyys
+      setErrors({});
+      
+      console.log("Login attempt:", { username, password })
+      try {
+        const user = await loginService.login({
+          username,
+          password,
         })
-      )
-      navigate(`/`)
-    } catch (error) {
-      console.log(error)
+        console.log(`Tokeni: ${user.token} Käyttäjätunnus: ${user.username}`)
+        console.log(user)
+        dispatch(
+          changeUser({
+            userID: user.userID,
+            username: user.username,
+            token: user.token,
+          })
+        )
+        dispatch(
+          changeLocation({
+            o_lat: user.location[1],
+            o_lng: user.location[0],
+            lat: user.location[1],
+            lng: user.location[0],
+            zoom: 14, // Kovakoodattu etäisyys
+          })
+        )
+        navigate(`/`)
+      } catch (error) {
+        console.log(error)
+      }
+    } catch (err) {
+      if (err.inner) {
+        const errorMap = {}
+        err.inner.forEach((error) => {
+          errorMap[error.path] = error.message
+        })
+        setErrors(errorMap)
+        
+        console.log("Validation errors:", errorMap)
+      }
     }
   }
 
@@ -66,26 +91,25 @@ const LoginForm = () => {
           <input
             ref={inputRef}
             type="text"
-            className="input-field"
+            className={`input-field ${errors.username ? "error" : ""}`}
             value={username}
             name="username"
             onChange={(e) => setUsername(e.target.value)}
             placeholder={t.username}
             autoComplete="text"
-            required={true}
           />
         </div>
+        {errors.username && <div className="error-forms">{errors.username}</div>}
         <h3>{t.password}</h3>
         <div className="password-input-container">
           <input
             type={showPassword ? "text" : "password"}
-            className="input-field"
+            className={`input-field ${errors.password ? "error" : ""}`}
             value={password}
             name="password"
             onChange={(e) => setPassword(e.target.value)}
             placeholder={t.password}
             autoComplete="current-password"
-            required={true}
           />
           <button
             type="button"
@@ -97,6 +121,7 @@ const LoginForm = () => {
             </span>
           </button>
         </div>
+        {errors.password && <div className="error-forms">{errors.password}</div>}
         <button type="submit" className="forms-btn">
           <span>{t.login}</span>
         </button>
@@ -104,5 +129,4 @@ const LoginForm = () => {
     </div>
   )
 }
-
 export default LoginForm
