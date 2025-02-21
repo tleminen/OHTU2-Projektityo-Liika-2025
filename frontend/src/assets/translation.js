@@ -51,6 +51,7 @@ const translations = {
     validation_email_at_sign: "Email address must contain the @ symbol",
     validation_username: "Username required",
     validation_psw: "Password required",
+    validation_email: "Email required",
   },
   fi: {
     activity: "Laji",
@@ -102,6 +103,7 @@ const translations = {
     validation_email_at_sign: "Sähköpostiosoitteen täytyy sisältää @-merkki",
     validation_username: "Käyttäjätunnus vaaditaan",
     validation_psw: "Salasana vaaditaan",
+    validation_email: "Sähköposti vaaditaan",
   },
 }
 

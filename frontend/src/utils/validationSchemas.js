@@ -9,20 +9,20 @@ const loginValidation = Yup.object().shape({
     .min(5, t.validation_min_username)
     .max(16, t.validation_max_username).required(t.validation_username),
   password: Yup.string()
-    .min(8, validation_min_psw).max(32, validation_max_psw)
-    .required("Salasana vaaditaan"),
+    .min(8, t.validation_min_psw).max(32, t.validation_max_psw)
+    .required(t.validation_psw),
 })
 
 const registerValidation = Yup.object().shape({
   username: Yup.string()
-    .min(3, "Käyttäjätunnuksen on oltava vähintään 3 merkkiä")
+    .min(3, t.validation_min_username).max(16, t.validation_max_username)
     .required(t.validation_username),
   email: Yup.string()
-    .email("Virheellinen sähköposti")
-    .required("Sähköposti vaaditaan"),
+    .email(t.validation_email_at_sign).min(5, t.validation_min_email).max(40, t.validation_max_email)
+    .required(t.validation_email),
   password: Yup.string()
-    .min(8, "Salasanan on oltava vähintään 8 merkkiä")
-    .required("Salasana vaaditaan"),
+    .min(8, t.validation_min_psw).max(32, t.validation_max_psw)
+    .required(t.validation_psw),
   confirmPassword: Yup.string()
     .oneOf([Yup.ref("password"), null], "Salasanat eivät täsmää")
     .required("Vahvista salasana"),
