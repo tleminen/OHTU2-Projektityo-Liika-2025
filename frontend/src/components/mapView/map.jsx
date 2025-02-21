@@ -48,12 +48,7 @@ const Map = ({ startingLocation }) => {
       })
 
       // Tyhjentää kaikki categoryGroupit ja poistaa ne kartalta
-      for (const key in categoryGroups) {
-        categoryGroups[key].forEach((element) => {
-          markerClusterGroup.removeLayer(element)
-        })
-      }
-
+      markerClusterGroup.clearLayers()
       // Lisätään markerit uudelleen
       eventList.forEach((tapahtuma) => {
         const { coordinates } = tapahtuma.Event_Location
@@ -110,6 +105,7 @@ const Map = ({ startingLocation }) => {
     const pikapainikkeet = L.control({ position: "topleft" })
     pikapainikkeet.onAdd = () => {
       const container = L.DomUtil.create("div")
+      L.DomEvent.disableClickPropagation(container)
       const root = createRoot(container)
       root.render(
         <div className="pikapainikkeet">
@@ -125,6 +121,7 @@ const Map = ({ startingLocation }) => {
     const refreshEvents = L.control({ position: "topright" })
     refreshEvents.onAdd = () => {
       const container = L.DomUtil.create("div")
+      L.DomEvent.disableClickPropagation(container)
       const root = createRoot(container)
       root.render(
         <div className="refresh-events">
