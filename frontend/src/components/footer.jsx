@@ -2,7 +2,7 @@ import "../index.css"
 import { useSelector } from "react-redux"
 import translations from "../assets/translation.js"
 import FlagSelection from "./flagSelection.jsx"
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 
 const Footer = () => {
   const navigate = useNavigate()
@@ -18,10 +18,12 @@ const Footer = () => {
           <FlagSelection />
         </div>
         <div className="footer-text">
-          <a href="/termsOfService">{t.terms_of_service}</a>
+          <Link to={`/termsOfService`}>{t.terms_of_service}</Link>
         </div>
         <div>
-          <button className="info-btn" onClick={() => navigateTo("info")}>i</button>
+          <button className="info-btn" onClick={() => navigateTo("info")}>
+            i
+          </button>
         </div>
       </div>
     </footer>

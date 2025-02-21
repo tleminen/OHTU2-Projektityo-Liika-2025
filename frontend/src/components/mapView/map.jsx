@@ -51,14 +51,23 @@ const Map = ({ startingLocation }) => {
       markerClusterGroup.clearLayers()
       // Lisätään markerit uudelleen
       eventList.forEach((tapahtuma) => {
+        console.log(tapahtuma.EventID)
         const { coordinates } = tapahtuma.Event_Location
         const lat = coordinates[1]
         const lng = coordinates[0]
-        const marker = L.marker([lat, lng]).bindPopup(
-          `<strong>${tapahtuma.Title}</strong><br>${
-            tapahtuma.Description || ""
-          }`
-        )
+        const marker = L.marker([lat, lng]).bindPopup(() => {
+          const container = document.createElement("div")
+          container.innerHTML = `
+    <strong>${tapahtuma.Title}</strong><br>
+    ${tapahtuma.Description || ""}<br>
+    <a href="/events/${
+      tapahtuma.EventID
+    }" style="color: blue; text-decoration: underline;">
+      Siirry tapahtumaan
+    </a>
+  `
+          return container
+        })
         const categoryID = tapahtuma.CategoryID
 
         marker.setIcon(selectIcon(categoryID))

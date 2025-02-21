@@ -10,6 +10,7 @@ import AccountInformationForm from "./components/accountInformationView/accountI
 import { useDispatch } from "react-redux"
 import { useEffect } from "react"
 import { loadUserFromStorage } from "./store/userSlice"
+import EventView from "./components/eventView"
 
 const App = () => {
   const dispatch = useDispatch()
@@ -27,6 +28,7 @@ const App = () => {
       <Route path="/info" element={<InfoView />} />
       <Route path="/create_event" element={<CreateEventView />} />
       <Route path="/own_info" element={<AccountInformationForm />} />
+      <Route path="/events/:id" element={<EventView />} />
     </Routes>
   )
 }
