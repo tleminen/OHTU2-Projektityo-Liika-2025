@@ -308,6 +308,10 @@ button:focus-visible {
   text-transform: lowercase;
 }
 
+.input-field.error {
+  border: 2px solid #ff1500;
+}
+
 /*Pääasiallinen ei muokattava tekstikenttä*/
 .input-field-locked {
   width: 100%;
