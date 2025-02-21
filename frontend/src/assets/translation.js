@@ -49,6 +49,8 @@ const translations = {
     validation_min_email: "Email address must be at least 5 characters",
     validation_max_email: "Email address must be no more than 40 characters",
     validation_email_at_sign: "Email address must contain the @ symbol",
+    validation_username: "Username required",
+    validation_psw: "Password required",
   },
   fi: {
     activity: "Laji",
@@ -98,6 +100,8 @@ const translations = {
     validation_min_email: "Sähköpostiosoitteen on oltava vähintään 5 merkkiä",
     validation_max_email: "Sähköpostiosoitteen on oltava enintään 40 merkkiä",
     validation_email_at_sign: "Sähköpostiosoitteen täytyy sisältää @-merkki",
+    validation_username: "Käyttäjätunnus vaaditaan",
+    validation_psw: "Salasana vaaditaan",
   },
 }
 

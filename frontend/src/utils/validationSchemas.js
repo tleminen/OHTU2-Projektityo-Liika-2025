@@ -7,7 +7,7 @@ const t = translations[language]
 const loginValidation = Yup.object().shape({
   username: Yup.string()
     .min(5, t.validation_min_username)
-    .max(16, t.validation_max_username),
+    .max(16, t.validation_max_username).required(t.validation_username),
   password: Yup.string()
     .min(8, validation_min_psw).max(32, validation_max_psw)
     .required("Salasana vaaditaan"),
@@ -16,7 +16,7 @@ const loginValidation = Yup.object().shape({
 const registerValidation = Yup.object().shape({
   username: Yup.string()
     .min(3, "Käyttäjätunnuksen on oltava vähintään 3 merkkiä")
-    .required("Käyttäjätunnus vaaditaan"),
+    .required(t.validation_username),
   email: Yup.string()
     .email("Virheellinen sähköposti")
     .required("Sähköposti vaaditaan"),
