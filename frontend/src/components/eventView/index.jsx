@@ -1,7 +1,20 @@
+import Footer from "../footer"
+import Header from "../header"
+
 const EventView = () => {
   return (
-    <div>
-      <p>testiä</p>
+    <div
+      className="fullpage"
+      style={{
+        backgroundImage: "url('/backgroundpicture.jpg')",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+      }}
+    >
+      <Header />
+      <div className="event-view">Tähän kontentti</div>
+      <Footer />
     </div>
   )
 }
