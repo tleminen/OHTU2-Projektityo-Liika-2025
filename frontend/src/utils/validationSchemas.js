@@ -55,6 +55,6 @@ const registerValidation = () => {
       .required(t.validation_psw_again),
   })
 }
-// Voit lisätä muita validaatioita tarpeen mukaan...
+
 
 export { loginValidation, registerValidation }
