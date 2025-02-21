@@ -52,6 +52,9 @@ const translations = {
     validation_username: "Username required",
     validation_psw: "Password required",
     validation_email: "Email required",
+    validation_psw_match: "Passwords don't match",
+    validation_psw_again: "Confirm password",
+    
   },
   fi: {
     activity: "Laji",
@@ -104,6 +107,9 @@ const translations = {
     validation_username: "Käyttäjätunnus vaaditaan",
     validation_psw: "Salasana vaaditaan",
     validation_email: "Sähköposti vaaditaan",
+    validation_psw_match: "Salasanat ei täsmää",
+    validation_psw_again: "Vahvista salasana",
+
   },
 }
 

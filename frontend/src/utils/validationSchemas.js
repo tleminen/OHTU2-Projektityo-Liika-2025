@@ -24,8 +24,8 @@ const registerValidation = Yup.object().shape({
     .min(8, t.validation_min_psw).max(32, t.validation_max_psw)
     .required(t.validation_psw),
   confirmPassword: Yup.string()
-    .oneOf([Yup.ref("password"), null], "Salasanat eivät täsmää")
-    .required("Vahvista salasana"),
+    .oneOf([Yup.ref("password"), null], t.validation_psw_match)
+    .required(t.validation_psw_again),
 })
 
 // Voit lisätä muita validaatioita tarpeen mukaan...
