@@ -17,6 +17,10 @@
   justify-content: center;
 }
 
+.error-forms {
+  color: red;
+}
+
 .forms-btn {
   border-radius: 5px;
   border: none;

@@ -27,6 +27,7 @@ const loginValidation = () => {
 
 const registerValidation = () => {
   const t = translations[useSelector((state) => state.language.language)]
+
   return Yup.object().shape({
     username: Yup.string()
       .min(3, t.validation_min_username)
@@ -40,8 +41,16 @@ const registerValidation = () => {
     password: Yup.string()
       .min(8, t.validation_min_psw)
       .max(32, t.validation_max_psw)
+      .matches(/[a-z]/, t.validation_psw_small)
+      .matches(/[A-Z]/, t.validation_psw_big)
+      .matches(/[0-9]/, t.validation_psw_number)
+      .matches(/[!"#¤%&/()=?+><_]/, t.validation_psw_special)
+      .matches(
+        /^[a-zA-Z0-9!"#¤%&/()=?+><_]+$/,
+        `${t.validation_psw_all} !"#¤%&/()=?+><_ `
+      )
       .required(t.validation_psw),
-    confirmPassword: Yup.string()
+    passwordAgain: Yup.string()
       .oneOf([Yup.ref("password"), null], t.validation_psw_match)
       .required(t.validation_psw_again),
   })

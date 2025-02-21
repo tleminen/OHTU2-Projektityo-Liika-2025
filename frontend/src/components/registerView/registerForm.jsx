@@ -6,6 +6,7 @@ import registerService from "../../services/registerService.js"
 import LocationMap from "../locationMap.jsx"
 import "./register.css"
 import { changeLocation } from "../../store/locationSlice.js"
+import { registerValidation } from "../../utils/validationSchemas.js"
 
 const RegisterForm = () => {
   const language = useSelector((state) => state.language.language)
@@ -19,6 +20,9 @@ const RegisterForm = () => {
   const [showPassword, setShowPassword] = useState(false)
   const [showPasswordAgain, setShowPasswordAgain] = useState(false)
   const [location, setLocation] = useState("")
+  const [errors, setErrors] = useState({})
+
+  const schema = registerValidation()
 
   const inputRef = useRef(null)
   useEffect(() => {
@@ -26,40 +30,61 @@ const RegisterForm = () => {
   }, [])
 
   const handleSubmit = async (event) => {
+    console.log(handleSubmit);
     event.preventDefault()
-    console.log("Register attempt:", {
-      username,
-      email,
-      password,
-      passwordAgain,
-      location,
-    })
-    event.preventDefault()
-    console.log("Login attempt:", { username, password })
+
     try {
-      const user = await registerService.register({
+      await schema.validate(
+        { username, email, password, passwordAgain },
+        { abortEarly: false }
+      )
+      setErrors({});
+
+
+      console.log("Register attempt:", {
         username,
         email,
         password,
-        role: 0,
+        passwordAgain,
         location,
       })
-      console.log("token saatu:" + user.token)
-      window.localStorage.setItem("loggedUser", JSON.stringify(user))
 
-      dispatch(
-        changeLocation({
-          o_lat: user.location[1],
-          o_lng: user.location[0],
-          lat: user.location[1],
-          lng: user.location[0],
-          zoom: 14,
+      console.log("Login attempt:", { username, password })
+      try {
+        const user = await registerService.register({
+          username,
+          email,
+          password,
+          role: 0,
+          location,
         })
-      ) // Kovakoodattu etäisyys
+        console.log("token saatu:" + user.token)
+        window.localStorage.setItem("loggedUser", JSON.stringify(user))
 
-      navigate(`/`)
-    } catch (error) {
-      console.log(error)
+        dispatch(
+          changeLocation({
+            o_lat: user.location[1],
+            o_lng: user.location[0],
+            lat: user.location[1],
+            lng: user.location[0],
+            zoom: 14,
+          })
+        ) // Kovakoodattu etäisyys
+
+        navigate(`/`)
+      } catch (error) {
+        console.log(error)
+      }
+    } catch (err) {
+      if (err.inner) {
+        const errorMap = {}
+        err.inner.forEach((error) => {
+          errorMap[error.path] = error.message
+        })
+        setErrors(errorMap)
+
+        console.log("Validation errors:", errorMap)
+      }
     }
   }
 
@@ -82,39 +107,38 @@ const RegisterForm = () => {
           <input
             ref={inputRef}
             type="text"
-            className="input-field"
+            className={`input-field ${errors.username ? "error" : ""}`}
             value={username}
             name="username"
             onChange={(e) => setUsername(e.target.value)}
             placeholder={t.username}
             autoComplete="nickname"
-            required={true}
           />
         </div>
+        {errors.username && <div className="error-forms">{errors.username}</div>}
         <div>
           <h3>{t.email}</h3>
           <input
-            type="email"
-            className="input-field"
+            type="text"
+            className={`input-field ${errors.email ? "error" : ""}`}
             value={email}
             name="email"
             onChange={(e) => setEmail(e.target.value)}
             placeholder={t.email}
             autoComplete="email"
-            required={true}
           />
         </div>
+        {errors.email && <div className="error-forms">{errors.email}</div>}
         <h3>{t.password}</h3>
         <div className="password-input-container">
           <input
             type={showPassword ? "text" : "password"}
-            className="input-field"
+            className={`input-field ${errors.password ? "error" : ""}`}
             value={password}
             name="password"
             onChange={(e) => setPassword(e.target.value)}
             placeholder={t.password}
             autoComplete="new-password"
-            required={true}
           />
           <button
             type="button"
@@ -126,16 +150,16 @@ const RegisterForm = () => {
             </span>
           </button>
         </div>
+        {errors.password && <div className="error-forms">{errors.password}</div>}
         <h3>{t.passwordAgain}</h3>
         <div className="password-input-container">
           <input
             type={showPasswordAgain ? "text" : "password"}
-            className="input-field"
+            className={`input-field ${errors.passwordAgain ? "error" : ""}`}
             value={passwordAgain}
             name="passwordAgain"
             onChange={(e) => setPasswordAgain(e.target.value)}
             placeholder={t.passwordAgain}
-            required={true}
           />
           <button
             type="button"
@@ -147,7 +171,7 @@ const RegisterForm = () => {
             </span>
           </button>
         </div>
-        <br />
+        {errors.passwordAgain && <div className="error-forms">{errors.passwordAgain}</div>}
         <div>
           <h3>{t.setStartLocationInfo}</h3>
           <LocationMap onLocationChange={handleLocationChange} />
