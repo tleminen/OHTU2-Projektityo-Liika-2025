@@ -4,30 +4,35 @@ const ICONSIZE = [64, 64]
 const ICONANCHOR = [32, 32]
 const POPUPANCHOR = [0, -16]
 
-export const selectIcon = (categoryID) => {
-  const categoryMap = {
-    1: "amerikkalainen_jalkapallo",
-    2: "avantouinti",
-    3: "biljardi",
-    4: "golf",
-    5: "jaakiekko",
-    6: "jalkapallo",
-    7: "juoksu",
-    8: "keilaus",
-    9: "koripallo",
-    10: "lentopallo",
-    11: "nyrkkeily",
-    12: "padel",
-    13: "pesapallo",
-    14: "pingis",
-    15: "puntti",
-    16: "pyoraily",
-    17: "sulkapallo",
-    18: "tennis",
-    19: "uinti",
-  }
+const categoryMap = {
+  1: "amerikkalainen_jalkapallo",
+  2: "avantouinti",
+  3: "biljardi",
+  4: "golf",
+  5: "jaakiekko",
+  6: "jalkapallo",
+  7: "juoksu",
+  8: "keilaus",
+  9: "koripallo",
+  10: "lentopallo",
+  11: "nyrkkeily",
+  12: "padel",
+  13: "pesapallo",
+  14: "pingis",
+  15: "puntti",
+  16: "pyoraily",
+  17: "sulkapallo",
+  18: "tennis",
+  19: "uinti",
+}
 
-  return Icongroup[categoryMap[categoryID]] || null
+export const selectIcon = (categoryID) => {
+  const categoryMapping = categoryMap
+  return Icongroup[categoryMapping[categoryID]] || null
+}
+
+export const selectCategoryName = (categoryID) => {
+  return categoryMap[categoryID] || ""
 }
 
 const Icongroup = {

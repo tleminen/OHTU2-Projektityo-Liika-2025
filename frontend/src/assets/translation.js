@@ -17,6 +17,7 @@ const translations = {
     info: "Info",
     info_txt: infoText.getText("en"),
     language: "Language",
+    loading_event: "Loading event info...",
     location: "Location",
     login: "Log in",
     login2: "Log in",
@@ -24,6 +25,7 @@ const translations = {
     minParticipants: "Minimum participants",
     maxParticipants: "Maximum participants",
     newPassword: "New password",
+    no_event_found: "Event not found",
     participants: "Participants",
     password: "Password",
     password_ph: "Password",
@@ -54,7 +56,6 @@ const translations = {
     validation_email: "Email required",
     validation_psw_match: "Passwords don't match",
     validation_psw_again: "Confirm password",
-
   },
   fi: {
     activity: "Laji",
@@ -72,6 +73,7 @@ const translations = {
     info: "Info",
     info_txt: infoText.getText("fi"),
     language: "Kielivalinta",
+    loading_event: "Lataa tapahtuman tietoja...",
     location: "Sijainti",
     login: "Kirjaudu",
     login2: "Kirjaudu sisään",
@@ -79,6 +81,7 @@ const translations = {
     minParticipants: "Osanottajat vähintään",
     maxParticipants: "Osanottajat enintään",
     newPassword: "Uusi salasana",
+    no_event_found: "Tapahtumaa ei löytynyt",
     participants: "Osallistujat",
     password: "Salasana",
     password_ph: "Salasana",
@@ -113,7 +116,8 @@ const translations = {
     validation_psw_big: "Salasanassa on oltava iso kirjain",
     validation_psw_number: "Salasanassa on oltava numero",
     validation_psw_special: "Salasanassa on oltava erikoismerkki",
-    validation_psw_all: "Salasana saa sisältää vain kirjaimia, numeroita ja erikoismerkkejä "
+    validation_psw_all:
+      "Salasana saa sisältää vain kirjaimia, numeroita ja erikoismerkkejä ",
   },
 }
 

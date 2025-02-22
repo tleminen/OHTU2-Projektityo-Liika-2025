@@ -1,3 +1,45 @@
 .event-view {
   display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+  align-items: center;
+  margin: auto;
+  width: 30%;
+  margin-top: 2%;
+  margin-bottom: 2%;
+  background-color: rgba(
+    255,
+    255,
+    255,
+    0.421
+  ); /* Lisätty läpinäkyvä taustaväri */
+  padding: 20px; /* Lisätty sisäistä tilaa */
+  border-radius: 10px; /* Lisätty pyöristetyt reunat */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Lisätty varjo */
+}
+
+.join-btn {
+  position: relative;
+  padding: 15px 45px;
+  background: #0097b2;
+  border-radius: 10px;
+  border: 2px solid #194480;
+  outline: 2px solid #194480;
+  outline-offset: -2px;
+  font-size: 1.5rem;
+  color: #ffffff;
+  font-weight: 500;
+  cursor: pointer;
+  transition: outline-offset 200ms ease;
+}
+.join-btn:hover {
+  color: #194480;
+  background: #ffffff;
+  outline-offset: 3px;
+  border: 2px solid #194480;
+  outline: 2px solid #194480;
+}
+.join-btn:active {
+  transform: scale(0.95);
 }
