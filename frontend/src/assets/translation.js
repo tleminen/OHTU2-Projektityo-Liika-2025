@@ -56,6 +56,7 @@ const translations = {
     validation_email: "Email required",
     validation_psw_match: "Passwords don't match",
     validation_psw_again: "Confirm password",
+    validation_otp: "Email verification code required",
   },
   fi: {
     activity: "Laji",
@@ -118,6 +119,8 @@ const translations = {
     validation_psw_special: "Salasanassa on oltava erikoismerkki",
     validation_psw_all:
       "Salasana saa sisältää vain kirjaimia, numeroita ja erikoismerkkejä ",
+    validation_otp: "Sähköpostiosoitteen vahvistuskoodi vaaditaan",
+    
   },
 }
 

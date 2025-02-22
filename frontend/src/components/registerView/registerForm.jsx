@@ -22,6 +22,9 @@ const RegisterForm = () => {
   const [showPasswordAgain, setShowPasswordAgain] = useState(false)
   const [location, setLocation] = useState("")
   const [errors, setErrors] = useState({})
+  const [otp, setOtp] = useState("") // OTP-tila
+  const [otpSent, setOtpSent] = useState(false) // Tila OTP:n lähetyksen seuraamiseksi
+  const [isOtpVerified, setIsOtpVerified] = useState(false) // Tila OTP:n vahvistuksen seuraamiseksi
 
   const schema = registerValidation()
 
@@ -30,12 +33,50 @@ const RegisterForm = () => {
     inputRef.current?.focus()
   }, [])
 
+  const handleOtpChange = (event) => {
+    //päivittää automaattisesti otp koodin tilaa
+    setOtp(event.target.value);
+  };
+
+  const sendOtp = async () => {
+    try {
+      const response = await registerService.sendOtp(email)
+      console.log(response.data)
+      alert("Sähköpostin lähetys onnistui") //TODO: Kovakoodaus pois
+      // Jos OTP lähetettiin onnistuneesti, päivitä tila
+      setOtpSent(true)
+    } catch (error) {
+      console.error("Virhe sähköpostin lähetyksessä:", error)
+      alert("Sähköpostin lähetys epäonnistui") //TODO: Kovakoodaus pois
+    }
+  }
+
+  const verifyOtp = async () => {
+    try {
+      // Lähetä OTP backendille vahvistusta varten
+      const response = await registerService.verifyOtp({ email, otp }) //TODO: backendiin otp vahvistus
+      console.log(response.data)
+      // Jos OTP on oikein, päivitä tila
+      setIsOtpVerified(true)
+      setErrors({})
+    } catch (error) {
+      // Käsittele virhe (esim. näytä virheilmoitus)
+      console.error("Virhe OTP:n vahvistuksessa:", error)
+    }
+  }
+
   const handleSubmit = async (event) => {
     event.preventDefault()
 
+    if (!isOtpVerified) {
+      // Jos OTP:tä ei ole vahvistettu, näytä virheilmoitus
+      console.log(errors.otp)
+      return
+    }
+
     try {
       await schema.validate(
-        { username, email, password, passwordAgain },
+        { username, email, password, passwordAgain, otp },
         { abortEarly: false }
       )
       setErrors({})
@@ -137,6 +178,33 @@ const RegisterForm = () => {
           />
         </div>
         {errors.email && <div className="error-forms">{errors.email}</div>}
+
+        {/* Uusi OTP-kenttä ja painike */}
+        {otpSent ? (
+          <div>
+            <h3>Syötä sähköpostistasi saatu koodi tähän:</h3> {/*TODO: Muutetaan kovakoodauksesta pois */}
+            <input
+              type="text"
+              className={`input-field ${errors.otp ? "error" : ""}`}
+              value={otp}
+              name="otp"
+              onChange={handleOtpChange}
+              placeholder="Syötä koodi"
+            />
+            {errors.otp && <div className="error-forms">{errors.otp}</div>}
+            <button type="button" onClick={verifyOtp}>
+              Vahvista
+            </button>
+          </div>
+        ) : (
+          <div>
+            <h3>Vahvista sähköpostiosoitteesi</h3> {/*TODO: Muutetaan kovakoodauksesta pois */}
+            <button type="button" onClick={sendOtp} disabled={!email}>
+              Lähetä
+            </button>
+          </div>
+        )}
+
         <h3>{t.password}</h3>
         <div className="password-input-container">
           <input
@@ -188,6 +256,7 @@ const RegisterForm = () => {
           <h3>{t.setStartLocationInfo}</h3>
           <LocationMap onLocationChange={handleLocationChange} />
         </div>
+
         <button type="submit" className="forms-btn">
           <span>{t.register}</span>
         </button>

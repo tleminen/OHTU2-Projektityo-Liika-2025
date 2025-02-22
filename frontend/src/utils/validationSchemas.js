@@ -53,6 +53,7 @@ const registerValidation = () => {
     passwordAgain: Yup.string()
       .oneOf([Yup.ref("password"), null], t.validation_psw_match)
       .required(t.validation_psw_again),
+    otp: Yup.string().required(t.validation_otp)
   })
 }
 
