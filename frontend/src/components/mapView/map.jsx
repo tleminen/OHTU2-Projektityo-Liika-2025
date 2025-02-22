@@ -100,6 +100,12 @@ const Map = ({ startingLocation }) => {
 
   useEffect(() => {
     // Luo karttaelementti kun komponentti mounttaa
+    // Tarkastetaan ensin, että kartalla on aloitussijainti:
+    if (!startingLocation.o_lat) {
+      console.log("Ei aloituskordinaatteja..\nAsetetaan defaultit")
+      ;(startingLocation.o_lat = 62.6013), (startingLocation.o_lng = 29.7639)
+      startingLocation.zoom = 12
+    }
     const map = L.map("map", {
       center: [startingLocation.o_lat, startingLocation.o_lng],
       zoom: startingLocation.zoom,

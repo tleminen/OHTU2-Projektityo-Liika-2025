@@ -13,6 +13,13 @@ const LocationMap = ({ onLocationChange }) => {
       center: [startingLocation.lat, startingLocation.lng],
       zoom: 14,
     })
+    // Tarkastetaan ensin, että kartalla on aloitussijainti:
+    if (!startingLocation.o_lat) {
+      console.log("Ei aloituskordinaatteja..\nAsetetaan defaultit")
+      ;(startingLocation.o_lat = 62.6013), (startingLocation.o_lng = 29.7639)
+      startingLocation.zoom = 12
+    }
+    // Asetetaan nämä aluksi, jos käyttäjä unohtaakin klikata karttaa
     onLocationChange([startingLocation.lat, startingLocation.lng])
 
     // Lisää OpenStreetMap-laatta

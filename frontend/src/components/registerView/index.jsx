@@ -1,18 +1,14 @@
-import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import Footer from "../footer";
-import Header from "../header";
-import translations from "../../assets/translation";
-import RegisterForm from "./registerForm";
-import "../../index.css";
+import { useSelector } from "react-redux"
+import { Link } from "react-router-dom"
+import Footer from "../footer"
+import Header from "../header"
+import translations from "../../assets/translation"
+import RegisterForm from "./registerForm"
+import "../../index.css"
 
 const Register = () => {
-  const navigate = useNavigate();
-  const handler = () => {
-    navigate("/");
-  };
-  const language = useSelector((state) => state.language.language);
-  const t = translations[language];
+  const language = useSelector((state) => state.language.language)
+  const t = translations[language]
 
   return (
     <div
@@ -32,13 +28,13 @@ const Register = () => {
           <br />
           <a href="/login">{t.login2}</a>
         </p>
-        <button href="/" className="back-btn" onClick={handler}>
+        <Link to={"/"} className="back-btn">
           <span>{t.back}</span>
-        </button>
+        </Link>
       </div>
       <Footer />
     </div>
-  );
-};
+  )
+}
 
-export default Register;
+export default Register

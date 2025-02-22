@@ -6,6 +6,7 @@ import registerService from "../../services/registerService.js"
 import LocationMap from "../locationMap.jsx"
 import "./register.css"
 import { changeLocation } from "../../store/locationSlice.js"
+import { changeUser } from "../../store/userSlice.js"
 import { registerValidation } from "../../utils/validationSchemas.js"
 
 const RegisterForm = () => {
@@ -30,7 +31,6 @@ const RegisterForm = () => {
   }, [])
 
   const handleSubmit = async (event) => {
-    console.log(handleSubmit);
     event.preventDefault()
 
     try {
@@ -38,8 +38,7 @@ const RegisterForm = () => {
         { username, email, password, passwordAgain },
         { abortEarly: false }
       )
-      setErrors({});
-
+      setErrors({})
 
       console.log("Register attempt:", {
         username,
@@ -61,6 +60,13 @@ const RegisterForm = () => {
         console.log("token saatu:" + user.token)
         window.localStorage.setItem("loggedUser", JSON.stringify(user))
 
+        dispatch(
+          changeUser({
+            userID: user.userID,
+            username: user.username,
+            token: user.token,
+          })
+        )
         dispatch(
           changeLocation({
             o_lat: user.location[1],
@@ -115,7 +121,9 @@ const RegisterForm = () => {
             autoComplete="nickname"
           />
         </div>
-        {errors.username && <div className="error-forms">{errors.username}</div>}
+        {errors.username && (
+          <div className="error-forms">{errors.username}</div>
+        )}
         <div>
           <h3>{t.email}</h3>
           <input
@@ -150,7 +158,9 @@ const RegisterForm = () => {
             </span>
           </button>
         </div>
-        {errors.password && <div className="error-forms">{errors.password}</div>}
+        {errors.password && (
+          <div className="error-forms">{errors.password}</div>
+        )}
         <h3>{t.passwordAgain}</h3>
         <div className="password-input-container">
           <input
@@ -171,7 +181,9 @@ const RegisterForm = () => {
             </span>
           </button>
         </div>
-        {errors.passwordAgain && <div className="error-forms">{errors.passwordAgain}</div>}
+        {errors.passwordAgain && (
+          <div className="error-forms">{errors.passwordAgain}</div>
+        )}
         <div>
           <h3>{t.setStartLocationInfo}</h3>
           <LocationMap onLocationChange={handleLocationChange} />

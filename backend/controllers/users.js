@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken")
 const bcrypt = require("bcryptjs")
 const { Router } = require("express")
 const Users = require("../models/users")
-const { Sequelize } = require("sequelize")
+const { Sequelize, where, Op } = require("sequelize")
 
 const userRouter = Router()
 
@@ -11,50 +11,67 @@ const userRouter = Router()
  */
 userRouter.post("/", async (req, res) => {
   const { username, password, role, email, location } = req.body
-  if (password.length >= 5 && password.length <= 32) {
-    // pituusvaatimus v0.1
 
-    const saltRounds = 10
-    const passwordhash = await bcrypt.hash(password, saltRounds)
+  const existingUser = await Users.findOne({
+    // Tarkastetaan ensin löytyykö jo sama käyttäjänimi tai sähköpostiosoite
+    where: {
+      [Op.or]: [{ Username: username }, { Email: email }],
+    },
+  })
 
-    try {
-      const savedUser = await Users.create({
-        // Uuden käyttäjän rekisteröinti
-        Username: username,
-        Password: passwordhash,
-        Role: role,
-        Email: email,
-        Location: Sequelize.fn(
-          "ST_SetSRID",
-          Sequelize.fn("ST_MakePoint", location.lng, location.lat),
-          4326
-        ),
-      })
-
-      const userForToken = {
-        // Luodaan tokeni käyttäjänimen ja id:n mukaan
-        username: savedUser.Username,
-        id: savedUser.UserID,
-      }
-
-      console.log(JSON.stringify(userForToken))
-      const token = jwt.sign(userForToken, process.env.JWT_SECRET, {
-        // Luodaan tokeni uudelle käyttäjälle heti
-        expiresIn: "60d",
-      })
-      res.status(200).send({
-        token,
-        username: savedUser.Username,
-        location: [location.lng, location.lat],
-      })
-    } catch (error) {
-      console.log("PostgreSQL Error:", error)
-      res.status(400).send({ error: `Error occured during user creation` })
+  if (existingUser) {
+    if (existingUser.Username === username) {
+      return res.status(400).json({ message: "Käyttäjänimi on jo käytössä" })
     }
-  } else {
-    res
-      .status(400)
-      .send({ error: `Invalid password length of ${password.length}` })
+    if (existingUser.Email === email) {
+      return res.status(400).json({ message: "Sähköposti on jo käytössä" })
+    }
+  }
+
+  const saltRounds = 10
+  const passwordhash = await bcrypt.hash(password, saltRounds)
+
+  console.log(location)
+  if (!location) {
+    // Mikäli yritetään luoda käyttäjää vahingossa ilman lokaatiota niin asetetaan default
+    location.lat = 62.6013
+    location.lng = 29.7639
+    console.log(location)
+  }
+
+  try {
+    const savedUser = await Users.create({
+      // Uuden käyttäjän rekisteröinti
+      Username: username,
+      Password: passwordhash,
+      Role: role,
+      Email: email,
+      Location: Sequelize.fn(
+        "ST_SetSRID",
+        Sequelize.fn("ST_MakePoint", location.lng, location.lat),
+        4326
+      ),
+    })
+
+    const userForToken = {
+      // Luodaan tokeni käyttäjänimen ja id:n mukaan
+      username: savedUser.Username,
+      id: savedUser.UserID,
+    }
+
+    console.log(JSON.stringify(userForToken))
+    const token = jwt.sign(userForToken, process.env.JWT_SECRET, {
+      // Luodaan tokeni uudelle käyttäjälle heti
+      expiresIn: "60d",
+    })
+    res.status(200).send({
+      token,
+      username: savedUser.Username,
+      location: [location.lng, location.lat],
+    })
+  } catch (error) {
+    console.log("PostgreSQL Error:", error)
+    res.status(400).send({ error: `Error occured during user creation` })
   }
 }) // Rekisteröinti päättyy
 
