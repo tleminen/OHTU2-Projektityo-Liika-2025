@@ -11,6 +11,11 @@ const getEvents = async (parameters) => {
   return response.data
 }
 
+const getEvent = async (parameters) => {
+  const response = await axios.post(baseUrl + "/events/singleEvent", parameters)
+  return response.data
+}
+
 const createEvent = async (parameters) => {
   const response = await axios.post(
     baseUrl + "/events/create_event",
@@ -19,4 +24,4 @@ const createEvent = async (parameters) => {
   return response.data
 }
 
-export default { getCategories, getEvents, createEvent }
+export default { getCategories, getEvents, createEvent, getEvent }

@@ -5,6 +5,16 @@ const { Sequelize } = require("sequelize")
 
 const eventRouter = Router()
 
+eventRouter.post("/singleEvent", async (req, res) => {
+  try {
+    const event = await Events.findByPk(req.body.EventID)
+    res.json(event)
+  } catch (error) {
+    console.error("Virhe haettaessa yksittäistä eventtiä: " + error)
+    res.status(500).json({ error: "Internal server error" })
+  }
+})
+
 /**
  * Hakee tapahtumat alueelta
  * Parametrina leveys- ja pituuspiiri, sekä maksimietäisyys pisteestä
