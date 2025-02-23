@@ -92,8 +92,8 @@ userRouter.post("/sendOtp", async (req, res) => {
   const { email } = req.body
 
   try {
+
     const verificationCode = generateVerificationCode();
-    verificationCodes.set(email, verificationCode); // Tallennetaan koodi karttaan sähköpostiosoitteen perusteella
 
     const success = await sendEmail(
       email,
@@ -103,6 +103,8 @@ userRouter.post("/sendOtp", async (req, res) => {
 
     if (success) {
       res.status(200).json({ message: "Sähköposti lähetetty!" })
+  
+      verificationCodes.set(email, verificationCode); // Tallennetaan koodi karttaan sähköpostiosoitteen perusteella
     } else {
       res.status(500).json({ message: "Sähköpostin lähetys epäonnistui." })
     }
@@ -116,10 +118,19 @@ userRouter.post("/sendOtp", async (req, res) => {
 //Vahvistuskoodin vertailu
 
 userRouter.post("/verifyOtp", async (req, res) => {
+
+  //const testCode = "123456"
+
+
   const { email, otp } = req.body;
+  console.log("VerifyOtp rq body : "+req.body)
+
+  //verificationCodes.set(email, testCode);
 
   try {
     const storedCode = verificationCodes.get(email); //Hae tallennettu koodi
+
+    console.log("storeCode: "+storedCode)
 
     if (!storedCode) {
       return res.status(400).json({ message: "Vahvistuskoodi ei löytynyt." });
@@ -136,5 +147,7 @@ userRouter.post("/verifyOtp", async (req, res) => {
     res.status(500).json({ message: "Vahvistus epäonnistui." });
   }
 });
+
+//Vahvistuskoodin vertailu päättyy
 
 module.exports = userRouter

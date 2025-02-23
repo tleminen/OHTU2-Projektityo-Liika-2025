@@ -33,16 +33,14 @@ const RegisterForm = () => {
     inputRef.current?.focus()
   }, [])
 
-  const handleOtpChange = (event) => {
-    //päivittää automaattisesti otp koodin tilaa
-    setOtp(event.target.value);
-  };
+ 
 
   const sendOtp = async () => {
     try {
       const response = await registerService.sendOtp(email)
       console.log(response.data)
       alert("Sähköpostin lähetys onnistui") //TODO: Kovakoodaus pois
+      
       // Jos OTP lähetettiin onnistuneesti, päivitä tila
       setOtpSent(true)
     } catch (error) {
@@ -190,7 +188,7 @@ const RegisterForm = () => {
               className={`input-field ${errors.otp ? "error" : ""}`}
               value={otp}
               name="otp"
-              onChange={handleOtpChange}
+              onChange={(e) => setOtp(e.target.value)}
               placeholder="Syötä koodi"
             />
             {errors.otp && <div className="error-forms">{errors.otp}</div>}
