@@ -4,13 +4,13 @@ const { Router } = require("express")
 const Users = require("../models/users")
 const { Sequelize, where, Op } = require("sequelize")
 
-const userRouter = Router()
+const registerRouter = Router()
 
 /**
  * Uuden käyttäjän rekisteröinti
  */
-userRouter.post("/", async (req, res) => {
-  const { username, password, role, email, location } = req.body
+registerRouter.post("/", async (req, res) => {
+  const { username, password, role, email, location, languageID } = req.body
 
   const existingUser = await Users.findOne({
     // Tarkastetaan ensin löytyykö jo sama käyttäjänimi tai sähköpostiosoite
@@ -51,6 +51,7 @@ userRouter.post("/", async (req, res) => {
         Sequelize.fn("ST_MakePoint", location.lng, location.lat),
         4326
       ),
+      LanguageID: languageID, //TODO: MUOKKAA TIETOKANTAAN FI EN SE PK:KSI
     })
 
     const userForToken = {
@@ -75,4 +76,4 @@ userRouter.post("/", async (req, res) => {
   }
 }) // Rekisteröinti päättyy
 
-module.exports = userRouter
+module.exports = registerRouter

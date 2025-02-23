@@ -6,11 +6,11 @@ import MapView from "./components/mapView"
 import TermsOfServiceView from "./components/termsOfServiceView"
 import InfoView from "./components/infoView"
 import CreateEventView from "./components/createEventView"
-import AccountInformationForm from "./components/accountInformationView/accountInformationForm"
 import { useDispatch } from "react-redux"
 import { useEffect } from "react"
 import { loadUserFromStorage } from "./store/userSlice"
 import EventView from "./components/eventView"
+import AccountView from "./components/accountView"
 
 const App = () => {
   const dispatch = useDispatch()
@@ -27,7 +27,7 @@ const App = () => {
       <Route path="/termsOfService" element={<TermsOfServiceView />} />
       <Route path="/info" element={<InfoView />} />
       <Route path="/create_event" element={<CreateEventView />} />
-      <Route path="/own_info" element={<AccountInformationForm />} />
+      <Route path="/own_info" element={<AccountView />} />
       <Route path="/events/:id" element={<EventView />} />
     </Routes>
   )

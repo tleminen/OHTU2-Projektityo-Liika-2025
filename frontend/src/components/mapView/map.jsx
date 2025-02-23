@@ -4,7 +4,7 @@ import L from "leaflet"
 import "leaflet.markercluster"
 import "leaflet/dist/leaflet.css"
 import "../../index.css"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { changeLocation } from "../../store/locationSlice"
 import logo from "../../assets/liika_logo.png"
 import { useNavigate } from "react-router-dom"
@@ -19,6 +19,7 @@ const Map = ({ startingLocation }) => {
   const [timeStamp, setTimeStamp] = useState("") // Aikaleima, milloin päivitetty
   const timestampRef = useRef(null)
   const markerClusterGroup = L.markerClusterGroup()
+  const user = useSelector((state) => state.user?.user?.username ?? null)
 
   useEffect(() => {
     if (timestampRef.current) {
@@ -125,8 +126,10 @@ const Map = ({ startingLocation }) => {
       root.render(
         <div className="pikapainikkeet">
           <button onClick={() => onClickCreateEvent()}>+_+</button>
-          <button onClick={() => onClickListJoinedEvents()}>\- _-\</button>
-          <button onClick={() => onClickOwnInfo()}>i-i</button>
+          {user && (
+            <button onClick={() => onClickListJoinedEvents()}>\- _-\</button>
+          )}
+          {user && <button onClick={() => onClickOwnInfo()}>i-i</button>}
         </div>
       )
       return container

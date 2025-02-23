@@ -3,7 +3,6 @@ const app = express()
 const cors = require("cors")
 const morgan = require("morgan")
 const middleware = require("./utils/middleware")
-const resetDB = require("./dummyData/index")
 const { initializeDB } = require("./utils/database")
 const {
   sequelize,
@@ -18,10 +17,11 @@ const {
 } = require("./models/index")
 
 const fs = require("fs")
-const userRouter = require("./controllers/users")
+const registerRouter = require("./controllers/register")
 const loginRouter = require("./controllers/login")
 const eventRouter = require("./controllers/events")
 const email = require("./services/email")
+const userRouter = require("./controllers/user")
 const logStream = fs.createWriteStream("./logs/access.log", { flags: "a" })
 
 // Tietokantayhteys ja alustus
@@ -51,9 +51,10 @@ app.use(morgan(customFormat)) // HTTP pyynnöt terminaaliin
 app.use(middleware.tokenExtractor) // Ekstraktoi tokenin
 
 // API routerit
-app.use(`/api/register`, userRouter)
+app.use(`/api/register`, registerRouter)
 app.use(`/api/login`, loginRouter)
 app.use(`/api/events`, eventRouter)
+app.use(`/api/users`, userRouter)
 
 // Loppuun laitetaan unknownEndpoint ja virheenKorjaus
 app.use(middleware.unknownEndpoint)

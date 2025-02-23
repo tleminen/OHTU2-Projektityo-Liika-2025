@@ -46,6 +46,7 @@ const RegisterForm = () => {
         password,
         passwordAgain,
         location,
+        language, // KATSO MITÄ LÄHTEE
       })
 
       console.log("Login attempt:", { username, password })
@@ -56,6 +57,7 @@ const RegisterForm = () => {
           password,
           role: 0,
           location,
+          language,
         })
         console.log("token saatu:" + user.token)
         window.localStorage.setItem("loggedUser", JSON.stringify(user))
