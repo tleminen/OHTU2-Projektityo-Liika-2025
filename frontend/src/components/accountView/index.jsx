@@ -4,6 +4,8 @@ import Header from "../header"
 import "./accountView.css"
 import userService from "../../services/userService"
 import { useSelector } from "react-redux"
+import { Link } from "react-router-dom"
+import "../../index.css"
 
 const AccountView = () => {
   const [user, setUser] = useState(null)
@@ -62,6 +64,9 @@ const AccountView = () => {
         <div className="information-field">
           <h3>Sähköposti: </h3>
           {user.user.Email}
+          <Link to={`/own_info/email`} className="button">
+            Vaihda
+          </Link>
         </div>
         <div className="information-field">
           <h3>Kayttäjätunnus: </h3>

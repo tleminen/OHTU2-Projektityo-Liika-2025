@@ -11,6 +11,7 @@ import { useEffect } from "react"
 import { loadUserFromStorage } from "./store/userSlice"
 import EventView from "./components/eventView"
 import AccountView from "./components/accountView"
+import ChangeEmail from "./components/accountView/changeInfo/changeEmail"
 
 const App = () => {
   const dispatch = useDispatch()
@@ -29,6 +30,7 @@ const App = () => {
       <Route path="/create_event" element={<CreateEventView />} />
       <Route path="/own_info" element={<AccountView />} />
       <Route path="/events/:id" element={<EventView />} />
+      <Route path="/own_info/email" element={<ChangeEmail />} />
     </Routes>
   )
 }
