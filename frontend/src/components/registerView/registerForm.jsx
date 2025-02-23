@@ -56,12 +56,14 @@ const RegisterForm = () => {
       // Lähetä OTP backendille vahvistusta varten
       const response = await registerService.verifyOtp({ email, otp }) //TODO: backendiin otp vahvistus
       console.log(response.data)
+      alert("Sähköposti vahvistettu") //TODO: kovakoodaus pois
       // Jos OTP on oikein, päivitä tila
       setIsOtpVerified(true)
       setErrors({})
     } catch (error) {
       // Käsittele virhe (esim. näytä virheilmoitus)
       console.error("Virhe OTP:n vahvistuksessa:", error)
+      alert("Väärä vahvistuskoodi") //TODO: kovakoodaus pois
     }
   }
 

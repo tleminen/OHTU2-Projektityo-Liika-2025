@@ -9,7 +9,7 @@ const register = async (credentials) => {
 const sendOtp = async (email) => {
   console.log("SendEmail funktion email "+email)
   try {
-      const response = await axios.post(baseUrl + "/register/senOtp", { email })
+      const response = await axios.post(baseUrl + "/register/sendOtp", { email })
       return response.data;
     } catch (error) {
       console.error("Virhe sähköpostin lähetyksessä:", error);
@@ -17,10 +17,10 @@ const sendOtp = async (email) => {
     }
 };
 
-const verifyOtp = async (email, otp) => {
-  console.log("veriOtp funktion email "+email, " ja otp "+otp)
+const verifyOtp = async (credentials) => {
+  console.log("verifyOtp funktion email "+email, " ja otp "+otp)
   try {
-      const response = await axios.post(baseUrl + "/register/verifyOtp", { email, otp })
+      const response = await axios.post(baseUrl + "/register/verifyOtp", credentials)
       return response.data;
     } catch (error) {
       console.error("Virhe koodin vahvistuksessa:", error);

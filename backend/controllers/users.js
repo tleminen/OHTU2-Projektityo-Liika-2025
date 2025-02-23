@@ -3,6 +3,7 @@ const bcrypt = require("bcryptjs")
 const { Router } = require("express")
 const Users = require("../models/users")
 const { Sequelize, where, Op } = require("sequelize")
+const { sendEmail } = require("../services/email") // Tuo sendEmail-funktio
 
 const userRouter = Router()
 
@@ -74,5 +75,66 @@ userRouter.post("/", async (req, res) => {
     res.status(400).send({ error: `Error occured during user creation` })
   }
 }) // Rekisteröinti päättyy
+
+//Vahvistuskoodin luominen
+const generateVerificationCode = () => {
+  let code = "";
+  for (let i = 0; i < 6; i++) {
+    code += Math.floor(Math.random() * 10).toString();
+  }
+  return code;
+};
+
+const verificationCodes = new Map(); //----VOIDAAN VAIHTAA TIETOKANTAAN JOS HALUTAAN----
+
+//Vahvistuskoodin lähetys sähköpostiin
+userRouter.post("/sendOtp", async (req, res) => {
+  const { email } = req.body
+
+  try {
+    const verificationCode = generateVerificationCode();
+    verificationCodes.set(email, verificationCode); // Tallennetaan koodi karttaan sähköpostiosoitteen perusteella
+
+    const success = await sendEmail(
+      email,
+      "Sähköpostin vahvistus",
+      `Vahvistuskoodisi on: ${verificationCode}`
+    )
+
+    if (success) {
+      res.status(200).json({ message: "Sähköposti lähetetty!" })
+    } else {
+      res.status(500).json({ message: "Sähköpostin lähetys epäonnistui." })
+    }
+  } catch (error) {
+    console.error("Virhe:", error)
+    res.status(500).json({ message: "Sähköpostin lähetys epäonnistui." })
+  }
+})
+//Vahvistuskoodin lähetys sähköpostiin päättyy
+
+//Vahvistuskoodin vertailu
+
+userRouter.post("/verifyOtp", async (req, res) => {
+  const { email, otp } = req.body;
+
+  try {
+    const storedCode = verificationCodes.get(email); //Hae tallennettu koodi
+
+    if (!storedCode) {
+      return res.status(400).json({ message: "Vahvistuskoodi ei löytynyt." });
+    }
+
+    if (storedCode === otp) {
+      verificationCodes.delete(email); //Poistetaan koodi, kun se on vahvistettu
+      res.status(200).json({ message: "Vahvistuskoodi oikein!" });
+    } else {
+      res.status(400).json({ message: "Vahvistuskoodi on virheellinen." });
+    }
+  } catch (error) {
+    console.error("Virhe:", error);
+    res.status(500).json({ message: "Vahvistus epäonnistui." });
+  }
+});
 
 module.exports = userRouter
