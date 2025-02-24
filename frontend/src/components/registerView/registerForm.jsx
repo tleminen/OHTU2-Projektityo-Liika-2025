@@ -61,7 +61,6 @@ const RegisterForm = () => {
       alert("Sähköposti vahvistettu") //TODO: kovakoodaus pois
       // Jos OTP on oikein, päivitä tila
       setIsOtpVerified(true)
-      setErrors({})
     } catch (error) {
       // Käsittele virhe (esim. näytä virheilmoitus)
       console.error("Virhe OTP:n vahvistuksessa:", error)
