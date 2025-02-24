@@ -5,11 +5,11 @@ module.exports = {
     return queryInterface.bulkInsert("ClubMembers", [
       {
         ClubID: 1,
-        UserID: 1,
+        UserID: 1000000,
       },
       {
         ClubID: 2,
-        UserID: 4,
+        UserID: 1000004,
       },
     ])
   },
