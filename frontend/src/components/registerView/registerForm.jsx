@@ -72,9 +72,7 @@ const RegisterForm = () => {
     event.preventDefault()
 
     if (!isOtpVerified) {
-      // Jos OTP:tä ei ole vahvistettu, näytä virheilmoitus
-      console.log(errors.otp)
-      return
+      alert("Vahvista ettet ole robortti") //TODO: Kovakoodaus pois
     }
 
     try {

@@ -62,6 +62,7 @@ const LoginForm = () => {
             zoom: 14, // Kovakoodattu etäisyys
           })
         )
+        alert("Kirjautuminen onnistui") //TODO: Kovakoodaus veke
         navigate(`/`)
       } catch (error) {
         console.log(error)
