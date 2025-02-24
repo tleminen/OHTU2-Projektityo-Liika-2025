@@ -26,7 +26,7 @@ const userRouter = require("./controllers/user")
 const logStream = fs.createWriteStream("./logs/access.log", { flags: "a" })
 
 // Tietokantayhteys ja alustus
-initializeDB(true) // Aseta muuttujaan false, mikäli et halua, että tietokanta nollaantuu
+initializeDB(false) // Aseta muuttujaan false, mikäli et halua, että tietokanta nollaantuu
 
 // Käynnistetään middlewaret
 app.use(cors()) //cros-origin homma
