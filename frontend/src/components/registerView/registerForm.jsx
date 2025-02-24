@@ -25,6 +25,7 @@ const RegisterForm = () => {
   const [otp, setOtp] = useState("") // OTP-tila
   const [otpSent, setOtpSent] = useState(false) // Tila OTP:n lähetyksen seuraamiseksi
   const [isOtpVerified, setIsOtpVerified] = useState(false) // Tila OTP:n vahvistuksen seuraamiseksi
+  const [loader, setLoader] = useState(false)
 
   const schema = registerValidation()
 
@@ -36,6 +37,7 @@ const RegisterForm = () => {
  
 
   const sendOtp = async () => {
+    setLoader(true)
     try {
       const response = await registerService.sendOtp(email)
       console.log(response.data)
@@ -43,9 +45,11 @@ const RegisterForm = () => {
       
       // Jos OTP lähetettiin onnistuneesti, päivitä tila
       setOtpSent(true)
+      setLoader(false)
     } catch (error) {
       console.error("Virhe sähköpostin lähetyksessä:", error)
       alert("Sähköpostin lähetys epäonnistui") //TODO: Kovakoodaus pois
+      setLoader(false)
     }
   }
 
@@ -199,9 +203,14 @@ const RegisterForm = () => {
         ) : (
           <div>
             <h3>Vahvista sähköpostiosoitteesi</h3> {/*TODO: Muutetaan kovakoodauksesta pois */}
-            <button type="button" onClick={sendOtp} disabled={!email}>
+            {loader ? (
+              <div className="loader"></div>
+            ) : (
+              <button type="button" onClick={sendOtp} disabled={!email} className="btn">
               Lähetä
-            </button>
+            </button> 
+            )}
+            
           </div>
         )}
 
