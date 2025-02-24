@@ -82,7 +82,7 @@ const generateVerificationCode = () => {
 const verificationCodes = new Map() //----VOIDAAN VAIHTAA TIETOKANTAAN JOS HALUTAAN----
 
 //Vahvistuskoodin lähetys sähköpostiin
-userRouter.post("/sendOtp", async (req, res) => {
+registerRouter.post("/sendOtp", async (req, res) => {
   const { email } = req.body
 
   try {
@@ -110,7 +110,7 @@ userRouter.post("/sendOtp", async (req, res) => {
 
 //Vahvistuskoodin vertailu
 
-userRouter.post("/verifyOtp", async (req, res) => {
+registerRouter.post("/verifyOtp", async (req, res) => {
   //const testCode = "123456"
 
   const { email, otp } = req.body
