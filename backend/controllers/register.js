@@ -10,7 +10,7 @@ const registerRouter = Router()
  * Uuden käyttäjän rekisteröinti
  */
 registerRouter.post("/", async (req, res) => {
-  const { username, password, role, email, location, languageID } = req.body
+  const { username, password, role, email, location, language } = req.body
 
   const existingUser = await Users.findOne({
     // Tarkastetaan ensin löytyykö jo sama käyttäjänimi tai sähköpostiosoite
@@ -31,14 +31,7 @@ registerRouter.post("/", async (req, res) => {
   const saltRounds = 10
   const passwordhash = await bcrypt.hash(password, saltRounds)
 
-  console.log(location)
-  if (!location) {
-    // Mikäli yritetään luoda käyttäjää vahingossa ilman lokaatiota niin asetetaan default
-    location.lat = 62.6013
-    location.lng = 29.7639
-    console.log(location)
-  }
-
+  console.log("nyt lokaatioksi saatu; " + location)
   try {
     const savedUser = await Users.create({
       // Uuden käyttäjän rekisteröinti
@@ -51,7 +44,7 @@ registerRouter.post("/", async (req, res) => {
         Sequelize.fn("ST_MakePoint", location.lng, location.lat),
         4326
       ),
-      LanguageID: languageID, //TODO: MUOKKAA TIETOKANTAAN FI EN SE PK:KSI
+      LanguageID: language,
     })
 
     const userForToken = {

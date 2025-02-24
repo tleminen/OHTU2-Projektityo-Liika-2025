@@ -20,7 +20,7 @@ const LocationMap = ({ onLocationChange }) => {
       startingLocation.zoom = 12
     }
     // Asetetaan nämä aluksi, jos käyttäjä unohtaakin klikata karttaa
-    onLocationChange([startingLocation.lat, startingLocation.lng])
+    onLocationChange({ lat: startingLocation.lat, lng: startingLocation.lng })
 
     // Lisää OpenStreetMap-laatta
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {

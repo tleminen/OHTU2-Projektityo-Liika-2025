@@ -1,7 +1,7 @@
 import termsOfServiceText from "./termsOfServiceText"
 import infoText from "./infoText"
 const translations = {
-  en: {
+  EN: {
     activity: "Activity",
     createEvent: "Create event",
     dateAndTime: "Date and time",
@@ -57,7 +57,7 @@ const translations = {
     validation_psw_match: "Passwords don't match",
     validation_psw_again: "Confirm password",
   },
-  fi: {
+  FI: {
     activity: "Laji",
     back: "Takaisin",
     createEvent: "Luo tapahtuma",

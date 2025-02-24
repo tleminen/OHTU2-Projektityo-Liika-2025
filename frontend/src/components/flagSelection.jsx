@@ -7,8 +7,8 @@ const FlagSelection = () => {
   const selectedLanguage = useSelector((state) => state.language.language)
 
   const options = [
-    { value: "fi", label: "Suomi" },
-    { value: "en", label: "English" },
+    { value: "FI", label: "Suomi" },
+    { value: "EN", label: "English" },
     //Lisätään muita kieliä tarvittaessa
   ]
 

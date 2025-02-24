@@ -3,13 +3,12 @@ module.exports = {
   up: (queryInterface, sequelize) => {
     return queryInterface.bulkInsert("Languages", [
       {
-        Language: "FI",
+        LanguageID: "FI",
+        Language: "Finnish",
       },
       {
-        Language: "EN",
-      },
-      {
-        Language: "SE",
+        LanguageID: "EN",
+        Language: "English",
       },
     ])
   },

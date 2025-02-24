@@ -10,7 +10,7 @@ const Users = sequelize.define("Users", {
   Email: { type: DataTypes.STRING(40), allowNull: false },
   Username: { type: DataTypes.STRING(16), allowNull: false, unique: true },
   LanguageID: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.STRING(3),
     allowNull: true, // Voiko käyttäjällä olla NULL kieli?
     references: { model: Languages, key: "LanguageID" },
   },

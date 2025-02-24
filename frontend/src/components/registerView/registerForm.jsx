@@ -20,7 +20,7 @@ const RegisterForm = () => {
   const [passwordAgain, setPasswordAgain] = useState("")
   const [showPassword, setShowPassword] = useState(false)
   const [showPasswordAgain, setShowPasswordAgain] = useState(false)
-  const [location, setLocation] = useState("")
+  const [location, setLocation] = useState()
   const [errors, setErrors] = useState({})
 
   const schema = registerValidation()
@@ -39,7 +39,6 @@ const RegisterForm = () => {
         { abortEarly: false }
       )
       setErrors({})
-
       console.log("Register attempt:", {
         username,
         email,

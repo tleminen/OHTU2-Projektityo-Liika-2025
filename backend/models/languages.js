@@ -5,11 +5,10 @@ const Languages = sequelize.define(
   "Languages",
   {
     LanguageID: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
+      type: DataTypes.STRING(3),
       primaryKey: true,
     },
-    Language: { type: DataTypes.STRING(3), allowNull: false },
+    Language: { type: DataTypes.STRING(15), allowNull: false },
   },
   { timestamps: false }
 )

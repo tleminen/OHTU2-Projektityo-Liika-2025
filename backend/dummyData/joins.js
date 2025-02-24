@@ -3,19 +3,19 @@ module.exports = {
   up: async (queryInterface, sequelize) => {
     await queryInterface.bulkInsert("Joins", [
       {
-        UserID: 1,
+        UserID: 1000000,
         EventID: 10000001,
       },
       {
-        UserID: 4,
-        EventID: 10000001,
-      },
-      {
-        UserID: 1,
+        UserID: 1000000,
         EventID: 10000003,
       },
       {
-        UserID: 1,
+        UserID: 1000004,
+        EventID: 10000002,
+      },
+      {
+        UserID: 1000000,
         EventID: 10000002,
       },
     ])
