@@ -37,6 +37,7 @@ button {
   align-items: center;
   justify-content: center;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.5);
+  margin: auto;
 }
 
 button:focus,
@@ -345,6 +346,12 @@ h2 {
 
 /*pienempi asiateksti*/
 h3 {
+  font-size: small;
+  color: #1a1a1a;
+  margin-top: 5%;
+}
+
+h4 {
   font-size: small;
   color: #1a1a1a;
 }

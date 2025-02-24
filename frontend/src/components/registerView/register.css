@@ -27,7 +27,17 @@
 }
 .btn {
   margin: auto;
+  margin-top: 2%;
 }
+
+.btn:hover {
+  background-color: #ffffff;
+  color: #0097b2;
+  border: 2px solid #0097b2;
+  transition: background-color 0.3s, box-shadow 0.3s;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.5);
+}
+
 .forms-btn {
   border-radius: 5px;
   border: none;
@@ -68,6 +78,7 @@
 
 
 .loader {
+  margin: auto;
   width: 50px;
   aspect-ratio: 1;
   border-radius: 50%;

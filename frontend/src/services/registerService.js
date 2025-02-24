@@ -18,7 +18,7 @@ const sendOtp = async (email) => {
 };
 
 const verifyOtp = async (credentials) => {
-  console.log("verifyOtp funktion email "+email, " ja otp "+otp)
+  console.log("Credentials verifyotp: "+credentials)
   try {
       const response = await axios.post(baseUrl + "/register/verifyOtp", credentials)
       return response.data;

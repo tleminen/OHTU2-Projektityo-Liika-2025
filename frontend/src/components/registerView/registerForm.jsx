@@ -183,37 +183,6 @@ const RegisterForm = () => {
         </div>
         {errors.email && <div className="error-forms">{errors.email}</div>}
 
-        {/* Uusi OTP-kenttä ja painike */}
-        {otpSent ? (
-          <div>
-            <h3>Syötä sähköpostistasi saatu koodi tähän:</h3> {/*TODO: Muutetaan kovakoodauksesta pois */}
-            <input
-              type="text"
-              className={`input-field ${errors.otp ? "error" : ""}`}
-              value={otp}
-              name="otp"
-              onChange={(e) => setOtp(e.target.value)}
-              placeholder="Syötä koodi"
-            />
-            {errors.otp && <div className="error-forms">{errors.otp}</div>}
-            <button type="button" onClick={verifyOtp}>
-              Vahvista
-            </button>
-          </div>
-        ) : (
-          <div>
-            <h3>Vahvista sähköpostiosoitteesi</h3> {/*TODO: Muutetaan kovakoodauksesta pois */}
-            {loader ? (
-              <div className="loader"></div>
-            ) : (
-              <button type="button" onClick={sendOtp} disabled={!email} className="btn">
-              Lähetä
-            </button> 
-            )}
-            
-          </div>
-        )}
-
         <h3>{t.password}</h3>
         <div className="password-input-container">
           <input
@@ -265,6 +234,40 @@ const RegisterForm = () => {
           <h3>{t.setStartLocationInfo}</h3>
           <LocationMap onLocationChange={handleLocationChange} />
         </div>
+
+
+         {/* Uusi OTP-kenttä ja painike */}
+         {otpSent ? (
+          <div>
+            <h3>Syötä sähköpostistasi saatu koodi tähän:</h3> {/*TODO: Muutetaan kovakoodauksesta pois */}
+            <input
+              type="text"
+              className={`input-field ${errors.otp ? "error" : ""}`}
+              value={otp}
+              name="otp"
+              onChange={(e) => setOtp(e.target.value)}
+              placeholder="Syötä koodi"
+            />
+            {errors.otp && <div className="error-forms">{errors.otp}</div>}
+            <button type="button" onClick={verifyOtp} className="btn">
+              Vahvista
+            </button>
+          </div>
+        ) : (
+          <div>
+            <h3>Vahvista että et ole robotti</h3> {/*TODO: Muutetaan kovakoodauksesta pois */}
+            <h4>Lähetä antamaasi sähköpostiin vahvistuskoodi</h4> {/*TODO: Muutetaan kovakoodauksesta pois */}
+            {loader ? (
+              <div className="loader"></div>
+            ) : (
+              <button type="button" onClick={sendOtp} disabled={!email} className="btn">
+              Lähetä
+            </button> 
+            )}
+            
+          </div>
+        )}
+
 
         <button type="submit" className="forms-btn">
           <span>{t.register}</span>
