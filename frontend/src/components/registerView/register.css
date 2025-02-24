@@ -25,6 +25,38 @@
 .error-forms {
   color: red;
 }
+
+.otp-input-container {
+  display: flex;
+  justify-content: center; /* Keskittää kentät vaakasuunnassa */
+  margin-bottom: 1rem;
+}
+
+.otp-input {
+  width: 40px; 
+  height: 50px; 
+  margin: 0 5px; 
+  text-align: center;
+  font-size: 1.25rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  /* Uudet väriasetukset */
+  background-color: rgba(255, 255, 255, 0.5);
+  color: #000;
+  
+}
+
+.otp-input:focus {
+  outline: none;
+  border-color: #007bff; /* Tai haluamasi korostusväri */
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Tai haluamasi varjo */
+}
+
+/* Voit lisätä tarvittaessa tyylejä virhetiloille */
+.otp-input.error {
+  border-color: red;
+}
+
 .btn {
   margin: auto;
   margin-top: 2%;
