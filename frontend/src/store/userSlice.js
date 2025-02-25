@@ -14,14 +14,6 @@ const userSlice = createSlice({
       state.user = { ...state.user, ...action.payload }
       localStorage.setItem("user", JSON.stringify(state.user))
     },
-    /*
-    loadUserFromStorage: (state) => {
-      const storedUser = JSON.parse(localStorage.getItem("user"))
-      if (storedUser) {
-        state.user = storedUser
-      }
-    },
-    */
   },
 })
 
