@@ -58,7 +58,7 @@ const RegisterForm = () => {
       const response = await registerService.sendOtp(email)
       console.log(response.data)
       alert(t.email_sent) //TODO: Kovakoodaus pois
-      
+
       // Jos OTP lähetettiin onnistuneesti, päivitä tila
       setOtpSent(true)
       setLoader(false)
@@ -268,50 +268,59 @@ const RegisterForm = () => {
           <LocationMap onLocationChange={handleLocationChange} />
         </div>
 
-        {/* Uusi OTP-kenttä ja painike */}
         {otpSent ? (
-          <div>
-            <h3>{t.otp_sent}</h3>{" "}
-            
-            <div className="otp-input-container" onPaste={handlePaste}>
-              {[...Array(6)].map((_, index) => (
-                <input
-                  key={index}
-                  type="text"
-                  maxLength="1"
-                  className={`otp-input ${errors.otp ? "error" : ""}`}
-                  value={otp[index] || ""}
-                  onChange={(e) => handleOtpChange(index, e.target.value)}
-                  ref={(el) => (otpInputRefs.current[index] = el)} // Aseta ref
-                  onKeyDown={(e) => {
-                    if (e.key === "Backspace" && !otp[index]) {
-                      if (index > 0) {
-                        otpInputRefs.current[index - 1]?.focus()
-                      }
-                    } else if (e.key === "ArrowLeft" && index > 0) {
-                      otpInputRefs.current[index - 1]?.focus()
-                    } else if (e.key === "ArrowRight" && index < 5) {
-                      otpInputRefs.current[index + 1]?.focus()
-                    }
-                  }}
-                />
-              ))}
+          isOtpVerified ? (
+            <div>
+              <h3>Sähköposti vahvistettu!</h3>
             </div>
-            {errors.otp && <div className="error-forms">{errors.otp}</div>}
-            <button type="button" onClick={verifyOtp} className="btn">
-              {t.confirm}
-            </button>
-          </div>
+          ) : (
+            <div>
+              <h3>{t.otp_sent}</h3>{" "}
+              <div className="otp-input-container" onPaste={handlePaste}>
+                {[...Array(6)].map((_, index) => (
+                  <input
+                    key={index}
+                    type="text"
+                    maxLength="1"
+                    className={`otp-input ${errors.otp ? "error" : ""}`}
+                    value={otp[index] || ""}
+                    onChange={(e) => handleOtpChange(index, e.target.value)}
+                    ref={(el) => (otpInputRefs.current[index] = el)} // Aseta ref
+                    onKeyDown={(e) => {
+                      if (e.key === "Backspace" && !otp[index]) {
+                        if (index > 0) {
+                          otpInputRefs.current[index - 1]?.focus()
+                        }
+                      } else if (e.key === "ArrowLeft" && index > 0) {
+                        otpInputRefs.current[index - 1]?.focus()
+                      } else if (e.key === "ArrowRight" && index < 5) {
+                        otpInputRefs.current[index + 1]?.focus()
+                      }
+                    }}
+                  />
+                ))}
+              </div>
+              {errors.otp && <div className="error-forms">{errors.otp}</div>}
+              <button type="button" onClick={verifyOtp} className="btn">
+                {t.confirm}
+              </button>
+            </div>
+          )
         ) : (
           <div>
-            <h3>{t.opt_robot_check}</h3> {/*TODO: Muutetaan kovakoodauksesta pois */}
-            <h4>{t.otp_insert}</h4> {/*TODO: Muutetaan kovakoodauksesta pois */}
+            <h3>{t.opt_robot_check}</h3>
+            <h4>{t.otp_insert}</h4>
             {loader ? (
               <div className="loader"></div>
             ) : (
-              <button type="button" onClick={sendOtp} disabled={!email} className="btn">
-              {t.send}
-            </button> 
+              <button
+                type="button"
+                onClick={sendOtp}
+                disabled={!email}
+                className="btn"
+              >
+                {t.send}
+              </button>
             )}
           </div>
         )}
