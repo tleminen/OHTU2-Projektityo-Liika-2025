@@ -271,7 +271,10 @@ const RegisterForm = () => {
         {otpSent ? (
           isOtpVerified ? (
             <div>
-              <h3>Sähköposti vahvistettu!</h3>
+              <img src={"/checkCropped.png"}
+                      alt="check"
+                      width={100}
+                      height={100}/>
             </div>
           ) : (
             <div>

@@ -62,7 +62,6 @@ const Login = () => {
           </a>
         </div>
         {emailForm && (
-          
           <form onSubmit={handleEmailSubmit}>
             <input
               type="email"
@@ -78,7 +77,15 @@ const Login = () => {
             ) : (
               <div>
                 <button type="submit">{t.reset_pw}</button>
-                {resetMessage && <p>{resetMessage}</p>}
+                {resetMessage && (
+                  <img
+                    src={"/checkCropped.png"}
+                    alt="check"
+                    width={100}
+                    height={100}
+                    style={{ display: 'block', margin: '0 auto' }}
+                  />
+                )}
               </div>
             )}
           </form>
