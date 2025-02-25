@@ -1,10 +1,11 @@
 const { Router } = require("express")
 const getEventsNearby = require("../services/getEventsNearby")
-const { Categories, Events, Times } = require("../models")
+const { Categories, Events, Times, Joins } = require("../models")
 const { Sequelize } = require("sequelize")
 
 const eventRouter = Router()
 
+// Hae yksittäinen tapahtuma
 eventRouter.post("/singleEvent", async (req, res) => {
   try {
     const event = await Events.findByPk(req.body.EventID)
@@ -40,6 +41,7 @@ eventRouter.get("/categories", async (req, res) => {
   }
 }) // Kategoriahaku päättyy
 
+// Luo tapahtuma
 eventRouter.post("/create_event", async (req, res) => {
   const {
     event_location,
@@ -91,6 +93,21 @@ eventRouter.post("/create_event", async (req, res) => {
     }
   } catch (error) {
     console.error(error)
+  }
+}) // Tapahtuman luonti päättyy
+
+// Liity tapahtumaan
+eventRouter.post("/join_event", async (req, res) => {
+  const { UserID, EventID } = req.body
+  try {
+    const response = await Joins.create({
+      UserID: UserID,
+      EventID: EventID,
+    })
+    res.status(200).send
+  } catch (error) {
+    console.error("Problems when joining event: " + error)
+    res.status(500).json({ error: "Internal Server Error" })
   }
 })
 

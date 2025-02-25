@@ -24,4 +24,9 @@ const createEvent = async (parameters) => {
   return response.data
 }
 
-export default { getCategories, getEvents, createEvent, getEvent }
+const joinEvent = async (parameters) => {
+  const response = await axios.post(baseUrl + "/events/join_event", parameters)
+  return response.data
+}
+
+export default { getCategories, getEvents, createEvent, joinEvent, getEvent }

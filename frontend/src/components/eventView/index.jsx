@@ -21,8 +21,12 @@ const parseTimeAndDate = (isoDate) => {
   return [time, dateStr]
 }
 
-const handleJoin = () => {
-  console.log("käyttäjä liittyy sit tästä näin")
+const handleJoin = async (userID, id) => {
+  const response = await eventService.joinEvent({
+    UserID: userID,
+    EventID: id,
+  })
+  console.log(response) // TODO: Lisää notifikaatio?
 }
 
 const EventView = () => {
@@ -31,6 +35,7 @@ const EventView = () => {
   const [loading, setLoading] = useState(true)
   const language = useSelector((state) => state.language.language)
   const t = translations[language]
+  const userID = useSelector((state) => state.user.user.userID)
 
   useEffect(() => {
     const fetchEventInfo = async () => {
@@ -119,7 +124,7 @@ const EventView = () => {
         <button
           className="join-btn"
           onClick={() => {
-            handleJoin()
+            handleJoin(userID, id)
           }}
         >
           liity
