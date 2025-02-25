@@ -310,6 +310,7 @@ button:focus-visible {
   align-items: center;
   justify-content: center;
   margin-top: 1.5%;
+  margin-bottom: 3%;
 }
 .input-field:hover {
   border-color: #0097b2;
