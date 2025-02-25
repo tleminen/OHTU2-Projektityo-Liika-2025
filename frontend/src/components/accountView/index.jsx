@@ -84,7 +84,7 @@ const AccountView = () => {
             {user.user.Username}
           </div>
           <div className="information">
-            <Link to={"/"} className="link-btn"></Link>
+            <Link to={"/own_info/username"} className="link-btn"></Link>
           </div>
         </div>
         <div className="information-row">
