@@ -12,6 +12,7 @@ const ChangeEmail = () => {
   const t = translations[language]
   const [newEmail, setNewEmail] = useState("")
   const email = useSelector((state) => state.user.user.email)
+  const [newEmailAgain, setNewEmailAgain] = useState("")
 
   const handleSubmit = (event) => {
     event.preventDefault()
@@ -53,14 +54,14 @@ const ChangeEmail = () => {
           />
         </div>
         <div>
-          <h3>{t.newEmail}</h3>
+          <h3>{t.newEmailAgain}</h3>
           <input
             className="input-field"
             type="text"
-            value={newEmail}
-            name="newEmail"
-            onChange={(e) => setNewEmail(e.target.value)}
-            placeholder={t.newEmail}
+            value={newEmailAgain}
+            name="newEmailAgain"
+            onChange={(e) => setNewEmailAgain(e.target.value)}
+            placeholder={t.newEmailAgain}
             required={true}
           />
         </div>
