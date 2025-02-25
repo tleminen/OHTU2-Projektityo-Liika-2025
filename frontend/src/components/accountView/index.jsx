@@ -67,22 +67,33 @@ const AccountView = () => {
       <Header />
       <div className="account-view">
         <h1>Käyttäjätiedot</h1>
-        <div className="information-field">
-          <h3>Sähköposti: </h3>
-          {user.user.Email}
-          <Link to={`/own_info/email`} className="button">
-            Vaihda
-          </Link>
+        <div className="information-row">
+          <div className="information">
+            <h3>Sähköposti: </h3>
+            {user.user.Email}
+          </div>
+          <div className="information">
+            <Link to={`/own_info/email`} className="link-btn">
+              Vaihda
+            </Link>
+          </div>
         </div>
-        <div className="information-field">
-          <h3>Kayttäjätunnus: </h3>
-          {user.user.Username}
+        <div className="information-row">
+          <div className="information">
+            <h3>Kayttäjätunnus:</h3>
+            {user.user.Username}
+          </div>
+          <div className="information">
+            <Link to={"/"} className="link-btn"></Link>
+          </div>
         </div>
-        <div className="information-field">
-          <h3>Kieli: </h3>
-          {user.user.LanguageID}
+        <div className="information-row">
+          <>
+            <h3>Kieli: </h3>
+            {user.user.LanguageID}
+          </>
         </div>
-        <div className="information-field">
+        <div className="information-row">
           <h3>Sähköposti: </h3>
           {user.user.Email}
         </div>
