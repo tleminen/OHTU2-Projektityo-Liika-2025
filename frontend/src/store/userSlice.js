@@ -2,11 +2,7 @@ import { createSlice } from "@reduxjs/toolkit"
 
 const initialState = {
   // Localstorage on string-muotoinen, siksi stringify ja parse
-  location: JSON.parse(localStorage.getItem("user")) || {
-    userID: null,
-    username: null,
-    token: null,
-  },
+  user: JSON.parse(localStorage.getItem("user")) || null,
 }
 
 const userSlice = createSlice({
@@ -14,15 +10,9 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     changeUser: (state, action) => {
-      console.log(action.payload)
-      state.user = action.payload
-      localStorage.setItem("user", JSON.stringify(action.payload))
-    },
-    loadUserFromStorage: (state) => {
-      const storedUser = JSON.parse(localStorage.getItem("user"))
-      if (storedUser) {
-        state.user = storedUser
-      }
+      console.log("changeUser payload: " + action.payload)
+      state.user = { ...state.user, ...action.payload }
+      localStorage.setItem("user", JSON.stringify(state.user))
     },
   },
 })

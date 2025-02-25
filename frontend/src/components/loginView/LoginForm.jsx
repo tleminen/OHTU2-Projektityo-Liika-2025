@@ -19,9 +19,8 @@ const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false)
   const [errors, setErrors] = useState({})
 
-
   // Tallennetaan muuttujaan return arvo
-  const schema = loginValidation();
+  const schema = loginValidation()
 
   const inputRef = useRef(null)
   useEffect(() => {
@@ -32,12 +31,9 @@ const LoginForm = () => {
     event.preventDefault()
 
     try {
-      await schema.validate(
-        { username, password },
-        { abortEarly: false }
-      )
-      setErrors({});
-      
+      await schema.validate({ username, password }, { abortEarly: false })
+      setErrors({})
+
       console.log("Login attempt:", { username, password })
       try {
         const user = await loginService.login({
@@ -51,6 +47,7 @@ const LoginForm = () => {
             userID: user.userID,
             username: user.username,
             token: user.token,
+            email: user.email,
           })
         )
         dispatch(
@@ -74,7 +71,7 @@ const LoginForm = () => {
           errorMap[error.path] = error.message
         })
         setErrors(errorMap)
-        
+
         console.log("Validation errors:", errorMap)
       }
     }
@@ -100,7 +97,9 @@ const LoginForm = () => {
             autoComplete="text"
           />
         </div>
-        {errors.username && <div className="error-forms">{errors.username}</div>}
+        {errors.username && (
+          <div className="error-forms">{errors.username}</div>
+        )}
         <h3>{t.password}</h3>
         <div className="password-input-container">
           <input
@@ -122,7 +121,9 @@ const LoginForm = () => {
             </span>
           </button>
         </div>
-        {errors.password && <div className="error-forms">{errors.password}</div>}
+        {errors.password && (
+          <div className="error-forms">{errors.password}</div>
+        )}
         <button type="submit" className="forms-btn">
           <span>{t.login}</span>
         </button>

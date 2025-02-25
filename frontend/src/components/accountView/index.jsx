@@ -3,29 +3,35 @@ import Footer from "../footer"
 import Header from "../header"
 import "./accountView.css"
 import userService from "../../services/userService"
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
+import { changeUser } from "../../store/userSlice"
 import { Link } from "react-router-dom"
 import "../../index.css"
 
 const AccountView = () => {
   const [user, setUser] = useState(null)
   const userID = useSelector((state) => state.user?.user?.userID ?? null)
+  const dispatch = useDispatch()
 
   useEffect(() => {
     const fetchUserInfo = async () => {
       if (!userID) return // Ei tehdä pyyntöä jos userID ei ole saatavilla
       try {
-        console.log(userID)
         const response = await userService.getUserData(userID)
-        console.log(response)
+
+        if (!response) {
+          console.error("Response tyhjä")
+          return
+        }
+        const email = response.Email // EI VIELÄ TOIMI
+        dispatch(changeUser(email))
         setUser(response)
       } catch (error) {
         console.error("Virhe hakiessa yksittäisen käyttäjän tietoja: " + error)
       }
     }
-
     fetchUserInfo()
-  }, [userID]) // Suoritetaan vain kun userID muuttuu
+  }, [userID, dispatch]) // Suoritetaan vain kun userID muuttuu
 
   if (!user) {
     // Tietokantahaku kesken
@@ -61,22 +67,33 @@ const AccountView = () => {
       <Header />
       <div className="account-view">
         <h1>Käyttäjätiedot</h1>
-        <div className="information-field">
-          <h3>Sähköposti: </h3>
-          {user.user.Email}
-          <Link to={`/own_info/email`} className="button">
-            Vaihda
-          </Link>
+        <div className="information-row">
+          <div className="information">
+            <h3>Sähköposti: </h3>
+            {user.user.Email}
+          </div>
+          <div className="information">
+            <Link to={`/own_info/email`} className="link-btn">
+              Vaihda
+            </Link>
+          </div>
         </div>
-        <div className="information-field">
-          <h3>Kayttäjätunnus: </h3>
-          {user.user.Username}
+        <div className="information-row">
+          <div className="information">
+            <h3>Kayttäjätunnus:</h3>
+            {user.user.Username}
+          </div>
+          <div className="information">
+            <Link to={"/"} className="link-btn"></Link>
+          </div>
         </div>
-        <div className="information-field">
-          <h3>Kieli: </h3>
-          {user.user.LanguageID}
+        <div className="information-row">
+          <>
+            <h3>Kieli: </h3>
+            {user.user.LanguageID}
+          </>
         </div>
-        <div className="information-field">
+        <div className="information-row">
           <h3>Sähköposti: </h3>
           {user.user.Email}
         </div>

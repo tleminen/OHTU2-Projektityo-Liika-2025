@@ -6,19 +6,11 @@ import MapView from "./components/mapView"
 import TermsOfServiceView from "./components/termsOfServiceView"
 import InfoView from "./components/infoView"
 import CreateEventView from "./components/createEventView"
-import { useDispatch } from "react-redux"
-import { useEffect } from "react"
-import { loadUserFromStorage } from "./store/userSlice"
 import EventView from "./components/eventView"
 import AccountView from "./components/accountView"
 import ChangeEmail from "./components/accountView/changeInfo/changeEmail"
 
 const App = () => {
-  const dispatch = useDispatch()
-
-  useEffect(() => {
-    dispatch(loadUserFromStorage())
-  }, [dispatch])
   return (
     <Routes>
       <Route path="/" element={<Frontpage />} />

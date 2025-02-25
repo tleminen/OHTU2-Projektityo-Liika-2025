@@ -47,7 +47,8 @@ loginRouter.post("/", async (req, res) => {
       userID: user.UserID,
       username: user.Username,
       location: user.Location.coordinates,
-      language: "fi", // Kovakoodattu, laita kyselyyn populate with language jotenkin
+      email: user.Email,
+      language: "FI", // Kovakoodattu, laita kyselyyn populate with language jotenkin
     })
   } catch (error) {
     console.log(error)
