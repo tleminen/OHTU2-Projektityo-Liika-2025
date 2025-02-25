@@ -6,6 +6,7 @@ const initialState = {
     userID: null,
     username: null,
     token: null,
+    email: null,
   },
 }
 
@@ -15,7 +16,7 @@ const userSlice = createSlice({
   reducers: {
     changeUser: (state, action) => {
       console.log(action.payload)
-      state.user = action.payload
+      state.user = { ...state.user, ...action.payload }
       localStorage.setItem("user", JSON.stringify(action.payload))
     },
     loadUserFromStorage: (state) => {

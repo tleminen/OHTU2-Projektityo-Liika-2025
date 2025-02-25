@@ -12,7 +12,6 @@ const userRouter = Router()
 userRouter.post("/user", async (req, res) => {
   const { userID } = req.body
 
-  console.log(user)
   try {
     const user = await Users.findOne({
       // Etsitään käyttäjä
