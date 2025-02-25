@@ -111,4 +111,18 @@ eventRouter.post("/join_event", async (req, res) => {
   }
 })
 
+// Hae liitytyt tapahtumat
+eventRouter.post("/joined", async (req, res) => {
+  const { UserID } = req.body
+  try {
+    const response = await Joins.findAll({
+      where: { UserID: UserID },
+    })
+    res.status(200).json(response)
+  } catch (error) {
+    console.error("Problems with retreving joined evets for user: " + error)
+    res.status(500).json({ error: "Internal Server Error" })
+  }
+})
+
 module.exports = eventRouter

@@ -20,6 +20,7 @@ const Map = ({ startingLocation }) => {
   const timestampRef = useRef(null)
   const markerClusterGroup = L.markerClusterGroup()
   const user = useSelector((state) => state.user?.user?.username ?? null)
+  var first = true
 
   useEffect(() => {
     if (timestampRef.current) {
@@ -232,7 +233,10 @@ const Map = ({ startingLocation }) => {
     })
 
     map.addLayer(markerClusterGroup)
-    onClickRefresh(map)
+    if (first) {
+      onClickRefresh(map)
+      first = false
+    }
     return () => {
       // Tuhoaa karttaelementin kun komponentti unmounttaa
       map.remove()
