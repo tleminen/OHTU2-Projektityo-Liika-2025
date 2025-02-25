@@ -1,14 +1,13 @@
 Bugit
 
 Kartta:
-Tapahtumakartan ensimmäinen lataus saisi ladata tapahtumat heti siirryttäessä
 Leveys ei toimi kunnolla
 
 Login:
-Unauthorized, tee error jos
-
-Yleensä:
-Laita toimimaan kaikki tokenilla
+Unauthorized, tee error
 
 Muita huomioita:
-REKISTERÖINTI EI KIRJAUDU OIKEIN
+Laita toimimaan kaikki tokenilla
+
+Azure:
+Tomille- Vaihda sprintistä 4 v2 -> v1, sprintistä 5 v3 -> v2 jne..

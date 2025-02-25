@@ -62,6 +62,8 @@ registerRouter.post("/", async (req, res) => {
     res.status(200).send({
       token,
       username: savedUser.Username,
+      userID: savedUser.UserID,
+      email: savedUser.Email,
       location: [location.lng, location.lat],
     })
   } catch (error) {

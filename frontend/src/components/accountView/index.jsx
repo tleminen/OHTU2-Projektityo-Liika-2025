@@ -84,14 +84,17 @@ const AccountView = () => {
             {user.user.Username}
           </div>
           <div className="information">
-            <Link to={"/own_info/username"} className="link-btn"></Link>
+            <Link to={"/own_info/username"} className="link-btn">
+              Vaihda
+            </Link>
           </div>
         </div>
         <div className="information-row">
-          <>
+          <div className="information">
             <h3>Kieli: </h3>
             {user.user.LanguageID}
-          </>
+          </div>
+          <div className="information"></div>
         </div>
         <div className="information-row">
           <h3>Sähköposti: </h3>

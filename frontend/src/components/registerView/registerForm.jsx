@@ -57,14 +57,14 @@ const RegisterForm = () => {
     try {
       const response = await registerService.sendOtp(email)
       console.log(response.data)
-      alert(t.email_sent) //TODO: Kovakoodaus pois
+      alert(t.email_sent)
 
       // Jos OTP lähetettiin onnistuneesti, päivitä tila
       setOtpSent(true)
       setLoader(false)
     } catch (error) {
       console.error("Virhe sähköpostin lähetyksessä:", error)
-      alert(t.email_send_error) //TODO: Kovakoodaus pois
+      alert(t.email_send_error)
       setLoader(false)
     }
   }
@@ -74,13 +74,13 @@ const RegisterForm = () => {
       // Lähetä OTP backendille vahvistusta varten
       const response = await registerService.verifyOtp({ email, otp }) //TODO: backendiin otp vahvistus
       console.log(response.data)
-      alert(t.email_confirmation) //TODO: kovakoodaus pois
+      alert(t.email_confirmation)
       // Jos OTP on oikein, päivitä tila
       setIsOtpVerified(true)
     } catch (error) {
       // Käsittele virhe (esim. näytä virheilmoitus)
       console.error("Virhe OTP:n vahvistuksessa:", error)
-      alert(t.otp_send_error) //TODO: kovakoodaus pois
+      alert(t.otp_send_error)
     }
   }
 
@@ -88,7 +88,7 @@ const RegisterForm = () => {
     event.preventDefault()
 
     if (!isOtpVerified) {
-      alert(t.opt_robot_check) //TODO: Kovakoodaus pois
+      alert(t.opt_robot_check)
     }
 
     try {
@@ -103,7 +103,7 @@ const RegisterForm = () => {
         password,
         passwordAgain,
         location,
-        language, // KATSO MITÄ LÄHTEE
+        language,
       })
 
       console.log("register attempt:", { username, password })
