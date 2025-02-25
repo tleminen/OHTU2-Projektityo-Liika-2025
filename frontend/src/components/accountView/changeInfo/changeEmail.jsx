@@ -1,9 +1,9 @@
 import { useState } from "react"
-import Footer from "../footer"
-import Header from "../header"
-import translations from "../../assets/translation.js"
+import Footer from "../../footer"
+import Header from "../../header"
+import translations from "../../../assets/translation.js"
 import { useSelector } from "react-redux"
-import "../../index.css"
+import "../../../index.css"
 
 const ChangeEmail = () => {
 
