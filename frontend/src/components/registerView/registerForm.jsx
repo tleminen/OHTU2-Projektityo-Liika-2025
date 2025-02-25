@@ -41,14 +41,14 @@ const RegisterForm = () => {
     try {
       const response = await registerService.sendOtp(email)
       console.log(response.data)
-      alert("Sähköpostin lähetys onnistui") //TODO: Kovakoodaus pois
+      alert(t.email_sent) //TODO: Kovakoodaus pois
       
       // Jos OTP lähetettiin onnistuneesti, päivitä tila
       setOtpSent(true)
       setLoader(false)
     } catch (error) {
       console.error("Virhe sähköpostin lähetyksessä:", error)
-      alert("Sähköpostin lähetys epäonnistui") //TODO: Kovakoodaus pois
+      alert(t.email_send_error) //TODO: Kovakoodaus pois
       setLoader(false)
     }
   }
@@ -58,13 +58,13 @@ const RegisterForm = () => {
       // Lähetä OTP backendille vahvistusta varten
       const response = await registerService.verifyOtp({ email, otp }) //TODO: backendiin otp vahvistus
       console.log(response.data)
-      alert("Sähköposti vahvistettu") //TODO: kovakoodaus pois
+      alert(t.email_confirmation) //TODO: kovakoodaus pois
       // Jos OTP on oikein, päivitä tila
       setIsOtpVerified(true)
     } catch (error) {
       // Käsittele virhe (esim. näytä virheilmoitus)
       console.error("Virhe OTP:n vahvistuksessa:", error)
-      alert("Väärä vahvistuskoodi") //TODO: kovakoodaus pois
+      alert(t.otp_send_error) //TODO: kovakoodaus pois
     }
   }
 
@@ -72,9 +72,7 @@ const RegisterForm = () => {
     event.preventDefault()
 
     if (!isOtpVerified) {
-      // Jos OTP:tä ei ole vahvistettu, näytä virheilmoitus
-      console.log(errors.otp)
-      return
+      alert(t.opt_robot_check) //TODO: Kovakoodaus pois
     }
 
     try {
@@ -239,7 +237,7 @@ const RegisterForm = () => {
          {/* Uusi OTP-kenttä ja painike */}
          {otpSent ? (
           <div>
-            <h3>Syötä sähköpostistasi saatu koodi tähän:</h3> {/*TODO: Muutetaan kovakoodauksesta pois */}
+            <h3>{t.otp_sent}</h3> {/*TODO: Muutetaan kovakoodauksesta pois */}
             <input
               type="text"
               className={`input-field ${errors.otp ? "error" : ""}`}
@@ -250,18 +248,18 @@ const RegisterForm = () => {
             />
             {errors.otp && <div className="error-forms">{errors.otp}</div>}
             <button type="button" onClick={verifyOtp} className="btn">
-              Vahvista
+              {t.confirm}
             </button>
           </div>
         ) : (
           <div>
-            <h3>Vahvista että et ole robotti</h3> {/*TODO: Muutetaan kovakoodauksesta pois */}
-            <h4>Lähetä antamaasi sähköpostiin vahvistuskoodi</h4> {/*TODO: Muutetaan kovakoodauksesta pois */}
+            <h3>{t.opt_robot_check}</h3> {/*TODO: Muutetaan kovakoodauksesta pois */}
+            <h4>{t.otp_insert}</h4> {/*TODO: Muutetaan kovakoodauksesta pois */}
             {loader ? (
               <div className="loader"></div>
             ) : (
               <button type="button" onClick={sendOtp} disabled={!email} className="btn">
-              Lähetä
+              {t.send}
             </button> 
             )}
             
