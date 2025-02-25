@@ -4,6 +4,7 @@ import Header from "../header"
 import "./accountView.css"
 import userService from "../../services/userService"
 import { useDispatch, useSelector } from "react-redux"
+import { changeUser } from "../../store/userSlice"
 import { Link } from "react-router-dom"
 import "../../index.css"
 
@@ -16,21 +17,21 @@ const AccountView = () => {
     const fetchUserInfo = async () => {
       if (!userID) return // Ei tehdä pyyntöä jos userID ei ole saatavilla
       try {
-        console.log(userID)
-        const data = {
-          email: response.Email, // EI VIELÄ TOIMI
-        }
         const response = await userService.getUserData(userID)
-        console.log(response)
-        dispatch(setUser(data))
+
+        if (!response) {
+          console.error("Response tyhjä")
+          return
+        }
+        const email = response.Email // EI VIELÄ TOIMI
+        dispatch(changeUser(email))
         setUser(response)
       } catch (error) {
         console.error("Virhe hakiessa yksittäisen käyttäjän tietoja: " + error)
       }
     }
-
     fetchUserInfo()
-  }, [userID]) // Suoritetaan vain kun userID muuttuu
+  }, [userID, dispatch]) // Suoritetaan vain kun userID muuttuu
 
   if (!user) {
     // Tietokantahaku kesken

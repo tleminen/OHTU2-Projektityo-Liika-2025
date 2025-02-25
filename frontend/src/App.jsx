@@ -16,9 +16,11 @@ import ChangeEmail from "./components/accountView/changeInfo/changeEmail"
 const App = () => {
   const dispatch = useDispatch()
 
+  /*
   useEffect(() => {
     dispatch(loadUserFromStorage())
   }, [dispatch])
+  */
   return (
     <Routes>
       <Route path="/" element={<Frontpage />} />

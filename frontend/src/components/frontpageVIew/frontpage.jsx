@@ -8,7 +8,7 @@ import SignedOut from "./singedOut"
 import SignedIn from "./signedIn"
 import translations from "../../assets/translation"
 const Frontpage = () => {
-  const [user, setUser] = useState(window.localStorage.getItem("loggedUser"))
+  const [user, setUser] = useState()
   const navigate = useNavigate()
   const navigateTo = (path) => {
     navigate(`/${path}`)
