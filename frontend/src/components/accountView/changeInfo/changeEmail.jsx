@@ -4,37 +4,42 @@ import Header from "../../header"
 import translations from "../../../assets/translation.js"
 import { useSelector } from "react-redux"
 import "../../../index.css"
+import "../accountView.css"
 
 const ChangeEmail = () => {
 
   const language = useSelector((state) => state.language.language)
   const t = translations[language]
   const [newEmail, setNewEmail] = useState("")
-
-  const options = [
-    { value: "FI", label: "Suomi" },
-    { value: "EN", label: "English" },
-    //Lisätään muita kieliä tarvittaessa
-  ]
-
-  const selectedOption = options.find(
-    (option) => option.value === selectedLanguage
-  )
+  const email = useSelector((state) => state.user.user.email)
+  const [newEmailAgain, setNewEmailAgain] = useState("")
 
   const handleSubmit = (event) => {
     event.preventDefault()
     console.log("Create event attempt:", {
       newEmail
     })
+  }
   
 
   return (
     
-    <div className="fullpage">
+    <div className="fullpage"
+    style={{
+      backgroundImage: "url('/backgroundpicture.jpg')",
+      backgroundSize: "cover",
+      backgroundPosition: "center",
+      backgroundRepeat: "no-repeat",
+    }}>
+      
       <Header />
+      <div className="account-view">
       <h1>
-        Voit muokata omia tietoja täyttämällä ja tallentamalla lomakkeen tiedot
+        Vaihda sähköposti
       </h1>
+      <p>
+        Nykyinen sähköpostiosoite: {email}
+      </p>
       <form onSubmit={handleSubmit}>
         <div>
           <h3>{t.newEmail}</h3>
@@ -48,13 +53,28 @@ const ChangeEmail = () => {
             required={true}
           />
         </div>
+        <div>
+          <h3>{t.newEmailAgain}</h3>
+          <input
+            className="input-field"
+            type="text"
+            value={newEmailAgain}
+            name="newEmailAgain"
+            onChange={(e) => setNewEmailAgain(e.target.value)}
+            placeholder={t.newEmailAgain}
+            required={true}
+          />
+        </div>
         <button type="submit">{t.save}</button>
         </form>
+        </div>
         <Footer />
         </div>
         )
         }
-      }
-  
+      
+    
 export default ChangeEmail
+
+
 

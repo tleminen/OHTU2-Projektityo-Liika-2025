@@ -106,7 +106,7 @@ const RegisterForm = () => {
         language, // KATSO MITÄ LÄHTEE
       })
 
-      console.log("Login attempt:", { username, password })
+      console.log("register attempt:", { username, password })
       try {
         const user = await registerService.register({
           username,
@@ -117,13 +117,13 @@ const RegisterForm = () => {
           language,
         })
         console.log("token saatu:" + user.token)
-        window.localStorage.setItem("loggedUser", JSON.stringify(user))
 
         dispatch(
           changeUser({
             userID: user.userID,
             username: user.username,
             token: user.token,
+            email: user.email,
           })
         )
         dispatch(
