@@ -30,9 +30,27 @@ const RegisterForm = () => {
   const schema = registerValidation()
 
   const inputRef = useRef(null)
+
   useEffect(() => {
     inputRef.current?.focus()
   }, [])
+
+  const otpInputRefs = useRef([]) // Luo ref-taulukko
+
+  useEffect(() => {
+    otpInputRefs.current = otpInputRefs.current.slice(0, 6) // Varmista, että ref-taulukko on oikean kokoinen
+  }, [])
+
+  const handleOtpChange = (index, value) => {
+    const newOtp = otp.split("")
+    newOtp[index] = value
+    setOtp(newOtp.join(""))
+
+    // Siirrä kohdistus seuraavaan kenttään, jos kentässä on arvo
+    if (value && index < 5) {
+      otpInputRefs.current[index + 1]?.focus()
+    }
+  }
 
   const sendOtp = async () => {
     setLoader(true)
@@ -146,6 +164,25 @@ const RegisterForm = () => {
     setLocation(newLocation)
   }
 
+  const handlePaste = (e) => {
+    e.preventDefault()
+    const paste = e.clipboardData.getData("text")
+    const pasteArray = paste.split("").slice(0, 6) // Rajoitetaan 6 merkkiin
+
+    setOtp(pasteArray.join("")) // Asetetaan koko OTP-arvo kerralla
+
+    // Täytetään input-kentät ja siirretään focus viimeiseen
+    pasteArray.forEach((value, index) => {
+      if (otpInputRefs.current[index]) {
+        otpInputRefs.current[index].value = value
+      }
+    })
+
+    if (otpInputRefs.current[pasteArray.length - 1]) {
+      otpInputRefs.current[pasteArray.length - 1].focus()
+    }
+  }
+
   return (
     <div className="register-form">
       <form onSubmit={handleSubmit}>
@@ -231,28 +268,48 @@ const RegisterForm = () => {
           <LocationMap onLocationChange={handleLocationChange} />
         </div>
 
-        {/* Uusi OTP-kenttä ja painike */}
         {otpSent ? (
-          <div>
-            <h3>{t.otp_sent}</h3> {/*TODO: Muutetaan kovakoodauksesta pois */}
-            <input
-              type="text"
-              className={`input-field ${errors.otp ? "error" : ""}`}
-              value={otp}
-              name="otp"
-              onChange={(e) => setOtp(e.target.value)}
-              placeholder="Syötä koodi"
-            />
-            {errors.otp && <div className="error-forms">{errors.otp}</div>}
-            <button type="button" onClick={verifyOtp} className="btn">
-              {t.confirm}
-            </button>
-          </div>
+          isOtpVerified ? (
+            <div>
+              <h3>Sähköposti vahvistettu!</h3>
+            </div>
+          ) : (
+            <div>
+              <h3>{t.otp_sent}</h3>{" "}
+              <div className="otp-input-container" onPaste={handlePaste}>
+                {[...Array(6)].map((_, index) => (
+                  <input
+                    key={index}
+                    type="text"
+                    maxLength="1"
+                    className={`otp-input ${errors.otp ? "error" : ""}`}
+                    value={otp[index] || ""}
+                    onChange={(e) => handleOtpChange(index, e.target.value)}
+                    ref={(el) => (otpInputRefs.current[index] = el)} // Aseta ref
+                    onKeyDown={(e) => {
+                      if (e.key === "Backspace" && !otp[index]) {
+                        if (index > 0) {
+                          otpInputRefs.current[index - 1]?.focus()
+                        }
+                      } else if (e.key === "ArrowLeft" && index > 0) {
+                        otpInputRefs.current[index - 1]?.focus()
+                      } else if (e.key === "ArrowRight" && index < 5) {
+                        otpInputRefs.current[index + 1]?.focus()
+                      }
+                    }}
+                  />
+                ))}
+              </div>
+              {errors.otp && <div className="error-forms">{errors.otp}</div>}
+              <button type="button" onClick={verifyOtp} className="btn">
+                {t.confirm}
+              </button>
+            </div>
+          )
         ) : (
           <div>
-            <h3>{t.opt_robot_check}</h3>{" "}
-            {/*TODO: Muutetaan kovakoodauksesta pois */}
-            <h4>{t.otp_insert}</h4> {/*TODO: Muutetaan kovakoodauksesta pois */}
+            <h3>{t.opt_robot_check}</h3>
+            <h4>{t.otp_insert}</h4>
             {loader ? (
               <div className="loader"></div>
             ) : (
