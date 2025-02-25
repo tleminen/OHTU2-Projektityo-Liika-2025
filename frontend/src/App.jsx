@@ -9,6 +9,7 @@ import CreateEventView from "./components/createEventView"
 import EventView from "./components/eventView"
 import AccountView from "./components/accountView"
 import ChangeEmail from "./components/accountView/changeInfo/changeEmail"
+import ChangeUsername from "./components/accountView/changeInfo/changeUsername"
 
 const App = () => {
   return (
@@ -23,6 +24,7 @@ const App = () => {
       <Route path="/own_info" element={<AccountView />} />
       <Route path="/events/:id" element={<EventView />} />
       <Route path="/own_info/email" element={<ChangeEmail />} />
+      <Route path="/own_info/username" element={<ChangeUsername />} />
     </Routes>
   )
 }

@@ -6,13 +6,13 @@ import { useSelector } from "react-redux"
 import "../../../index.css"
 import "../accountView.css"
 
-const ChangeEmail = () => {
+const ChangeUsername = () => {
 
   const language = useSelector((state) => state.language.language)
   const t = translations[language]
-  const [newEmail, setNewEmail] = useState("")
-  const email = useSelector((state) => state.user.user.email)
-  const [newEmailAgain, setNewEmailAgain] = useState("")
+  const [newUsername, setNewUsername] = useState("")
+  const username = useSelector((state) => state.user.user.username)
+  const [newUserNameAgain, setNewUserNameAgain] = useState("")
 
   const handleSubmit = (event) => {
     event.preventDefault()
@@ -35,33 +35,33 @@ const ChangeEmail = () => {
       <Header />
       <div className="account-view">
       <h1>
-        Vaihda sähköposti
+        Vaihda käyttäjänimi
       </h1>
       <p>
-        Nykyinen sähköpostiosoite: {email}
+        Nykyinen käyttäjänimi: {username}
       </p>
       <form onSubmit={handleSubmit}>
         <div>
-          <h3>{t.newEmail}</h3>
+          <h3>{t.newUsername}</h3>
           <input
             className="input-field"
             type="text"
-            value={newEmail}
-            name="newEmail"
-            onChange={(e) => setNewEmail(e.target.value)}
-            placeholder={t.newEmail}
+            value={newUsername}
+            name="newUsername"
+            onChange={(e) => setNewUsername(e.target.value)}
+            placeholder={t.newUsername}
             required={true}
           />
         </div>
         <div>
-          <h3>{t.newEmailAgain}</h3>
+          <h3>{t.newUserNameAgain}</h3>
           <input
             className="input-field"
             type="text"
-            value={newEmailAgain}
-            name="newEmailAgain"
-            onChange={(e) => setNewEmailAgain(e.target.value)}
-            placeholder={t.newEmailAgain}
+            value={newUserNameAgain}
+            name="newUserNameAgain"
+            onChange={(e) => setNewUserNameAgain(e.target.value)}
+            placeholder={t.newUserNameAgain}
             required={true}
           />
         </div>
@@ -74,7 +74,7 @@ const ChangeEmail = () => {
         }
       
     
-export default ChangeEmail
+export default ChangeUsername
 
 
 
