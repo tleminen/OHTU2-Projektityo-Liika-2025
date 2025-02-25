@@ -26,7 +26,6 @@ const RegisterForm = () => {
   const [otpSent, setOtpSent] = useState(false) // Tila OTP:n lähetyksen seuraamiseksi
   const [isOtpVerified, setIsOtpVerified] = useState(false) // Tila OTP:n vahvistuksen seuraamiseksi
   const [loader, setLoader] = useState(false)
-  
 
   const schema = registerValidation()
 
@@ -36,23 +35,22 @@ const RegisterForm = () => {
     inputRef.current?.focus()
   }, [])
 
-  
-  const otpInputRefs = useRef([]); // Luo ref-taulukko
+  const otpInputRefs = useRef([]) // Luo ref-taulukko
 
   useEffect(() => {
-    otpInputRefs.current = otpInputRefs.current.slice(0, 6); // Varmista, että ref-taulukko on oikean kokoinen
-  }, []);
+    otpInputRefs.current = otpInputRefs.current.slice(0, 6) // Varmista, että ref-taulukko on oikean kokoinen
+  }, [])
 
   const handleOtpChange = (index, value) => {
-    const newOtp = otp.split("");
-    newOtp[index] = value;
-    setOtp(newOtp.join(""));
+    const newOtp = otp.split("")
+    newOtp[index] = value
+    setOtp(newOtp.join(""))
 
     // Siirrä kohdistus seuraavaan kenttään, jos kentässä on arvo
     if (value && index < 5) {
-      otpInputRefs.current[index + 1]?.focus();
+      otpInputRefs.current[index + 1]?.focus()
     }
-  };
+  }
 
   const sendOtp = async () => {
     setLoader(true)
@@ -166,7 +164,24 @@ const RegisterForm = () => {
     setLocation(newLocation)
   }
 
+  const handlePaste = (e) => {
+    e.preventDefault()
+    const paste = e.clipboardData.getData("text")
+    const pasteArray = paste.split("").slice(0, 6) // Rajoitetaan 6 merkkiin
 
+    setOtp(pasteArray.join("")) // Asetetaan koko OTP-arvo kerralla
+
+    // Täytetään input-kentät ja siirretään focus viimeiseen
+    pasteArray.forEach((value, index) => {
+      if (otpInputRefs.current[index]) {
+        otpInputRefs.current[index].value = value
+      }
+    })
+
+    if (otpInputRefs.current[pasteArray.length - 1]) {
+      otpInputRefs.current[pasteArray.length - 1].focus()
+    }
+  }
 
   return (
     <div className="register-form">
@@ -258,7 +273,7 @@ const RegisterForm = () => {
           <div>
             <h3>Syötä sähköpostistasi saatu koodi tähän:</h3>{" "}
             {/*TODO: Muutetaan kovakoodauksesta pois */}
-            <div className="otp-input-container">
+            <div className="otp-input-container" onPaste={handlePaste}>
               {[...Array(6)].map((_, index) => (
                 <input
                   key={index}
@@ -271,15 +286,14 @@ const RegisterForm = () => {
                   onKeyDown={(e) => {
                     if (e.key === "Backspace" && !otp[index]) {
                       if (index > 0) {
-                        otpInputRefs.current[index - 1]?.focus();
+                        otpInputRefs.current[index - 1]?.focus()
                       }
                     } else if (e.key === "ArrowLeft" && index > 0) {
-                      otpInputRefs.current[index - 1]?.focus();
+                      otpInputRefs.current[index - 1]?.focus()
                     } else if (e.key === "ArrowRight" && index < 5) {
-                      otpInputRefs.current[index + 1]?.focus();
+                      otpInputRefs.current[index + 1]?.focus()
                     }
                   }}
-                
                 />
               ))}
             </div>
