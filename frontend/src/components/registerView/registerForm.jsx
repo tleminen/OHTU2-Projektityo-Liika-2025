@@ -34,15 +34,13 @@ const RegisterForm = () => {
     inputRef.current?.focus()
   }, [])
 
- 
-
   const sendOtp = async () => {
     setLoader(true)
     try {
       const response = await registerService.sendOtp(email)
       console.log(response.data)
       alert(t.email_sent) //TODO: Kovakoodaus pois
-      
+
       // Jos OTP lähetettiin onnistuneesti, päivitä tila
       setOtpSent(true)
       setLoader(false)
@@ -90,7 +88,7 @@ const RegisterForm = () => {
         language, // KATSO MITÄ LÄHTEE
       })
 
-      console.log("Login attempt:", { username, password })
+      console.log("register attempt:", { username, password })
       try {
         const user = await registerService.register({
           username,
@@ -101,13 +99,13 @@ const RegisterForm = () => {
           language,
         })
         console.log("token saatu:" + user.token)
-        window.localStorage.setItem("loggedUser", JSON.stringify(user))
 
         dispatch(
           changeUser({
             userID: user.userID,
             username: user.username,
             token: user.token,
+            email: user.email,
           })
         )
         dispatch(
@@ -233,9 +231,8 @@ const RegisterForm = () => {
           <LocationMap onLocationChange={handleLocationChange} />
         </div>
 
-
-         {/* Uusi OTP-kenttä ja painike */}
-         {otpSent ? (
+        {/* Uusi OTP-kenttä ja painike */}
+        {otpSent ? (
           <div>
             <h3>{t.otp_sent}</h3> {/*TODO: Muutetaan kovakoodauksesta pois */}
             <input
@@ -253,19 +250,23 @@ const RegisterForm = () => {
           </div>
         ) : (
           <div>
-            <h3>{t.opt_robot_check}</h3> {/*TODO: Muutetaan kovakoodauksesta pois */}
+            <h3>{t.opt_robot_check}</h3>{" "}
+            {/*TODO: Muutetaan kovakoodauksesta pois */}
             <h4>{t.otp_insert}</h4> {/*TODO: Muutetaan kovakoodauksesta pois */}
             {loader ? (
               <div className="loader"></div>
             ) : (
-              <button type="button" onClick={sendOtp} disabled={!email} className="btn">
-              {t.send}
-            </button> 
+              <button
+                type="button"
+                onClick={sendOtp}
+                disabled={!email}
+                className="btn"
+              >
+                {t.send}
+              </button>
             )}
-            
           </div>
         )}
-
 
         <button type="submit" className="forms-btn">
           <span>{t.register}</span>
