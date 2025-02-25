@@ -59,12 +59,13 @@ const LoginForm = () => {
             zoom: 14, // Kovakoodattu etäisyys
           })
         )
-        alert("Kirjautuminen onnistui") //TODO: Kovakoodaus veke
         navigate(`/`)
       } catch (error) {
+        alert(t.alert_incorrect)
         console.log(error)
       }
     } catch (err) {
+      
       if (err.inner) {
         const errorMap = {}
         err.inner.forEach((error) => {

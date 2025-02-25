@@ -3,6 +3,7 @@ import infoText from "./infoText"
 const translations = {
   EN: {
     activity: "Activity",
+    alert_incorrect: "Incorrect username or password",
     createEvent: "Create event",
     dateAndTime: "Date and time",
     description: "Description",
@@ -68,6 +69,7 @@ const translations = {
   },
   FI: {
     activity: "Laji",
+    alert_incorrect: "Väärä käyttäjätunnus tai salasana",
     back: "Takaisin",
     createEvent: "Luo tapahtuma",
     dateAndTime: "Aika",
