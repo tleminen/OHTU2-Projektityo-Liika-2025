@@ -126,48 +126,36 @@ const Map = ({ startingLocation }) => {
       root.render(
         <div className="pikapainikkeet">
           <button
+            className="pika-painike"
             onClick={() => onClickCreateEvent()}
             style={{
               backgroundImage: "url(/addIcon.png)", // Suora polku publicista
-              backgroundSize: "contain",
-              backgroundRepeat: "no-repeat",
-              backgroundPosition: "center",
-              width: "40px",
-              height: "40px",
-              border: "none",
-              backgroundColor: "transparent",
-              cursor: "pointer",
             }}
           ></button>
           {user && (
             <button
+              className="pika-painike"
               onClick={() => onClickListJoinedEvents()}
               style={{
                 backgroundImage: "url(/listedEventsIcon.png)", // Suora polku publicista
-                backgroundSize: "contain",
-                backgroundRepeat: "no-repeat",
-                backgroundPosition: "center",
-                width: "40px",
-                height: "40px",
-                border: "none",
-                backgroundColor: "transparent",
-                cursor: "pointer",
               }}
             ></button>
           )}
           {user && (
             <button
+              className="pika-painike"
+              /* Tähän vielä onClick */
+              style={{
+                backgroundImage: "url(/CreatedEventsIcon.png)", // Suora polku publicista
+              }}
+            ></button>
+          )}
+          {user && (
+            <button
+              className="pika-painike"
               onClick={() => onClickOwnInfo()}
               style={{
                 backgroundImage: "url(/personalInfoIcon.png)", // Suora polku publicista
-                backgroundSize: "contain",
-                backgroundRepeat: "no-repeat",
-                backgroundPosition: "center",
-                width: "40px",
-                height: "40px",
-                border: "none",
-                backgroundColor: "transparent",
-                cursor: "pointer",
               }}
             ></button>
           )}
@@ -177,6 +165,43 @@ const Map = ({ startingLocation }) => {
     };
     pikapainikkeet.addTo(map);
 
+    const shortcutbuttons = L.control({ position: "topleft" });
+    shortcutbuttons.onAdd = () => {
+      const container = L.DomUtil.create("div");
+      L.DomEvent.disableClickPropagation(container);
+      const root = createRoot(container);
+      root.render(
+        <div className="containerforshortcutbuttons" backgroundColor="#0097b2">
+          <div className="shortcutbuttons">
+            <button
+              className="shortcut-button"
+              style={{
+                backgroundImage: "url(/options.png)", // Suora polku publicista
+              }}
+            ></button>
+            {user && (
+              <button
+                className="shortcut-button"
+                style={{
+                  backgroundImage: "url(/gategory.png)", // Suora polku publicista
+                }}
+              ></button>
+            )}
+            {user && (
+              <button
+                className="shortcut-button"
+                style={{
+                  backgroundImage: "url(/time.png)", // Suora polku publicista
+                }}
+              ></button>
+            )}
+          </div>
+        </div>
+      );
+      return container;
+    };
+    shortcutbuttons.addTo(map);
+
     const refreshEvents = L.control({ position: "topright" });
     refreshEvents.onAdd = () => {
       const container = L.DomUtil.create("div");
@@ -185,17 +210,10 @@ const Map = ({ startingLocation }) => {
       root.render(
         <div className="refresh-events">
           <button
+            className="pika-painike"
             onClick={() => onClickRefresh(map)}
             style={{
               backgroundImage: "url(/refreshIcon.png)", // Suora polku publicista
-              backgroundSize: "contain",
-              backgroundRepeat: "no-repeat",
-              backgroundPosition: "center",
-              width: "40px",
-              height: "40px",
-              border: "none",
-              backgroundColor: "transparent",
-              cursor: "pointer",
             }}
           ></button>
         </div>

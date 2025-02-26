@@ -439,7 +439,7 @@ h4 {
   top: 2%;
   left: 50%;
   transform: translateX(-50%);
-  background: rgba(169, 169, 169, 0.47);
+  background: #d9d9d9c2;
   border-radius: 20px;
   padding-left: 40px;
   padding-right: 40px;
