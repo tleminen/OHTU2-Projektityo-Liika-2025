@@ -21,7 +21,6 @@ const CreateEventForm = () => {
   const [participantsMax, setParticipantsMax] = useState("")
   const [description, setDescription] = useState("")
   const [email, setEmail] = useState("")
-  const [success, setSuccess] = useState(false)
   const userID = useSelector((state) => state.user?.user?.userID ?? null) // Tälleen saa hienosti kokeiltua onko undefined ja jos on nii chain-kysely jatkuu
 
   const handleSubmit = (event) => {
@@ -91,23 +90,12 @@ const CreateEventForm = () => {
         description,
         email,
       })
-      setSuccess(true)
     } catch (error) {
       console.error("Erron while creating event (unsigned): " + error)
-      setSuccess(false)
-    }
-
-    if (success) {
-      try{
-        eventService.createUserForEvent(email)
-      } catch (error) {
-        console.error("Erron while creating user for event: " + error)
-      }
-     
     }
     navigate(`/map`)
   }
-  
+
   if (!userID) {
     return (
       <div className="create-event-form">
