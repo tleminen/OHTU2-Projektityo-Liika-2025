@@ -7,7 +7,7 @@ import { changeEvents } from "../../store/eventSlice"
 
 const MapView = () => {
   const startingLocation = useSelector((state) => state.location.location) // haetaan kartan aloituskohta
-  const userID = useSelector((state) => state.user.user.userID)
+  const userID = useSelector((state) => state.user?.user?.userID ?? null)
   const dispatch = useDispatch()
 
   const loadData = async () => {
@@ -17,8 +17,10 @@ const MapView = () => {
     } catch (error) {
       console.log(error)
     }
-    const events = await eventService.getJoined({ UserID: userID })
-    dispatch(changeEvents(events))
+    if (userID) {
+      const events = await eventService.getJoined({ UserID: userID })
+      dispatch(changeEvents(events))
+    }
   }
 
   loadData()
