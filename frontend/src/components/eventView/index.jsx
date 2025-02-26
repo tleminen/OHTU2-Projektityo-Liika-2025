@@ -25,6 +25,7 @@ const parseTimeAndDate = (isoDate) => {
 const EventView = () => {
   const { id } = useParams()
   const [event, setEvent] = useState(null)
+  //const [times, setTimes] = useState(null)
   const [loading, setLoading] = useState(true)
   const language = useSelector((state) => state.language.language)
   const t = translations[language]
@@ -49,6 +50,10 @@ const EventView = () => {
       try {
         const response = await eventService.getEvent({ EventID: id })
         setEvent(response)
+        //const responseTimes = await eventService.getTimesForEvent({
+        //  EventID: id,
+        //})
+        //setTimes(responseTimes)
       } catch (error) {
         console.error("Virhe hakiessa tapahtumaa: " + error)
       } finally {
@@ -129,6 +134,7 @@ const EventView = () => {
       </div>
     )
   }
+  console.log(event)
 
   return (
     <div
