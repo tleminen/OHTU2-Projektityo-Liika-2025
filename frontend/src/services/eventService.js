@@ -28,6 +28,18 @@ const createEvent = async (parameters) => {
   return response.data
 }
 
+// Luo tietokantaan käyttäjän, jotta kirjautumaton voi luoda tapahtuman
+const createUserForEvent = async (email) => {
+  const response = await axios.post(baseUrl + "/events/create_user",email)
+  return response.data
+}
+
+// Luo tapahtuman kirjautumattomalle käyttäjälle
+const createEventUnSigned = async (parameters) => {
+  const response = await axios.post(baseUrl+ "/events/create_event_unsigned",parameters)
+  return response.data
+}
+
 // Liittyy tapahtumaan
 const joinEvent = async (parameters) => {
   const response = await axios.post(baseUrl + "/events/join_event", parameters)
@@ -44,6 +56,8 @@ export default {
   getCategories,
   getEvents,
   createEvent,
+  createEventUnSigned,
+  createUserForEvent,
   joinEvent,
   getEvent,
   getJoined,
