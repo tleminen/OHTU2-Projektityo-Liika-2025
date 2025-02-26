@@ -79,7 +79,7 @@ eventRouter.post("/create_event", async (req, res) => {
         EndTime: `${date} ${endTime}:00.000+2`,
         EventID: event.EventID,
       })
-      res.status(201).send
+      res.status(201).send()
     } catch (error) {
       console.error(error)
       res.status(500).json({ error: "Internal Server Error" })
@@ -104,9 +104,30 @@ eventRouter.post("/join_event", async (req, res) => {
       UserID: UserID,
       EventID: EventID,
     })
-    res.status(200).send
+    res.status(200).send()
   } catch (error) {
     console.error("Problems when joining event: " + error)
+    res.status(500).json({ error: "Internal Server Error" })
+  }
+})
+
+// Poistu tapahtumasta
+eventRouter.post("/leave_event", async (req, res) => {
+  const { UserID, EventID } = req.body
+  try {
+    const deletedRows = await Joins.destroy({
+      where: {
+        UserID: UserID,
+        EventID: EventID,
+      },
+    })
+    if (deletedRows > 0) {
+      res.status(200).json({ message: "Left event successfully" })
+    } else {
+      res.status(404).json({ error: "Event not found or already left" })
+    }
+  } catch (error) {
+    console.error("Problems when leaving event: " + error)
     res.status(500).json({ error: "Internal Server Error" })
   }
 })

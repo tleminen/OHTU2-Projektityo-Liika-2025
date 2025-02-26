@@ -34,6 +34,12 @@ const joinEvent = async (parameters) => {
   return response.data
 }
 
+// Poistuu tapahtumasta
+const leaveEvent = async (parameters) => {
+  const response = await axios.post(baseUrl + "/events/leave_event", parameters)
+  return response.data
+}
+
 // Hakee käyttäjän liitytyt tapahtumat
 const getJoined = async (parameters) => {
   const response = await axios.post(baseUrl + "/events/joined", parameters)
@@ -47,4 +53,5 @@ export default {
   joinEvent,
   getEvent,
   getJoined,
+  leaveEvent,
 }

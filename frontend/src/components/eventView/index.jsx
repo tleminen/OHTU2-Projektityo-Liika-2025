@@ -3,10 +3,11 @@ import eventService from "../../services/eventService"
 import Footer from "../footer"
 import Header from "../header"
 import { useParams } from "react-router-dom"
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import translations from "../../assets/translation"
 import "./eventView.css"
 import { selectCategoryName } from "../../assets/icons"
+import { addEvent, removeEvent } from "../../store/eventSlice"
 
 const parseTimeAndDate = (isoDate) => {
   const date = new Date(isoDate)
@@ -21,14 +22,6 @@ const parseTimeAndDate = (isoDate) => {
   return [time, dateStr]
 }
 
-const handleJoin = async (userID, id) => {
-  const response = await eventService.joinEvent({
-    UserID: userID,
-    EventID: id,
-  })
-  console.log(response) // TODO: Lisää notifikaatio?
-}
-
 const EventView = () => {
   const { id } = useParams()
   const [event, setEvent] = useState(null)
@@ -36,13 +29,26 @@ const EventView = () => {
   const language = useSelector((state) => state.language.language)
   const t = translations[language]
   const userID = useSelector((state) => state.user.user.userID)
+  const userEvents = useSelector((state) => state.event.events || [])
+  const [joined, setJoined] = useState(false)
+  const dispatch = useDispatch()
 
   useEffect(() => {
+    if (!userEvents || userEvents.length === 0) {
+      console.log("Pitää hakea userEvents!!") // TODO: Jos mennään suoraan linkillä tapahtumaan niin userEvents ei ole haettu vielä reduxiin!
+    } else {
+      const isJoined = userEvents.some(
+        (event) => String(event.EventID) === String(id)
+      )
+      if (isJoined) {
+        setJoined(true)
+      }
+    }
+
     const fetchEventInfo = async () => {
       try {
         const response = await eventService.getEvent({ EventID: id })
         setEvent(response)
-        console.log(response)
       } catch (error) {
         console.error("Virhe hakiessa tapahtumaa: " + error)
       } finally {
@@ -50,7 +56,37 @@ const EventView = () => {
       }
     }
     fetchEventInfo()
-  }, [id])
+  }, [userEvents, id])
+
+  // Tapahtumaan liittymisen painikkeen handleri
+  const handleJoin = async (userID, id) => {
+    try {
+      const response = await eventService.joinEvent({
+        UserID: userID,
+        EventID: id,
+      })
+      console.log(response) // TODO: Lisää notifikaatio?
+      setJoined(true)
+      dispatch(addEvent({ UserID: userID, EventID: Number(id) }))
+    } catch (error) {
+      console.error("Virhe liityttäessä tapahtumaan" + error)
+    }
+  }
+
+  // Tapahtumasta eroamisen painikkeen handleri
+  const handleLeave = async (userID, id) => {
+    try {
+      const response = await eventService.leaveEvent({
+        UserID: userID,
+        EventID: Number(id),
+      })
+      console.log(response) // TODO: Lisää notifikaatio?
+      setJoined(false)
+      dispatch(removeEvent({ EventID: Number(id) }))
+    } catch (error) {
+      console.error("Virhe poistuessa tapahumasta" + error)
+    }
+  }
 
   if (loading) {
     // Tietokantahaku kesken
@@ -121,14 +157,26 @@ const EventView = () => {
         <p>
           {event.ParticipantMin} - {event.ParticipantMax}
         </p>
-        <button
-          className="join-btn"
-          onClick={() => {
-            handleJoin(userID, id)
-          }}
-        >
-          liity
-        </button>
+        {!joined && (
+          <button
+            className="join-btn"
+            onClick={() => {
+              handleJoin(userID, id)
+            }}
+          >
+            Ilmoittaudu
+          </button>
+        )}
+        {joined && (
+          <button
+            className="leave-btn"
+            onClick={() => {
+              handleLeave(userID, id)
+            }}
+          >
+            Peru ilmoittautuminen
+          </button>
+        )}
         <p style={{ fontWeight: "lighter" }}>
           Tapahtuman kuvausta viimeksi päivitetty:
         </p>

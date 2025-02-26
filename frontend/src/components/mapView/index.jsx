@@ -3,7 +3,7 @@ import Map from "./map"
 import "./mapView.css"
 import eventService from "../../services/eventService"
 import { changeCategories } from "../../store/categoriesSlice"
-import { changeEvents } from "../../store/eventSlice"
+import { setEvents } from "../../store/eventSlice"
 
 const MapView = () => {
   const startingLocation = useSelector((state) => state.location.location) // haetaan kartan aloituskohta
@@ -19,7 +19,7 @@ const MapView = () => {
     }
     if (userID) {
       const events = await eventService.getJoined({ UserID: userID })
-      dispatch(changeEvents(events))
+      dispatch(setEvents(events))
     }
   }
 

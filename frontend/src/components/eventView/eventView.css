@@ -43,3 +43,21 @@
 .join-btn:active {
   transform: scale(0.95);
 }
+
+.leave-btn {
+  position: relative;
+  padding: 15px 45px;
+  background-color: #db4537;
+  border-radius: 10px;
+  border: 2px solid #801966;
+  outline: 2px solid #80195f;
+  outline-offset: -2px;
+  font-size: 1.5rem;
+  color: #ffffff;
+  font-weight: 500;
+  cursor: pointer;
+  transition: outline-offset 200ms ease;
+}
+.leave-btn:hover {
+  opacity: 0.9;
+}
