@@ -71,6 +71,116 @@ const CreateEventForm = () => {
     setActivity(selectedOption)
   }
 
+  if (!userID) {
+    return (
+      <div className="create-event-form">
+        <form onSubmit={handleSubmit}>
+          <div>
+            <div>
+              <h1>KIRJAUTUMATON NÄKYMÄ poista tämä teksti sitten</h1>
+              <h3>{t.title}</h3>
+              <input
+                type="text"
+                value={title}
+                className="input-field"
+                onChange={(e) => setTitle(e.target.value)}
+                required={true}
+              />
+            </div>
+            <div>
+              <h3>{t.activity}</h3>
+              <Select
+                className="input-field"
+                placeholder={t.activity}
+                value={activity}
+                onChange={handleChange}
+                options={options()}
+                isSearchable={true}
+                required={true}
+              />
+            </div>
+          </div>
+          <div>
+            <h3>{t.date}</h3>
+            <input
+              type="date"
+              value={date}
+              name="date"
+              className="input-field"
+              onChange={(e) => setDate(e.target.value)}
+              placeholder={t.dateAndTime}
+              required={true}
+            />
+          </div>
+          <div>
+            <h3>{t.startTime}</h3>
+            <input
+              type="time"
+              value={startTime}
+              name="startTime"
+              className="input-field"
+              onChange={(e) => setStartTime(e.target.value)}
+              placeholder={t.dateAndTime}
+              required={true}
+            />
+          </div>
+          <div>
+            <h3>{t.endTime}</h3>
+            <input
+              type="time"
+              value={endTime}
+              name="endTime"
+              className="input-field"
+              onChange={(e) => setEndTime(e.target.value)}
+              placeholder={t.dateAndTime}
+              required={true}
+            />
+          </div>
+          <div>
+            <br />
+            <h3>{t.setEventLocationInfo}</h3>
+            <LocationMap onLocationChange={handleLocationChange} />
+          </div>
+          <div>
+            <input
+              type="number"
+              value={participantsMin}
+              name="minParticipants"
+              className="input-field"
+              onChange={(e) => setParticipantsMin(e.target.value)}
+              placeholder={t.minParticipants}
+              required={true}
+            />
+          </div>
+          <div>
+            <input
+              type="number"
+              value={participantsMax}
+              name="maxParticipants"
+              className="input-field"
+              onChange={(e) => setParticipantsMax(e.target.value)}
+              placeholder={t.maxParticipants}
+              required={true}
+            />
+          </div>
+          <div>
+            <textarea
+              type="description"
+              value={description}
+              name="description"
+              className="input-field"
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder={t.description}
+            />
+          </div>
+          <button type="submit" style={{ margin: "auto" }}>
+            {t.createEvent}
+          </button>
+        </form>
+      </div>
+    )
+  }
+
   return (
     <div className="create-event-form">
       <form onSubmit={handleSubmit}>
