@@ -7,11 +7,15 @@ import { useDispatch, useSelector } from "react-redux"
 import { changeUser } from "../../store/userSlice"
 import { Link } from "react-router-dom"
 import "../../index.css"
+import translations from "../../assets/translation"
+
 
 const AccountView = () => {
   const [user, setUser] = useState(null)
   const userID = useSelector((state) => state.user?.user?.userID ?? null)
   const dispatch = useDispatch()
+  const language = useSelector((state) => state.language.language)
+  const t = translations[language]
 
   useEffect(() => {
     const fetchUserInfo = async () => {
@@ -66,10 +70,10 @@ const AccountView = () => {
     >
       <Header />
       <div className="account-view">
-        <h1>Käyttäjätiedot</h1>
+        <h1>{t.accountInformation}</h1>
         <div className="information-row">
           <div className="information">
-            <h3>Sähköposti: </h3>
+            <h3>{t.email} </h3>
             {user.user.Email}
           </div>
           <div className="information">
@@ -80,7 +84,7 @@ const AccountView = () => {
         </div>
         <div className="information-row">
           <div className="information">
-            <h3>Kayttäjätunnus:</h3>
+            <h3>{t.username}</h3>
             {user.user.Username}
           </div>
           <div className="information">
@@ -91,13 +95,13 @@ const AccountView = () => {
         </div>
         <div className="information-row">
           <div className="information">
-            <h3>Kieli: </h3>
+            <h3>{t.language} </h3>
             {user.user.LanguageID}
           </div>
           <div className="information"></div>
         </div>
         <div className="information-row">
-          <h3>Sähköposti: </h3>
+          <h3>{t.email} </h3>
           {user.user.Email}
         </div>
       </div>

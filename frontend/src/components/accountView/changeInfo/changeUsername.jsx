@@ -35,10 +35,10 @@ const ChangeUsername = () => {
       <Header />
       <div className="account-view">
       <h1>
-        Vaihda käyttäjänimi
+        {t.changeUsername}
       </h1>
       <p>
-        Nykyinen käyttäjänimi: {username}
+       {t.currentUsername} {username}
       </p>
       <form onSubmit={handleSubmit}>
         <div>
