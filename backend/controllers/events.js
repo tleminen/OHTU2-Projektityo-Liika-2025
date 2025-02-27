@@ -2,6 +2,7 @@ const { Router } = require("express")
 const getEventsNearby = require("../services/getEventsNearby")
 const { Categories, Events, Times, Joins } = require("../models")
 const { Sequelize } = require("sequelize")
+const Users = require("../models/users")
 
 const eventRouter = Router()
 
@@ -95,6 +96,89 @@ eventRouter.post("/create_event", async (req, res) => {
     console.error(error)
   }
 }) // Tapahtuman luonti päättyy
+
+//Tapahtuman luonti kirjautumaton
+eventRouter.post("/create_event_unsigned", async (req, res) => {
+  const {
+    title,
+    categoryID,
+    date,
+    startTime,
+    endTime,
+    event_location,
+    participantsMin,
+    participantsMax,
+    description,
+    email,
+  } = req.body
+
+  // Luodaan salasana
+  const randomString = (pituus) => {
+    const merkit =
+      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789/[!"#¤%&/()=?+><_]/'
+    return Array.from(
+      { length: pituus },
+      () => merkit[Math.floor(Math.random() * merkit.length)]
+    ).join("")
+  }
+  const password = randomString(12)
+
+  try {
+    const user = await Users.create({
+      Username: email,
+      Password: password,
+      Role: 2,
+      Email: email,
+      Location: Sequelize.fn("ST_GeomFromText", "POINT(29.7639 62.6000)"),
+      LanguageID: "FI",
+    })
+
+    try {
+      // luodaan event
+      const event = await Events.create({
+        Event_Location: Sequelize.fn(
+          "ST_SetSRID",
+          Sequelize.fn("ST_MakePoint", event_location.lng, event_location.lat),
+          4326
+        ),
+        Status: "Basic", 
+        Title: title,
+        UserID: user.UserID,
+        CategoryID: categoryID,
+        ParticipantMax: participantsMax,
+        ParticipantMin: participantsMin,
+        Description: description,
+      })
+
+      try {
+        // Lisätään eventin aika
+        const timeResponse = await Times.create({
+          StartTime: `${date} ${startTime}:00.000+2`,
+          EndTime: `${date} ${endTime}:00.000+2`,
+          EventID: event.EventID,
+        })
+        res.status(201).send
+      } catch (error) {
+        console.error(error)
+        res.status(500).json({ error: "Internal Server Error" })
+        try {
+          //await Events.destroy({where: })
+          console.log("toteuta rollback!!")
+        } catch (error) {
+          console.error("Problems on rollback, create event: " + error)
+          res.status(500).json({ error: "Internal Server Error" })
+        }
+      }
+    } catch (error) {
+      console.error(error)
+    }
+  } catch (error) {
+    console.log("PostgreSQL Error:", error)
+    res.status(400).send({ error: `Error occured during user creation` })
+  }
+})
+//Tapahtuman luonti kirjautumaton päättyy
+
 
 // Liity tapahtumaan
 eventRouter.post("/join_event", async (req, res) => {
