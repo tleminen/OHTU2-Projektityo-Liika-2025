@@ -25,7 +25,7 @@ const parseTimeAndDate = (isoDate) => {
 const EventView = () => {
   const { id } = useParams()
   const [event, setEvent] = useState(null)
-  //const [times, setTimes] = useState(null)
+  const [times, setTimes] = useState([])
   const [loading, setLoading] = useState(true)
   const language = useSelector((state) => state.language.language)
   const t = translations[language]
@@ -50,10 +50,10 @@ const EventView = () => {
       try {
         const response = await eventService.getEvent({ EventID: id })
         setEvent(response)
-        //const responseTimes = await eventService.getTimesForEvent({
-        //  EventID: id,
-        //})
-        //setTimes(responseTimes)
+        const responseTimes = await eventService.getEventTimes({
+          EventID: id,
+        })
+        setTimes(responseTimes)
       } catch (error) {
         console.error("Virhe hakiessa tapahtumaa: " + error)
       } finally {
@@ -135,6 +135,7 @@ const EventView = () => {
     )
   }
   console.log(event)
+  console.log(times)
 
   return (
     <div
@@ -156,6 +157,14 @@ const EventView = () => {
           className="event-view-icon" // Ei taida toimia tää className??
         />
         <h1>{event.Title}</h1>
+        <h2>Ajankohta</h2>
+        <div className="time-parent">
+          {times.map((time, index) => (
+            <div key={index} className="time-child">
+              <p>{time.StartTime}</p>
+            </div>
+          ))}
+        </div>
         <p>Tähän väliin varmaa kartta et missä se on?</p>
         <h2>Kuvaus:</h2>
         <p>{event.Description}</p>

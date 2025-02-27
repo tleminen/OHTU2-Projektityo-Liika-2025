@@ -61,3 +61,14 @@
 .leave-btn:hover {
   opacity: 0.9;
 }
+
+.time-parent {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.time-child {
+  width: 33%;
+  box-sizing: border-box;
+}
