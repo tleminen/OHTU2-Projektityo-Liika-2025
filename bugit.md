@@ -3,8 +3,11 @@ Bugit
 Kartta:
 Leveys ei toimi kunnolla
 
+Tapahtumien luonti:
+-Kirjautumaton:
+-css-poikkeamia
+
 Login:
-Unauthorized, tee error
 
 Muita huomioita:
 Laita toimimaan kaikki tokenilla
