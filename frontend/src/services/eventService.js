@@ -28,6 +28,13 @@ const createEvent = async (parameters) => {
   return response.data
 }
 
+// Luo tapahtuman kirjautumattomalle käyttäjälle
+const createEventUnSigned = async (parameters) => {
+  console.log("tapahtuman luonti: "+parameters)
+  const response = await axios.post(baseUrl+ "/events/create_event_unsigned",parameters)
+  return response.data
+}
+
 // Liittyy tapahtumaan
 const joinEvent = async (parameters) => {
   const response = await axios.post(baseUrl + "/events/join_event", parameters)
@@ -50,6 +57,7 @@ export default {
   getCategories,
   getEvents,
   createEvent,
+  createEventUnSigned,
   joinEvent,
   getEvent,
   getJoined,

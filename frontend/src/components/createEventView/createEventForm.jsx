@@ -20,6 +20,7 @@ const CreateEventForm = () => {
   const [participantsMin, setParticipantsMin] = useState("")
   const [participantsMax, setParticipantsMax] = useState("")
   const [description, setDescription] = useState("")
+  const [email, setEmail] = useState("")
   const userID = useSelector((state) => state.user?.user?.userID ?? null) // Tälleen saa hienosti kokeiltua onko undefined ja jos on nii chain-kysely jatkuu
 
   const handleSubmit = (event) => {
@@ -46,6 +47,7 @@ const CreateEventForm = () => {
       } catch (error) {
         console.error("Erron while creating event: " + error)
       }
+
       navigate(`/map`)
     }
   }
@@ -71,10 +73,33 @@ const CreateEventForm = () => {
     setActivity(selectedOption)
   }
 
+  const handleSubmitUnSigned = (event) => {
+    const categoryID = activity.value
+    event.preventDefault()
+
+    try {
+      eventService.createEventUnSigned({
+        title,
+        categoryID,
+        date,
+        startTime,
+        endTime,
+        event_location,
+        participantsMin,
+        participantsMax,
+        description,
+        email,
+      })
+    } catch (error) {
+      console.error("Erron while creating event (unsigned): " + error)
+    }
+    navigate(`/map`)
+  }
+
   if (!userID) {
     return (
       <div className="create-event-form">
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmitUnSigned}>
           <div>
             <div>
               <h1>KIRJAUTUMATON NÄKYMÄ poista tämä teksti sitten</h1>
@@ -173,6 +198,16 @@ const CreateEventForm = () => {
               placeholder={t.description}
             />
           </div>
+          <input
+            type="text"
+            value={email}
+            name="email"
+            className="input-field"
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder={t.email}
+            required={true}
+          />
+
           <button type="submit" style={{ margin: "auto" }}>
             {t.createEvent}
           </button>
