@@ -141,7 +141,7 @@ eventRouter.post("/create_event_unsigned", async (req, res) => {
           Sequelize.fn("ST_MakePoint", event_location.lng, event_location.lat),
           4326
         ),
-        Status: "Basic", 
+        Status: "Basic",
         Title: title,
         UserID: user.UserID,
         CategoryID: categoryID,
@@ -179,7 +179,6 @@ eventRouter.post("/create_event_unsigned", async (req, res) => {
 })
 //Tapahtuman luonti kirjautumaton päättyy
 
-
 // Liity tapahtumaan
 eventRouter.post("/join_event", async (req, res) => {
   const { UserID, EventID } = req.body
@@ -192,6 +191,22 @@ eventRouter.post("/join_event", async (req, res) => {
   } catch (error) {
     console.error("Problems when joining event: " + error)
     res.status(500).json({ error: "Internal Server Error" })
+  }
+})
+
+// Tapahtuman ajan haku
+eventRouter.post("/event_times", async (req, res) => {
+  const { EventID } = req.body
+  try {
+    const times = await Times.findAll({
+      where: {
+        EventID: EventID,
+      },
+    })
+    res.json(times)
+  } catch (error) {
+    console.error("Problem with fetching event times: " + error)
+    res.status(500).json({ error: "Error with times" })
   }
 })
 

@@ -7,6 +7,9 @@ Tapahtumien luonti:
 -Kirjautumaton:
 -css-poikkeamia
 
+Tapahtumanäkymä:
+// TODO: Jos mennään suoraan linkillä tapahtumaan niin userEvents ei ole haettu vielä reduxiin!
+
 Login:
 
 Muita huomioita:
