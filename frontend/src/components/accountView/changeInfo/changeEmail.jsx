@@ -35,10 +35,10 @@ const ChangeEmail = () => {
       <Header />
       <div className="account-view">
       <h1>
-        Vaihda sähköposti
-      </h1>
+       {t.changeEmail}      
+       </h1>
       <p>
-        Nykyinen sähköpostiosoite: {email}
+        {t.currentEmail} {email}
       </p>
       <form onSubmit={handleSubmit}>
         <div>
