@@ -52,7 +52,7 @@ eventRouter.post("/create_event", async (req, res) => {
     participantsMax,
     participantsMin,
     description,
-    date,
+    dates,
     startTime,
     endTime,
   } = req.body
@@ -74,12 +74,18 @@ eventRouter.post("/create_event", async (req, res) => {
     })
 
     try {
-      // Lisätään eventin aika
-      const timeResponse = await Times.create({
-        StartTime: `${date} ${startTime}:00.000+2`,
-        EndTime: `${date} ${endTime}:00.000+2`,
-        EventID: event.EventID,
-      })
+      await Promise.all(
+        dates.map(async (timestamp) => {
+          const date = new Date(timestamp).toISOString().split("T")[0] // Muuntaa muotoon YYYY-MM-DD
+
+          await Times.create({
+            StartTime: `${date} ${startTime}:00.000+2`,
+            EndTime: `${date} ${endTime}:00.000+2`,
+            EventID: event.EventID,
+          })
+        })
+      )
+
       res.status(201).send()
     } catch (error) {
       console.error(error)

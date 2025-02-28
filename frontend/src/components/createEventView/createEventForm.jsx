@@ -27,30 +27,25 @@ const CreateEventForm = () => {
   const handleSubmit = (event) => {
     const categoryID = activity.value
     event.preventDefault()
-    if (!userID) {
-      console.log(
-        "user not logged in! Toteuta rekisteröintihommeli tai miten se menikään?"
-      )
-    } else {
-      try {
-        eventService.createEvent({
-          title,
-          userID,
-          categoryID,
-          date: dates, // FIKSAA TÄÄLTÄ AINAKIN
-          startTime,
-          endTime,
-          event_location,
-          participantsMin,
-          participantsMax,
-          description,
-        })
-      } catch (error) {
-        console.error("Erron while creating event: " + error)
-      }
 
-      navigate(`/map`)
+    try {
+      eventService.createEvent({
+        title,
+        userID,
+        categoryID,
+        dates, // FIKSAA TÄÄLTÄ AINAKIN
+        startTime,
+        endTime,
+        event_location,
+        participantsMin,
+        participantsMax,
+        description,
+      })
+    } catch (error) {
+      console.error("Erron while creating event: " + error)
     }
+
+    navigate(`/map`)
   }
 
   const handleLocationChange = (newLocation) => {
@@ -82,7 +77,7 @@ const CreateEventForm = () => {
       eventService.createEventUnSigned({
         title,
         categoryID,
-        date: dates,
+        dates,
         startTime,
         endTime,
         event_location,
