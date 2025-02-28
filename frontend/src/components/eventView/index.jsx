@@ -18,7 +18,6 @@ const parseTimeAndDate = (isoDate) => {
   const dateStr = `${String(date.getDate()).padStart(2, "0")}.${String(
     date.getMonth() + 1
   ).padStart(2, "0")}.${date.getFullYear()}`
-
   return [time, dateStr]
 }
 
@@ -31,22 +30,10 @@ const EventView = () => {
   const t = translations[language]
   const userID = useSelector((state) => state.user.user.userID)
   const userEvents = useSelector((state) => state.event.events || [])
-  const [joined, setJoined] = useState(false)
-  const [selectedTime, setSelectedTime] = useState("")
+  const [selectedTime, setSelectedTime] = useState(null)
   const dispatch = useDispatch()
 
   useEffect(() => {
-    if (!userEvents || userEvents.length === 0) {
-      console.log("Pitää hakea userEvents!!") // TODO: Jos mennään suoraan linkillä tapahtumaan niin userEvents ei ole haettu vielä reduxiin!
-    } else {
-      const isJoined = userEvents.some(
-        (event) => String(event.EventID) === String(id)
-      )
-      if (isJoined) {
-        setJoined(true)
-      }
-    }
-
     const fetchEventInfo = async () => {
       try {
         const response = await eventService.getEvent({ EventID: id })
@@ -62,19 +49,32 @@ const EventView = () => {
       }
     }
     fetchEventInfo()
-  }, [userEvents, id])
+  }, [id])
+
+  // Kun times latautuu, asetetaan ensimmäinen aika selectedTime:ksi, jos sitä ei vielä ole
+  useEffect(() => {
+    if (times.length > 0 && !selectedTime) {
+      setSelectedTime(times[0])
+    }
+  }, [times, selectedTime])
 
   // Tapahtumaan liittymisen painikkeen handleri
   const handleJoin = async (userID, id) => {
+    console.log(selectedTime.id)
     try {
       const response = await eventService.joinEvent({
         UserID: userID,
         EventID: id,
-        TimeID: selectedTime.id,
+        TimeID: Number(selectedTime.TimeID),
       })
       console.log(response) // TODO: Lisää notifikaatio?
-      setJoined(true)
-      dispatch(addEvent({ UserID: userID, EventID: Number(id) }))
+      dispatch(
+        addEvent({
+          UserID: userID,
+          EventID: Number(id),
+          TimeID: Number(selectedTime.TimeID),
+        })
+      )
     } catch (error) {
       console.error("Virhe liityttäessä tapahtumaan" + error)
     }
@@ -86,10 +86,16 @@ const EventView = () => {
       const response = await eventService.leaveEvent({
         UserID: userID,
         EventID: Number(id),
+        TimeID: Number(selectedTime.TimeID),
       })
       console.log(response) // TODO: Lisää notifikaatio?
-      setJoined(false)
-      dispatch(removeEvent({ EventID: Number(id) }))
+      dispatch(
+        removeEvent({
+          EventID: Number(id),
+          UserID: userID,
+          TimeID: selectedTime.TimeID,
+        })
+      )
     } catch (error) {
       console.error("Virhe poistuessa tapahumasta" + error)
     }
@@ -97,13 +103,22 @@ const EventView = () => {
 
   // Päivämäärän vaihdon handleri
   const handleTimeClick = (time) => {
-    console.log(time.id)
     setSelectedTime(time)
-    //TODO, vaihda ilmoituksen päivämäärähommeli
+    console.log(time.TimeID)
   }
 
-  const dateClassname = (time) => {
-    return time === selectedTime ? "join-btn" : "leave-btn"
+  // Tarkistaa onko käyttäjä liittynyt tiettyyn aikaan
+  const isJoined = (time) => {
+    console.log(userEvents)
+    return userEvents.some(
+      (userEvent) =>
+        String(userEvent.EventID) === String(id) &&
+        Number(userEvent.TimeID) === Number(time.TimeID)
+    )
+  }
+
+  const getTimeButtonClass = (time) => {
+    return isJoined(time) ? "joined-time-btn" : "not-joined-time-btn"
   }
 
   if (loading) {
@@ -147,8 +162,6 @@ const EventView = () => {
       </div>
     )
   }
-  console.log(event)
-  console.log(times)
 
   return (
     <div
@@ -176,7 +189,7 @@ const EventView = () => {
             <div key={index} className="time-child">
               <button
                 onClick={() => handleTimeClick(time)}
-                className={dateClassname(time)}
+                className={getTimeButtonClass(time)}
               >
                 {parseTimeAndDate(time.StartTime)[1]}
               </button>
@@ -194,23 +207,13 @@ const EventView = () => {
         <p>
           {event.ParticipantMin} - {event.ParticipantMax}
         </p>
-        {!joined && (
-          <button
-            className="join-btn"
-            onClick={() => {
-              handleJoin(userID, id)
-            }}
-          >
+        {selectedTime && !isJoined(selectedTime) && (
+          <button className="join-btn" onClick={() => handleJoin(userID, id)}>
             Ilmoittaudu
           </button>
         )}
-        {joined && (
-          <button
-            className="leave-btn"
-            onClick={() => {
-              handleLeave(userID, id)
-            }}
-          >
+        {selectedTime && isJoined(selectedTime) && (
+          <button className="leave-btn" onClick={() => handleLeave(userID, id)}>
             Peru ilmoittautuminen
           </button>
         )}

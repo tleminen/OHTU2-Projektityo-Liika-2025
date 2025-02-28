@@ -187,11 +187,12 @@ eventRouter.post("/create_event_unsigned", async (req, res) => {
 
 // Liity tapahtumaan
 eventRouter.post("/join_event", async (req, res) => {
-  const { UserID, EventID } = req.body
+  const { UserID, EventID, TimeID } = req.body
   try {
     const response = await Joins.create({
       UserID: UserID,
       EventID: EventID,
+      TimeID: TimeID,
     })
     res.status(200).send()
   } catch (error) {
@@ -218,12 +219,13 @@ eventRouter.post("/event_times", async (req, res) => {
 
 // Poistu tapahtumasta
 eventRouter.post("/leave_event", async (req, res) => {
-  const { UserID, EventID } = req.body
+  const { UserID, EventID, TimeID } = req.body
   try {
     const deletedRows = await Joins.destroy({
       where: {
         UserID: UserID,
         EventID: EventID,
+        TimeID: TimeID,
       },
     })
     if (deletedRows > 0) {

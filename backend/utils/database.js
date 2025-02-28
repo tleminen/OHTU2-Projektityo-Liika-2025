@@ -20,7 +20,7 @@ const connectDB = async () => {
 const initializeDB = async (alustetaan) => {
   await connectDB().then(() => {
     if (alustetaan) {
-      sequelize.sync({ alter: true }).then(() => resetDB())
+      sequelize.sync({ alter: true, force: true }).then(() => resetDB())
     }
   })
 }

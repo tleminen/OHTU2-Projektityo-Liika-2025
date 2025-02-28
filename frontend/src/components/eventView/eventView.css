@@ -73,3 +73,53 @@
   box-sizing: border-box;
   margin: 8px;
 }
+
+.joined-time-btn {
+  position: relative;
+  padding: 15px 45px;
+  background: #00b238;
+  border-radius: 10px;
+  border: 2px solid #197180;
+  outline: 2px solid #19806b;
+  outline-offset: -2px;
+  font-size: 1.5rem;
+  color: #ffffff;
+  font-weight: 500;
+  cursor: pointer;
+  transition: outline-offset 200ms ease;
+}
+.joined-time-btn:hover {
+  color: #194480;
+  background: #ffffff;
+  outline-offset: 3px;
+  border: 2px solid #197180;
+  outline: 2px solid #19806b;
+}
+.joined-time-btn:active {
+  transform: scale(0.95);
+}
+
+.not-joined-time-btn {
+  position: relative;
+  padding: 15px 45px;
+  background: #016fa1;
+  border-radius: 10px;
+  border: 2px solid #194e80;
+  outline: 2px solid #195580;
+  outline-offset: -2px;
+  font-size: 1.5rem;
+  color: #ffffff;
+  font-weight: 500;
+  cursor: pointer;
+  transition: outline-offset 200ms ease;
+}
+.not-joined-time-btn:hover {
+  color: #194480;
+  background: #ffffff;
+  outline-offset: 3px;
+  border: 2px solid #197180;
+  outline: 2px solid #19806b;
+}
+.not-joined-time-btn:active {
+  transform: scale(0.95);
+}
