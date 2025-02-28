@@ -15,8 +15,8 @@ const parseTimeAndDate = (isoDate) => {
     2,
     "0"
   )}:${String(date.getSeconds()).padStart(2, "0")}`
-  const dateStr = `${String(date.getMonth() + 1).padStart(2, "0")}.${String(
-    date.getDate()
+  const dateStr = `${String(date.getDate()).padStart(2, "0")}.${String(
+    date.getMonth() + 1
   ).padStart(2, "0")}.${date.getFullYear()}`
 
   return [time, dateStr]
@@ -93,6 +93,12 @@ const EventView = () => {
     }
   }
 
+  // Päivämäärän vaihdon handleri
+  const handleTimeClick = (time) => {
+    console.log(time.StartTime)
+    //TODO, vaihda ilmoituksen päivämäärähommeli
+  }
+
   if (loading) {
     // Tietokantahaku kesken
     return (
@@ -161,14 +167,16 @@ const EventView = () => {
         <div className="time-parent">
           {times.map((time, index) => (
             <div key={index} className="time-child">
-              <p>{time.StartTime}</p>
+              <button onClick={() => handleTimeClick(time)}>
+                {parseTimeAndDate(time.StartTime)[1]}
+              </button>
             </div>
           ))}
         </div>
         <p>Tähän väliin varmaa kartta et missä se on?</p>
         <h2>Kuvaus:</h2>
         <p>{event.Description}</p>
-        <h2>osallistujamäärä</h2>
+        <h2>Osallistujamäärä</h2>
         <p>
           {event.ParticipantMin} - {event.ParticipantMax}
         </p>

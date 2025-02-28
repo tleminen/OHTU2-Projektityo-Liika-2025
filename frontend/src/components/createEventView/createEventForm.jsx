@@ -6,13 +6,14 @@ import "./createEvent.css"
 import Select from "react-select"
 import eventService from "../../services/eventService.js"
 import { useNavigate } from "react-router-dom"
+import DatePicker from "react-multi-date-picker"
 
 const CreateEventForm = () => {
   const language = useSelector((state) => state.language.language)
   const t = translations[language]
   const navigate = useNavigate()
   const [activity, setActivity] = useState({})
-  const [date, setDate] = useState("")
+  const [dates, setDates] = useState([])
   const [startTime, setStartTime] = useState("")
   const [endTime, setEndTime] = useState("")
   const [event_location, setEventLocation] = useState("")
@@ -36,7 +37,7 @@ const CreateEventForm = () => {
           title,
           userID,
           categoryID,
-          date,
+          date: dates, // FIKSAA TÄÄLTÄ AINAKIN
           startTime,
           endTime,
           event_location,
@@ -81,7 +82,7 @@ const CreateEventForm = () => {
       eventService.createEventUnSigned({
         title,
         categoryID,
-        date,
+        date: dates,
         startTime,
         endTime,
         event_location,
@@ -127,14 +128,28 @@ const CreateEventForm = () => {
           </div>
           <div>
             <h3>{t.date}</h3>
-            <input
-              type="date"
-              value={date}
-              name="date"
-              className="input-field"
-              onChange={(e) => setDate(e.target.value)}
-              placeholder={t.dateAndTime}
-              required={true}
+            <DatePicker
+              value={dates}
+              onChange={(newDates) =>
+                setDates(
+                  [...newDates].sort((a, b) => new Date(a) - new Date(b))
+                )
+              }
+              multiple
+              style={{ textAlign: "center" }}
+              minDate={Date.now()}
+              zIndex={1005}
+              displayWeekNumbers={true}
+              render={(value, openCalendar) => (
+                <div className="custom-date-display" onClick={openCalendar}>
+                  {Array.isArray(value) ? (
+                    value.map((date, index) => <div key={index}>{date}</div>)
+                  ) : (
+                    <span>{value || "Choose dates"}</span>
+                  )}
+                </div>
+              )}
+              format="DD.MM.YYYY"
             />
           </div>
           <div>
@@ -245,14 +260,26 @@ const CreateEventForm = () => {
         </div>
         <div>
           <h3>{t.date}</h3>
-          <input
-            type="date"
-            value={date}
-            name="date"
-            className="input-field"
-            onChange={(e) => setDate(e.target.value)}
-            placeholder={t.dateAndTime}
-            required={true}
+          <DatePicker
+            value={dates}
+            onChange={(newDates) =>
+              setDates([...newDates].sort((a, b) => new Date(a) - new Date(b)))
+            }
+            multiple
+            style={{ textAlign: "center" }}
+            minDate={Date.now()}
+            zIndex={1005}
+            displayWeekNumbers={true}
+            render={(value, openCalendar) => (
+              <div className="custom-date-display" onClick={openCalendar}>
+                {Array.isArray(value) ? (
+                  value.map((date, index) => <div key={index}>{date}</div>)
+                ) : (
+                  <span>{value || "Choose dates"}</span>
+                )}
+              </div>
+            )}
+            format="DD.MM.YYYY"
           />
         </div>
         <div>
