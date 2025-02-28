@@ -16,7 +16,10 @@ const eventSlice = createSlice({
     // Lisätään yksi tapahtuma, jos sitä ei ole vielä listassa
     addEvent: (state, action) => {
       const eventExists = state.events.some(
-        (event) => event.EventID === action.payload.EventID
+        (event) =>
+          event.EventID === action.payload.EventID &&
+          event.TimeID === action.payload.TimeID && // Lisätään myös TimeID tarkistus
+          event.UserID === action.payload.UserID // Varmistetaan, että käyttäjä on oikea
       )
       if (!eventExists) {
         state.events.push(action.payload)
@@ -27,7 +30,12 @@ const eventSlice = createSlice({
     // Poistetaan tapahtuma EventID:n perusteella
     removeEvent: (state, action) => {
       state.events = state.events.filter(
-        (event) => event.EventID !== action.payload.EventID
+        (event) =>
+          !(
+            event.EventID === action.payload.EventID &&
+            event.TimeID === action.payload.TimeID && // Varmistetaan, että TimeID on sama
+            event.UserID === action.payload.UserID
+          ) // Varmistetaan, että käyttäjä on oikea
       )
       localStorage.setItem("events", JSON.stringify(state.events))
     },

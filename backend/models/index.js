@@ -21,8 +21,19 @@ Times.belongsTo(Events, { foreignKey: "EventID" })
 Users.belongsToMany(Clubs, { through: ClubMembers, foreignKey: "UserID" })
 Clubs.belongsToMany(Users, { through: ClubMembers, foreignKey: "ClubID" })
 
-Users.belongsToMany(Events, { through: Joins, foreignKey: "UserID" })
-Events.belongsToMany(Users, { through: Joins, foreignKey: "EventID" })
+// Lisätään TimeID yhteys Joins-tauluun
+Users.belongsToMany(Events, {
+  through: { model: Joins, unique: false },
+  foreignKey: "UserID",
+})
+
+Events.belongsToMany(Users, {
+  through: { model: Joins, unique: false },
+  foreignKey: "EventID",
+})
+// Joins- ja Times-taulut yhdistetään TimeID-viittauksella
+Joins.belongsTo(Times, { foreignKey: "TimeID" })
+Times.hasMany(Joins, { foreignKey: "TimeID" })
 
 Users.belongsTo(Languages, { foreignKey: "LanguageID" })
 
