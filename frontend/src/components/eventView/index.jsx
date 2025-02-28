@@ -14,7 +14,7 @@ const parseTimeAndDate = (isoDate) => {
   const time = `${date.getHours()}:${String(date.getMinutes()).padStart(
     2,
     "0"
-  )}:${String(date.getSeconds()).padStart(2, "0")}`
+  )}`
   const dateStr = `${String(date.getDate()).padStart(2, "0")}.${String(
     date.getMonth() + 1
   ).padStart(2, "0")}.${date.getFullYear()}`
@@ -32,6 +32,7 @@ const EventView = () => {
   const userID = useSelector((state) => state.user.user.userID)
   const userEvents = useSelector((state) => state.event.events || [])
   const [joined, setJoined] = useState(false)
+  const [selectedTime, setSelectedTime] = useState("")
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -69,6 +70,7 @@ const EventView = () => {
       const response = await eventService.joinEvent({
         UserID: userID,
         EventID: id,
+        TimeID: selectedTime.id,
       })
       console.log(response) // TODO: Lisää notifikaatio?
       setJoined(true)
@@ -95,8 +97,13 @@ const EventView = () => {
 
   // Päivämäärän vaihdon handleri
   const handleTimeClick = (time) => {
-    console.log(time.StartTime)
+    console.log(time.id)
+    setSelectedTime(time)
     //TODO, vaihda ilmoituksen päivämäärähommeli
+  }
+
+  const dateClassname = (time) => {
+    return time === selectedTime ? "join-btn" : "leave-btn"
   }
 
   if (loading) {
@@ -163,16 +170,23 @@ const EventView = () => {
           className="event-view-icon" // Ei taida toimia tää className??
         />
         <h1>{event.Title}</h1>
-        <h2>Ajankohta</h2>
+        <h2>Päivä</h2>
         <div className="time-parent">
           {times.map((time, index) => (
             <div key={index} className="time-child">
-              <button onClick={() => handleTimeClick(time)}>
+              <button
+                onClick={() => handleTimeClick(time)}
+                className={dateClassname(time)}
+              >
                 {parseTimeAndDate(time.StartTime)[1]}
               </button>
             </div>
           ))}
         </div>
+        <h2>Kellonaika</h2>
+        <p style={{ fontWeight: "bold" }}>
+          {parseTimeAndDate(times[0].StartTime)[0]}
+        </p>
         <p>Tähän väliin varmaa kartta et missä se on?</p>
         <h2>Kuvaus:</h2>
         <p>{event.Description}</p>
