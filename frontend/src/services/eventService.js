@@ -44,6 +44,7 @@ const createEventEmailSend = async (email) => {
   return respone.data
 }
 
+//Vahvistuskoodi tapahtuman luonnissa kirjautumattomalle käyttäjälle
 const createEventVerifyOtp = async (parameters) => {
   const response = await axios.post(baseUrl + "/events/verifyOtp", parameters)
   return response.data
