@@ -4,6 +4,7 @@ import Header from "../header"
 import "./joinedView.css"
 import { useSelector } from "react-redux"
 import translations from "../../assets/translation"
+import JoinedList from "./joinedList"
 
 const JoinedView = () => {
   const language = useSelector((state) => state.language.language)
@@ -19,9 +20,7 @@ const JoinedView = () => {
       }}
     >
       <Header />
-      <div className="joined-view">
-        <p>placeHolder</p>
-      </div>
+      <JoinedList />
       <Link to={"/map"} className="back-btn" style={{ alignSelf: "center" }}>
         <span>{t.back}</span>
       </Link>

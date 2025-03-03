@@ -7,6 +7,7 @@ const { Categories, Events, Times, Joins } = require("../models")
 const { Sequelize } = require("sequelize")
 const Users = require("../models/users")
 const { sendEmail } = require("../services/email")
+const { getUserJoinedEvents } = require("../services/getUserJoinedEvents")
 
 const eventRouter = Router()
 
@@ -232,7 +233,7 @@ eventRouter.post("/leave_event", async (req, res) => {
   }
 })
 
-// Hae käyttäjän liitytyt tapahtumat
+// Hae käyttäjän liitytyt tapahtumat (id:t joinsista)
 eventRouter.post("/joined", async (req, res) => {
   const { UserID } = req.body
   try {
@@ -242,6 +243,18 @@ eventRouter.post("/joined", async (req, res) => {
     res.status(200).json(response)
   } catch (error) {
     console.error("Problems with retreving joined evets for user: " + error)
+    res.status(500).json({ error: "Internal Server Error" })
+  }
+})
+
+// Hakee käyttäjän liitytyt tapahtumat (data)
+eventRouter.post("/userJoinedEvents", async (req, res) => {
+  const { UserID } = req.body
+  try {
+    const events = await getUserJoinedEvents(UserID)
+    res.json(events)
+  } catch (error) {
+    console.error("Problems with retreving joined events with full data")
     res.status(500).json({ error: "Internal Server Error" })
   }
 })
@@ -287,7 +300,6 @@ eventRouter.post("/sendOtp", async (req, res) => {
 //Vahvistuskoodin lähetys sähköpostiin päättyy
 
 //Vahvistuskoodin vertailu
-
 eventRouter.post("/verifyOtp", async (req, res) => {
   //const testCode = "123456"
 

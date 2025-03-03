@@ -9,18 +9,7 @@ import "./eventView.css"
 import { selectCategoryName } from "../../assets/icons"
 import { addEvent, removeEvent } from "../../store/eventSlice"
 import StaticMap from "../../utils/staticMap"
-
-const parseTimeAndDate = (isoDate) => {
-  const date = new Date(isoDate)
-  const time = `${date.getHours()}:${String(date.getMinutes()).padStart(
-    2,
-    "0"
-  )}`
-  const dateStr = `${String(date.getDate()).padStart(2, "0")}.${String(
-    date.getMonth() + 1
-  ).padStart(2, "0")}.${date.getFullYear()}`
-  return [time, dateStr]
-}
+import { parseTimeAndDate } from "../../utils/helper"
 
 const EventView = () => {
   const { id } = useParams()
@@ -231,6 +220,7 @@ const EventView = () => {
           {event.ParticipantMin} - {event.ParticipantMax}
         </p>
         <h2>Liittyneitä</h2>
+        <p>{selectedTime && selectedTime.JoinedCount}</p>
         <h2>Kuvaus:</h2>
         <p>{event.Description}</p>
         {selectedTime && !isJoined(selectedTime) && (
