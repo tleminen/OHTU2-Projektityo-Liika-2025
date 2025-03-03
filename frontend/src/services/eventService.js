@@ -44,6 +44,11 @@ const createEventEmailSend = async (email) => {
   return respone.data
 }
 
+const createEventVerifyOtp = async (parameters) => {
+  const response = await axios.post(baseUrl + "/events/verifyOtp", parameters)
+  return response.data
+}
+
 // Liittyy tapahtumaan
 const joinEvent = async (parameters) => {
   const response = await axios.post(baseUrl + "/events/join_event", parameters)
@@ -77,4 +82,6 @@ export default {
   getJoined,
   leaveEvent,
   getEventTimes,
+  createEventEmailSend,
+  createEventVerifyOtp,
 }
