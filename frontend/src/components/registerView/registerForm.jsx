@@ -8,6 +8,9 @@ import "./register.css"
 import { changeLocation } from "../../store/locationSlice.js"
 import { changeUser } from "../../store/userSlice.js"
 import { registerValidation } from "../../utils/validationSchemas.js"
+import { addNotification } from '../../store/notificationSlice.js';
+import { EmailSentSuccess, EmailSentFailure } from '../notification/notificationTemplates.js';
+
 
 const RegisterForm = () => {
   const language = useSelector((state) => state.language.language)
@@ -57,14 +60,15 @@ const RegisterForm = () => {
     try {
       const response = await registerService.sendOtp(email)
       console.log(response.data)
-      alert(t.email_sent)
+      dispatch(addNotification(EmailSentSuccess())); // Lähetä onnistumisilmoitus
 
       // Jos OTP lähetettiin onnistuneesti, päivitä tila
       setOtpSent(true)
       setLoader(false)
     } catch (error) {
       console.error("Virhe sähköpostin lähetyksessä:", error)
-      alert(t.email_send_error)
+      //alert(t.email_send_error)
+      dispatch(addNotification(EmailSentFailure(error))); // Lähetä virheilmoitus
       setLoader(false)
     }
   }

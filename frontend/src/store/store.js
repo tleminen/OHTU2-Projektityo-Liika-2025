@@ -4,6 +4,7 @@ import locationReducer from "./locationSlice"
 import categoriesReducer from "./categoriesSlice"
 import userReducer from "./userSlice"
 import eventReducer from "./eventSlice"
+import notificationReducer from "./notificationSlice"
 
 export const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ export const store = configureStore({
     categories: categoriesReducer,
     user: userReducer,
     event: eventReducer,
+    notification: notificationReducer,
   },
 })
 
