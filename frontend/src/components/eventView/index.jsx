@@ -2,12 +2,13 @@ import { useEffect, useState } from "react"
 import eventService from "../../services/eventService"
 import Footer from "../footer"
 import Header from "../header"
-import { useParams } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 import translations from "../../assets/translation"
 import "./eventView.css"
 import { selectCategoryName } from "../../assets/icons"
 import { addEvent, removeEvent } from "../../store/eventSlice"
+import StaticMap from "../../utils/staticMap"
 
 const parseTimeAndDate = (isoDate) => {
   const date = new Date(isoDate)
@@ -101,15 +102,13 @@ const EventView = () => {
     }
   }
 
-  // Päivämäärän vaihdon handleri
+  // Päivämäärän valinnan handleri
   const handleTimeClick = (time) => {
     setSelectedTime(time)
-    console.log(time.TimeID)
   }
 
   // Tarkistaa onko käyttäjä liittynyt tiettyyn aikaan
   const isJoined = (time) => {
-    console.log(userEvents)
     return userEvents.some(
       (userEvent) =>
         String(userEvent.EventID) === String(id) &&
@@ -118,7 +117,10 @@ const EventView = () => {
   }
 
   const getTimeButtonClass = (time) => {
-    return isJoined(time) ? "joined-time-btn" : "not-joined-time-btn"
+    let baseClass = isJoined(time) ? "joined-time-btn" : "not-joined-time-btn"
+    return selectedTime && selectedTime.TimeID === time.TimeID
+      ? `${baseClass} selected-time`
+      : baseClass
   }
 
   if (loading) {
@@ -163,6 +165,7 @@ const EventView = () => {
     )
   }
 
+  // Kaikki tarvittavat tiedont löydetty. Näytetään...
   return (
     <div
       className="fullpage"
@@ -183,7 +186,7 @@ const EventView = () => {
           className="event-view-icon" // Ei taida toimia tää className??
         />
         <h1>{event.Title}</h1>
-        <h2>Päivä</h2>
+        <h2>{t.date}</h2>
         <div className="time-parent">
           {times.map((time, index) => (
             <div key={index} className="time-child">
@@ -196,17 +199,21 @@ const EventView = () => {
             </div>
           ))}
         </div>
-        <h2>Kellonaika</h2>
+        <h2>{t.time}</h2>
         <p style={{ fontWeight: "bold" }}>
-          {parseTimeAndDate(times[0].StartTime)[0]}
+          {parseTimeAndDate(times[0].StartTime)[0]} -{" "}
+          {parseTimeAndDate(times[0].EndTime)[0]}
         </p>
-        <p>Tähän väliin varmaa kartta et missä se on?</p>
-        <h2>Kuvaus:</h2>
-        <p>{event.Description}</p>
+        <h2>{t.location}</h2>
+        <StaticMap mapCenter={event.Event_Location.coordinates} />
+
         <h2>Osallistujamäärä</h2>
         <p>
           {event.ParticipantMin} - {event.ParticipantMax}
         </p>
+        <h2>Liittyneitä</h2>
+        <h2>Kuvaus:</h2>
+        <p>{event.Description}</p>
         {selectedTime && !isJoined(selectedTime) && (
           <button className="join-btn" onClick={() => handleJoin(userID, id)}>
             Ilmoittaudu
@@ -217,14 +224,16 @@ const EventView = () => {
             Peru ilmoittautuminen
           </button>
         )}
-        <p style={{ fontWeight: "lighter" }}>
-          Tapahtuman kuvausta viimeksi päivitetty:
-        </p>
+        <p style={{ fontWeight: "lighter" }}>Tapahtumaa viimeksi päivitetty:</p>
         <p style={{ fontWeight: "lighter" }}>
           {parseTimeAndDate(event.updatedAt)[1]}{" "}
           {parseTimeAndDate(event.updatedAt)[0]}
         </p>
+        <Link to={"/map"} className="back-btn">
+          <span>{t.back}</span>
+        </Link>
       </div>
+
       <Footer />
     </div>
   )

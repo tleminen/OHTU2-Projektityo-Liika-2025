@@ -3,20 +3,16 @@ import Header from "../header"
 import LoginForm from "./LoginForm"
 import Footer from "../footer"
 import { useSelector } from "react-redux"
-import { useNavigate } from "react-router-dom"
+import { Link } from "react-router-dom"
 import { useState } from "react"
 import loginService from "../../services/loginService.js" // Tuo loginService
 import "./login.css"
 
 const Login = () => {
-  const navigate = useNavigate()
   const [emailForm, setEmailForm] = useState(false)
   const [email, setEmail] = useState("")
   const [resetMessage, setResetMessage] = useState("")
   const [loader, setLoader] = useState(false)
-  const handler = () => {
-    navigate("/")
-  }
 
   const handleEmailSubmit = async (e) => {
     e.preventDefault()
@@ -83,7 +79,7 @@ const Login = () => {
                     alt="check"
                     width={100}
                     height={100}
-                    style={{ display: 'block', margin: '0 auto' }}
+                    style={{ display: "block", margin: "0 auto" }}
                   />
                 )}
               </div>
@@ -91,9 +87,9 @@ const Login = () => {
           </form>
         )}
 
-        <button className="back-btn" onClick={handler}>
+        <Link to={"/"} className="back-btn">
           <span>{t.back}</span>
-        </button>
+        </Link>
       </div>
       <Footer />
     </div>

@@ -19,6 +19,7 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Lisätty varjo */
 }
 
+/* Liity tapahtumaan -painike */
 .join-btn {
   position: relative;
   padding: 15px 45px;
@@ -44,6 +45,7 @@
   transform: scale(0.95);
 }
 
+/* Peruuta ilmoittautuminen */
 .leave-btn {
   position: relative;
   padding: 15px 45px;
@@ -74,6 +76,7 @@
   margin: 8px;
 }
 
+/* Liitytty päivämäärä */
 .joined-time-btn {
   position: relative;
   padding: 15px 45px;
@@ -90,7 +93,7 @@
 }
 .joined-time-btn:hover {
   color: #194480;
-  background: #ffffff;
+  background: hsl(105, 100%, 98%);
   outline-offset: 3px;
   border: 2px solid #197180;
   outline: 2px solid #19806b;
@@ -99,6 +102,7 @@
   transform: scale(0.95);
 }
 
+/* Ei-liitytty päivämäärä */
 .not-joined-time-btn {
   position: relative;
   padding: 15px 45px;
@@ -115,11 +119,19 @@
 }
 .not-joined-time-btn:hover {
   color: #194480;
-  background: #ffffff;
+  background: #e8f6ff;
   outline-offset: 3px;
   border: 2px solid #197180;
   outline: 2px solid #19806b;
 }
 .not-joined-time-btn:active {
   transform: scale(0.95);
+}
+
+/* Valittu päivämäärä */
+.joined-time-btn:focus,
+.not-joined-time-btn:focus,
+.selected-time {
+  color: #ff864e;
+  border-color: #ff864e;
 }
