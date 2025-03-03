@@ -67,6 +67,25 @@ const SendEmail = ({ setIsOtpVerifiedFromParent, email }) => {
     }
   }
 
+  const handlePaste = (e) => {
+    e.preventDefault()
+    const paste = e.clipboardData.getData("text")
+    const pasteArray = paste.split("").slice(0, 6) // Rajoitetaan 6 merkkiin
+
+    setOtp(pasteArray.join("")) // Asetetaan koko OTP-arvo kerralla
+
+    // Täytetään input-kentät ja siirretään focus viimeiseen
+    pasteArray.forEach((value, index) => {
+      if (otpInputRefs.current[index]) {
+        otpInputRefs.current[index].value = value
+      }
+    })
+
+    if (otpInputRefs.current[pasteArray.length - 1]) {
+      otpInputRefs.current[pasteArray.length - 1].focus()
+    }
+  }
+
   return (
     <div>
       {otpSent ? (
