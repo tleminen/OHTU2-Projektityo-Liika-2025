@@ -102,7 +102,6 @@ const CreateEventForm = () => {
         <form onSubmit={handleSubmitUnSigned}>
           <div>
             <div>
-              <h1>KIRJAUTUMATON NÄKYMÄ poista tämä teksti sitten</h1>
               <h3>{t.title}</h3>
               <input
                 type="text"
