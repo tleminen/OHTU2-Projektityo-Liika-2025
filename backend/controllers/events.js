@@ -270,6 +270,8 @@ const verificationCodes = new Map() //----VOIDAAN VAIHTAA TIETOKANTAAN JOS HALUT
 eventRouter.post("/sendOtp", async (req, res) => {
   const { email } = req.body
 
+  console.log("email "+ email)
+
   try {
     const verificationCode = generateVerificationCode()
 

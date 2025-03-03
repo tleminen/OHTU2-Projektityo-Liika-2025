@@ -13,7 +13,6 @@ const SendEmail = ({ setIsOtpVerifiedFromParent, email }) => {
   const [isOtpVerified, setIsOtpVerified] = useState(false) // Tila OTP:n vahvistuksen seuraamiseksi
   const [loader, setLoader] = useState(false)
 
-
   const otpInputRefs = useRef([]) // Luo ref-taulukko
 
   useEffect(() => {
@@ -34,7 +33,7 @@ const SendEmail = ({ setIsOtpVerifiedFromParent, email }) => {
   const sendOtp = async () => {
     setLoader(true)
     try {
-      console.log("email: "+email)
+      console.log("email: " + email)
       const response = await eventService.createEventEmailSend(email)
       console.log(response.data)
       alert(t.email_sent)
@@ -43,7 +42,10 @@ const SendEmail = ({ setIsOtpVerifiedFromParent, email }) => {
       setOtpSent(true)
       setLoader(false)
     } catch (error) {
-      console.error("Virhe sähköpostin lähetyksessä:", error)
+      console.error("Virhe axios-pyynnössä:", error)
+      if (error.response) {
+        console.error("Vastausvirhe:", error.response)
+      }
       alert(t.email_send_error)
       setLoader(false)
     }
@@ -57,7 +59,7 @@ const SendEmail = ({ setIsOtpVerifiedFromParent, email }) => {
       alert(t.email_confirmation)
       // Jos OTP on oikein, päivitä tila
       setIsOtpVerified(true)
-      setIsOtpVerifiedFromParent(true);
+      setIsOtpVerifiedFromParent(true)
     } catch (error) {
       // Käsittele virhe (esim. näytä virheilmoitus)
       console.error("Virhe OTP:n vahvistuksessa:", error)
