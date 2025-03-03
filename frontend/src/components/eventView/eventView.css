@@ -74,6 +74,8 @@
 .time-child {
   box-sizing: border-box;
   margin: 8px;
+  display: flex;
+  flex-direction: row;
 }
 
 /* Liitytty päivämäärä */

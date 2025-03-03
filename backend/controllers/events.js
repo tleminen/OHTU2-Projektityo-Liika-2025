@@ -1,19 +1,26 @@
 const { Router } = require("express")
 const getEventsNearby = require("../services/getEventsNearby")
+const {
+  getSingleEventWithTimes,
+} = require("../services/getSingleEventWithTimes")
 const { Categories, Events, Times, Joins } = require("../models")
 const { Sequelize } = require("sequelize")
 const Users = require("../models/users")
-const { sendEmail } = require("../services/email") 
+const { sendEmail } = require("../services/email")
 
 const eventRouter = Router()
 
-// Hae yksittäinen tapahtuma
-eventRouter.post("/singleEvent", async (req, res) => {
+// Hae yksittäinen tapahtuma aikoineen ja osallistujamäärineen
+eventRouter.post("/singleEventWithTimes", async (req, res) => {
+  const { EventID } = req.body
   try {
-    const event = await Events.findByPk(req.body.EventID)
+    const event = await getSingleEventWithTimes(EventID)
+    if (!event) {
+      return res.status(404).json({ error: "Eventtiä ei löytynyt" })
+    }
     res.json(event)
   } catch (error) {
-    console.error("Virhe haettaessa yksittäistä eventtiä: " + error)
+    console.error("Virhe haettaessa tapahtumaa:", error)
     res.status(500).json({ error: "Internal server error" })
   }
 })
@@ -203,22 +210,6 @@ eventRouter.post("/join_event", async (req, res) => {
   }
 })
 
-// Tapahtuman ajan haku
-eventRouter.post("/event_times", async (req, res) => {
-  const { EventID } = req.body
-  try {
-    const times = await Times.findAll({
-      where: {
-        EventID: EventID,
-      },
-    })
-    res.json(times)
-  } catch (error) {
-    console.error("Problem with fetching event times: " + error)
-    res.status(500).json({ error: "Error with times" })
-  }
-})
-
 // Poistu tapahtumasta
 eventRouter.post("/leave_event", async (req, res) => {
   const { UserID, EventID, TimeID } = req.body
@@ -255,7 +246,6 @@ eventRouter.post("/joined", async (req, res) => {
   }
 })
 
-
 //Vahvistuskoodin luominen
 const generateVerificationCode = () => {
   let code = ""
@@ -271,7 +261,7 @@ const verificationCodes = new Map() //----VOIDAAN VAIHTAA TIETOKANTAAN JOS HALUT
 eventRouter.post("/sendOtp", async (req, res) => {
   const { email } = req.body
 
-  console.log("email "+ email)
+  console.log("email " + email)
 
   try {
     const verificationCode = generateVerificationCode()

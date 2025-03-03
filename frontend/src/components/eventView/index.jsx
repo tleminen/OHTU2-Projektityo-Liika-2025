@@ -37,12 +37,11 @@ const EventView = () => {
   useEffect(() => {
     const fetchEventInfo = async () => {
       try {
-        const response = await eventService.getEvent({ EventID: id })
-        setEvent(response)
-        const responseTimes = await eventService.getEventTimes({
+        const eventData = await eventService.getSingleEventWithTimes({
           EventID: id,
         })
-        setTimes(responseTimes)
+        setEvent(eventData)
+        setTimes(eventData.Times)
       } catch (error) {
         console.error("Virhe hakiessa tapahtumaa: " + error)
       } finally {
@@ -76,6 +75,14 @@ const EventView = () => {
           TimeID: Number(selectedTime.TimeID),
         })
       )
+      // Päivitä frontendin Times-tila
+      setTimes((prevTimes) =>
+        prevTimes.map((time) =>
+          time.TimeID === selectedTime.TimeID
+            ? { ...time, JoinedCount: (Number(time.JoinedCount) || 0) + 1 }
+            : time
+        )
+      )
     } catch (error) {
       console.error("Virhe liityttäessä tapahtumaan" + error)
     }
@@ -96,6 +103,17 @@ const EventView = () => {
           UserID: userID,
           TimeID: selectedTime.TimeID,
         })
+      )
+      // Päivitä frontendin Times-tila
+      setTimes((prevTimes) =>
+        prevTimes.map((time) =>
+          time.TimeID === selectedTime.TimeID
+            ? {
+                ...time,
+                JoinedCount: Math.max((Number(time.JoinedCount) || 0) - 1, 0),
+              }
+            : time
+        )
       )
     } catch (error) {
       console.error("Virhe poistuessa tapahumasta" + error)
@@ -196,6 +214,7 @@ const EventView = () => {
               >
                 {parseTimeAndDate(time.StartTime)[1]}
               </button>
+              <p>{time.JoinedCount}</p>
             </div>
           ))}
         </div>

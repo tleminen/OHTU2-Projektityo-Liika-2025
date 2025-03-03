@@ -14,8 +14,11 @@ const getEvents = async (parameters) => {
 }
 
 // Hakee yksittäisen tapahtuman tiedot
-const getEvent = async (parameters) => {
-  const response = await axios.post(baseUrl + "/events/singleEvent", parameters)
+const getSingleEventWithTimes = async (parameters) => {
+  const response = await axios.post(
+    baseUrl + "/events/singleEventWithTimes",
+    parameters
+  )
   return response.data
 }
 
@@ -41,7 +44,7 @@ const createEventUnSigned = async (parameters) => {
 // Sähköpostivahvistus tapahtuman luonnissa kirjautumattomalle käyttäjälle
 const createEventEmailSend = async (email) => {
   console.log("Lähetetään pyyntö, body:", { email })
-  const respone = await axios.post(baseUrl+ "/events/sendOtp", {email})
+  const respone = await axios.post(baseUrl + "/events/sendOtp", { email })
   return respone.data
 }
 
@@ -69,21 +72,15 @@ const getJoined = async (parameters) => {
   return response.data
 }
 
-const getEventTimes = async (parameters) => {
-  const response = await axios.post(baseUrl + "/events/event_times", parameters)
-  return response.data
-}
-
 export default {
   getCategories,
   getEvents,
   createEvent,
   createEventUnSigned,
   joinEvent,
-  getEvent,
   getJoined,
   leaveEvent,
-  getEventTimes,
   createEventEmailSend,
   createEventVerifyOtp,
+  getSingleEventWithTimes,
 }
