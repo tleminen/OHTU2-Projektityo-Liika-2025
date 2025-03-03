@@ -91,6 +91,7 @@ const Map = ({ startingLocation }) => {
   }
 
   const onClickListJoinedEvents = () => {
+    navigate("/joined_events")
     console.log("Listaa liitytyt click")
   }
 

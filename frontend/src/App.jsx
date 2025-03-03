@@ -10,6 +10,7 @@ import EventView from "./components/eventView"
 import AccountView from "./components/accountView"
 import ChangeEmail from "./components/accountView/changeInfo/changeEmail"
 import ChangeUsername from "./components/accountView/changeInfo/changeUsername"
+import JoinedView from "./components/joinedListView"
 
 const App = () => {
   return (
@@ -25,6 +26,7 @@ const App = () => {
       <Route path="/events/:id" element={<EventView />} />
       <Route path="/own_info/email" element={<ChangeEmail />} />
       <Route path="/own_info/username" element={<ChangeUsername />} />
+      <Route path="/joined_events" element={<JoinedView />} />
     </Routes>
   )
 }

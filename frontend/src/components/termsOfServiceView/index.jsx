@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom"
+import { Link } from "react-router-dom"
 import Header from "../header"
 import TermsOfService from "./termsOfService"
 import Footer from "../footer"
@@ -9,17 +9,13 @@ const TermsOfServiceView = () => {
   const language = useSelector((state) => state.language.language)
   const t = translations[language]
 
-  const navigate = useNavigate()
-  const handler = () => {
-    navigate("/")
-  }
   return (
     <div className="fullpage">
       <Header />
       <TermsOfService />
-      <button href="/" className="back-btn" onClick={handler}>
+      <Link to={"/"} className="back-btn" style={{ alignSelf: "center" }}>
         <span>{t.back}</span>
-      </button>
+      </Link>
       <Footer />
     </div>
   )
