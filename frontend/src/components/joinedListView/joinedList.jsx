@@ -3,6 +3,7 @@ import "./joinedView.css"
 import { useSelector } from "react-redux"
 import eventService from "../../services/eventService"
 import { parseTimeAndDate } from "../../utils/helper"
+import { Link } from "react-router-dom"
 
 const JoinedList = () => {
   const userID = useSelector((state) => state.user.user.userID)
@@ -21,14 +22,6 @@ const JoinedList = () => {
     fetchJoinedEvents()
   }, [userID])
 
-  const handleLeave = (EventID) => {
-    console.log("Poistu tapahtumasta" + EventID)
-  }
-
-  const handleOnClickEvent = (EventID) => {
-    console.log("painettiin" + EventID)
-  }
-
   console.log(userID)
   console.log(joinedEvents)
   return (
@@ -43,26 +36,26 @@ const JoinedList = () => {
             <th>AIKA</th>
             <th>Otsikko</th>
             <th>Osallistujia</th>
-            <th>Poistu tapahtumasta</th>
           </tr>
         </thead>
         <tbody>
           {joinedEvents.map((event, index) => (
             <tr key={index} className="event-item">
-              <th onClick={() => handleOnClickEvent(event.EventID)}>
-                {parseTimeAndDate(event.StartTime)[1]}
-              </th>
-              <th onClick={() => handleOnClickEvent(event.EventID)}>
-                {parseTimeAndDate(event.StartTime)[0]}
-              </th>
-              <th onClick={() => handleOnClickEvent(event.EventID)}>
-                {event.Title}
-              </th>
-              <th onClick={() => handleOnClickEvent(event.EventID)}>
-                {event.JoinedCount}
+              <th>
+                <Link to={`/events/${event.EventID}`}>
+                  {parseTimeAndDate(event.StartTime)[1].slice(0, -4)}
+                </Link>
               </th>
               <th>
-                <button onClick={() => handleLeave(event.EventID)}>Eroa</button>
+                <Link to={`/events/${event.EventID}`}>
+                  {parseTimeAndDate(event.StartTime)[0]}
+                </Link>
+              </th>
+              <th>
+                <Link to={`/events/${event.EventID}`}>{event.Title}</Link>
+              </th>
+              <th>
+                <Link to={`/events/${event.EventID}`}>{event.JoinedCount}</Link>
               </th>
             </tr>
           ))}

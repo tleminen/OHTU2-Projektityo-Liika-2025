@@ -10,7 +10,15 @@ const TermsOfServiceView = () => {
   const t = translations[language]
 
   return (
-    <div className="fullpage">
+    <div
+      className="fullpage"
+      style={{
+        backgroundImage: "url('/backgroundpicture.jpg')",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+      }}
+    >
       <Header />
       <Info />
       <Link to={"/"} className="back-btn" style={{ alignSelf: "center" }}>

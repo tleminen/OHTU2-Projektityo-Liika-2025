@@ -172,10 +172,7 @@ const Map = ({ startingLocation }) => {
       L.DomEvent.disableClickPropagation(container)
       const root = createRoot(container)
       root.render(
-        <div
-          className="containerforshortcutbuttons"
-          style={{ backgroundColor: "#0097b2" }} // ELMERI! Kysy Ollilta mitä asiaa oli.
-        >
+        <div className="containerforshortcutbuttons">
           <div className="shortcutbuttons">
             <button
               className="shortcut-button"
