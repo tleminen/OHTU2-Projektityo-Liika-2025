@@ -4,14 +4,14 @@ module.exports = {
     await queryInterface.bulkInsert("Times", [
       {
         TimeID: 10000001,
-        StartTime: "2025-02-16 14:34:47.191+02",
-        EndTime: "2025-02-16 15:34:47.191+02",
+        StartTime: "2026-05-16 14:34:47.191+02",
+        EndTime: "2026-05-16 15:34:47.191+02",
         EventID: 10000001,
       },
       {
         TimeID: 10000002,
-        StartTime: "2025-02-16 15:34:47.191+02",
-        EndTime: "2025-02-16 16:34:47.191+02",
+        StartTime: "2026-06-16 15:34:47.191+02",
+        EndTime: "2026-06-16 16:34:47.191+02",
         EventID: 10000002,
       },
       {

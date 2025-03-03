@@ -20,6 +20,7 @@ eventRouter.post("/singleEvent", async (req, res) => {
 /**
  * Hakee tapahtumat alueelta
  * Parametrina leveys- ja pituuspiiri, sekä maksimietäisyys pisteestä
+ * Palauttaa tapahtuman tiedot, sekä osallistujamäärän (aktiivinen tai seuraava esiintymä tapahtumasta)
  */
 eventRouter.post("/nearby", async (req, res) => {
   const { latitude, longitude, radius } = req.body
@@ -239,7 +240,7 @@ eventRouter.post("/leave_event", async (req, res) => {
   }
 })
 
-// Hae liitytyt tapahtumat
+// Hae käyttäjän liitytyt tapahtumat
 eventRouter.post("/joined", async (req, res) => {
   const { UserID } = req.body
   try {

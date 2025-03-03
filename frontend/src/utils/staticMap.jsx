@@ -8,7 +8,7 @@ const StaticMap = ({ mapCenter }) => {
   useEffect(() => {
     // Luo karttaelementti kun komponentti mounttaa
     // Tarkastetaan ensin, että kartalla on aloitussijainti:
-    if (!mapCenter[0] || mapCenter[1]) {
+    if (!mapCenter[0] || !mapCenter[1]) {
       console.log("Ei aloituskordinaatteja..\nAsetetaan defaultit")
       mapCenter = [29.7639, 62.6013]
     }
