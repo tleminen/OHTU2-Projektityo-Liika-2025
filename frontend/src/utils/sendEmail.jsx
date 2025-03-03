@@ -1,7 +1,6 @@
 import { useDispatch, useSelector } from "react-redux"
 import { useEffect, useRef, useState } from "react"
 import translations from "../assets/translation.js"
-import CreateEventForm from "../components/createEventView/createEventForm.jsx"
 import "../components/registerView/register.css"
 import eventService from "../services/eventService.js"
 
@@ -35,6 +34,7 @@ const SendEmail = ({ setIsOtpVerifiedFromParent, email }) => {
   const sendOtp = async () => {
     setLoader(true)
     try {
+      console.log("email: "+email)
       const response = await eventService.createEventEmailSend(email)
       console.log(response.data)
       alert(t.email_sent)

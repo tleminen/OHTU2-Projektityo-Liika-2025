@@ -40,7 +40,7 @@ const createEventUnSigned = async (parameters) => {
 
 // Sähköpostivahvistus tapahtuman luonnissa kirjautumattomalle käyttäjälle
 const createEventEmailSend = async (email) => {
-  const respone = await axios.post(baseUrl+ "/events/sendEmail", email)
+  const respone = await axios.post(baseUrl+ "/events/sendOtp", email)
   return respone.data
 }
 
