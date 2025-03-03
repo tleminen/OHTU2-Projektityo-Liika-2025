@@ -38,6 +38,19 @@ const createEventUnSigned = async (parameters) => {
   return response.data
 }
 
+// Sähköpostivahvistus tapahtuman luonnissa kirjautumattomalle käyttäjälle
+const createEventEmailSend = async (email) => {
+  console.log("Lähetetään pyyntö, body:", { email })
+  const respone = await axios.post(baseUrl+ "/events/sendOtp", {email})
+  return respone.data
+}
+
+//Vahvistuskoodi tapahtuman luonnissa kirjautumattomalle käyttäjälle
+const createEventVerifyOtp = async (parameters) => {
+  const response = await axios.post(baseUrl + "/events/verifyOtp", parameters)
+  return response.data
+}
+
 // Liittyy tapahtumaan
 const joinEvent = async (parameters) => {
   const response = await axios.post(baseUrl + "/events/join_event", parameters)
@@ -71,4 +84,6 @@ export default {
   getJoined,
   leaveEvent,
   getEventTimes,
+  createEventEmailSend,
+  createEventVerifyOtp,
 }
