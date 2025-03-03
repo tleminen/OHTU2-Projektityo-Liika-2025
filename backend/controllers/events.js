@@ -52,7 +52,7 @@ eventRouter.post("/create_event", async (req, res) => {
     participantsMax,
     participantsMin,
     description,
-    date,
+    dates,
     startTime,
     endTime,
   } = req.body
@@ -74,12 +74,18 @@ eventRouter.post("/create_event", async (req, res) => {
     })
 
     try {
-      // Lisätään eventin aika
-      const timeResponse = await Times.create({
-        StartTime: `${date} ${startTime}:00.000+2`,
-        EndTime: `${date} ${endTime}:00.000+2`,
-        EventID: event.EventID,
-      })
+      await Promise.all(
+        dates.map(async (timestamp) => {
+          const date = new Date(timestamp).toISOString().split("T")[0] // Muuntaa muotoon YYYY-MM-DD
+
+          await Times.create({
+            StartTime: `${date} ${startTime}:00.000+2`,
+            EndTime: `${date} ${endTime}:00.000+2`,
+            EventID: event.EventID,
+          })
+        })
+      )
+
       res.status(201).send()
     } catch (error) {
       console.error(error)
@@ -141,7 +147,7 @@ eventRouter.post("/create_event_unsigned", async (req, res) => {
           Sequelize.fn("ST_MakePoint", event_location.lng, event_location.lat),
           4326
         ),
-        Status: "Basic", 
+        Status: "Basic",
         Title: title,
         UserID: user.UserID,
         CategoryID: categoryID,
@@ -179,14 +185,14 @@ eventRouter.post("/create_event_unsigned", async (req, res) => {
 })
 //Tapahtuman luonti kirjautumaton päättyy
 
-
 // Liity tapahtumaan
 eventRouter.post("/join_event", async (req, res) => {
-  const { UserID, EventID } = req.body
+  const { UserID, EventID, TimeID } = req.body
   try {
     const response = await Joins.create({
       UserID: UserID,
       EventID: EventID,
+      TimeID: TimeID,
     })
     res.status(200).send()
   } catch (error) {
@@ -195,14 +201,31 @@ eventRouter.post("/join_event", async (req, res) => {
   }
 })
 
+// Tapahtuman ajan haku
+eventRouter.post("/event_times", async (req, res) => {
+  const { EventID } = req.body
+  try {
+    const times = await Times.findAll({
+      where: {
+        EventID: EventID,
+      },
+    })
+    res.json(times)
+  } catch (error) {
+    console.error("Problem with fetching event times: " + error)
+    res.status(500).json({ error: "Error with times" })
+  }
+})
+
 // Poistu tapahtumasta
 eventRouter.post("/leave_event", async (req, res) => {
-  const { UserID, EventID } = req.body
+  const { UserID, EventID, TimeID } = req.body
   try {
     const deletedRows = await Joins.destroy({
       where: {
         UserID: UserID,
         EventID: EventID,
+        TimeID: TimeID,
       },
     })
     if (deletedRows > 0) {

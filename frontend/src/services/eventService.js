@@ -30,8 +30,11 @@ const createEvent = async (parameters) => {
 
 // Luo tapahtuman kirjautumattomalle käyttäjälle
 const createEventUnSigned = async (parameters) => {
-  console.log("tapahtuman luonti: "+parameters)
-  const response = await axios.post(baseUrl+ "/events/create_event_unsigned",parameters)
+  console.log("tapahtuman luonti: " + parameters)
+  const response = await axios.post(
+    baseUrl + "/events/create_event_unsigned",
+    parameters
+  )
   return response.data
 }
 
@@ -59,6 +62,11 @@ const getJoined = async (parameters) => {
   return response.data
 }
 
+const getEventTimes = async (parameters) => {
+  const response = await axios.post(baseUrl + "/events/event_times", parameters)
+  return response.data
+}
+
 export default {
   getCategories,
   getEvents,
@@ -68,4 +76,5 @@ export default {
   getEvent,
   getJoined,
   leaveEvent,
+  getEventTimes,
 }
