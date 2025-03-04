@@ -25,6 +25,7 @@ const EventView = () => {
   const [email, setEmail] = useState("")
   const [isOtpVerified, setIsOtpVerified] = useState(false)
   const dispatch = useDispatch()
+  const [unSignedJoined, setUnSignedJoined] = useState(false)
 
   useEffect(() => {
     const fetchEventInfo = async () => {
@@ -98,8 +99,11 @@ const EventView = () => {
             : time
         )
       )
+      setUnSignedJoined(true)
+
     } catch (error) {
       console.error("Virhe liityttäessä tapahtumaan" + error)
+      setUnSignedJoined(false)
     }
   }
 
@@ -269,12 +273,12 @@ const EventView = () => {
               email={email}
             />
           </div>
-          {selectedTime && isOtpVerified && (
+          {selectedTime && isOtpVerified && !unSignedJoined && (
             <button className="join-btn" onClick={() => handleJoinUnSigned(email, id)}>
               Ilmoittaudu
             </button>
           )}
-          {selectedTime && isJoined(selectedTime) && (
+          {selectedTime && unSignedJoined && (
             <h3>Olet ilmoittautunut tapahtumaan</h3>
           )}
           <p style={{ fontWeight: "lighter" }}>
