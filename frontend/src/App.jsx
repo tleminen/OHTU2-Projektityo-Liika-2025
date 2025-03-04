@@ -11,6 +11,7 @@ import AccountView from "./components/accountView"
 import ChangeEmail from "./components/accountView/changeInfo/changeEmail"
 import ChangeUsername from "./components/accountView/changeInfo/changeUsername"
 import JoinedView from "./components/joinedListView"
+import ChangePassword from "./components/accountView/changeInfo/changePassword"
 
 const App = () => {
   return (
@@ -27,6 +28,7 @@ const App = () => {
       <Route path="/own_info/email" element={<ChangeEmail />} />
       <Route path="/own_info/username" element={<ChangeUsername />} />
       <Route path="/joined_events" element={<JoinedView />} />
+      <Route path="/own_info/password" element={<ChangePassword />} />
     </Routes>
   )
 }
