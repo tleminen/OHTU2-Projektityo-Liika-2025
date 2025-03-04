@@ -60,6 +60,13 @@ const joinEvent = async (parameters) => {
   return response.data
 }
 
+// Liittyy tapahtumaan kirjautumaton
+const joinEventUnSigned = async (parameters) => {
+  console.log("Lähetetään pyyntö, body:", parameters)
+  const response = await axios.post(baseUrl + "/events/join_event_unsigned", parameters)
+  return response.data
+}
+
 // Poistuu tapahtumasta
 const leaveEvent = async (parameters) => {
   const response = await axios.post(baseUrl + "/events/leave_event", parameters)
@@ -108,6 +115,7 @@ export default {
   createEvent,
   createEventUnSigned,
   joinEvent,
+  joinEventUnSigned,
   getJoined,
   leaveEvent,
   createEventEmailSend,
