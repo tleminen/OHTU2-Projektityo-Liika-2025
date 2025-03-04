@@ -92,12 +92,14 @@ const Map = ({ startingLocation }) => {
 
   const onClickListJoinedEvents = () => {
     navigate("/joined_events")
-    console.log("Listaa liitytyt click")
   }
 
   const onClickOwnInfo = () => {
-    console.log("Omat tiedot click")
     navigate("/own_info")
+  }
+
+  const onClickCreatedEvents = () => {
+    navigate("/created_events")
   }
 
   useEffect(() => {
@@ -145,7 +147,7 @@ const Map = ({ startingLocation }) => {
           {user && (
             <button
               className="pika-painike"
-              /* Tähän vielä onClick */
+              onClick={() => onClickCreatedEvents()}
               style={{
                 backgroundImage: "url(/CreatedEventsIcon.png)", // Suora polku publicista
               }}

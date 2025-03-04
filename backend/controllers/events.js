@@ -7,7 +7,10 @@ const { Categories, Events, Times, Joins } = require("../models")
 const { Sequelize } = require("sequelize")
 const Users = require("../models/users")
 const { sendEmail } = require("../services/email")
-const { getUserJoinedEvents } = require("../services/getUserJoinedEvents")
+const {
+  getUserJoinedEvents,
+  getUserCreatedEvents,
+} = require("../services/getUserJoinedEvents")
 
 const eventRouter = Router()
 
@@ -252,6 +255,17 @@ eventRouter.post("/userJoinedEvents", async (req, res) => {
   const { UserID } = req.body
   try {
     const events = await getUserJoinedEvents(UserID)
+    res.json(events)
+  } catch (error) {
+    console.error("Problems with retreving joined events with full data")
+    res.status(500).json({ error: "Internal Server Error" })
+  }
+})
+
+eventRouter.post("/userCreatedEvents", async (req, res) => {
+  const { UserID } = req.body
+  try {
+    const events = await getUserCreatedEvents(UserID)
     res.json(events)
   } catch (error) {
     console.error("Problems with retreving joined events with full data")

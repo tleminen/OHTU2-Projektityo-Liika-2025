@@ -78,7 +78,7 @@ const AccountView = () => {
           </div>
           <div className="information">
             <Link to={`/own_info/email`} className="link-btn">
-              Vaihda
+              {t.change}
             </Link>
           </div>
         </div>
@@ -89,7 +89,18 @@ const AccountView = () => {
           </div>
           <div className="information">
             <Link to={"/own_info/username"} className="link-btn">
-              Vaihda
+              {t.change}
+            </Link>
+          </div>
+        </div>
+        <div className="information-row">
+          <div className="information">
+            <h3>{t.password} </h3>
+            {user.user.Password}
+          </div>
+          <div className="information">
+            <Link to={`/own_info/password`} className="link-btn">
+              {t.change}
             </Link>
           </div>
         </div>
@@ -99,10 +110,6 @@ const AccountView = () => {
             {user.user.LanguageID}
           </div>
           <div className="information"></div>
-        </div>
-        <div className="information-row">
-          <h3>{t.email} </h3>
-          {user.user.Email}
         </div>
       </div>
       <Footer />

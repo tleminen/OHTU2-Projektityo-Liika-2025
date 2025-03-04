@@ -6,13 +6,13 @@ import { useSelector } from "react-redux"
 import "../../../index.css"
 import "../accountView.css"
 
-const ChangeUsername = () => {
+const ChangePassword = () => {
 
   const language = useSelector((state) => state.language.language)
   const t = translations[language]
-  const [newUsername, setNewUsername] = useState("")
-  const username = useSelector((state) => state.user.user.username)
-  const [newUserNameAgain, setNewUserNameAgain] = useState("")
+  const [newPassword, setNewPassword] = useState("")
+  const password = useSelector((state) => state.user.user.username)
+  const [newPasswordAgain, setNewPasswordAgain] = useState("")
 
   const handleSubmit = (event) => {
     event.preventDefault()
@@ -35,33 +35,30 @@ const ChangeUsername = () => {
       <Header />
       <div className="account-view">
       <h1>
-        {t.changeUsername}
+        {t.ChangePassword}
       </h1>
-      <p>
-       {t.currentUsername} {username}
-      </p>
       <form onSubmit={handleSubmit}>
         <div>
-          <h3>{t.newUsername}</h3>
+          <h3>{t.newPassword}</h3>
           <input
             className="input-field"
             type="text"
-            value={newUsername}
-            name="newUsername"
-            onChange={(e) => setNewUsername(e.target.value)}
-            placeholder={t.newUsername}
+            value={newPassword}
+            name="newPassword"
+            onChange={(e) => setNewPassword(e.target.value)}
+            placeholder={t.newPassword}
             required={true}
           />
         </div>
         <div>
-          <h3>{t.newUsernameAgain}</h3>
+          <h3>{t.newPasswordAgain}</h3>
           <input
             className="input-field"
             type="text"
-            value={newUserNameAgain}
-            name="newUserNameAgain"
-            onChange={(e) => setNewUserNameAgain(e.target.value)}
-            placeholder={t.newUsernameAgain}
+            value={newPasswordAgain}
+            name="newPasswordAgain"
+            onChange={(e) => setNewPasswordAgain(e.target.value)}
+            placeholder={t.newPasswordAgain}
             required={true}
           />
         </div>
@@ -74,7 +71,7 @@ const ChangeUsername = () => {
         }
       
     
-export default ChangeUsername
+export default ChangePassword
 
 
 
