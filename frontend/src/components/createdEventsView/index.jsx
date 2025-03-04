@@ -1,13 +1,14 @@
 import { Link } from "react-router-dom"
-import Footer from "../footer"
 import Header from "../header"
+import EventList from "../../utils/eventList"
+import Footer from "../footer"
 import { useSelector } from "react-redux"
 import translations from "../../assets/translation"
-import EventList from "../../utils/eventList"
 
-const JoinedView = () => {
+const CreatedEvents = () => {
   const language = useSelector((state) => state.language.language)
   const t = translations[language]
+
   return (
     <div
       className="fullpage"
@@ -19,7 +20,7 @@ const JoinedView = () => {
       }}
     >
       <Header />
-      <EventList listType="joined" />
+      <EventList listType="created" />
       <Link to={"/map"} className="back-btn" style={{ alignSelf: "center" }}>
         <span>{t.back}</span>
       </Link>
@@ -28,4 +29,4 @@ const JoinedView = () => {
   )
 }
 
-export default JoinedView
+export default CreatedEvents

@@ -80,6 +80,14 @@ const getUserJoinedEvents = async (UserID) => {
   return response.data
 }
 
+// Hakee käyttäjän liitytyt tapahtumat
+const getUserCreatedEvents = async (UserID) => {
+  const response = await axios.post(baseUrl + "/events/userCreatedEvents", {
+    UserID,
+  })
+  return response.data
+}
+
 export default {
   getCategories,
   getEvents,
@@ -92,4 +100,5 @@ export default {
   createEventVerifyOtp,
   getSingleEventWithTimes,
   getUserJoinedEvents,
+  getUserCreatedEvents,
 }
