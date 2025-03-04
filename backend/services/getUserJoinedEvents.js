@@ -30,9 +30,9 @@ const getUserCreatedEvents = async (UserID) => {
     const joinedEvents = await sequelize.query(
       `
       SELECT e.*, t."TimeID", t."StartTime", t."EndTime", COUNT(j."UserID") AS "JoinedCount"
-      FROM "Joins" j
-      JOIN "Times" t ON j."TimeID" = t."TimeID"
-      JOIN "Events" e ON t."EventID" = e."EventID"
+      FROM "Events" e
+      LEFT JOIN "Times" t ON e."EventID" = t."EventID"
+      LEFT JOIN "Joins" j ON t."TimeID" = j."TimeID"
       WHERE e."UserID" = :UserID
       GROUP BY e."EventID", t."TimeID"
       ORDER BY t."StartTime" ASC;

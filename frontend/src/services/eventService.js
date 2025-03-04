@@ -88,6 +88,20 @@ const getUserCreatedEvents = async (UserID) => {
   return response.data
 }
 
+// Poistaa tapahtuman yhden ajan
+const deleteEventTime = async (parameters) => {
+  const response = await axios.post(baseUrl + "/events/delete/time", parameters)
+  return response.data
+}
+
+const deleteEvent = async (parameters) => {
+  const response = await axios.post(
+    baseUrl + "/events/delete/event",
+    parameters
+  )
+  return response.data
+}
+
 export default {
   getCategories,
   getEvents,
@@ -101,4 +115,6 @@ export default {
   getSingleEventWithTimes,
   getUserJoinedEvents,
   getUserCreatedEvents,
+  deleteEventTime,
+  deleteEvent,
 }

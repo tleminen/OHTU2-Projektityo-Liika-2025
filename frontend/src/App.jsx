@@ -13,6 +13,7 @@ import ChangeUsername from "./components/accountView/changeInfo/changeUsername"
 import JoinedView from "./components/joinedListView"
 import ChangePassword from "./components/accountView/changeInfo/changePassword"
 import CreatedEvents from "./components/createdEventsView"
+import ModifyEvent from "./components/modifyEventView"
 
 const App = () => {
   return (
@@ -31,6 +32,7 @@ const App = () => {
       <Route path="/joined_events" element={<JoinedView />} />
       <Route path="/own_info/password" element={<ChangePassword />} />
       <Route path="/created_events" element={<CreatedEvents />} />
+      <Route path="/events/own/:id" element={<ModifyEvent />} />
     </Routes>
   )
 }

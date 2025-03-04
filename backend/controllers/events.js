@@ -3,7 +3,7 @@ const getEventsNearby = require("../services/getEventsNearby")
 const {
   getSingleEventWithTimes,
 } = require("../services/getSingleEventWithTimes")
-const { Categories, Events, Times, Joins } = require("../models")
+const { Categories, Events, Times, Joins, sequelize } = require("../models")
 const { Sequelize } = require("sequelize")
 const Users = require("../models/users")
 const { sendEmail } = require("../services/email")
@@ -270,6 +270,40 @@ eventRouter.post("/userCreatedEvents", async (req, res) => {
   } catch (error) {
     console.error("Problems with retreving joined events with full data")
     res.status(500).json({ error: "Internal Server Error" })
+  }
+})
+
+// Poistetaan yksittäinen aika. (Käyttää cascade-metodia)
+eventRouter.post("/delete/time", async (req, res) => {
+  const { TimeID } = req.body
+  try {
+    const deletedRows = await Times.destroy({ where: { TimeID: TimeID } })
+    if (deletedRows > 0) {
+      res.status(200).json({ message: "Time deleted successfully" })
+    } else {
+      res
+        .status(404)
+        .json({ error: "Time for event not found or already deleted" })
+    }
+  } catch (error) {
+    console.error("Problems with deleting time")
+  }
+})
+
+// Poistetaan koko tapahtuma
+eventRouter.post("/delete/event", async (req, res) => {
+  const { EventID, TimeID } = req.body
+  const transaction = await sequelize.transaction()
+  try {
+    await Times.destroy({ where: { TimeID: TimeID }, transaction })
+    await Events.destroy({ where: { EventID: EventID }, transaction })
+
+    await transaction.commit()
+    console.log(`Event ${EventID} and related joins deleted.`)
+    res.status(200).json({ message: "Event deleted successfully" })
+  } catch (error) {
+    console.error("Problems with deleting event" + error)
+    await transaction.rollback()
   }
 })
 

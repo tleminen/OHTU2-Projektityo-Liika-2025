@@ -81,15 +81,12 @@
 /* Liitytty päivämäärä */
 .joined-time-btn {
   position: relative;
-  padding: 15px 45px;
   background: #00b238;
-  border-radius: 10px;
   border: 2px solid #197180;
   outline: 2px solid #19806b;
   outline-offset: -2px;
   font-size: 1.5rem;
   color: #ffffff;
-  font-weight: 500;
   cursor: pointer;
   transition: outline-offset 200ms ease;
 }

@@ -45,6 +45,14 @@ const EventList = (listType) => {
     }
   }
 
+  const parseLink = () => {
+    if (listType.listType === "created") {
+      return "/events/own/"
+    } else {
+      return "/events/"
+    }
+  }
+
   return (
     <div className="joined-view">
       <table className="event-container">
@@ -61,20 +69,22 @@ const EventList = (listType) => {
           {events.map((event, index) => (
             <tr key={index} className="event-item">
               <th>
-                <Link to={`/events/${event.EventID}`}>
+                <Link to={`${parseLink()}${event.EventID}`}>
                   {parseTimeAndDate(event.StartTime)[1].slice(0, -4)}
                 </Link>
               </th>
               <th>
-                <Link to={`/events/${event.EventID}`}>
+                <Link to={`${parseLink()}${event.EventID}`}>
                   {parseTimeAndDate(event.StartTime)[0]}
                 </Link>
               </th>
               <th>
-                <Link to={`/events/${event.EventID}`}>{event.Title}</Link>
+                <Link to={`${parseLink()}${event.EventID}`}>{event.Title}</Link>
               </th>
               <th>
-                <Link to={`/events/${event.EventID}`}>{event.JoinedCount}</Link>
+                <Link to={`${parseLink()}${event.EventID}`}>
+                  {event.JoinedCount}
+                </Link>
               </th>
             </tr>
           ))}

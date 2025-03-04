@@ -24,6 +24,7 @@ const Joins = sequelize.define(
         model: Events,
         key: "EventID",
       },
+      onDelete: "CASCADE",
     },
     TimeID: {
       type: DataTypes.INTEGER,
@@ -33,6 +34,7 @@ const Joins = sequelize.define(
         model: Times,
         key: "TimeID",
       },
+      onDelete: "CASCADE",
     },
   },
   { timestamps: false }
