@@ -7,18 +7,26 @@ import "../../../index.css"
 import "../accountView.css"
 import { Link } from "react-router-dom"
 import FlagSelection from "../../flagSelection.jsx"
+import userService from "../../../services/userService.js"
+
 
 const ChangeLanguage = () => {
 
   const language = useSelector((state) => state.language.language)
   const t = translations[language]
+  const userID = useSelector((state) => state.user.user.userID)
 
   
-  const handleSubmit = (event) => {
-    event.preventDefault()
-    console.log("Create event attempt:", {
-      newEmail
+  const saveHandler = async() => {
+    console.log("Change language attempt:", {
+      language
     })
+    try {
+      const response = await userService.updateUserLanguage({UserID:userID, LanguageID: language})
+      console.log("Vaihdettu"+response) //TODO lisää notifikaatio kun vaihdettu
+    } catch (error) {
+      console.error("virhe käyttäjätunnuksen vaihdossa"+error)
+    }
   }
   
 
@@ -38,7 +46,7 @@ const ChangeLanguage = () => {
        {t.ChangeLanguage}      
        </h1>
        <FlagSelection menuPlacement="bottom"/>
-       <button type="submit">{t.save}</button>
+       <button onClick={saveHandler}>{t.save}</button>
         </div>
         <Link to={"/own_info"} className="back-btn" style={{alignSelf:"center"}}>
           <span>{t.back}</span>

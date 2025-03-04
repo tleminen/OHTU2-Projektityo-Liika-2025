@@ -8,4 +8,19 @@ const getUserData = async (userID) => {
   return response.data
 }
 
-export default { getUserData }
+const updateUserEmail = async (parameters) => {
+  const response = await axios.post(baseUrl + "/users/update/email", parameters)
+  return response.data
+}
+
+const updateUserUsername = async (parameters) => {
+  const response = await axios.post(baseUrl + "/users/update/username", parameters)
+  return response.data
+}
+
+const updateUserLanguage = async (parameters) => {
+  const response = await axios.post(baseUrl + "/users/update/language", parameters)
+  return response.data
+}
+
+export default { getUserData, updateUserEmail,updateUserUsername, updateUserLanguage }

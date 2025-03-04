@@ -123,7 +123,7 @@ const AccountView = () => {
         </Link>
       <Footer />
     </div>
-  )
+  ) 
 }
 
 export default AccountView

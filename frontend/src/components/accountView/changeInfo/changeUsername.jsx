@@ -6,6 +6,7 @@ import { useSelector } from "react-redux"
 import "../../../index.css"
 import "../accountView.css"
 import { Link } from "react-router-dom"
+import userService from "../../../services/userService.js"
 
 const ChangeUsername = () => {
 
@@ -13,14 +14,21 @@ const ChangeUsername = () => {
   const t = translations[language]
   const [newUsername, setNewUsername] = useState("")
   const username = useSelector((state) => state.user.user.username)
+  const userID = useSelector((state) => state.user.user.userID)
   const [newUserNameAgain, setNewUserNameAgain] = useState("")
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault()
-    console.log("Create event attempt:", {
-      newEmail
-    })
-  }
+    console.log("Change Username attempt:" +
+      newUsername
+    )
+    try {
+      const response = await userService.updateUserUsername({UserID:userID, Username:newUsername})
+      console.log("Vaihdettu"+response) //TODO lisää notifikaatio kun vaihdettu
+    } catch (error) {
+      console.error("virhe käyttäjätunnuksen vaihdossa"+error)
+    }
+  } 
   
 
   return (
