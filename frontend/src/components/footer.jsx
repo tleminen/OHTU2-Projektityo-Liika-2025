@@ -15,7 +15,7 @@ const Footer = () => {
     <footer className="footer">
       <div className="footer-content">
         <div className="flag-selection">
-          <FlagSelection />
+          <FlagSelection menuPlacement="top" />
         </div>
         <div className="footer-text">
           <Link to={`/termsOfService`}>{t.terms_of_service}</Link>
