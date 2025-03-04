@@ -78,6 +78,7 @@ const translations = {
   },
   FI: {
     activity: "Laji",
+    alert_incorrect: "Väärä käyttäjätunnus tai salasana",
     back: "Takaisin",
     changeEmail: "Vaihda sähköposti",
     changeUsername: "Vaihda käyttäjätunnus",

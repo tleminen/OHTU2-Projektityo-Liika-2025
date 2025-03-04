@@ -7,6 +7,9 @@ import { Link } from "react-router-dom"
 import { useState } from "react"
 import loginService from "../../services/loginService.js" // Tuo loginService
 import "./login.css"
+import NotificationContainer from "../notification/notificationContainer"
+import { EmailSentSuccess, EmailSentFailure, OtpRobotCheck, OtpVerified, OtpNotVerified, UserFailure} from "../notification/notificationTemplates.js"
+
 
 const Login = () => {
   const [emailForm, setEmailForm] = useState(false)
@@ -25,14 +28,16 @@ const Login = () => {
       console.log("SendEmail response " + response)
       setLoader(false)
       if (response.message === "Sähköposti lähetetty!") {
+        dispatch(addNotification(EmailSentSuccess(t.email_sent)));
         setResetMessage(t.email_sent)
         setEmail("") // Tyhjennä sähköposti-kenttä
       } else {
+        dispatch(addNotification(EmailSentFailure(t.email_not_found)));
         setResetMessage(response.message || t.email_not_found)
       }
     } catch (error) {
-      console.error("Virhe sähköpostin lähetyksessä:", error)
-      setResetMessage(t.email_send_error)
+      dispatch(addNotification(EmailSentFailure(t.email_not_found)));
+      setResetMessage("")
       setLoader(false)
     }
   }
@@ -50,6 +55,7 @@ const Login = () => {
       }}
     >
       <Header />
+      <NotificationContainer />
       <div className="login">
         <LoginForm />
         <div className="forgot-password-text">

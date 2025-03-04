@@ -9,7 +9,7 @@ import { changeLocation } from "../../store/locationSlice.js"
 import { changeUser } from "../../store/userSlice.js"
 import { registerValidation } from "../../utils/validationSchemas.js"
 import { addNotification } from '../../store/notificationSlice.js';
-import { EmailSentSuccess, EmailSentFailure } from '../notification/notificationTemplates.js';
+import { EmailSentSuccess, EmailSentFailure, OtpRobotCheck, OtpVerified, OtpNotVerified } from '../notification/notificationTemplates.js';
 
 
 const RegisterForm = () => {
@@ -60,7 +60,7 @@ const RegisterForm = () => {
     try {
       const response = await registerService.sendOtp(email)
       console.log(response.data)
-      dispatch(addNotification(EmailSentSuccess())); // Lähetä onnistumisilmoitus
+      dispatch(addNotification(EmailSentSuccess("kovakoodaus"))); // Lähetä onnistumisilmoitus
 
       // Jos OTP lähetettiin onnistuneesti, päivitä tila
       setOtpSent(true)
@@ -68,7 +68,7 @@ const RegisterForm = () => {
     } catch (error) {
       console.error("Virhe sähköpostin lähetyksessä:", error)
       //alert(t.email_send_error)
-      dispatch(addNotification(EmailSentFailure(error))); // Lähetä virheilmoitus
+      dispatch(addNotification(EmailSentFailure("kovakoodaus",error))); // Lähetä virheilmoitus
       setLoader(false)
     }
   }
@@ -78,13 +78,13 @@ const RegisterForm = () => {
       // Lähetä OTP backendille vahvistusta varten
       const response = await registerService.verifyOtp({ email, otp }) //TODO: backendiin otp vahvistus
       console.log(response.data)
-      alert(t.email_confirmation)
+      dispatch(addNotification(OtpVerified(t.email_confirmation))); // Lähetä onnistumisilmoitus
       // Jos OTP on oikein, päivitä tila
       setIsOtpVerified(true)
     } catch (error) {
       // Käsittele virhe (esim. näytä virheilmoitus)
       console.error("Virhe OTP:n vahvistuksessa:", error)
-      alert(t.otp_send_error)
+      dispatch(addNotification(OtpNotVerified(t.otp_send_error))); // Lähetä virheilmoitus
     }
   }
 
@@ -92,7 +92,7 @@ const RegisterForm = () => {
     event.preventDefault()
 
     if (!isOtpVerified) {
-      alert(t.opt_robot_check)
+      dispatch(addNotification(OtpRobotCheck(t.opt_robot_check))); // Lähetä virheilmoitus
     }
 
     try {

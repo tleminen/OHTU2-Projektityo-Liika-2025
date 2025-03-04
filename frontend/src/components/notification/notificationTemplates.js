@@ -1,14 +1,38 @@
+  const EmailSentSuccess = (t) => ({
+    id: Date.now(),
+    message: t,
+    type: "success",
+  })
 
-const EmailSentSuccess = () => ({
-  id: Date.now(),
-  message: "Sähköposti lähetetty onnistuneesti!",
-  type: "success",
-})
+  const EmailSentFailure = (t, error) => ({
+    id: Date.now(),
+    message: `${t}: ${error.message}`,
+    type: "error",
+  })
 
-const EmailSentFailure = (error) => ({
-  id: Date.now(),
-  message: `Sähköpostin lähetys epäonnistui: ${error.message}`,
-  type: "error",
-})
+  const OtpRobotCheck = (t) => ({
+    id: Date.now(),
+    message: t,
+    type: "error",  
+  })
 
-export {EmailSentSuccess, EmailSentFailure}
+  const OtpVerified = (t) => ({
+    id: Date.now(),
+    message: t,
+    type: "success",
+  })
+  
+  const OtpNotVerified = (t) => ({
+    id: Date.now(),
+    message: t,
+    type: "error",
+  })
+  
+  const UserFailure = (t) => ({
+    id: Date.now(),
+    message: t,
+    type: "error",
+  })
+
+
+export {EmailSentSuccess, EmailSentFailure, OtpRobotCheck, OtpVerified, OtpNotVerified, UserFailure}

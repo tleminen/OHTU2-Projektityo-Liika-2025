@@ -7,6 +7,9 @@ import "./login.css"
 import { changeLocation } from "../../store/locationSlice.js"
 import { changeUser } from "../../store/userSlice.js"
 import { loginValidation } from "../../utils/validationSchemas.js"
+import { addNotification } from "../../store/notificationSlice.js"
+import { EmailSentSuccess, EmailSentFailure, OtpRobotCheck, OtpVerified, OtpNotVerified, UserFailure } from "../notification/notificationTemplates.js"
+
 
 const LoginForm = () => {
   const language = useSelector((state) => state.language.language)
@@ -62,7 +65,7 @@ const LoginForm = () => {
         )
         navigate(`/`)
       } catch (error) {
-        alert(t.alert_incorrect)
+        dispatch(addNotification(UserFailure(t.alert_incorrect)));
         console.log(error)
       }
     } catch (err) {
