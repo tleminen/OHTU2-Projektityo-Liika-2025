@@ -81,6 +81,7 @@ const EventView = () => {
   }
 
   const handleJoinUnSigned = async (email, id) => {
+    console.log(email)
     console.log(selectedTime.id)
     try {
       const response = await eventService.joinEventUnSigned({
@@ -268,7 +269,7 @@ const EventView = () => {
               email={email}
             />
           </div>
-          {selectedTime && !isJoined(selectedTime) && isOtpVerified && (
+          {selectedTime && isOtpVerified && (
             <button className="join-btn" onClick={() => handleJoinUnSigned(email, id)}>
               Ilmoittaudu
             </button>

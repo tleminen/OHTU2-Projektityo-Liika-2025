@@ -7,6 +7,7 @@ const { Categories, Events, Times, Joins } = require("../models")
 const { Sequelize } = require("sequelize")
 const Users = require("../models/users")
 const { sendEmail } = require("../services/email")
+const { createUserUnSigned } = require("../services/createUserUnSigned")
 const {
   getUserJoinedEvents,
   getUserCreatedEvents,
@@ -213,6 +214,35 @@ eventRouter.post("/join_event", async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" })
   }
 })
+
+// Tapahtumaan liittyminen kirjautumaton
+eventRouter.post("/join_event_unsigned", async (req, res) => {
+  const { Email, EventID, TimeID } = req.body
+  console.log("email eventRouter: "+Email)
+  try {
+    const newUser = await createUserUnSigned(Email);
+    console.log('Uusi käyttäjä luotu:', newUser);
+  
+  try {
+    const response = await Joins.create({
+      UserID: newUser.UserID,
+      EventID: EventID,
+      TimeID: TimeID,
+    })
+    res.status(200).send()
+
+  } catch (error) {
+    console.error("Problems when joining event: " + error)
+    res.status(500).json({ error: "Internal Server Error" })
+  }
+
+  } catch (error) {
+    console.error('Käyttäjän luominen epäonnistui:', error);
+    // Tässä voit käsitellä virheen
+  }
+})
+
+// Liittyminen tapahtumaan kirjautumaton päättyy
 
 // Poistu tapahtumasta
 eventRouter.post("/leave_event", async (req, res) => {

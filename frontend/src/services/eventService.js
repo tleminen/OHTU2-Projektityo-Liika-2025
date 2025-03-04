@@ -62,6 +62,7 @@ const joinEvent = async (parameters) => {
 
 // Liittyy tapahtumaan kirjautumaton
 const joinEventUnSigned = async (parameters) => {
+  console.log("Lähetetään pyyntö, body:", parameters)
   const response = await axios.post(baseUrl + "/events/join_event_unsigned", parameters)
   return response.data
 }
