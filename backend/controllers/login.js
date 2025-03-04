@@ -66,8 +66,11 @@ loginRouter.post("/sendEmail", async (req, res) => {
     }
 
     // 1. Luodaan kertakäyttöinen salasana
+
+    let char = "L"
     const tempPassword = Math.random().toString(36).slice(2)
-    const hashedTempPassword = await bcrypt.hash(tempPassword, 10)
+    const password = char + tempPassword
+    const hashedTempPassword = await bcrypt.hash(password, 10)
 
     // 2. Tallennetaan kertakäyttöinen salasana tietokantaan
     user.Password = hashedTempPassword
@@ -76,7 +79,7 @@ loginRouter.post("/sendEmail", async (req, res) => {
     const success = await sendEmail(
       email,
       "Salasanan palautus",
-      `Kertakäyttöinen salasanasi on: ${tempPassword}\n\nKäytä tätä salasanaa kirjautuessasi sisään. Muista vaihtaa salasanasi heti kirjautumisen jälkeen.`
+      `Kertakäyttöinen salasanasi on: ${password}\n\nKäytä tätä salasanaa kirjautuessasi sisään. Muista vaihtaa salasanasi heti kirjautumisen jälkeen.`
     )
 
     if (success) {

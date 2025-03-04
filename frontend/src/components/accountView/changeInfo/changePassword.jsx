@@ -5,6 +5,7 @@ import translations from "../../../assets/translation.js"
 import { useSelector } from "react-redux"
 import "../../../index.css"
 import "../accountView.css"
+import { Link } from "react-router-dom"
 
 const ChangePassword = () => {
 
@@ -65,6 +66,9 @@ const ChangePassword = () => {
         <button type="submit">{t.save}</button>
         </form>
         </div>
+        <Link to={"/own_info"} className="back-btn" style={{alignSelf:"center"}}>
+          <span>{t.back}</span>
+        </Link>
         <Footer />
         </div>
         )

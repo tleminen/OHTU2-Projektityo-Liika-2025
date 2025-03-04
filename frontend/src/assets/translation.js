@@ -76,6 +76,7 @@ const translations = {
     validation_email: "Email required",
     validation_psw_match: "Passwords don't match",
     validation_psw_again: "Confirm password",
+    validation_psw_all: "Password must contain only letters and numbers",
     validation_otp: "Email verification code required",
   },
   FI: {
@@ -87,7 +88,7 @@ const translations = {
     changeUsername: "Vaihda käyttäjätunnus",
     createEvent: "Luo tapahtuma",
     currentEmail: "Nykyinen sähköposti",
-    currentUsername: "Nykyinen käyttäjänimi",
+    currentUsername: "Nykyinen käyttäjätunnus",
     dateAndTime: "Aika",
     description: "Kuvaus",
     date: "Päivämäärä",
@@ -116,9 +117,9 @@ const translations = {
     newEmail: "Uusi sähköposti",
     newEmailAgain: "Syötä sähköposti uudelleen",
     newPassword: "Uusi salasana",
-    newPasswordAgain: "Syötä uusi salasana uudelleen",
-    newUsername: "Uusi käyttäjänimi",
-    newUsernameAgain: "Syötä uusi käyttäjänimi uudestaan",
+    newPasswordAgain: "Syötä salasana uudelleen",
+    newUsername: "Uusi käyttäjätunnus",
+    newUsernameAgain: "Syötä käyttäjätunnus uudestaan",
     no_event_found: "Tapahtumaa ei löytynyt",
     participants: "Osallistujat",
     password: "Salasana",
@@ -156,7 +157,7 @@ const translations = {
     validation_psw_number: "Salasanassa on oltava numero",
     validation_psw_special: "Salasanassa on oltava erikoismerkki",
     validation_psw_all:
-      "Salasana saa sisältää vain kirjaimia, numeroita ja erikoismerkkejä ",
+      "Salasana saa sisältää vain kirjaimia ja numeroita ",
     validation_otp: "Sähköpostiosoitteen vahvistuskoodi vaaditaan",
   },
 }
