@@ -13,7 +13,7 @@ export const store = configureStore({
     categories: categoriesReducer,
     user: userReducer,
     event: eventReducer,
-    notification: notificationReducer,
+    notifications: notificationReducer,
   },
 })
 

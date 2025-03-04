@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { removeNotification } from './redux/notificationSlice';
+import { removeNotification } from '../../store/notificationSlice';
 
 const Notification = ({ id, message, type, duration = 3000 }) => {
   const dispatch = useDispatch();
