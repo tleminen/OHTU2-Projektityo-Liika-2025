@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux"
 import Select from "react-select"
 import { changeLanguage } from "../store/languageSlice"
 
-const FlagSelection = () => {
+const FlagSelection = ({menuPlacement}) => {
   const dispatch = useDispatch()
   const selectedLanguage = useSelector((state) => state.language.language)
 
@@ -23,7 +23,7 @@ const FlagSelection = () => {
   return (
     <div>
       <Select
-        menuPlacement="top"
+        menuPlacement={menuPlacement}
         value={selectedOption}
         onChange={handleChange}
         options={options}

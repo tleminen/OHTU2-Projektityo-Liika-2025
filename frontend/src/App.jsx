@@ -12,6 +12,8 @@ import ChangeEmail from "./components/accountView/changeInfo/changeEmail"
 import ChangeUsername from "./components/accountView/changeInfo/changeUsername"
 import JoinedView from "./components/joinedListView"
 import ChangePassword from "./components/accountView/changeInfo/changePassword"
+import ChangeLanguage from "./components/accountView/changeInfo/changeLanguage"
+import { changeLanguage } from "./store/languageSlice"
 
 const App = () => {
   return (
@@ -29,6 +31,7 @@ const App = () => {
       <Route path="/own_info/username" element={<ChangeUsername />} />
       <Route path="/joined_events" element={<JoinedView />} />
       <Route path="/own_info/password" element={<ChangePassword />} />
+      <Route path="/own_info/language" element={<ChangeLanguage />} />
     </Routes>
   )
 }

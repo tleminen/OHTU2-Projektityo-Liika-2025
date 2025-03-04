@@ -96,7 +96,9 @@ const AccountView = () => {
         <div className="information-row">
           <div className="information">
             <h3>{t.password} </h3>
-            {user.user.Password}
+            <p>
+            ••••••••
+            </p>
           </div>
           <div className="information">
             <Link to={`/own_info/password`} className="link-btn">
@@ -109,9 +111,16 @@ const AccountView = () => {
             <h3>{t.language} </h3>
             {user.user.LanguageID}
           </div>
-          <div className="information"></div>
+          <div className="information">
+            <Link to={`/own_info/language`} className="link-btn">
+             {t.change}
+            </Link>
+          </div>
         </div>
       </div>
+      <Link to={"/map"} className="back-btn" style={{alignSelf:"center"}}>
+          <span>{t.back}</span>
+        </Link>
       <Footer />
     </div>
   )
