@@ -1,69 +1,69 @@
-import { useEffect, useState } from "react"
-import eventService from "../../services/eventService"
-import Footer from "../footer"
-import Header from "../header"
-import { Link, useParams } from "react-router-dom"
-import { useDispatch, useSelector } from "react-redux"
-import translations from "../../assets/translation"
-import "./eventView.css"
-import { selectCategoryName } from "../../assets/icons"
-import { addEvent, removeEvent } from "../../store/eventSlice"
-import StaticMap from "../../utils/staticMap"
-import { parseTimeAndDate } from "../../utils/helper"
+import { useEffect, useState } from "react";
+import eventService from "../../services/eventService";
+import Footer from "../footer";
+import Header from "../header";
+import { Link, useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import translations from "../../assets/translation";
+import "./eventView.css";
+import { selectCategoryName } from "../../assets/icons";
+import { addEvent, removeEvent } from "../../store/eventSlice";
+import StaticMap from "../../utils/staticMap";
+import { parseTimeAndDate } from "../../utils/helper";
 
 const EventView = () => {
-  const { id } = useParams()
-  const [event, setEvent] = useState(null)
-  const [times, setTimes] = useState([])
-  const [loading, setLoading] = useState(true)
-  const language = useSelector((state) => state.language.language)
-  const t = translations[language]
-  const userID = useSelector((state) => state.user.user.userID)
-  const userEvents = useSelector((state) => state.event.events || [])
-  const [selectedTime, setSelectedTime] = useState(null)
-  const dispatch = useDispatch()
+  const { id } = useParams();
+  const [event, setEvent] = useState(null);
+  const [times, setTimes] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const language = useSelector((state) => state.language.language);
+  const t = translations[language];
+  const userID = useSelector((state) => state.user.user.userID);
+  const userEvents = useSelector((state) => state.event.events || []);
+  const [selectedTime, setSelectedTime] = useState(null);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchEventInfo = async () => {
       try {
         const eventData = await eventService.getSingleEventWithTimes({
           EventID: id,
-        })
-        setEvent(eventData)
-        setTimes(eventData.Times)
+        });
+        setEvent(eventData);
+        setTimes(eventData.Times);
       } catch (error) {
-        console.error("Virhe hakiessa tapahtumaa: " + error)
+        console.error("Virhe hakiessa tapahtumaa: " + error);
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }
-    fetchEventInfo()
-  }, [id])
+    };
+    fetchEventInfo();
+  }, [id]);
 
   // Kun times latautuu, asetetaan ensimmäinen aika selectedTime:ksi, jos sitä ei vielä ole
   useEffect(() => {
     if (times.length > 0 && !selectedTime) {
-      setSelectedTime(times[0])
+      setSelectedTime(times[0]);
     }
-  }, [times, selectedTime])
+  }, [times, selectedTime]);
 
   // Tapahtumaan liittymisen painikkeen handleri
   const handleJoin = async (userID, id) => {
-    console.log(selectedTime.id)
+    console.log(selectedTime.id);
     try {
       const response = await eventService.joinEvent({
         UserID: userID,
         EventID: id,
         TimeID: Number(selectedTime.TimeID),
-      })
-      console.log(response) // TODO: Lisää notifikaatio?
+      });
+      console.log(response); // TODO: Lisää notifikaatio?
       dispatch(
         addEvent({
           UserID: userID,
           EventID: Number(id),
           TimeID: Number(selectedTime.TimeID),
         })
-      )
+      );
       // Päivitä frontendin Times-tila
       setTimes((prevTimes) =>
         prevTimes.map((time) =>
@@ -71,11 +71,11 @@ const EventView = () => {
             ? { ...time, JoinedCount: (Number(time.JoinedCount) || 0) + 1 }
             : time
         )
-      )
+      );
     } catch (error) {
-      console.error("Virhe liityttäessä tapahtumaan" + error)
+      console.error("Virhe liityttäessä tapahtumaan" + error);
     }
-  }
+  };
 
   // Tapahtumasta eroamisen painikkeen handleri
   const handleLeave = async (userID, id) => {
@@ -84,15 +84,15 @@ const EventView = () => {
         UserID: userID,
         EventID: Number(id),
         TimeID: Number(selectedTime.TimeID),
-      })
-      console.log(response) // TODO: Lisää notifikaatio?
+      });
+      console.log(response); // TODO: Lisää notifikaatio?
       dispatch(
         removeEvent({
           EventID: Number(id),
           UserID: userID,
           TimeID: selectedTime.TimeID,
         })
-      )
+      );
       // Päivitä frontendin Times-tila
       setTimes((prevTimes) =>
         prevTimes.map((time) =>
@@ -103,16 +103,16 @@ const EventView = () => {
               }
             : time
         )
-      )
+      );
     } catch (error) {
-      console.error("Virhe poistuessa tapahumasta" + error)
+      console.error("Virhe poistuessa tapahumasta" + error);
     }
-  }
+  };
 
   // Päivämäärän valinnan handleri
   const handleTimeClick = (time) => {
-    setSelectedTime(time)
-  }
+    setSelectedTime(time);
+  };
 
   // Tarkistaa onko käyttäjä liittynyt tiettyyn aikaan
   const isJoined = (time) => {
@@ -120,15 +120,17 @@ const EventView = () => {
       (userEvent) =>
         String(userEvent.EventID) === String(id) &&
         Number(userEvent.TimeID) === Number(time.TimeID)
-    )
-  }
+    );
+  };
 
   const getTimeButtonClass = (time) => {
-    let baseClass = isJoined(time) ? "joined-time-btn" : "not-joined-time-btn"
+    let baseClass = isJoined(time) ? "joined-time-btn" : "not-joined-time-btn";
     return selectedTime && selectedTime.TimeID === time.TimeID
-      ? `${baseClass} selected-time`
-      : baseClass
-  }
+      ? `${baseClass} ${
+          isJoined(time) ? "selected-not-joined" : "selected-joined"
+        }`
+      : baseClass;
+  };
 
   if (loading) {
     // Tietokantahaku kesken
@@ -148,7 +150,7 @@ const EventView = () => {
         </div>
         <Footer />
       </div>
-    )
+    );
   }
 
   if (!event) {
@@ -169,7 +171,7 @@ const EventView = () => {
         </div>
         <Footer />
       </div>
-    )
+    );
   }
 
   // Kaikki tarvittavat tiedont löydetty. Näytetään...
@@ -203,7 +205,11 @@ const EventView = () => {
               >
                 {parseTimeAndDate(time.StartTime)[1]}
               </button>
-              <p>{time.JoinedCount}</p>
+              <div className="counter-icon">
+                <span>
+                  {time.JoinedCount}/{event.ParticipantMax}
+                </span>
+              </div>
             </div>
           ))}
         </div>
@@ -245,7 +251,7 @@ const EventView = () => {
 
       <Footer />
     </div>
-  )
-}
+  );
+};
 
-export default EventView
+export default EventView;

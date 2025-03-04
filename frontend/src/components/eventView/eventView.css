@@ -23,10 +23,8 @@
 .join-btn {
   position: relative;
   padding: 15px 45px;
-  background: #0097b2;
+  background: #194480;
   border-radius: 10px;
-  border: 2px solid #194480;
-  outline: 2px solid #194480;
   outline-offset: -2px;
   font-size: 1.5rem;
   color: #ffffff;
@@ -81,24 +79,17 @@
 /* Liitytty päivämäärä */
 .joined-time-btn {
   position: relative;
-  padding: 15px 45px;
-  background: #00b238;
+  padding: 10px 30px;
+  background: #2af068;
   border-radius: 10px;
-  border: 2px solid #197180;
-  outline: 2px solid #19806b;
-  outline-offset: -2px;
-  font-size: 1.5rem;
+  font-size: 1rem;
   color: #ffffff;
-  font-weight: 500;
   cursor: pointer;
   transition: outline-offset 200ms ease;
 }
 .joined-time-btn:hover {
   color: #194480;
-  background: hsl(105, 100%, 98%);
-  outline-offset: 3px;
-  border: 2px solid #197180;
-  outline: 2px solid #19806b;
+  background: #ffffff;
 }
 .joined-time-btn:active {
   transform: scale(0.95);
@@ -107,33 +98,43 @@
 /* Ei-liitytty päivämäärä */
 .not-joined-time-btn {
   position: relative;
-  padding: 15px 45px;
-  background: #016fa1;
+  padding: 10px 30px;
+  background: #194480;
   border-radius: 10px;
-  border: 2px solid #194e80;
-  outline: 2px solid #195580;
-  outline-offset: -2px;
-  font-size: 1.5rem;
+  font-size: 1rem;
   color: #ffffff;
-  font-weight: 500;
   cursor: pointer;
   transition: outline-offset 200ms ease;
 }
 .not-joined-time-btn:hover {
   color: #194480;
-  background: #e8f6ff;
-  outline-offset: 3px;
-  border: 2px solid #197180;
-  outline: 2px solid #19806b;
+  background: #ffffff;
 }
 .not-joined-time-btn:active {
   transform: scale(0.95);
+  color: #194480;
 }
 
 /* Valittu päivämäärä */
-.joined-time-btn:focus,
-.not-joined-time-btn:focus,
-.selected-time {
-  color: #ff864e;
-  border-color: #ff864e;
+.selected-joined {
+  box-shadow: 0px 0px 4px 3px #2af068;
+}
+
+.selected-not-joined {
+  box-shadow: 0px 0px 4px 3px #f92727;
+}
+
+.counter-icon {
+  background-color: #194480;
+  border-radius: 10px;
+  height: 35px;
+  width: 35px;
+  color: #ffffff;
+  display: flex;
+  align-items: center; /* Pystysuuntainen keskitys */
+  justify-content: center; /* Vaakasuuntainen keskitys */
+  text-align: center;
+  margin: 8px; /* Lisää tilaa ympärille */
+  align-self: center;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
 }
