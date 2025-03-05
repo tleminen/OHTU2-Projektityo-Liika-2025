@@ -11,5 +11,5 @@ steps:
   displayName: 'Install Node.js'
 
 - script: |
-    node LoginForm.jsx
-  displayName: 'Run LoginForm.jsx'
+    node email.rest
+  displayName: 'Run email.rest'
