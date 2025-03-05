@@ -1,0 +1,79 @@
+.map-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: auto;
+  width: 80vh;
+  height: 100vh;
+  padding: 0;
+  top: 0;
+}
+
+.pikapainikkeet {
+  display: flex;
+  align-items: stretch;
+  flex: 1;
+  flex-direction: column;
+  justify-content: space-around;
+  height: 60vh;
+}
+
+.pika-painike {
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 40px;
+  height: 40px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.pika-painike:active {
+  animation: bounce 0.2s ease-in-out;
+}
+
+.containerforshortcutbuttons {
+  position: fixed;
+  bottom: 20px; /* Sijoitetaan alareunaan */
+  left: 50%;
+  transform: translateX(-50%); /* Keskittää vaakasuunnassa */
+  background-color: #0097b28d;
+  padding: 10px 20px;
+  border-radius: 20px; /* Pyöristetyt kulmat */
+  display: flex;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.shortcutbuttons {
+  display: flex;
+  flex-direction: row; /* Asettaa painikkeet riviin */
+  gap: 20px; /* Väli painikkeiden välillä */
+}
+
+.shortcut-button {
+  width: 50px;
+  height: 50px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.shortcut-button:active {
+  animation: bounce 0.2s ease-in-out;
+}
+
+@keyframes bounce {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
