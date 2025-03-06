@@ -24,6 +24,7 @@ const eventRouter = require("./controllers/events")
 const email = require("./services/email")
 const userRouter = require("./controllers/user")
 const logStream = fs.createWriteStream("./logs/access.log", { flags: "a" })
+const path = require("path")
 
 // Tietokantayhteys ja alustus
 initializeDB(false) // Aseta muuttujaan false, mikäli et halua, että tietokanta nollaantuu
