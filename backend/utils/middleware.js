@@ -1,6 +1,6 @@
 // Tuntemattoman api-endpointin käsittely
 const unknownEndpoint = (request, response) => {
-  response.status(404).send({ error: "unknown endpoint" })
+  response.status(404).send({ error: "unknown endpoint, try something else" })
 }
 
 // Käyttäjän tunnisteen irroittaja
