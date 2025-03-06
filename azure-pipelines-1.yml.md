@@ -18,7 +18,7 @@ variables:
   environmentName: 'liika'
 
   # Agent VM image name
-  vmImageName: 'ubuntu-latest'
+  # vmImageName: 'ubuntu-latest'
 
 stages:
 - stage: Build
@@ -27,7 +27,7 @@ stages:
   - job: Build
     displayName: Build
     pool:
-      vmImage: $(vmImageName)
+      name: 'Azure Pipelines' #vmImage: $(vmImageName)
 
     steps:
         # Asenna Node.js (frontend ja backend) NÄMÄ KOMMENTOITU KOSKA PITÄISI OLLA JO WEB-SERVICESSÄ
