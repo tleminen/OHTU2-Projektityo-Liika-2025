@@ -57,6 +57,13 @@ app.use(`/api/login`, loginRouter)
 app.use(`/api/events`, eventRouter)
 app.use(`/api/users`, userRouter)
 
+// Staattiset tiedostot
+app.use(express.static(path.join(__dirname, "public")))
+// Reititys aloitussivulle
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "index.html"))
+})
+
 // Loppuun laitetaan unknownEndpoint ja virheenKorjaus
 app.use(middleware.unknownEndpoint)
 
