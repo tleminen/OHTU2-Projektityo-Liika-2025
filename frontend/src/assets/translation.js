@@ -1,5 +1,5 @@
-import termsOfServiceText from "./termsOfServiceText"
-import infoText from "./infoText"
+import termsOfServiceText from "./termsOfServiceText";
+import infoText from "./infoText";
 const translations = {
   EN: {
     activity: "Activity",
@@ -155,11 +155,9 @@ const translations = {
     validation_psw_small: "Salasanassa on oltava pieni kirjain",
     validation_psw_big: "Salasanassa on oltava iso kirjain",
     validation_psw_number: "Salasanassa on oltava numero",
-    validation_psw_special: "Salasanassa on oltava erikoismerkki",
-    validation_psw_all:
-      "Salasana saa sisältää vain kirjaimia ja numeroita ",
+    validation_psw_all: "Salasana saa sisältää vain kirjaimia ja numeroita",
     validation_otp: "Sähköpostiosoitteen vahvistuskoodi vaaditaan",
   },
-}
+};
 
-export default translations
+export default translations;
