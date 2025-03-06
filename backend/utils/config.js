@@ -1,6 +1,6 @@
 require("dotenv").config()
 
-let PORT = process.env.PORT || 3000
+let PORT = process.env.PORT || 3003
 let POSTGRESQL_URI =
   process.env.NODE_ENV === "dev"
     ? process.env.TEST_POSTGRESQL_URI

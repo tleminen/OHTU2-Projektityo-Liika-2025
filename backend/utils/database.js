@@ -4,6 +4,12 @@ const { POSTGRESQL_URI } = require("./config")
 const sequelize = new Sequelize(POSTGRESQL_URI, {
   dialect: "postgres",
   logging: false,
+  dialectOptions: {
+    ssl: {
+      require: true, // Pakotetaan SSL-yhteys
+      rejectUnauthorized: false,
+    },
+  },
 })
 
 const queryInterface = sequelize.getQueryInterface()
