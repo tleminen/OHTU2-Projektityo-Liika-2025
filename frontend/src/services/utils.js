@@ -1,1 +1,1 @@
-export const baseUrl = "http://localhost:3003/api"
+export const baseUrl = "https://liika.azurewebsites.net/api" // Oikea URL Azurelle
