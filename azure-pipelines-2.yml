@@ -64,7 +64,7 @@ stages:
     displayName: Deploy
     environment: $(environmentName)
     pool:
-      vmImage: $(vmImageName)
+      name: 'Omat'
     strategy:
       runOnce:
         deploy:
