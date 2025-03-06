@@ -7,7 +7,7 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
 
 trigger:
-- production
+- master
 
 variables:
   azureSubscription: 'b1b23056-f48d-4db8-b5e9-e97c52e637bc'
