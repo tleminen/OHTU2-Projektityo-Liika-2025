@@ -14,7 +14,7 @@ if [ -d "frontend" ]; then
   cd frontend
   npm install
   npm run build
-  cd ..
+  cd ../
 else
   echo "❌ Frontend directory not found!"
 fi
@@ -26,7 +26,7 @@ if [ -d "backend" ]; then
   npm install
   mkdir -p public
   cp -r ../frontend/dist/* public/
-  cd ..
+  cd ../
 else
   echo "❌ Backend directory not found!"
 fi
