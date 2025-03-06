@@ -30,6 +30,12 @@ stages:
         npm install
         npm run build
       displayName: 'Build Frontend'
+      
+    - script: |
+        echo "Checking if the frontend build files are in the backend public directory"
+        ls -la ../backend/public
+      displayName: 'Check if build files are in the backend public folder'
+
 
     # Build Backend (vain kopioidaan frontendin tuotos, ei rakenneta uudelleen)
     - script: |
