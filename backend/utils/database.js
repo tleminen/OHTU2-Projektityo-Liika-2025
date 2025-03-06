@@ -18,6 +18,10 @@ const connectDB = async () => {
   try {
     await sequelize.authenticate()
     console.log(`PosgreSQL-tietokantayhteys luotu!`)
+
+    // Luo PostGIS-laajennus, jos sitä ei ole
+    await sequelize.query('CREATE EXTENSION IF NOT EXISTS "postgis";')
+    console.log("✅ PostGIS extension created!")
   } catch (error) {
     console.error(`PostgreSQL-yhteys epäonnistu`, error)
   }
