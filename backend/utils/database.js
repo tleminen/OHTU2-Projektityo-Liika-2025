@@ -1,7 +1,7 @@
 const { Sequelize } = require("sequelize")
-require("dotenv").config()
+const { POSTGRESQL_URI } = require("./config")
 
-const sequelize = new Sequelize(process.env.POSTGRESQL_URI, {
+const sequelize = new Sequelize(POSTGRESQL_URI, {
   dialect: "postgres",
   logging: false,
 })
