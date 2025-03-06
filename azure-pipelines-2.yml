@@ -40,7 +40,6 @@ stages:
     - script: |
         cd backend
         npm install
-        npm run build   # Tässä backend/package.json:ssä "build": "cp -r ../frontend/dist public/"
       displayName: 'Prepare Backend'
 
     - task: ArchiveFiles@2
