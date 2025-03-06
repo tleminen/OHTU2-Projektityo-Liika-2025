@@ -1,41 +1,40 @@
-import { useEffect, useState } from "react"
-import Footer from "../footer"
-import Header from "../header"
-import "./accountView.css"
-import userService from "../../services/userService"
-import { useDispatch, useSelector } from "react-redux"
-import { changeUser } from "../../store/userSlice"
-import { Link } from "react-router-dom"
-import "../../index.css"
-import translations from "../../assets/translation"
-
+import { useEffect, useState } from "react";
+import Footer from "../footer";
+import Header from "../header";
+import "./accountView.css";
+import userService from "../../services/userService";
+import { useDispatch, useSelector } from "react-redux";
+import { changeUser } from "../../store/userSlice";
+import { Link } from "react-router-dom";
+import "../../index.css";
+import translations from "../../assets/translation";
 
 const AccountView = () => {
-  const [user, setUser] = useState(null)
-  const userID = useSelector((state) => state.user?.user?.userID ?? null)
-  const dispatch = useDispatch()
-  const language = useSelector((state) => state.language.language)
-  const t = translations[language]
+  const [user, setUser] = useState(null);
+  const userID = useSelector((state) => state.user?.user?.userID ?? null);
+  const dispatch = useDispatch();
+  const language = useSelector((state) => state.language.language);
+  const t = translations[language];
 
   useEffect(() => {
     const fetchUserInfo = async () => {
-      if (!userID) return // Ei tehdä pyyntöä jos userID ei ole saatavilla
+      if (!userID) return; // Ei tehdä pyyntöä jos userID ei ole saatavilla
       try {
-        const response = await userService.getUserData(userID)
+        const response = await userService.getUserData(userID);
 
         if (!response) {
-          console.error("Response tyhjä")
-          return
+          console.error("Response tyhjä");
+          return;
         }
-        const email = response.Email // EI VIELÄ TOIMI
-        dispatch(changeUser(email))
-        setUser(response)
+        const email = response.Email; // EI VIELÄ TOIMI
+        dispatch(changeUser(email));
+        setUser(response);
       } catch (error) {
-        console.error("Virhe hakiessa yksittäisen käyttäjän tietoja: " + error)
+        console.error("Virhe hakiessa yksittäisen käyttäjän tietoja: " + error);
       }
-    }
-    fetchUserInfo()
-  }, [userID, dispatch]) // Suoritetaan vain kun userID muuttuu
+    };
+    fetchUserInfo();
+  }, [userID, dispatch]); // Suoritetaan vain kun userID muuttuu
 
   if (!user) {
     // Tietokantahaku kesken
@@ -55,9 +54,9 @@ const AccountView = () => {
         </div>
         <Footer />
       </div>
-    )
+    );
   }
-  console.log(user.user)
+  console.log(user.user);
   return (
     <div
       className="fullpage"
@@ -96,9 +95,7 @@ const AccountView = () => {
         <div className="information-row">
           <div className="information">
             <h3>{t.password} </h3>
-            <p>
-            ••••••••
-            </p>
+            <p>••••••••</p>
           </div>
           <div className="information">
             <Link to={`/own_info/password`} className="link-btn">
@@ -113,17 +110,17 @@ const AccountView = () => {
           </div>
           <div className="information">
             <Link to={`/own_info/language`} className="link-btn">
-             {t.change}
+              {t.change}
             </Link>
           </div>
         </div>
       </div>
-      <Link to={"/map"} className="back-btn" style={{alignSelf:"center"}}>
-          <span>{t.back}</span>
-        </Link>
+      <Link to={"/map"} className="back-btn" style={{ alignSelf: "center" }}>
+        <span>{t.back}</span>
+      </Link>
       <Footer />
     </div>
-  ) 
-}
+  );
+};
 
-export default AccountView
+export default AccountView;

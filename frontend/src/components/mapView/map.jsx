@@ -1,26 +1,26 @@
 /* eslint-disable react/prop-types */
-import { useEffect, useRef, useState } from "react"
-import L from "leaflet"
-import "leaflet.markercluster"
-import "leaflet/dist/leaflet.css"
-import "../../index.css"
-import { useDispatch, useSelector } from "react-redux"
-import { changeLocation } from "../../store/locationSlice"
-import logo from "../../assets/liika_logo.png"
-import { useNavigate } from "react-router-dom"
-import eventService from "../../services/eventService"
-import { createRoot } from "react-dom/client"
-import { selectIcon } from "../../assets/icons"
-import { categoryGroups } from "./categoryGroups"
+import { useEffect, useRef, useState } from "react";
+import L from "leaflet";
+import "leaflet.markercluster";
+import "leaflet/dist/leaflet.css";
+import "../../index.css";
+import { useDispatch, useSelector } from "react-redux";
+import { changeLocation } from "../../store/locationSlice";
+import logo from "../../assets/liika_logo.png";
+import { useNavigate } from "react-router-dom";
+import eventService from "../../services/eventService";
+import { createRoot } from "react-dom/client";
+import { selectIcon } from "../../assets/icons";
+import { categoryGroups } from "./categoryGroups";
 
 const Map = ({ startingLocation }) => {
-  const navigate = useNavigate()
-  const dispatch = useDispatch()
-  const [timeStamp, setTimeStamp] = useState("") // Aikaleima, milloin päivitetty
-  const timestampRef = useRef(null)
-  const markerClusterGroup = L.markerClusterGroup()
-  const user = useSelector((state) => state.user?.user?.username ?? null)
-  var first = true
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [timeStamp, setTimeStamp] = useState(""); // Aikaleima, milloin päivitetty
+  const timestampRef = useRef(null);
+  const markerClusterGroup = L.markerClusterGroup();
+  const user = useSelector((state) => state.user?.user?.username ?? null);
+  var first = true;
 
   useEffect(() => {
     if (timestampRef.current) {
@@ -28,36 +28,36 @@ const Map = ({ startingLocation }) => {
         <div className="refresh-stamp">
           <p>{timeStamp}</p>
         </div>
-      )
+      );
     }
-  }, [timeStamp])
+  }, [timeStamp]);
 
   // Funktio, joka hakee tapahtumat ja lisää markerit layerGroupeihin kategorioittain
   const refreshMarkers = async (map) => {
-    const center = map.getCenter()
-    setTimeStamp(new Date().toLocaleTimeString().replaceAll(".", ":")) // Asetetaan milloin haettu viimeksi
-    const bounds = map.getBounds() // Haetaan radiuksen laskemista varten rajat
-    const northWest = bounds.getNorthWest()
-    const southEast = bounds.getSouthEast()
-    const width = northWest.distanceTo([northWest.lat, southEast.lng])
-    const height = northWest.distanceTo([southEast.lat, northWest.lng])
+    const center = map.getCenter();
+    setTimeStamp(new Date().toLocaleTimeString().replaceAll(".", ":")); // Asetetaan milloin haettu viimeksi
+    const bounds = map.getBounds(); // Haetaan radiuksen laskemista varten rajat
+    const northWest = bounds.getNorthWest();
+    const southEast = bounds.getSouthEast();
+    const width = northWest.distanceTo([northWest.lat, southEast.lng]);
+    const height = northWest.distanceTo([southEast.lat, northWest.lng]);
 
     try {
       const eventList = await eventService.getEvents({
         latitude: center.lat,
         longitude: center.lng,
         radius: Math.max(Math.max(width, height) / 2, 10000), // Haetaan kartallinen tapahtumia, kuitenkin vähintään 10km
-      })
+      });
 
       // Tyhjentää kaikki categoryGroupit ja poistaa ne kartalta
-      markerClusterGroup.clearLayers()
+      markerClusterGroup.clearLayers();
       // Lisätään markerit uudelleen
       eventList.forEach((tapahtuma) => {
-        const { coordinates } = tapahtuma.Event_Location
-        const lat = coordinates[1]
-        const lng = coordinates[0]
+        const { coordinates } = tapahtuma.Event_Location;
+        const lat = coordinates[1];
+        const lng = coordinates[0];
         const marker = L.marker([lat, lng]).bindPopup(() => {
-          const container = document.createElement("div")
+          const container = document.createElement("div");
           container.innerHTML = `
     <strong>${tapahtuma.Title} ${tapahtuma.JoinedCount}</strong><br>
     ${tapahtuma.Description || ""}<br>
@@ -66,73 +66,73 @@ const Map = ({ startingLocation }) => {
     }" style="color: blue; text-decoration: underline;">
       Siirry tapahtumaan
     </a>
-  `
-          return container
-        })
-        const categoryID = tapahtuma.CategoryID
+  `;
+          return container;
+        });
+        const categoryID = tapahtuma.CategoryID;
 
-        marker.setIcon(selectIcon(categoryID))
+        marker.setIcon(selectIcon(categoryID));
         if (categoryGroups[categoryID]) {
-          categoryGroups[categoryID].push(marker) // Lisätään markkeri oman categorian ryhmäänsä
+          categoryGroups[categoryID].push(marker); // Lisätään markkeri oman categorian ryhmäänsä
         }
-        markerClusterGroup.addLayer(marker)
-      })
+        markerClusterGroup.addLayer(marker);
+      });
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
-  }
+  };
 
   const onClickRefresh = async (map) => {
-    await refreshMarkers(map)
-  }
+    await refreshMarkers(map);
+  };
 
   const onClickCreateEvent = () => {
-    navigate("/create_event")
-  }
+    navigate("/create_event");
+  };
 
   const onClickListJoinedEvents = () => {
-    navigate("/joined_events")
-  }
+    navigate("/joined_events");
+  };
 
   const onClickOwnInfo = () => {
-    navigate("/own_info")
-  }
+    navigate("/own_info");
+  };
 
   const onClickCreatedEvents = () => {
-    navigate("/created_events")
-  }
+    navigate("/created_events");
+  };
 
   useEffect(() => {
     // Luo karttaelementti kun komponentti mounttaa
     // Tarkastetaan ensin, että kartalla on aloitussijainti:
     if (!startingLocation.o_lat) {
-      console.log("Ei aloituskordinaatteja..\nAsetetaan defaultit")
-      ;(startingLocation.o_lat = 62.6013), (startingLocation.o_lng = 29.7639)
-      startingLocation.zoom = 12
+      console.log("Ei aloituskordinaatteja..\nAsetetaan defaultit");
+      (startingLocation.o_lat = 62.6013), (startingLocation.o_lng = 29.7639);
+      startingLocation.zoom = 12;
     }
     const map = L.map("map", {
       center: [startingLocation.o_lat, startingLocation.o_lng],
       zoom: startingLocation.zoom,
-    })
+    });
 
     // Lisää karttalaatta OpenStreetMapista
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
       attribution:
         '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-    }).addTo(map)
+    }).addTo(map);
 
-    const pikapainikkeet = L.control({ position: "topleft" })
+    const pikapainikkeet = L.control({ position: "topleft" });
     pikapainikkeet.onAdd = () => {
-      const container = L.DomUtil.create("div")
-      L.DomEvent.disableClickPropagation(container)
-      const root = createRoot(container)
+      const container = L.DomUtil.create("div");
+      L.DomEvent.disableClickPropagation(container);
+      const root = createRoot(container);
       root.render(
         <div className="pikapainikkeet">
           <button
             className="pika-painike"
             onClick={() => onClickCreateEvent()}
             style={{
-              backgroundImage: "url(/addIcon.png)", // Suora polku publicista
+              backgroundImage: "url(/addeventCropped.png)", // Suora polku publicista
             }}
           ></button>
           {user && (
@@ -140,7 +140,7 @@ const Map = ({ startingLocation }) => {
               className="pika-painike"
               onClick={() => onClickListJoinedEvents()}
               style={{
-                backgroundImage: "url(/listedEventsIcon.png)", // Suora polku publicista
+                backgroundImage: "url(/joinedeventsCropped.png)", // Suora polku publicista
               }}
             ></button>
           )}
@@ -149,7 +149,7 @@ const Map = ({ startingLocation }) => {
               className="pika-painike"
               onClick={() => onClickCreatedEvents()}
               style={{
-                backgroundImage: "url(/CreatedEventsIcon.png)", // Suora polku publicista
+                backgroundImage: "url(/listedowneventsCropped.png)", // Suora polku publicista
               }}
             ></button>
           )}
@@ -158,21 +158,21 @@ const Map = ({ startingLocation }) => {
               className="pika-painike"
               onClick={() => onClickOwnInfo()}
               style={{
-                backgroundImage: "url(/personalInfoIcon.png)", // Suora polku publicista
+                backgroundImage: "url(/personalinfoCropped.png)", // Suora polku publicista
               }}
             ></button>
           )}
         </div>
-      )
-      return container
-    }
-    pikapainikkeet.addTo(map)
+      );
+      return container;
+    };
+    pikapainikkeet.addTo(map);
 
-    const shortcutbuttons = L.control({ position: "topleft" })
+    const shortcutbuttons = L.control({ position: "topleft" });
     shortcutbuttons.onAdd = () => {
-      const container = L.DomUtil.create("div")
-      L.DomEvent.disableClickPropagation(container)
-      const root = createRoot(container)
+      const container = L.DomUtil.create("div");
+      L.DomEvent.disableClickPropagation(container);
+      const root = createRoot(container);
       root.render(
         <div className="containerforshortcutbuttons">
           <div className="shortcutbuttons">
@@ -200,48 +200,48 @@ const Map = ({ startingLocation }) => {
             )}
           </div>
         </div>
-      )
-      return container
-    }
-    shortcutbuttons.addTo(map)
+      );
+      return container;
+    };
+    shortcutbuttons.addTo(map);
 
-    const refreshEvents = L.control({ position: "topright" })
+    const refreshEvents = L.control({ position: "topright" });
     refreshEvents.onAdd = () => {
-      const container = L.DomUtil.create("div")
-      L.DomEvent.disableClickPropagation(container)
-      const root = createRoot(container)
+      const container = L.DomUtil.create("div");
+      L.DomEvent.disableClickPropagation(container);
+      const root = createRoot(container);
       root.render(
         <div className="refresh-events">
           <button
             className="pika-painike"
             onClick={() => onClickRefresh(map)}
             style={{
-              backgroundImage: "url(/refreshIcon.png)", // Suora polku publicista
+              backgroundImage: "url(/refreshCropped.png)", // Suora polku publicista
             }}
           ></button>
         </div>
-      )
-      return container
-    }
-    refreshEvents.addTo(map)
+      );
+      return container;
+    };
+    refreshEvents.addTo(map);
 
-    const refreshStamp = L.control({ position: "topright" })
+    const refreshStamp = L.control({ position: "topright" });
     refreshStamp.onAdd = () => {
-      const container = L.DomUtil.create("div")
-      timestampRef.current = createRoot(container)
+      const container = L.DomUtil.create("div");
+      timestampRef.current = createRoot(container);
       timestampRef.current.render(
         <div className="refresh-events">
           <p>{timeStamp}</p>
         </div>
-      )
-      return container
-    }
-    refreshStamp.addTo(map)
+      );
+      return container;
+    };
+    refreshStamp.addTo(map);
 
     map.on("moveend", () => {
       // Tallennetaan kartan nykyinen keskikohta reduxin storeen
-      const newCenter = map.getCenter() // Kartan keskikohta
-      const zoomLevel = map.getZoom() // Kartan zoom-level
+      const newCenter = map.getCenter(); // Kartan keskikohta
+      const zoomLevel = map.getZoom(); // Kartan zoom-level
       dispatch(
         changeLocation({
           o_lat: startingLocation.o_lat,
@@ -250,19 +250,19 @@ const Map = ({ startingLocation }) => {
           lng: newCenter.lng,
           zoom: zoomLevel,
         })
-      )
-    })
+      );
+    });
 
-    map.addLayer(markerClusterGroup)
+    map.addLayer(markerClusterGroup);
     if (first) {
-      onClickRefresh(map)
-      first = false
+      onClickRefresh(map);
+      first = false;
     }
     return () => {
       // Tuhoaa karttaelementin kun komponentti unmounttaa
-      map.remove()
-    }
-  }, [])
+      map.remove();
+    };
+  }, []);
 
   return (
     <div className="map">
@@ -277,7 +277,7 @@ const Map = ({ startingLocation }) => {
         />
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Map
+export default Map;

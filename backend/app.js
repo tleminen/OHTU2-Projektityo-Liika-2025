@@ -1,10 +1,10 @@
-const express = require("express")
-const app = express()
-const cors = require("cors")
-const morgan = require("morgan")
-const middleware = require("./utils/middleware")
-const { initializeDB } = require("./utils/database")
-const resetDB = require("./dummyData/index.js")
+const express = require("express");
+const app = express();
+const cors = require("cors");
+const morgan = require("morgan");
+const middleware = require("./utils/middleware");
+const { initializeDB } = require("./utils/database");
+const resetDB = require("./dummyData/index.js");
 const {
   sequelize,
   Users,
@@ -15,49 +15,49 @@ const {
   ClubMember,
   Joins,
   Languages,
-} = require("./models/index")
+} = require("./models/index");
 
-const fs = require("fs")
-const registerRouter = require("./controllers/register")
-const loginRouter = require("./controllers/login")
-const eventRouter = require("./controllers/events")
-const email = require("./services/email")
-const userRouter = require("./controllers/user")
-const logStream = fs.createWriteStream("./logs/access.log", { flags: "a" })
+const fs = require("fs");
+const registerRouter = require("./controllers/register");
+const loginRouter = require("./controllers/login");
+const eventRouter = require("./controllers/events");
+const email = require("./services/email");
+const userRouter = require("./controllers/user");
+const logStream = fs.createWriteStream("./logs/access.log", { flags: "a" });
 
 // Tietokantayhteys ja alustus
-initializeDB(true) // Aseta muuttujaan false, mikäli et halua, että tietokanta nollaantuu
+initializeDB(true); // Aseta muuttujaan false, mikäli et halua, että tietokanta nollaantuu
 
 // Käynnistetään middlewaret
-app.use(cors()) //cros-origin homma
-app.use(express.json()) // JSON-body parseri
+app.use(cors()); //cros-origin homma
+app.use(express.json()); // JSON-body parseri
 
 // Mukautetut tokenit Morganille
-morgan.token("ip", (req) => req.ip) // IP-osoite
-morgan.token("timestamp", () => new Date().toISOString()) // Aikaleima ISO-muodossa
-morgan.token("body", (req) => JSON.stringify(req.body)) // Pyynnön body
-morgan.token("user-agent", (req) => req.headers["user-agent"]) // User-Agent
+morgan.token("ip", (req) => req.ip); // IP-osoite
+morgan.token("timestamp", () => new Date().toISOString()); // Aikaleima ISO-muodossa
+morgan.token("body", (req) => JSON.stringify(req.body)); // Pyynnön body
+morgan.token("user-agent", (req) => req.headers["user-agent"]); // User-Agent
 
 const customFormat = // Mukautettu lokiformaatti terminaaliin
-  ':ip [:timestamp] ":method :url" :status - Body: :body - Agent: ":user-agent" - Response time: :response-time ms'
+  ':ip [:timestamp] ":method :url" :status - Body: :body - Agent: ":user-agent" - Response time: :response-time ms';
 const customFormat2 = // Mukautettu lokiformaatti tiedostoon
-  ':ip [:timestamp] ":method :url" :status - Agent: ":user-agent" - Response time: :response-time ms'
+  ':ip [:timestamp] ":method :url" :status - Agent: ":user-agent" - Response time: :response-time ms';
 
 app.use(
   morgan(customFormat2, {
     stream: logStream,
   })
-) // HTTP pyyntöjen logitus
-app.use(morgan(customFormat)) // HTTP pyynnöt terminaaliin
-app.use(middleware.tokenExtractor) // Ekstraktoi tokenin
+); // HTTP pyyntöjen logitus
+app.use(morgan(customFormat)); // HTTP pyynnöt terminaaliin
+app.use(middleware.tokenExtractor); // Ekstraktoi tokenin
 
 // API routerit
-app.use(`/api/register`, registerRouter)
-app.use(`/api/login`, loginRouter)
-app.use(`/api/events`, eventRouter)
-app.use(`/api/users`, userRouter)
+app.use(`/api/register`, registerRouter);
+app.use(`/api/login`, loginRouter);
+app.use(`/api/events`, eventRouter);
+app.use(`/api/users`, userRouter);
 
 // Loppuun laitetaan unknownEndpoint ja virheenKorjaus
-app.use(middleware.unknownEndpoint)
+app.use(middleware.unknownEndpoint);
 
-module.exports = app
+module.exports = app;

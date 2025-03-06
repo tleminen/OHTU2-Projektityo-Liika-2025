@@ -51,6 +51,7 @@ const translations = {
     passwordAgain: "Password again",
     ready_account: "Already have an account?",
     register: "Sign up",
+    register_new_account: "Create new account",
     reset_pw: "Reset password",
     save: "Save",
     selectedLanguage: "Language",
@@ -80,6 +81,7 @@ const translations = {
     validation_otp: "Email verification code required",
   },
   FI: {
+    accountInformation: "Omat tiedot",
     activity: "Laji",
     alert_incorrect: "Väärä käyttäjätunnus tai salasana",
     back: "Takaisin",
@@ -127,6 +129,7 @@ const translations = {
     passwordAgain: "Salasana uudestaan",
     ready_account: "Onko sinulla jo tili?",
     register: "Rekisteröidy",
+    register_new_account: "Luo uusi käyttäjä",
     reset_pw: "Palauta salasana",
     save: "Tallenna",
     selectedLanguage: "Oletus-kieli",
