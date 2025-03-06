@@ -1,61 +1,69 @@
 # Node.js React Web App to Linux on Azure
+
 # Build a Node.js React app and deploy it to Azure as a Linux web app.
+
 # Add steps that analyze code, save build artifacts, deploy, and more:
+
 # https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
 
 trigger:
+
 - master
 
 variables:
 
-  # Azure Resource Manager connection created during pipeline creation
-  azureSubscription: 'b1b23056-f48d-4db8-b5e9-e97c52e637bc'
+# Azure Resource Manager connection created during pipeline creation
 
-  # Web app name
-  webAppName: 'liika'
+azureSubscription: 'b1b23056-f48d-4db8-b5e9-e97c52e637bc'
 
-  # Environment name
-  environmentName: 'liika'
+# Web app name
 
-  # Agent VM image name
-  vmImageName: 'ubuntu-latest'
+webAppName: 'liika'
+
+# Environment name
+
+environmentName: 'liika'
+
+# Agent VM image name
+
+vmImageName: 'ubuntu-latest'
 
 stages:
+
 - stage: Build
   displayName: Build stage
   jobs:
+
   - job: Build
     displayName: Build
     pool:
-      vmImage: $(vmImageName)
+    vmImage: $(vmImageName)
 
-    steps:
-        # Asenna Node.js (frontend ja backend) NÄMÄ KOMMENTOITU KOSKA PITÄISI OLLA JO WEB-SERVICESSÄ
-        #    - task: NodeTool@0
-        #     inputs:
-        #   displayName: 'Install Node.js'
+    steps: # Asenna Node.js (frontend ja backend) NÄMÄ KOMMENTOITU KOSKA PITÄISI OLLA JO WEB-SERVICESSÄ # - task: NodeTool@0 # inputs: # displayName: 'Install Node.js'
 
     # Asenna riippuvuudet ja rakenna frontend
+
     - script: |
-        cd frontend
-        npm install
-        npm run build
+      cd frontend
+      npm install
+      npm run build
       displayName: 'Build Frontend'
 
     # Asenna riippuvuudet ja kopioi frontendin buildi backendiin
+
     - script: |
-        cd backend
-        npm install
-        npm run build
+      cd backend
+      npm install
+      npm run build
       displayName: 'Prepare Backend'
     - task: ArchiveFiles@2
       displayName: 'Archive files'
       inputs:
-        rootFolderOrFile: '$(System.DefaultWorkingDirectory)'
+      rootFolderOrFile: '$(System.DefaultWorkingDirectory)'
         includeRootFolder: false
         archiveType: zip
         archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
-        replaceExistingArchive: true
+      replaceExistingArchive: true
 
     - upload: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
       artifact: drop
@@ -81,9 +89,9 @@ stages:
               appType: webAppLinux
               WebAppName: $(webAppName)
               packageForLinux: '$(Pipeline.Workspace)/drop/$(Build.BuildId).zip'
-              RuntimeStack: 'NODE|20LTS'
-              StartupCommand: 'npm run start'
-              ScriptType: 'Inline Script'
-              InlineScript: |
-                npm install
-                npm run build --if-present
+    RuntimeStack: 'NODE|20LTS'
+    StartupCommand: 'npm run start'
+    ScriptType: 'Inline Script'
+    InlineScript: |
+    npm install
+    npm run build --if-present
