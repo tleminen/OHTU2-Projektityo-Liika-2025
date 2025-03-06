@@ -1,16 +1,25 @@
 const { Sequelize } = require("sequelize")
-const { POSTGRESQL_URI } = require("./config")
+const { POSTGRESQL_URI, SSL } = require("./config")
 
-const sequelize = new Sequelize(POSTGRESQL_URI, {
-  dialect: "postgres",
-  logging: false,
-  dialectOptions: {
-    ssl: {
-      require: true, // Pakotetaan SSL-yhteys
-      rejectUnauthorized: false,
+var sequelize
+
+if (SSL) {
+  sequelize = new Sequelize(POSTGRESQL_URI, {
+    dialect: "postgres",
+    logging: false,
+    dialectOptions: {
+      ssl: {
+        require: true, // Pakotetaan SSL-yhteys
+        rejectUnauthorized: false,
+      },
     },
-  },
-})
+  })
+} else {
+  sequelize = new Sequelize(POSTGRESQL_URI, {
+    dialect: "postgres",
+    logging: false,
+  })
+}
 
 const queryInterface = sequelize.getQueryInterface()
 
