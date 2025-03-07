@@ -4,6 +4,7 @@ import "./mapView.css"
 import eventService from "../../services/eventService"
 import { changeCategories } from "../../store/categoriesSlice"
 import { setEvents } from "../../store/eventSlice"
+import { useEffect } from "react"
 
 const MapView = () => {
   const startingLocation = useSelector((state) => state.location.location) // haetaan kartan aloituskohta
@@ -12,27 +13,48 @@ const MapView = () => {
   const categories = useSelector(
     (state) => state.categories?.categories ?? null
   )
-  const event = useSelector((state) => state.event?.events ?? null)
+  const events = useSelector((state) => state.event?.events ?? null)
 
-  const loadData = async () => {
-    try {
-      if (!categories || categories.length() < 1) {
-        const categories = await eventService.getCategories()
-        dispatch(changeCategories(categories))
-      }
-    } catch (error) {
-      console.log(error)
-    }
-    if (userID) {
-      if (!event || event.length() < 1) {
-        // Edelleen hakee liikaa jos käyttäjä ei ole liittynyt mihinkään
-        const events = await eventService.getJoined({ UserID: userID })
-        dispatch(setEvents(events))
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        if (!categories || categories.length === 0) {
+          const fetchedCategories = await eventService.getCategories()
+          dispatch(changeCategories(fetchedCategories))
+        }
+      } catch (error) {
+        console.error("Category fetch error:", error)
       }
     }
-  }
 
-  loadData()
+    fetchCategories()
+  }, [dispatch, categories]) // Riippuvuus vain categories
+
+  // Haetaan eventit vain, jos käyttäjä on kirjautunut eikä eventtejä ole jo haettu
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        if (
+          userID &&
+          (!events || (Array.isArray(events) && events.length === 0))
+        ) {
+          const fetchedEvents = await eventService.getJoined({ UserID: userID })
+
+          // Tarkistetaan, ettei tehdä turhaa päivitystä
+          if (
+            !events ||
+            JSON.stringify(events) !== JSON.stringify(fetchedEvents)
+          ) {
+            dispatch(setEvents(fetchedEvents))
+          }
+        }
+      } catch (error) {
+        console.error("Event fetch error:", error)
+      }
+    }
+
+    fetchEvents()
+  }, [dispatch, events, userID]) // Riippuvuus vain userID, jotta se ei hae turhaan uudelleen
 
   return (
     <div
