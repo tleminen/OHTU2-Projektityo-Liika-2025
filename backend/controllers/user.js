@@ -38,6 +38,16 @@ userRouter.post("/update/email", userExtractor, async (request, response) => {
   const { UserID, Email } = request.body
   if (UserID === request.user.dataValues.UserID) {
     // Eli userExtractorin tokenista ekstraktoima userID
+    const existingUser = await Users.findOne({
+      // Tarkastetaan ensin löytyykö jo sama sähköpostiosoite
+      where: {
+        Email: Email,
+      },
+    })
+
+    if (existingUser) {
+      return response.status(400).json({ message: "Sähköposti on jo käytössä" })
+    }
     try {
       const user = await Users.update(
         { Email: Email },
@@ -66,6 +76,18 @@ userRouter.post(
     const { UserID, Username } = request.body
     if (UserID === request.user.dataValues.UserID) {
       // Eli userExtractorin tokenista ekstraktoima userID
+      const existingUser = await Users.findOne({
+        // Tarkastetaan ensin löytyykö jo sama sähköpostiosoite
+        where: {
+          Username: Username,
+        },
+      })
+
+      if (existingUser) {
+        return response
+          .status(400)
+          .json({ message: "Käyttäjätunnus on jo käytössä" })
+      }
       try {
         const user = await Users.update(
           { Username: Username },
