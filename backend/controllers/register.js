@@ -10,8 +10,8 @@ const registerRouter = Router()
 /**
  * Uuden käyttäjän rekisteröinti
  */
-registerRouter.post("/", async (req, res) => {
-  const { username, password, role, email, location, language } = req.body
+registerRouter.post("/", async (request, response) => {
+  const { username, password, role, email, location, language } = request.body
 
   const existingUser = await Users.findOne({
     // Tarkastetaan ensin löytyykö jo sama käyttäjänimi tai sähköpostiosoite
@@ -22,10 +22,61 @@ registerRouter.post("/", async (req, res) => {
 
   if (existingUser) {
     if (existingUser.Username === username) {
-      return res.status(400).json({ message: "Käyttäjänimi on jo käytössä" })
+      return response
+        .status(400)
+        .json({ message: "Käyttäjänimi on jo käytössä" })
     }
     if (existingUser.Email === email) {
-      return res.status(400).json({ message: "Sähköposti on jo käytössä" })
+      if (existingUser.Role !== 2) {
+        return response
+          .status(400)
+          .json({ message: "Sähköposti on jo käytössä" })
+      }
+      console.log("päivitetään käyttäjälle tiedot...")
+      try {
+        const saltRounds = 10
+        const passwordhash = await bcrypt.hash(password, saltRounds)
+        const user = await Users.update(
+          {
+            Email: email,
+            Username: username,
+            Role: role,
+            Location: Sequelize.fn(
+              "ST_SetSRID",
+              Sequelize.fn("ST_MakePoint", location.lng, location.lat),
+              4326
+            ),
+            LanguageID: language,
+            Password: passwordhash,
+          },
+          { where: { Email: email } }
+        )
+        console.log(user)
+        if (!user) {
+          response.status(500).json({ error: "Internal server error" })
+        }
+        const userForToken = {
+          // Luodaan tokeni käyttäjänimen ja id:n mukaan
+          username: savedUser.Username,
+          id: savedUser.UserID,
+        }
+
+        console.log(JSON.stringify(userForToken))
+        const token = jwt.sign(userForToken, process.env.JWT_SECRET, {
+          // Luodaan tokeni uudelle käyttäjälle heti
+          expiresIn: "60d",
+        })
+        response.status(200).send({
+          token,
+          username: savedUser.Username,
+          userID: savedUser.UserID,
+          email: savedUser.Email,
+          location: [location.lng, location.lat],
+        })
+      } catch (error) {
+        console.error("Problems with updating email" + error)
+        response.status(500).json({ error: "Internal server error" })
+      }
     }
   }
 
@@ -59,7 +110,7 @@ registerRouter.post("/", async (req, res) => {
       // Luodaan tokeni uudelle käyttäjälle heti
       expiresIn: "60d",
     })
-    res.status(200).send({
+    response.status(200).send({
       token,
       username: savedUser.Username,
       userID: savedUser.UserID,
@@ -68,7 +119,7 @@ registerRouter.post("/", async (req, res) => {
     })
   } catch (error) {
     console.log("PostgreSQL Error:", error)
-    res.status(400).send({ error: `Error occured during user creation` })
+    response.status(400).send({ error: `Error occured during user creation` })
   }
 }) // Rekisteröinti päättyy
 
