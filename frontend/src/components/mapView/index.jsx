@@ -16,7 +16,7 @@ const MapView = () => {
 
   const loadData = async () => {
     try {
-      if (!categories && categories.length() < 0) {
+      if (!categories || categories.length() < 1) {
         const categories = await eventService.getCategories()
         dispatch(changeCategories(categories))
       }
@@ -24,7 +24,8 @@ const MapView = () => {
       console.log(error)
     }
     if (userID) {
-      if (!event && event.length() < 0) {
+      if (!event || event.length() < 1) {
+        // Edelleen hakee liikaa jos käyttäjä ei ole liittynyt mihinkään
         const events = await eventService.getJoined({ UserID: userID })
         dispatch(setEvents(events))
       }
