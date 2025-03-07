@@ -9,17 +9,25 @@ const MapView = () => {
   const startingLocation = useSelector((state) => state.location.location) // haetaan kartan aloituskohta
   const userID = useSelector((state) => state.user?.user?.userID ?? null)
   const dispatch = useDispatch()
+  const categories = useSelector(
+    (state) => state.categories?.categories ?? null
+  )
+  const event = useSelector((state) => state.event?.events ?? null)
 
   const loadData = async () => {
     try {
-      const categories = await eventService.getCategories()
-      dispatch(changeCategories(categories))
+      if (!categories && categories.length() < 0) {
+        const categories = await eventService.getCategories()
+        dispatch(changeCategories(categories))
+      }
     } catch (error) {
       console.log(error)
     }
     if (userID) {
-      const events = await eventService.getJoined({ UserID: userID })
-      dispatch(setEvents(events))
+      if (!event && event.length() < 0) {
+        const events = await eventService.getJoined({ UserID: userID })
+        dispatch(setEvents(events))
+      }
     }
   }
 

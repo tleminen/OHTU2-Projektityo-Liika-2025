@@ -27,9 +27,7 @@ const Login = () => {
     setLoader(true)
 
     try {
-      console.log("Sähköposti: " + email)
       const response = await loginService.sendEmail(email)
-      console.log("SendEmail response " + response)
       setLoader(false)
       if (response.message === "Sähköposti lähetetty!") {
         dispatch(addNotification(EmailSentSuccess(t.email_sent)))
