@@ -13,7 +13,6 @@ variables:
   azureSubscription: 'b1b23056-f48d-4db8-b5e9-e97c52e637bc'
   webAppName: 'liika'
   environmentName: 'liika'
-  vmImageName: 'ubuntu-latest'
 
 stages:
 - stage: Build
@@ -24,17 +23,14 @@ stages:
     pool:
       name: 'Omat'
     steps:
-    - task: NodeTool@0
-      inputs:
-        versionSpec: '14.x'
-      displayName: 'Install Node.js'
       
     # Build Frontend (rakennetaan frontend vain kerran)
     - script: |
         cd frontend
-        npm install
-        npm run build
+        npm install && npm run build
       displayName: 'Build Frontend'
+      
+
 
     # Build Backend (vain kopioidaan frontendin tuotos, ei rakenneta uudelleen)
     - script: |
