@@ -1,26 +1,64 @@
 import axios from "axios"
 import { baseUrl } from "./utils"
 
+let token = null
+const setToken = (storedToken) => {
+  token = `bearer ${storedToken}`
+}
+
 // Hakee käyttäjän tiedot
-const getUserData = async (userID) => {
+const getUserData = async (storedToken, userID) => {
+  setToken(storedToken)
+  const headers = {
+    headers: { Authorization: token }, // Asetetaan token headeriin
+  }
   const data = { userID: userID }
-  const response = await axios.post(baseUrl + "/users/user", data)
+  const response = await axios.post(baseUrl + "/users/user", data, headers)
   return response.data
 }
 
-const updateUserEmail = async (parameters) => {
-  const response = await axios.post(baseUrl + "/users/update/email", parameters)
+const updateUserEmail = async (storedToken, parameters) => {
+  setToken(storedToken)
+  const headers = {
+    headers: { Authorization: token }, // Asetetaan token headeriin
+  }
+  const response = await axios.post(
+    baseUrl + "/users/update/email",
+    parameters,
+    headers
+  )
   return response.data
 }
 
-const updateUserUsername = async (parameters) => {
-  const response = await axios.post(baseUrl + "/users/update/username", parameters)
+const updateUserUsername = async (storedToken, parameters) => {
+  setToken(storedToken)
+  const headers = {
+    headers: { Authorization: token }, // Asetetaan token headeriin
+  }
+  const response = await axios.post(
+    baseUrl + "/users/update/username",
+    parameters,
+    headers
+  )
   return response.data
 }
 
-const updateUserLanguage = async (parameters) => {
-  const response = await axios.post(baseUrl + "/users/update/language", parameters)
+const updateUserLanguage = async (storedToken, parameters) => {
+  setToken(storedToken)
+  const headers = {
+    headers: { Authorization: token }, // Asetetaan token headeriin
+  }
+  const response = await axios.post(
+    baseUrl + "/users/update/language",
+    parameters,
+    headers
+  )
   return response.data
 }
 
-export default { getUserData, updateUserEmail,updateUserUsername, updateUserLanguage }
+export default {
+  getUserData,
+  updateUserEmail,
+  updateUserUsername,
+  updateUserLanguage,
+}

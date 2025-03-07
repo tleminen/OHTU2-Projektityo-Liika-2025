@@ -8,8 +8,7 @@ import { changeLocation } from "../../store/locationSlice.js"
 import { changeUser } from "../../store/userSlice.js"
 import { loginValidation } from "../../utils/validationSchemas.js"
 import { addNotification } from "../../store/notificationSlice.js"
-import { EmailSentSuccess, EmailSentFailure, OtpRobotCheck, OtpVerified, OtpNotVerified, UserFailure } from "../notification/notificationTemplates.js"
-
+import { UserFailure } from "../notification/notificationTemplates.js"
 
 const LoginForm = () => {
   const language = useSelector((state) => state.language.language)
@@ -21,7 +20,6 @@ const LoginForm = () => {
   const [password, setPassword] = useState("")
   const [showPassword, setShowPassword] = useState(false)
   const [errors, setErrors] = useState({})
-
 
   // Tallennetaan muuttujaan return arvo
   const schema = loginValidation()
@@ -65,11 +63,10 @@ const LoginForm = () => {
         )
         navigate(`/`)
       } catch (error) {
-        dispatch(addNotification(UserFailure(t.alert_incorrect)));
+        dispatch(addNotification(UserFailure(t.alert_incorrect)))
         console.log(error)
       }
     } catch (err) {
-      
       if (err.inner) {
         const errorMap = {}
         err.inner.forEach((error) => {

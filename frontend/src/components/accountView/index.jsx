@@ -9,19 +9,19 @@ import { Link } from "react-router-dom"
 import "../../index.css"
 import translations from "../../assets/translation"
 
-
 const AccountView = () => {
   const [user, setUser] = useState(null)
   const userID = useSelector((state) => state.user?.user?.userID ?? null)
   const dispatch = useDispatch()
   const language = useSelector((state) => state.language.language)
   const t = translations[language]
+  const storedToken = useSelector((state) => state.user?.user?.token ?? null)
 
   useEffect(() => {
     const fetchUserInfo = async () => {
-      if (!userID) return // Ei tehdä pyyntöä jos userID ei ole saatavilla
+      if (!userID || !storedToken) return // Ei tehdä pyyntöä jos userID ei ole saatavilla
       try {
-        const response = await userService.getUserData(userID)
+        const response = await userService.getUserData(storedToken, userID)
 
         if (!response) {
           console.error("Response tyhjä")
@@ -35,7 +35,7 @@ const AccountView = () => {
       }
     }
     fetchUserInfo()
-  }, [userID, dispatch]) // Suoritetaan vain kun userID muuttuu
+  }, [userID, dispatch, storedToken]) // Suoritetaan vain kun userID muuttuu
 
   if (!user) {
     // Tietokantahaku kesken
@@ -57,7 +57,6 @@ const AccountView = () => {
       </div>
     )
   }
-  console.log(user.user)
   return (
     <div
       className="fullpage"
@@ -96,9 +95,7 @@ const AccountView = () => {
         <div className="information-row">
           <div className="information">
             <h3>{t.password} </h3>
-            <p>
-            ••••••••
-            </p>
+            <p>••••••••</p>
           </div>
           <div className="information">
             <Link to={`/own_info/password`} className="link-btn">
@@ -113,17 +110,17 @@ const AccountView = () => {
           </div>
           <div className="information">
             <Link to={`/own_info/language`} className="link-btn">
-             {t.change}
+              {t.change}
             </Link>
           </div>
         </div>
       </div>
-      <Link to={"/map"} className="back-btn" style={{alignSelf:"center"}}>
-          <span>{t.back}</span>
-        </Link>
+      <Link to={"/map"} className="back-btn" style={{ alignSelf: "center" }}>
+        <span>{t.back}</span>
+      </Link>
       <Footer />
     </div>
-  ) 
+  )
 }
 
 export default AccountView
