@@ -36,14 +36,11 @@ const LoginForm = () => {
       await schema.validate({ username, password }, { abortEarly: false })
       setErrors({})
 
-      console.log("Login attempt:", { username, password })
       try {
         const user = await loginService.login({
           username,
           password,
         })
-        console.log(`Tokeni: ${user.token} Käyttäjätunnus: ${user.username}`)
-        console.log(user)
         dispatch(
           changeUser({
             userID: user.userID,
@@ -73,7 +70,6 @@ const LoginForm = () => {
           errorMap[error.path] = error.message
         })
         setErrors(errorMap)
-
         console.log("Validation errors:", errorMap)
       }
     }
