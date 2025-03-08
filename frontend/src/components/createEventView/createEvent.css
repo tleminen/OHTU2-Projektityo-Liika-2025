@@ -10,16 +10,19 @@
 
 .create-event-form {
   display: flex;
-  gap: 8px;
-  margin: auto;
-  text-align: center;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
+  text-align: center;
+
   margin-top: 20px;
   margin-bottom: 20px;
-  width: 100%;
-  flex: 1;
+  max-width: 90vw;
 }
 
+.form-item {
+  justify-self: center;
+}
 .custom-date-display {
   width: 100%;
   min-width: 140px;

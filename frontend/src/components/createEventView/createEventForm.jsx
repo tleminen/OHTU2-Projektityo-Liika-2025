@@ -241,31 +241,29 @@ const CreateEventForm = () => {
   return (
     <div className="create-event-form">
       <form onSubmit={handleSubmit}>
-        <div>
-          <div>
-            <h3>{t.title}</h3>
-            <input
-              type="text"
-              value={title}
-              className="input-field"
-              onChange={(e) => setTitle(e.target.value)}
-              required={true}
-            />
-          </div>
-          <div>
-            <h3>{t.activity}</h3>
-            <Select
-              className="input-field"
-              placeholder={t.activity}
-              value={activity}
-              onChange={handleChange}
-              options={options()}
-              isSearchable={true}
-              required={true}
-            />
-          </div>
+        <div className="form-item">
+          <h3>{t.title}</h3>
+          <input
+            type="text"
+            value={title}
+            className="input-field"
+            onChange={(e) => setTitle(e.target.value)}
+            required={true}
+          />
         </div>
-        <div>
+        <div className="form-item">
+          <h3>{t.activity}</h3>
+          <Select
+            className="input-field"
+            placeholder={t.activity}
+            value={activity}
+            onChange={handleChange}
+            options={options()}
+            isSearchable={true}
+            required={true}
+          />
+        </div>
+        <div className="form-item">
           <h3>{t.date}</h3>
           <DatePicker
             value={dates}
@@ -289,7 +287,7 @@ const CreateEventForm = () => {
             format="DD.MM.YYYY"
           />
         </div>
-        <div>
+        <div className="form-item">
           <h3>{t.startTime}</h3>
           <input
             type="time"
@@ -301,7 +299,7 @@ const CreateEventForm = () => {
             required={true}
           />
         </div>
-        <div>
+        <div className="form-item">
           <h3>{t.endTime}</h3>
           <input
             type="time"
@@ -313,12 +311,12 @@ const CreateEventForm = () => {
             required={true}
           />
         </div>
-        <div>
-          <br />
+        <div className="form-item">
           <h3>{t.setEventLocationInfo}</h3>
           <LocationMap onLocationChange={handleLocationChange} />
         </div>
-        <div>
+        <div className="form-item">
+          <h3>{t.minParticipants}</h3>
           <input
             type="number"
             value={participantsMin}
@@ -329,7 +327,8 @@ const CreateEventForm = () => {
             required={true}
           />
         </div>
-        <div>
+        <div className="form-item">
+          <h3>{t.maxParticipants}</h3>
           <input
             type="number"
             value={participantsMax}
@@ -340,7 +339,8 @@ const CreateEventForm = () => {
             required={true}
           />
         </div>
-        <div>
+        <div className="form-item">
+          <h3>{t.description}</h3>
           <textarea
             type="description"
             value={description}

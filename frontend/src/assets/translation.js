@@ -1,5 +1,5 @@
-import termsOfServiceText from "./termsOfServiceText";
-import infoText from "./infoText";
+import termsOfServiceText from "./termsOfServiceText"
+import infoText from "./infoText"
 const translations = {
   EN: {
     activity: "Activity",
@@ -92,6 +92,7 @@ const translations = {
     dateAndTime: "Aika",
     description: "Kuvaus",
     date: "Päivämäärä",
+    endTime: "Päättymisaika",
     send: "Lähetä",
     confirm: "Vahvista",
     email: "Sähköposti",
@@ -158,6 +159,6 @@ const translations = {
     validation_psw_all: "Salasana saa sisältää vain kirjaimia ja numeroita",
     validation_otp: "Sähköpostiosoitteen vahvistuskoodi vaaditaan",
   },
-};
+}
 
-export default translations;
+export default translations

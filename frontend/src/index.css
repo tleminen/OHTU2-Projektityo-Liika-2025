@@ -308,6 +308,7 @@ button:focus-visible {
   text-align: center;
   display: flex;
   align-items: center;
+  align-self: center;
   justify-content: center;
   margin-top: 1.5%;
   margin-bottom: 3%;
@@ -458,8 +459,7 @@ h4 {
   position: relative;
   flex: 1; /* Täyttää kaiken käytettävissä olevan tilan */
   background-color: lightgray; /* Väliaikainen taustaväri */
-  height: 350px;
-  width: 100%;
+  width: 60vw;
 }
 
 /*ala paneelille tyyli*/
