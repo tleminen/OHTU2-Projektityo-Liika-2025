@@ -5,8 +5,6 @@ import eventService from "../../services/eventService"
 import { changeCategories } from "../../store/categoriesSlice"
 import { setEvents } from "../../store/eventSlice"
 import { useEffect } from "react"
-// eslint-disable-next-line no-unused-vars
-import React from "react"
 
 const MapView = () => {
   const startingLocation = useSelector((state) => state.location.location) // haetaan kartan aloituskohta

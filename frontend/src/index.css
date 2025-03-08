@@ -378,10 +378,6 @@ h4 {
   min-height: 100vh; /* Koko näkymän korkeus */
 }
 
-.map-image:hover {
-  cursor: pointer;
-}
-
 * {
   margin: 0;
   padding: 0;
@@ -390,11 +386,13 @@ h4 {
 }
 
 /*kartta-oliolle container*/
+/*
 .container {
   display: flex;
   flex-direction: column;
-  height: 100vh; /* Koko näkymän korkeus */
+  height: 100vh;
 }
+*/
 
 /*yläpaneelille tyyli*/
 .header {
@@ -417,9 +415,9 @@ h4 {
   left: 50%;
   transform: translateX(-50%);
   background: rgba(169, 169, 169, 0.47);
-  border-radius: 20px;
-  padding-left: 40px;
-  padding-right: 40px;
+  border-radius: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
   z-index: 1001;
 }
 
@@ -433,9 +431,9 @@ h4 {
   left: 50%;
   transform: translateX(-50%);
   background: #d9d9d9c2;
-  border-radius: 20px;
-  padding-left: 40px;
-  padding-right: 40px;
+  border-radius: 12%;
+  padding-left: 12px;
+  padding-right: 12px;
   z-index: 1001;
 }
 
@@ -443,14 +441,15 @@ h4 {
   cursor: pointer;
 }
 
-/*kartta-oliolle tyyli päänäkymään*/
+/*kartta-oliolle tyyli karttanäkymään*/
 .map {
   display: flex;
   position: absolute;
   flex: 1; /* Täyttää kaiken käytettävissä olevan tilan */
   background-color: lightgray; /* Väliaikainen taustaväri */
-  height: 100%;
-  min-width: 80vh;
+  height: 100vh;
+  width: 80vw;
+  margin: auto;
   z-index: 1000;
 }
 

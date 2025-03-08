@@ -50,3 +50,7 @@
   max-width: 60%;
   border-radius: 5%;
 }
+
+.map-image:hover {
+  cursor: pointer;
+}
