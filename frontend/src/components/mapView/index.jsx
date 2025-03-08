@@ -68,7 +68,7 @@ const MapView = () => {
         backgroundRepeat: "no-repeat",
       }}
     >
-      <div className="map-container">
+      <div className="event-map-container">
         <Map startingLocation={startingLocation} />
       </div>
     </div>

@@ -11,17 +11,21 @@
   align-items: center;
   flex: 1; /* Ottaa kaiken käytettävissä olevan tilan */
   width: 100%;
-  gap: 90px;
-  margin-top: 50px;
+  gap: 10px;
+  position: absolute;
+  top: 30%;
   padding: 8px;
+  overflow-x: hidden;
+  padding: 0;
+  margin: 0;
 }
 
 .image-wrapper {
-  transform: scale(2); /* Suurennetaan 1.5-kertaiseksi */
   position: relative; /* Mahdollistaa placeholder-tekstin sijoittamisen kuvan päälle */
   display: flex; /* Käytetään flexboxia */
   justify-content: center; /* Keskitetään vaakasuunnassa */
   align-items: center; /* Keskitetään pystysuunnassa */
+  max-width: 100%;
 }
 
 .placeholder {
@@ -39,7 +43,10 @@
   background-color: rgb(240, 240, 240, 0.5);
 }
 
-
 .map-image {
   display: block; /* Poistaa kuvan alapuolella olevan tyhjän tilan */
+  position: static;
+  left: 50%;
+  max-width: 60%;
+  border-radius: 5%;
 }

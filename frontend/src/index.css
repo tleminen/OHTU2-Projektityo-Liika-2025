@@ -378,14 +378,6 @@ h4 {
   min-height: 100vh; /* Koko näkymän korkeus */
 }
 
-/*kartan kuvalle aloitusnäkymässä olio*/
-.map-image {
-  position: static;
-  left: 50%;
-  max-width: 35%;
-  border-radius: 5%;
-}
-
 .map-image:hover {
   cursor: pointer;
 }
@@ -393,7 +385,8 @@ h4 {
 * {
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
+  /*TESTI*/
+  outline: 1px solid red !important;
 }
 
 /*kartta-oliolle container*/
@@ -415,7 +408,6 @@ h4 {
   align-items: center;
   position: sticky;
   top: 0;
-  left: 0;
   z-index: 1000;
 }
 
@@ -481,7 +473,6 @@ h4 {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 0;
   margin-top: auto;
 }
 
