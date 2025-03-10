@@ -122,6 +122,7 @@ const ModifyEvent = () => {
       ParticipantsMin: participantsMin,
       ParticipantsMax: participantsMax,
       Description: description,
+      EventID: id,
     })
   }
 

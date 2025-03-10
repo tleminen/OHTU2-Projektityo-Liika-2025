@@ -12,6 +12,7 @@ const {
   getUserJoinedEvents,
   getUserCreatedEvents,
 } = require("../services/getUserJoinedEvents")
+const { userExtractor } = require("../utils/middleware")
 
 const eventRouter = Router()
 
@@ -70,50 +71,53 @@ eventRouter.post("/create_event", async (req, res) => {
     startTime,
     endTime,
   } = req.body
+  const transaction = await sequelize.transaction()
+
   try {
-    // luodaan event
-    const event = await Events.create({
-      Event_Location: Sequelize.fn(
-        "ST_SetSRID",
-        Sequelize.fn("ST_MakePoint", event_location.lng, event_location.lat),
-        4326
-      ),
-      Status: "Basic", // Tee erikoistapahtumajuttu joskus
-      Title: title,
-      UserID: userID,
-      CategoryID: categoryID,
-      ParticipantMax: participantsMax,
-      ParticipantMin: participantsMin,
-      Description: description,
-    })
+    // Luodaan event transaktion sisällä
+    const event = await Events.create(
+      {
+        Event_Location: Sequelize.fn(
+          "ST_SetSRID",
+          Sequelize.fn("ST_MakePoint", event_location.lng, event_location.lat),
+          4326
+        ),
+        Status: "Basic",
+        Title: title,
+        UserID: userID,
+        CategoryID: categoryID,
+        ParticipantMax: participantsMax,
+        ParticipantMin: participantsMin,
+        Description: description,
+      },
+      { transaction }
+    )
 
-    try {
-      await Promise.all(
-        dates.map(async (timestamp) => {
-          const date = new Date(timestamp).toISOString().split("T")[0] // Muuntaa muotoon YYYY-MM-DD
+    // Luodaan tapahtuman ajat
+    await Promise.all(
+      dates.map(async (timestamp) => {
+        const date = new Date(timestamp).toISOString().split("T")[0] // YYYY-MM-DD
 
-          await Times.create({
+        await Times.create(
+          {
             StartTime: `${date} ${startTime}:00.000+2`,
             EndTime: `${date} ${endTime}:00.000+2`,
             EventID: event.EventID,
-          })
-        })
-      )
+          },
+          { transaction }
+        )
+      })
+    )
 
-      res.status(201).send()
-    } catch (error) {
-      console.error(error)
-      res.status(500).json({ error: "Internal Server Error" })
-      try {
-        //await Events.destroy({where: })
-        console.log("toteuta rollback!!")
-      } catch (error) {
-        console.error("Problems on rollback, create event: " + error)
-        res.status(500).json({ error: "Internal Server Error" })
-      }
-    }
+    // Jos kaikki onnistui, commitoidaan transaktio
+    await transaction.commit()
+    res.status(201).send()
   } catch (error) {
-    console.error(error)
+    console.error("Virhe tapahtuman luonnissa:", error)
+
+    // Rollback jos virhe tapahtui
+    await transaction.rollback()
+    res.status(500).json({ error: "Internal Server Error" })
   }
 }) // Tapahtuman luonti päättyy
 
@@ -122,7 +126,7 @@ eventRouter.post("/create_event_unsigned", async (req, res) => {
   const {
     title,
     categoryID,
-    date,
+    dates,
     startTime,
     endTime,
     event_location,
@@ -132,30 +136,44 @@ eventRouter.post("/create_event_unsigned", async (req, res) => {
     email,
   } = req.body
 
-  // Luodaan salasana
-  const randomString = (pituus) => {
-    const merkit =
+  // Luodaan satunnainen salasana
+  const randomString = (length) => {
+    const characters =
       'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789/[!"#¤%&/()=?+><_]/'
     return Array.from(
-      { length: pituus },
-      () => merkit[Math.floor(Math.random() * merkit.length)]
+      { length },
+      () => characters[Math.floor(Math.random() * characters.length)]
     ).join("")
   }
   const password = randomString(12)
 
-  try {
-    const user = await Users.create({
-      Username: email,
-      Password: password,
-      Role: 2,
-      Email: email,
-      Location: Sequelize.fn("ST_GeomFromText", "POINT(29.7639 62.6000)"),
-      LanguageID: "FI",
-    })
+  // Aloitetaan transaktio
+  const transaction = await sequelize.transaction()
 
-    try {
-      // luodaan event
-      const event = await Events.create({
+  try {
+    // Luodaan käyttäjä
+    let user = await Users.findOne({
+      where: { Email: email },
+      attributes: ["UserID"],
+      transaction,
+    })
+    if (!user) {
+      user = await Users.create(
+        {
+          Username: email,
+          Password: password,
+          Role: 2,
+          Email: email,
+          Location: Sequelize.fn("ST_GeomFromText", "POINT(29.7639 62.6000)"),
+          LanguageID: "FI",
+        },
+        { transaction }
+      )
+    }
+
+    // Luodaan tapahtuma
+    const event = await Events.create(
+      {
         Event_Location: Sequelize.fn(
           "ST_SetSRID",
           Sequelize.fn("ST_MakePoint", event_location.lng, event_location.lat),
@@ -168,33 +186,35 @@ eventRouter.post("/create_event_unsigned", async (req, res) => {
         ParticipantMax: participantsMax,
         ParticipantMin: participantsMin,
         Description: description,
-      })
+      },
+      { transaction }
+    )
 
-      try {
-        // Lisätään eventin aika
-        const timeResponse = await Times.create({
-          StartTime: `${date} ${startTime}:00.000+2`,
-          EndTime: `${date} ${endTime}:00.000+2`,
-          EventID: event.EventID,
-        })
-        res.status(201).send
-      } catch (error) {
-        console.error(error)
-        res.status(500).json({ error: "Internal Server Error" })
-        try {
-          //await Events.destroy({where: })
-          console.log("toteuta rollback!!")
-        } catch (error) {
-          console.error("Problems on rollback, create event: " + error)
-          res.status(500).json({ error: "Internal Server Error" })
-        }
-      }
-    } catch (error) {
-      console.error(error)
-    }
+    // Luodaan tapahtuman aika
+    await Promise.all(
+      dates.map(async (timestamp) => {
+        const date = new Date(timestamp).toISOString().split("T")[0] // YYYY-MM-DD
+
+        await Times.create(
+          {
+            StartTime: `${date} ${startTime}:00.000+2`,
+            EndTime: `${date} ${endTime}:00.000+2`,
+            EventID: event.EventID,
+          },
+          { transaction }
+        )
+      })
+    )
+
+    // Jos kaikki onnistuu, commitoidaan transaktio
+    await transaction.commit()
+    res.status(201).send({ message: "Event created successfully" })
   } catch (error) {
-    console.log("PostgreSQL Error:", error)
-    res.status(400).send({ error: `Error occured during user creation` })
+    console.error("Virhe tapahtuman luonnissa:", error)
+
+    // Rollback jos virhe tapahtui
+    await transaction.rollback()
+    res.status(500).json({ error: "Internal Server Error" })
   }
 })
 //Tapahtuman luonti kirjautumaton päättyy
@@ -218,26 +238,24 @@ eventRouter.post("/join_event", async (req, res) => {
 // Tapahtumaan liittyminen kirjautumaton
 eventRouter.post("/join_event_unsigned", async (req, res) => {
   const { Email, EventID, TimeID } = req.body
-  console.log("email eventRouter: "+Email)
+  console.log("email eventRouter: " + Email)
   try {
-    const newUser = await createUserUnSigned(Email);
-    console.log('Uusi käyttäjä luotu:', newUser);
-  
-  try {
-    const response = await Joins.create({
-      UserID: newUser.UserID,
-      EventID: EventID,
-      TimeID: TimeID,
-    })
-    res.status(200).send()
+    const newUser = await createUserUnSigned(Email)
+    console.log("Uusi käyttäjä luotu:", newUser)
 
+    try {
+      const response = await Joins.create({
+        UserID: newUser.UserID,
+        EventID: EventID,
+        TimeID: TimeID,
+      })
+      res.status(200).send()
+    } catch (error) {
+      console.error("Problems when joining event: " + error)
+      res.status(500).json({ error: "Internal Server Error" })
+    }
   } catch (error) {
-    console.error("Problems when joining event: " + error)
-    res.status(500).json({ error: "Internal Server Error" })
-  }
-
-  } catch (error) {
-    console.error('Käyttäjän luominen epäonnistui:', error);
+    console.error("Käyttäjän luominen epäonnistui:", error)
     // Tässä voit käsitellä virheen
   }
 })
@@ -334,6 +352,79 @@ eventRouter.post("/delete/event", async (req, res) => {
   } catch (error) {
     console.error("Problems with deleting event" + error)
     await transaction.rollback()
+  }
+})
+
+// Tapahtuman muokkaaminen (päivittäminen)
+eventRouter.post("/update", userExtractor, async (req, res) => {
+  const {
+    Title,
+    UserID,
+    CategoryID,
+    Dates,
+    StartTime,
+    EndTime,
+    Event_Location,
+    ParticipantsMin,
+    ParticipantsMax,
+    Description,
+    EventID,
+  } = req.body
+
+  if (UserID === request.user.dataValues.UserID) {
+    // Eli userExtractorin tokenista ekstraktoima userID
+    const transaction = await sequelize.transaction() // aloitetaan transaktio
+    try {
+      const event = await Events.update(
+        {
+          Title: Title,
+          CategoryID: CategoryID,
+          StartTime: StartTime,
+          EndTime: EndTime,
+          ParticipantMin: ParticipantsMin,
+          ParticipantMax: ParticipantsMax,
+          Description: Description,
+          Event_Location: Sequelize.fn(
+            "ST_SetSRID",
+            Sequelize.fn(
+              "ST_MakePoint",
+              Event_Location.lng,
+              Event_Location.lat
+            ),
+            4326
+          ),
+        },
+        { where: { EventID: EventID }, transaction }
+      )
+
+      // Lisätään tapahtuman uudet ajat
+      await Promise.all(
+        Dates.map(async (timestamp) => {
+          const date = new Date(timestamp).toISOString().split("T")[0] // YYYY-MM-DD
+
+          await Times.create(
+            {
+              StartTime: `${date} ${StartTime}:00.000+2`,
+              EndTime: `${date} ${EndTime}:00.000+2`,
+              EventID: EventID,
+            },
+            { transaction }
+          )
+        })
+      )
+
+      // Jos kaikki ok:
+      await transaction.commit()
+      res.status(200).send({ message: "Event updated succesfully." })
+    } catch (error) {
+      console.error("Error updating event: " + error)
+      // Rollback jos virhe tapahtui
+      await transaction.rollback()
+      res.status(500).json({ error: "Internal Server Error" })
+    }
+  } else {
+    console.error("Invalid token")
+    res.status(401).json({ error: "Unauthorized" })
   }
 })
 

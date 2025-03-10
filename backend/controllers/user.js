@@ -31,6 +31,7 @@ userRouter.post("/user", userExtractor, async (request, response) => {
     }
   } else {
     console.error("Invalid token")
+    response.status(401).json({ error: "Unauthorized" })
   }
 }) // Rekisteröinti päättyy
 
@@ -64,6 +65,7 @@ userRouter.post("/update/email", userExtractor, async (request, response) => {
     }
   } else {
     console.error("Invalid token")
+    response.status(401).json({ error: "Unauthorized" })
   }
 })
 
@@ -104,6 +106,7 @@ userRouter.post(
       }
     } else {
       console.error("Invalid token")
+      response.status(401).json({ error: "Unauthorized" })
     }
   }
 )
@@ -133,6 +136,7 @@ userRouter.post(
       }
     } else {
       console.error("Invalid token")
+      response.status(401).json({ error: "Unauthorized" })
     }
   }
 )
