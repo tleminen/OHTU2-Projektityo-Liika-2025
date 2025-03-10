@@ -74,6 +74,24 @@
   margin: 8px;
   display: flex;
   flex-direction: row;
+  justify-content: center;
+  gap: 8px;
+  align-items: center;
+  margin: auto;
+  width: fit-content;
+  max-width: 100%;
+  margin-top: 2%;
+  margin-bottom: 2%;
+  background-color: rgba(
+    255,
+    255,
+    255,
+    0.421
+  ); /* Lisätty läpinäkyvä taustaväri */
+  padding: 20px; /* Lisätty sisäistä tilaa */
+  border-radius: 10px; /* Lisätty pyöristetyt reunat */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Lisätty varjo */
+  text-align: center;
 }
 
 /* Liitytty päivämäärä */

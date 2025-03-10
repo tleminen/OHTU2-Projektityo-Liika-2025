@@ -1,6 +1,7 @@
 import { Link, useNavigate, useParams } from "react-router-dom"
 import Footer from "../footer"
 import Header from "../header"
+import Select from "react-select"
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import translations from "../../assets/translation"
@@ -10,6 +11,7 @@ import { selectCategoryName } from "../../assets/icons"
 import { parseTimeAndDate } from "../../utils/helper"
 import LocationMap from "../locationMap"
 import "./modifyEventView.css"
+import DatePicker from "react-multi-date-picker"
 
 const ModifyEvent = () => {
   const { id } = useParams()
@@ -21,7 +23,17 @@ const ModifyEvent = () => {
   const userID = useSelector((state) => state.user.user.userID)
   const userEvents = useSelector((state) => state.event.events || [])
   const [selectedTime, setSelectedTime] = useState(null)
-  const [eventLocation, setEventLocation] = useState(null)
+  // Uudet tiedot:
+  const [event_location, setEventLocation] = useState(null)
+  const [title, setTitle] = useState("")
+  const [participantsMin, setParticipantsMin] = useState("")
+  const [participantsMax, setParticipantsMax] = useState("")
+  const [description, setDescription] = useState("")
+  const [activity, setActivity] = useState({})
+  const [dates, setDates] = useState([])
+  const [startTime, setStartTime] = useState("")
+  const [endTime, setEndTime] = useState("")
+
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
@@ -34,6 +46,10 @@ const ModifyEvent = () => {
         console.log(eventData)
         setEvent(eventData)
         setTimes(eventData.Times)
+        setActivity({
+          value: eventData.CategoryID,
+          label: t[selectCategoryName([eventData.CategoryID])],
+        })
       } catch (error) {
         console.error("Virhe hakiessa tapahtumaa: " + error)
       } finally {
@@ -41,7 +57,7 @@ const ModifyEvent = () => {
       }
     }
     fetchEventInfo()
-  }, [id])
+  }, [id, t])
 
   // Kun times latautuu, asetetaan ensimmäinen aika selectedTime:ksi, jos sitä ei vielä ole
   useEffect(() => {
@@ -82,12 +98,36 @@ const ModifyEvent = () => {
 
   // Päivitä tapahtumaa
   const handleUpdateEvent = () => {
-    console.log(eventLocation)
+    const categoryID = activity.value
+
+    console.log(userID)
+    console.log(categoryID)
+    console.log(title)
+    console.log(dates)
+    console.log(startTime)
+    console.log(endTime)
+    console.log(event_location)
+    console.log(participantsMin)
+    console.log(participantsMax)
+    console.log(description)
+
+    eventService.modifyEvent({
+      Title: title,
+      UserID: userID,
+      CategoryID: categoryID,
+      Dates: dates,
+      StartTime: startTime,
+      EndTime: endTime,
+      Event_Location: event_location,
+      ParticipantsMin: participantsMin,
+      ParticipantsMax: participantsMax,
+      Description: description,
+    })
   }
 
   // Poista tapahtuman päivä
   const handleCancelEvent = async (time) => {
-    console.log(time)
+    // TODO: Lisää alert: Haluatko poistaa tapahtuman esiintymän?
     try {
       var response = null
       if (times.length === 1) {
@@ -98,6 +138,15 @@ const ModifyEvent = () => {
         navigate("/created_events")
       } else {
         response = await eventService.deleteEventTime({ TimeID: time.TimeID })
+        // Päivitä frontendin times-tila poistamalla kyseinen aika listasta
+        setTimes((prevTimes) =>
+          prevTimes.filter((t) => t.TimeID !== time.TimeID)
+        )
+
+        // Jos poistettiin valittu aika, asetetaan ensimmäinen jäljelle jäänyt valituksi
+        if (selectedTime?.TimeID === time.TimeID) {
+          setSelectedTime(times.find((t) => t.TimeID !== time.TimeID) || null)
+        }
       }
       console.log(response)
     } catch (error) {
@@ -138,6 +187,22 @@ const ModifyEvent = () => {
       )
     } catch (error) {
       console.error("Virhe poistuessa tapahumasta" + error)
+    }
+  }
+  const handleChange = (selectedOption) => {
+    setActivity(selectedOption)
+  }
+
+  const categories = useSelector((state) => state.categories.categories)
+
+  const options = () => {
+    try {
+      return categories.map((cat) => ({
+        value: cat.CategoryID,
+        label: t[selectCategoryName([cat.CategoryID])],
+      }))
+    } catch (error) {
+      console.log(error)
     }
   }
 
@@ -216,16 +281,51 @@ const ModifyEvent = () => {
       }}
     >
       <Header />
-      <div className="event-view">
+      <div className="modify-event-view">
+        <h1>Tapahtuman muokkaus</h1>
+        <p>
+          Muokkaa tapahtuman tietoja tässä näkymässä
+          <br />
+          Syötä uusi tieto vain muokattaviin kenttiin
+          <br />
+          <br />
+          Voit poistua tallentamatta muutoksia painamalla takaisin
+        </p>
+        <h2>{t.activity}</h2>
+        <p className="old-event-value">
+          {t[selectCategoryName([event.CategoryID])]}
+        </p>
         <img
           src={`/lajit/${selectCategoryName([event.CategoryID])}.png`}
           alt="Logo"
           width={100}
           height={100}
-          className="event-view-icon" // Ei taida toimia tää className??
+          className="event-view-icon"
         />
-        <h1>{event.Title}</h1>
-        <h2>{t.date}</h2>
+        <div>
+          <h3>{t.activity}</h3>
+          <Select
+            className="input-field"
+            placeholder={t.activity}
+            value={activity}
+            onChange={handleChange}
+            options={options()}
+            isSearchable={true}
+            required={true}
+          />
+        </div>
+        <h2>{t.title}</h2>
+        <p className="old-event-value">{event.Title}</p>
+        <h3>Syötä uusi otsikko:</h3>
+        <input
+          type="text"
+          value={title}
+          placeholder={`${event.Title}`}
+          className="input-field"
+          onChange={(e) => setTitle(e.target.value)}
+          required={true}
+        />
+        <h2>Nykyiset esiintymät</h2>
         <div className="time-parent">
           {times.map((time, index) => (
             <div key={index} className="time-child">
@@ -235,33 +335,17 @@ const ModifyEvent = () => {
               >
                 {parseTimeAndDate(time.StartTime)[1]}
               </button>
-              <p>{time.JoinedCount}</p>
-              <button onClick={() => handleCancelEvent(time)}>Poista</button>
+              <div className="counter-icon">
+                <span>
+                  {time.JoinedCount}/{event.ParticipantMax}
+                </span>
+              </div>
+              <button onClick={() => handleCancelEvent(time)}>
+                Poista Esiintymä
+              </button>
             </div>
           ))}
         </div>
-        <h2>{t.time}</h2>
-        <p style={{ fontWeight: "bold" }}>
-          {parseTimeAndDate(times[0].StartTime)[0]} -{" "}
-          {parseTimeAndDate(times[0].EndTime)[0]}
-        </p>
-        <h2>{t.location}</h2>
-        <LocationMap
-          onLocationChange={handleLocationChange}
-          oldLocation={[
-            event.Event_Location.coordinates[0],
-            event.Event_Location.coordinates[1],
-          ]}
-        />
-
-        <h2>Osallistujamäärä</h2>
-        <p>
-          {event.ParticipantMin} - {event.ParticipantMax}
-        </p>
-        <h2>Liittyneitä</h2>
-        <p>{selectedTime && selectedTime.JoinedCount}</p>
-        <h2>Kuvaus:</h2>
-        <p>{event.Description}</p>
         {selectedTime && !isJoined(selectedTime) && (
           <button className="join-btn" onClick={() => handleJoin(userID, id)}>
             Ilmoittaudu
@@ -272,6 +356,108 @@ const ModifyEvent = () => {
             Peru ilmoittautuminen
           </button>
         )}
+        <h3>Lisää esiintymiä</h3>
+        <DatePicker
+          value={dates}
+          onChange={(newDates) =>
+            setDates([...newDates].sort((a, b) => new Date(a) - new Date(b)))
+          }
+          multiple
+          style={{ textAlign: "center" }}
+          minDate={Date.now()}
+          zIndex={1005}
+          displayWeekNumbers={true}
+          render={(value, openCalendar) => (
+            <div className="custom-date-display" onClick={openCalendar}>
+              {Array.isArray(value) ? (
+                value.map((date, index) => <div key={index}>{date}</div>)
+              ) : (
+                <span>{value || "Choose dates"}</span>
+              )}
+            </div>
+          )}
+          format="DD.MM.YYYY"
+          weekStartDayIndex={1}
+        />
+        <h2>Nykyinen ajankohta</h2>
+        <p className="old-event-value">
+          {parseTimeAndDate(times[0].StartTime)[0]} -{" "}
+          {parseTimeAndDate(times[0].EndTime)[0]}
+        </p>
+        <h3>Uusi ajankohta</h3>
+        <div>
+          <h3>{t.startTime}</h3>
+          <input
+            type="time"
+            value={startTime}
+            name="startTime"
+            className="input-field"
+            onChange={(e) => setStartTime(e.target.value)}
+            placeholder={t.dateAndTime}
+            required={true}
+          />
+        </div>
+        <div>
+          <h3>{t.endTime}</h3>
+          <input
+            type="time"
+            value={endTime}
+            name="endTime"
+            className="input-field"
+            onChange={(e) => setEndTime(e.target.value)}
+            placeholder={t.dateAndTime}
+            required={true}
+          />
+        </div>
+        <h2>{t.location}</h2>
+        <LocationMap
+          onLocationChange={handleLocationChange}
+          oldLocation={[
+            event.Event_Location.coordinates[0],
+            event.Event_Location.coordinates[1],
+          ]}
+        />
+
+        <h2>Nykyinen osallistujamäärä</h2>
+        <p className="old-event-value">
+          {event.ParticipantMin} - {event.ParticipantMax}
+        </p>
+        <h3>Uudet osallistujamäärät</h3>
+        <div>
+          <input
+            type="number"
+            value={participantsMin}
+            name="minParticipants"
+            className="input-field"
+            onChange={(e) => setParticipantsMin(e.target.value)}
+            placeholder={t.minParticipants}
+            required={true}
+          />
+        </div>
+        <div>
+          <input
+            type="number"
+            value={participantsMax}
+            name="maxParticipants"
+            className="input-field"
+            onChange={(e) => setParticipantsMax(e.target.value)}
+            placeholder={t.maxParticipants}
+            required={true}
+          />
+        </div>
+        <h2>Nykyinen kuvaus:</h2>
+        <p className="old-event-value">{event.Description}</p>
+        <h3>Uusi kuvaus:</h3>
+        <div>
+          <textarea
+            type="description"
+            value={description}
+            name="description"
+            className="input-field"
+            onChange={(e) => setDescription(e.target.value)}
+            placeholder={t.description}
+          />
+        </div>
         <p style={{ fontWeight: "lighter" }}>Tapahtumaa viimeksi päivitetty:</p>
         <p style={{ fontWeight: "lighter" }}>
           {parseTimeAndDate(event.updatedAt)[1]}{" "}

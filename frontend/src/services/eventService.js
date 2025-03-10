@@ -63,7 +63,10 @@ const joinEvent = async (parameters) => {
 // Liittyy tapahtumaan kirjautumaton
 const joinEventUnSigned = async (parameters) => {
   console.log("Lähetetään pyyntö, body:", parameters)
-  const response = await axios.post(baseUrl + "/events/join_event_unsigned", parameters)
+  const response = await axios.post(
+    baseUrl + "/events/join_event_unsigned",
+    parameters
+  )
   return response.data
 }
 
@@ -109,6 +112,11 @@ const deleteEvent = async (parameters) => {
   return response.data
 }
 
+const modifyEvent = async (parameters) => {
+  const response = await axios.post(baseUrl + "/events/update", parameters)
+  return response.data
+}
+
 export default {
   getCategories,
   getEvents,
@@ -125,4 +133,5 @@ export default {
   getUserCreatedEvents,
   deleteEventTime,
   deleteEvent,
+  modifyEvent,
 }

@@ -8,6 +8,7 @@ import eventService from "../../services/eventService.js"
 import { useNavigate } from "react-router-dom"
 import DatePicker from "react-multi-date-picker"
 import SendEmail from "../../utils/sendEmail.jsx"
+import { selectCategoryName } from "../../assets/icons.js"
 
 const CreateEventForm = () => {
   const language = useSelector((state) => state.language.language)
@@ -39,7 +40,7 @@ const CreateEventForm = () => {
         title,
         userID,
         categoryID,
-        dates, // FIKSAA TÄÄLTÄ AINAKIN
+        dates,
         startTime,
         endTime,
         event_location,
@@ -64,7 +65,7 @@ const CreateEventForm = () => {
     try {
       return categories.map((cat) => ({
         value: cat.CategoryID,
-        label: cat.Category,
+        label: t[selectCategoryName([cat.CategoryID])],
       }))
     } catch (error) {
       console.log(error)
@@ -99,6 +100,7 @@ const CreateEventForm = () => {
   }
 
   if (!userID) {
+    // Ei-kirjautuneen käyttäjän näkymä
     return (
       <div className="create-event-form">
         <form onSubmit={handleSubmitUnSigned}>
@@ -239,6 +241,7 @@ const CreateEventForm = () => {
   }
 
   return (
+    // Kirjautuneen käyttäjän näkymä
     <div className="create-event-form">
       <form onSubmit={handleSubmit}>
         <div className="form-item">
@@ -285,6 +288,7 @@ const CreateEventForm = () => {
               </div>
             )}
             format="DD.MM.YYYY"
+            weekStartDayIndex={1}
           />
         </div>
         <div className="form-item">
