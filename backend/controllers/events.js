@@ -371,7 +371,7 @@ eventRouter.post("/update", userExtractor, async (req, res) => {
     EventID,
   } = req.body
 
-  if (UserID === request.user.dataValues.UserID) {
+  if (UserID === req.user?.dataValues?.UserID ?? "NAN") {
     // Eli userExtractorin tokenista ekstraktoima userID
     const transaction = await sequelize.transaction() // aloitetaan transaktio
     try {

@@ -1,6 +1,11 @@
 import axios from "axios"
 import { baseUrl } from "./utils"
 
+let token = null
+const setToken = (storedToken) => {
+  token = `bearer ${storedToken}`
+}
+
 // Hakee aktiviteettikategoriat
 const getCategories = async () => {
   const response = await axios.get(baseUrl + "/events/categories")
@@ -112,8 +117,16 @@ const deleteEvent = async (parameters) => {
   return response.data
 }
 
-const modifyEvent = async (parameters) => {
-  const response = await axios.post(baseUrl + "/events/update", parameters)
+const modifyEvent = async (storedToken, parameters) => {
+  setToken(storedToken)
+  const headers = {
+    headers: { Authorization: token }, // Asetetaan token headeriin
+  }
+  const response = await axios.post(
+    baseUrl + "/events/update",
+    parameters,
+    headers
+  )
   return response.data
 }
 

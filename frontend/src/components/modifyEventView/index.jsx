@@ -18,6 +18,7 @@ const ModifyEvent = () => {
   const [event, setEvent] = useState(null)
   const [times, setTimes] = useState([])
   const [loading, setLoading] = useState(true)
+  const storedToken = useSelector((state) => state.user?.user?.token ?? null)
   const language = useSelector((state) => state.language.language)
   const t = translations[language]
   const userID = useSelector((state) => state.user.user.userID)
@@ -98,30 +99,27 @@ const ModifyEvent = () => {
 
   // Päivitä tapahtumaa
   const handleUpdateEvent = () => {
-    const categoryID = activity.value
+    const updatedtitle = title || event.Title
 
-    console.log(userID)
-    console.log(categoryID)
-    console.log(title)
-    console.log(dates)
-    console.log(startTime)
-    console.log(endTime)
-    console.log(event_location)
-    console.log(participantsMin)
-    console.log(participantsMax)
-    console.log(description)
+    const updatedStartTime =
+      startTime || parseTimeAndDate(times[0].StartTime)[0]
+    const updatedEndTime = endTime || parseTimeAndDate(times[0].EndTime)[0]
+    const updatedParticipantsMin = participantsMin || event.ParticipantMin
+    const updatedParticipantsMax = participantsMax || event.ParticipantMax
+    const updatedDescription = description || event.Description
+    const updatedCategoryID = activity.value || event.CategoryID // Jos kategoria on tyhjä, käytetään oletusarvoa
 
-    eventService.modifyEvent({
-      Title: title,
+    eventService.modifyEvent(storedToken, {
+      Title: updatedtitle,
       UserID: userID,
-      CategoryID: categoryID,
+      CategoryID: updatedCategoryID,
       Dates: dates,
-      StartTime: startTime,
-      EndTime: endTime,
+      StartTime: updatedStartTime,
+      EndTime: updatedEndTime,
       Event_Location: event_location,
-      ParticipantsMin: participantsMin,
-      ParticipantsMax: participantsMax,
-      Description: description,
+      ParticipantsMin: updatedParticipantsMin,
+      ParticipantsMax: updatedParticipantsMax,
+      Description: updatedDescription,
       EventID: id,
     })
   }
