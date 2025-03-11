@@ -43,3 +43,7 @@
 .old-event-value {
   font-weight: bold;
 }
+
+.own-event-item {
+  justify-items: center;
+}

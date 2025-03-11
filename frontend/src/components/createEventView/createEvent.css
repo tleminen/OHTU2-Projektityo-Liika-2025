@@ -1,27 +1,27 @@
 .create-event {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  gap: 8px;
   align-items: center;
-  margin: auto;
+  gap: 8px;
   width: 100%;
 }
 
 .create-event-form {
   display: flex;
   flex-direction: column;
+  align-self: center;
   align-items: center;
   justify-content: center;
   text-align: center;
 
   margin-top: 20px;
   margin-bottom: 20px;
-  max-width: 90vw;
 }
 
 .form-item {
   justify-self: center;
+  justify-content: center;
+  justify-items: center;
 }
 .custom-date-display {
   width: 100%;

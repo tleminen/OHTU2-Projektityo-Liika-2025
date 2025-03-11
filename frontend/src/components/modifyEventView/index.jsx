@@ -294,18 +294,18 @@ const ModifyEvent = () => {
           <br />
           Voit poistua tallentamatta muutoksia painamalla takaisin
         </p>
-        <h2>{t.activity}</h2>
-        <p className="old-event-value">
-          {t[selectCategoryName([event.CategoryID])]}
-        </p>
-        <img
-          src={`/lajit/${selectCategoryName([event.CategoryID])}.png`}
-          alt="Logo"
-          width={100}
-          height={100}
-          className="event-view-icon"
-        />
         <div>
+          <h2>{t.activity}</h2>
+          <p className="old-event-value">
+            {t[selectCategoryName([event.CategoryID])]}
+          </p>
+          <img
+            src={`/lajit/${selectCategoryName([event.CategoryID])}.png`}
+            alt="Logo"
+            width={100}
+            height={100}
+            className="event-view-icon"
+          />
           <h3>{t.activity}</h3>
           <Select
             className="input-field"
@@ -317,78 +317,85 @@ const ModifyEvent = () => {
             required={true}
           />
         </div>
-        <h2>{t.title}</h2>
-        <p className="old-event-value">{event.Title}</p>
-        <h3>Syötä uusi otsikko:</h3>
-        <input
-          type="text"
-          value={title}
-          placeholder={`${event.Title}`}
-          className="input-field"
-          onChange={(e) => setTitle(e.target.value)}
-          required={true}
-        />
-        <h2>Nykyiset esiintymät</h2>
-        <div className="time-parent">
-          {times.map((time, index) => (
-            <div key={index} className="time-child">
-              <button
-                onClick={() => handleTimeClick(time)}
-                className={getTimeButtonClass(time)}
-              >
-                {parseTimeAndDate(time.StartTime)[1]}
-              </button>
-              <div className="counter-icon">
-                <span>
-                  {time.JoinedCount}/{event.ParticipantMax}
-                </span>
-              </div>
-              <button onClick={() => handleCancelEvent(time)}>
-                Poista Esiintymä
-              </button>
-            </div>
-          ))}
+        <div className="own-event-item">
+          <h2>{t.title}</h2>
+          <p className="old-event-value">{event.Title}</p>
+          <h3>Syötä uusi otsikko:</h3>
+          <input
+            type="text"
+            value={title}
+            placeholder={`${event.Title}`}
+            className="input-field"
+            onChange={(e) => setTitle(e.target.value)}
+            required={true}
+          />
         </div>
-        {selectedTime && !isJoined(selectedTime) && (
-          <button className="join-btn" onClick={() => handleJoin(userID, id)}>
-            Ilmoittaudu
-          </button>
-        )}
-        {selectedTime && isJoined(selectedTime) && (
-          <button className="leave-btn" onClick={() => handleLeave(userID, id)}>
-            Peru ilmoittautuminen
-          </button>
-        )}
-        <h3>Lisää esiintymiä</h3>
-        <DatePicker
-          value={dates}
-          onChange={(newDates) =>
-            setDates([...newDates].sort((a, b) => new Date(a) - new Date(b)))
-          }
-          multiple
-          style={{ textAlign: "center" }}
-          minDate={Date.now()}
-          zIndex={1005}
-          displayWeekNumbers={true}
-          render={(value, openCalendar) => (
-            <div className="custom-date-display" onClick={openCalendar}>
-              {Array.isArray(value) ? (
-                value.map((date, index) => <div key={index}>{date}</div>)
-              ) : (
-                <span>{value || "Choose dates"}</span>
-              )}
-            </div>
+        <div className="own-event-item">
+          <h2>Nykyiset esiintymät</h2>
+          <div className="time-parent">
+            {times.map((time, index) => (
+              <div key={index} className="time-child">
+                <button
+                  onClick={() => handleTimeClick(time)}
+                  className={getTimeButtonClass(time)}
+                >
+                  {parseTimeAndDate(time.StartTime)[1]}
+                </button>
+                <div className="counter-icon">
+                  <span>
+                    {time.JoinedCount}/{event.ParticipantMax}
+                  </span>
+                </div>
+                <button onClick={() => handleCancelEvent(time)}>
+                  Poista Esiintymä
+                </button>
+              </div>
+            ))}
+          </div>
+          {selectedTime && !isJoined(selectedTime) && (
+            <button className="join-btn" onClick={() => handleJoin(userID, id)}>
+              Ilmoittaudu
+            </button>
           )}
-          format="DD.MM.YYYY"
-          weekStartDayIndex={1}
-        />
-        <h2>Nykyinen ajankohta</h2>
-        <p className="old-event-value">
-          {parseTimeAndDate(times[0].StartTime)[0]} -{" "}
-          {parseTimeAndDate(times[0].EndTime)[0]}
-        </p>
-        <h3>Uusi ajankohta</h3>
-        <div>
+          {selectedTime && isJoined(selectedTime) && (
+            <button
+              className="leave-btn"
+              onClick={() => handleLeave(userID, id)}
+            >
+              Peru ilmoittautuminen
+            </button>
+          )}
+          <h3>Lisää esiintymiä</h3>
+          <DatePicker
+            value={dates}
+            onChange={(newDates) =>
+              setDates([...newDates].sort((a, b) => new Date(a) - new Date(b)))
+            }
+            multiple
+            style={{ textAlign: "center" }}
+            minDate={Date.now()}
+            zIndex={1005}
+            displayWeekNumbers={true}
+            render={(value, openCalendar) => (
+              <div className="custom-date-display" onClick={openCalendar}>
+                {Array.isArray(value) ? (
+                  value.map((date, index) => <div key={index}>{date}</div>)
+                ) : (
+                  <span>{value || "Choose dates"}</span>
+                )}
+              </div>
+            )}
+            format="DD.MM.YYYY"
+            weekStartDayIndex={1}
+          />
+        </div>
+        <div className="own-event-item">
+          <h2>Nykyinen ajankohta</h2>
+          <p className="old-event-value">
+            {parseTimeAndDate(times[0].StartTime)[0]} -{" "}
+            {parseTimeAndDate(times[0].EndTime)[0]}
+          </p>
+          <h3>Uusi ajankohta</h3>
           <h3>{t.startTime}</h3>
           <input
             type="time"
@@ -399,8 +406,6 @@ const ModifyEvent = () => {
             placeholder={t.dateAndTime}
             required={true}
           />
-        </div>
-        <div>
           <h3>{t.endTime}</h3>
           <input
             type="time"
@@ -412,21 +417,22 @@ const ModifyEvent = () => {
             required={true}
           />
         </div>
-        <h2>{t.location}</h2>
-        <LocationMap
-          onLocationChange={handleLocationChange}
-          oldLocation={[
-            event.Event_Location.coordinates[0],
-            event.Event_Location.coordinates[1],
-          ]}
-        />
-
-        <h2>Nykyinen osallistujamäärä</h2>
-        <p className="old-event-value">
-          {event.ParticipantMin} - {event.ParticipantMax}
-        </p>
-        <h3>Uudet osallistujamäärät</h3>
-        <div>
+        <div className="own-event-item">
+          <h2>{t.location}</h2>
+          <LocationMap
+            onLocationChange={handleLocationChange}
+            oldLocation={[
+              event.Event_Location.coordinates[0],
+              event.Event_Location.coordinates[1],
+            ]}
+          />
+        </div>
+        <div className="own-event-item">
+          <h2>Nykyinen osallistujamäärä</h2>
+          <p className="old-event-value">
+            {event.ParticipantMin} - {event.ParticipantMax}
+          </p>
+          <h3>Uudet osallistujamäärät</h3>
           <input
             type="number"
             value={participantsMin}
@@ -436,8 +442,6 @@ const ModifyEvent = () => {
             placeholder={t.minParticipants}
             required={true}
           />
-        </div>
-        <div>
           <input
             type="number"
             value={participantsMax}
@@ -448,10 +452,10 @@ const ModifyEvent = () => {
             required={true}
           />
         </div>
-        <h2>Nykyinen kuvaus:</h2>
-        <p className="old-event-value">{event.Description}</p>
-        <h3>Uusi kuvaus:</h3>
-        <div>
+        <div className="own-event-item">
+          <h2>Nykyinen kuvaus:</h2>
+          <p className="old-event-value">{event.Description}</p>
+          <h3>Uusi kuvaus:</h3>
           <textarea
             type="description"
             value={description}
