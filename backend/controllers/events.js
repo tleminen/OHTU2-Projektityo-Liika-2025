@@ -160,13 +160,17 @@ eventRouter.post("/create_event_unsigned", async (req, res) => {
   const transaction = await sequelize.transaction()
 
   try {
-    // Luodaan käyttäjä
+    // Tarkistetaan ensin löytyykö käyttäjää jo
     let user = await Users.findOne({
-      where: { Email: email },
-      attributes: ["UserID"],
+      where: {
+        Email: email,
+      },
+      attributes: ["UserID", "Role"],
       transaction,
     })
+    // Jos käyttäjä löytyi ja hän on aiemmin luonut tapahtuman tai liittynyt
     if (!user) {
+      // Jos uusi käyttäjä
       user = await Users.create(
         {
           Username: email,
@@ -180,44 +184,53 @@ eventRouter.post("/create_event_unsigned", async (req, res) => {
       )
     }
 
-    // Luodaan tapahtuma
-    const event = await Events.create(
-      {
-        Event_Location: Sequelize.fn(
-          "ST_SetSRID",
-          Sequelize.fn("ST_MakePoint", event_location.lng, event_location.lat),
-          4326
-        ),
-        Status: "Basic",
-        Title: title,
-        UserID: user.UserID,
-        CategoryID: categoryID,
-        ParticipantMax: participantsMax,
-        ParticipantMin: participantsMin,
-        Description: description,
-      },
-      { transaction }
-    )
+    if (user && user.Role === 2) {
+      // Luodaan tapahtuma
+      const event = await Events.create(
+        {
+          Event_Location: Sequelize.fn(
+            "ST_SetSRID",
+            Sequelize.fn(
+              "ST_MakePoint",
+              event_location.lng,
+              event_location.lat
+            ),
+            4326
+          ),
+          Status: "Basic",
+          Title: title,
+          UserID: user.UserID,
+          CategoryID: categoryID,
+          ParticipantMax: participantsMax,
+          ParticipantMin: participantsMin,
+          Description: description,
+        },
+        { transaction }
+      )
 
-    // Luodaan tapahtuman aika
-    await Promise.all(
-      dates.map(async (timestamp) => {
-        const date = new Date(timestamp).toISOString().split("T")[0] // YYYY-MM-DD
+      // Luodaan tapahtuman aika
+      await Promise.all(
+        dates.map(async (timestamp) => {
+          const date = new Date(timestamp).toISOString().split("T")[0] // YYYY-MM-DD
 
-        await Times.create(
-          {
-            StartTime: `${date} ${startTime}:00.000+2`,
-            EndTime: `${date} ${endTime}:00.000+2`,
-            EventID: event.EventID,
-          },
-          { transaction }
-        )
-      })
-    )
+          await Times.create(
+            {
+              StartTime: `${date} ${startTime}:00.000+2`,
+              EndTime: `${date} ${endTime}:00.000+2`,
+              EventID: event.EventID,
+            },
+            { transaction }
+          )
+        })
+      )
 
-    // Jos kaikki onnistuu, commitoidaan transaktio
-    await transaction.commit()
-    res.status(201).send({ message: "Event created successfully" })
+      // Jos kaikki onnistuu, commitoidaan transaktio
+      await transaction.commit()
+      res.status(201).json({ message: "Event created successfully" })
+    } else {
+      res.status(401).json({ message: "User alredy registered" })
+      console.error("User already registered")
+    }
   } catch (error) {
     console.error("Virhe tapahtuman luonnissa:", error)
 

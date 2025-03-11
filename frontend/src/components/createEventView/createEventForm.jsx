@@ -83,6 +83,7 @@ const CreateEventForm = () => {
 
     try {
       eventService.createEventUnSigned({
+        // TODO: Tee varmennus, että kyselyn tekijä on sama joka varmensi emailin
         title,
         categoryID,
         dates,
