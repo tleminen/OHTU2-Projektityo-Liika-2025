@@ -7,25 +7,29 @@ import { Link } from "react-router-dom"
 
 const EventList = (listType) => {
   const userID = useSelector((state) => state.user.user.userID)
+  const storedToken = useSelector((state) => state.user?.user?.token ?? null)
   const [events, setEvents] = useState([])
 
   useEffect(() => {
     const fetchEvents = async () => {
       if (listType.listType === "created") {
-        console.log("luodut!")
         try {
-          const events = await eventService.getUserCreatedEvents(userID)
+          const events = await eventService.getUserCreatedEvents(
+            storedToken,
+            userID
+          )
           if (events) {
             setEvents(events)
           }
-          console.log(events)
         } catch (error) {
           console.error("Virhe haettaessa käyttäjän tapahtumia: " + error)
         }
       } else if (listType.listType === "joined") {
-        console.log("liitytyt")
         try {
-          const events = await eventService.getUserJoinedEvents(userID)
+          const events = await eventService.getUserJoinedEvents(
+            storedToken,
+            userID
+          )
           if (events) {
             setEvents(events)
           }
@@ -35,7 +39,7 @@ const EventList = (listType) => {
       }
     }
     fetchEvents()
-  }, [userID])
+  }, [userID, storedToken, listType])
 
   const header = () => {
     if (listType.listType === "created") {
@@ -56,7 +60,7 @@ const EventList = (listType) => {
   return (
     <div className="joined-view">
       <div className="event-container">
-        <h1>{header()}</h1>
+        {header()}
 
         <div className="event-list-items">
           {events.map((event, index) => (
@@ -65,19 +69,19 @@ const EventList = (listType) => {
               key={index}
               className="event-item"
             >
-              <p>
+              <div>
                 <h2>Aika</h2>
                 {parseTimeAndDate(event.StartTime)[1].slice(0, -4)} {""}
                 {parseTimeAndDate(event.StartTime)[0]}
-              </p>
-              <p>
+              </div>
+              <div>
                 <h2>Otsikko</h2>
                 {event.Title}
-              </p>
-              <p>
+              </div>
+              <div>
                 <h2>Osallistujat</h2>
                 {event.JoinedCount}
-              </p>
+              </div>
             </Link>
           ))}
         </div>

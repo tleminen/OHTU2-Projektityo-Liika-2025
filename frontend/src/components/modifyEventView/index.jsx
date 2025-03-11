@@ -71,7 +71,7 @@ const ModifyEvent = () => {
   const handleJoin = async (userID, id) => {
     console.log(selectedTime.id)
     try {
-      const response = await eventService.joinEvent({
+      const response = await eventService.joinEvent(storedToken, {
         UserID: userID,
         EventID: id,
         TimeID: Number(selectedTime.TimeID),
@@ -130,13 +130,17 @@ const ModifyEvent = () => {
     try {
       var response = null
       if (times.length === 1) {
-        response = await eventService.deleteEvent({
+        response = await eventService.deleteEvent(storedToken, {
+          UserID: userID,
           EventID: event.EventID,
           TimeID: time.TimeID,
         })
         navigate("/created_events")
       } else {
-        response = await eventService.deleteEventTime({ TimeID: time.TimeID })
+        response = await eventService.deleteEventTime(storedToken, {
+          UserID: userID,
+          TimeID: time.TimeID,
+        })
         // Päivitä frontendin times-tila poistamalla kyseinen aika listasta
         setTimes((prevTimes) =>
           prevTimes.filter((t) => t.TimeID !== time.TimeID)
@@ -160,7 +164,7 @@ const ModifyEvent = () => {
   // Tapahtumasta eroamisen painikkeen handleri
   const handleLeave = async (userID, id) => {
     try {
-      const response = await eventService.leaveEvent({
+      const response = await eventService.leaveEvent(storedToken, {
         UserID: userID,
         EventID: Number(id),
         TimeID: Number(selectedTime.TimeID),

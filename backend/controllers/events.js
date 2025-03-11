@@ -302,95 +302,125 @@ eventRouter.post("/join_event_unsigned", async (req, res) => {
 // Liittyminen tapahtumaan kirjautumaton päättyy
 
 // Poistu tapahtumasta
-eventRouter.post("/leave_event", async (req, res) => {
+eventRouter.post("/leave_event", userExtractor, async (req, res) => {
   const { UserID, EventID, TimeID } = req.body
-  try {
-    const deletedRows = await Joins.destroy({
-      where: {
-        UserID: UserID,
-        EventID: EventID,
-        TimeID: TimeID,
-      },
-    })
-    if (deletedRows > 0) {
-      res.status(200).json({ message: "Left event successfully" })
-    } else {
-      res.status(404).json({ error: "Event not found or already left" })
+  if (UserID === req.user?.dataValues?.UserID ?? "NAN") {
+    try {
+      const deletedRows = await Joins.destroy({
+        where: {
+          UserID: UserID,
+          EventID: EventID,
+          TimeID: TimeID,
+        },
+      })
+      if (deletedRows > 0) {
+        res.status(200).json({ message: "Left event successfully" })
+      } else {
+        res.status(404).json({ error: "Event not found or already left" })
+      }
+    } catch (error) {
+      console.error("Problems when leaving event: " + error)
+      res.status(500).json({ error: "Internal Server Error" })
     }
-  } catch (error) {
-    console.error("Problems when leaving event: " + error)
-    res.status(500).json({ error: "Internal Server Error" })
+  } else {
+    console.error("Invalid token")
+    res.status(401).json({ error: "Unauthorized" })
   }
 })
 
-// Hae käyttäjän liitytyt tapahtumat (id:t joinsista)
-eventRouter.post("/joined", async (req, res) => {
+// Hae käyttäjän liitytyt tapahtumat (id:t joinsista) ONKO YLIMÄÄRÄINEN??? 11.3.
+eventRouter.post("/joined", userExtractor, async (req, res) => {
   const { UserID } = req.body
-  try {
-    const response = await Joins.findAll({
-      where: { UserID: UserID },
-    })
-    res.status(200).json(response)
-  } catch (error) {
-    console.error("Problems with retreving joined evets for user: " + error)
-    res.status(500).json({ error: "Internal Server Error" })
+  if (UserID === req.user?.dataValues?.UserID ?? "NAN") {
+    try {
+      const response = await Joins.findAll({
+        where: { UserID: UserID },
+      })
+      res.status(200).json(response)
+    } catch (error) {
+      console.error("Problems with retreving joined evets for user: " + error)
+      res.status(500).json({ error: "Internal Server Error" })
+    }
+  } else {
+    console.error("Invalid token")
+    res.status(401).json({ error: "Unauthorized" })
   }
 })
 
 // Hakee käyttäjän liitytyt tapahtumat (data)
-eventRouter.post("/userJoinedEvents", async (req, res) => {
+eventRouter.post("/userJoinedEvents", userExtractor, async (req, res) => {
   const { UserID } = req.body
-  try {
-    const events = await getUserJoinedEvents(UserID)
-    res.json(events)
-  } catch (error) {
-    console.error("Problems with retreving joined events with full data")
-    res.status(500).json({ error: "Internal Server Error" })
+  if (UserID === req.user?.dataValues?.UserID ?? "NAN") {
+    try {
+      const events = await getUserJoinedEvents(UserID)
+      res.json(events)
+    } catch (error) {
+      console.error("Problems with retreving joined events with full data")
+      res.status(500).json({ error: "Internal Server Error" })
+    }
+  } else {
+    console.error("Invalid token")
+    res.status(401).json({ error: "Unauthorized" })
   }
 })
 
-eventRouter.post("/userCreatedEvents", async (req, res) => {
+eventRouter.post("/userCreatedEvents", userExtractor, async (req, res) => {
   const { UserID } = req.body
-  try {
-    const events = await getUserCreatedEvents(UserID)
-    res.json(events)
-  } catch (error) {
-    console.error("Problems with retreving joined events with full data")
-    res.status(500).json({ error: "Internal Server Error" })
+  if (UserID === req.user?.dataValues?.UserID ?? "NAN") {
+    try {
+      const events = await getUserCreatedEvents(UserID)
+      res.json(events)
+    } catch (error) {
+      console.error("Problems with retreving joined events with full data")
+      res.status(500).json({ error: "Internal Server Error" })
+    }
+  } else {
+    console.error("Invalid token")
+    res.status(401).json({ error: "Unauthorized" })
   }
 })
 
 // Poistetaan yksittäinen aika. (Käyttää cascade-metodia)
-eventRouter.post("/delete/time", async (req, res) => {
-  const { TimeID } = req.body
-  try {
-    const deletedRows = await Times.destroy({ where: { TimeID: TimeID } })
-    if (deletedRows > 0) {
-      res.status(200).json({ message: "Time deleted successfully" })
-    } else {
-      res
-        .status(404)
-        .json({ error: "Time for event not found or already deleted" })
+eventRouter.post("/delete/time", userExtractor, async (req, res) => {
+  const { UserID, TimeID } = req.body
+  if (UserID === req.user?.dataValues?.UserID ?? "NAN") {
+    try {
+      const deletedRows = await Times.destroy({ where: { TimeID: TimeID } })
+      if (deletedRows > 0) {
+        res.status(200).json({ message: "Time deleted successfully" })
+      } else {
+        res
+          .status(404)
+          .json({ error: "Time for event not found or already deleted" })
+      }
+    } catch (error) {
+      console.error("Problems with deleting time")
     }
-  } catch (error) {
-    console.error("Problems with deleting time")
+  } else {
+    console.error("Invalid token")
+    res.status(401).json({ error: "Unauthorized" })
   }
 })
 
 // Poistetaan koko tapahtuma
-eventRouter.post("/delete/event", async (req, res) => {
-  const { EventID, TimeID } = req.body
-  const transaction = await sequelize.transaction()
-  try {
-    await Times.destroy({ where: { TimeID: TimeID }, transaction })
-    await Events.destroy({ where: { EventID: EventID }, transaction })
+eventRouter.post("/delete/event", userExtractor, async (req, res) => {
+  const { UserID, EventID, TimeID } = req.body
+  if (UserID === req.user?.dataValues?.UserID ?? "NAN") {
+    const transaction = await sequelize.transaction()
+    try {
+      await Times.destroy({ where: { TimeID: TimeID }, transaction })
+      await Events.destroy({ where: { EventID: EventID }, transaction })
 
-    await transaction.commit()
-    console.log(`Event ${EventID} and related joins deleted.`)
-    res.status(200).json({ message: "Event deleted successfully" })
-  } catch (error) {
-    console.error("Problems with deleting event" + error)
-    await transaction.rollback()
+      await transaction.commit()
+      console.log(`Event ${EventID} and related joins deleted.`)
+      res.status(200).json({ message: "Event deleted successfully" })
+    } catch (error) {
+      console.error("Problems with deleting event" + error)
+      await transaction.rollback()
+    }
+  } else {
+    console.error("Invalid token")
+    res.status(401).json({ error: "Unauthorized" })
   }
 })
 

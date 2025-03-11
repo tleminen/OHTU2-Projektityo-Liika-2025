@@ -110,7 +110,7 @@ const EventView = () => {
   // Tapahtumasta eroamisen painikkeen handleri
   const handleLeave = async (userID, id) => {
     try {
-      const response = await eventService.leaveEvent({
+      const response = await eventService.leaveEvent(storedToken, {
         UserID: userID,
         EventID: Number(id),
         TimeID: Number(selectedTime.TimeID),

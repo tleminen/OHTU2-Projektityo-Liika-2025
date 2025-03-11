@@ -89,43 +89,82 @@ const joinEventUnSigned = async (parameters) => {
 }
 
 // Poistuu tapahtumasta
-const leaveEvent = async (parameters) => {
-  const response = await axios.post(baseUrl + "/events/leave_event", parameters)
+const leaveEvent = async (storedToken, parameters) => {
+  setToken(storedToken)
+  const headers = {
+    headers: { Authorization: token }, // Asetetaan token headeriin
+  }
+  const response = await axios.post(
+    baseUrl + "/events/leave_event",
+    parameters,
+    headers
+  )
   return response.data
 }
 
-// Hakee käyttäjän liitytyt tapahtumat
+// Hakee käyttäjän liitytyt tapahtumat Onko tarpeeton nykyään??????? 11.3.2025
+/*
 const getJoined = async (parameters) => {
   const response = await axios.post(baseUrl + "/events/joined", parameters)
   return response.data
 }
+  */
 
 // Hakee käyttäjän liitytyt tapahtumat
-const getUserJoinedEvents = async (UserID) => {
-  const response = await axios.post(baseUrl + "/events/userJoinedEvents", {
-    UserID,
-  })
+const getUserJoinedEvents = async (storedToken, UserID) => {
+  setToken(storedToken)
+  const headers = {
+    headers: { Authorization: token }, // Asetetaan token headeriin
+  }
+  const response = await axios.post(
+    baseUrl + "/events/userJoinedEvents",
+    {
+      UserID,
+    },
+    headers
+  )
   return response.data
 }
 
 // Hakee käyttäjän liitytyt tapahtumat
-const getUserCreatedEvents = async (UserID) => {
-  const response = await axios.post(baseUrl + "/events/userCreatedEvents", {
-    UserID,
-  })
+const getUserCreatedEvents = async (storedToken, UserID) => {
+  setToken(storedToken)
+  const headers = {
+    headers: { Authorization: token }, // Asetetaan token headeriin
+  }
+  const response = await axios.post(
+    baseUrl + "/events/userCreatedEvents",
+    {
+      UserID,
+    },
+    headers
+  )
   return response.data
 }
 
 // Poistaa tapahtuman yhden ajan
-const deleteEventTime = async (parameters) => {
-  const response = await axios.post(baseUrl + "/events/delete/time", parameters)
+const deleteEventTime = async (storedToken, parameters) => {
+  setToken(storedToken)
+  const headers = {
+    headers: { Authorization: token }, // Asetetaan token headeriin
+  }
+  const response = await axios.post(
+    baseUrl + "/events/delete/time",
+    parameters,
+    headers
+  )
   return response.data
 }
 
-const deleteEvent = async (parameters) => {
+const deleteEvent = async (storedToken, parameters) => {
+  setToken(storedToken)
+  const headers = {
+    headers: { Authorization: token }, // Asetetaan token headeriin
+  }
   const response = await axios.post(
     baseUrl + "/events/delete/event",
-    parameters
+    parameters,
+    headers
   )
   return response.data
 }
@@ -150,7 +189,7 @@ export default {
   createEventUnSigned,
   joinEvent,
   joinEventUnSigned,
-  getJoined,
+  //getJoined,
   leaveEvent,
   createEventEmailSend,
   createEventVerifyOtp,
