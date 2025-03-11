@@ -66,15 +66,16 @@ const EventList = (listType) => {
               className="event-item"
             >
               <p>
-                Aika<br/>
+                <h2>Aika</h2>
                 {parseTimeAndDate(event.StartTime)[1].slice(0, -4)} {""}
                 {parseTimeAndDate(event.StartTime)[0]}
               </p>
               <p>
-                Otsikko<br/>
-                {event.Title}</p>
+                <h2>Otsikko</h2>
+                {event.Title}
+              </p>
               <p>
-                Osallistujat<br/>
+                <h2>Osallistujat</h2>
                 {event.JoinedCount}
               </p>
             </Link>

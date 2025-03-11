@@ -30,6 +30,7 @@
 .event-item {
   display: flex;
   justify-content: space-between;
+  flex-direction: column;
   padding: 20px;
   color: black;
   background-color: rgba(
@@ -44,4 +45,5 @@
   margin-bottom: 10px;
   margin-top: 10px;
   text-align: center;
+  gap: 8px;
 }
