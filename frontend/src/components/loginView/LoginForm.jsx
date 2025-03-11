@@ -84,7 +84,7 @@ const LoginForm = () => {
   return (
     <div className="login-form">
       <form onSubmit={handleSubmit}>
-        <div>
+        <div className="login-form-item">
           <h3>{t.username}</h3>
           <input
             ref={inputRef}
@@ -100,26 +100,28 @@ const LoginForm = () => {
         {errors.username && (
           <div className="error-forms">{errors.username}</div>
         )}
-        <h3>{t.password}</h3>
-        <div className="password-input-container">
-          <input
-            type={showPassword ? "text" : "password"}
-            className={`input-field ${errors.password ? "error" : ""}`}
-            value={password}
-            name="password"
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder={t.password}
-            autoComplete="current-password"
-          />
-          <button
-            type="button"
-            className="password-toggle-button"
-            onClick={togglePasswordVisibility}
-          >
-            <span className="material-symbols-outlined">
-              {showPassword ? "visibility_off" : "visibility"}
-            </span>
-          </button>
+        <div className="login-form-item">
+          <h3>{t.password}</h3>
+          <div className="password-input-container">
+            <input
+              type={showPassword ? "text" : "password"}
+              className={`input-field ${errors.password ? "error" : ""}`}
+              value={password}
+              name="password"
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder={t.password}
+              autoComplete="current-password"
+            />
+            <button
+              type="button"
+              className="password-toggle-button"
+              onClick={togglePasswordVisibility}
+            >
+              <span className="material-symbols-outlined">
+                {showPassword ? "visibility_off" : "visibility"}
+              </span>
+            </button>
+          </div>
         </div>
         {errors.password && (
           <div className="error-forms">{errors.password}</div>
