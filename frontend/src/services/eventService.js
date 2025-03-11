@@ -65,8 +65,16 @@ const createEventVerifyOtp = async (parameters) => {
 }
 
 // Liittyy tapahtumaan
-const joinEvent = async (parameters) => {
-  const response = await axios.post(baseUrl + "/events/join_event", parameters)
+const joinEvent = async (storedToken, parameters) => {
+  setToken(storedToken)
+  const headers = {
+    headers: { Authorization: token }, // Asetetaan token headeriin
+  }
+  const response = await axios.post(
+    baseUrl + "/events/join_event",
+    parameters,
+    headers
+  )
   return response.data
 }
 

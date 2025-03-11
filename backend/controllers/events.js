@@ -168,7 +168,6 @@ eventRouter.post("/create_event_unsigned", async (req, res) => {
       attributes: ["UserID", "Role"],
       transaction,
     })
-    // Jos käyttäjä löytyi ja hän on aiemmin luonut tapahtuman tai liittynyt
     if (!user) {
       // Jos uusi käyttäjä
       user = await Users.create(
@@ -185,6 +184,7 @@ eventRouter.post("/create_event_unsigned", async (req, res) => {
     }
 
     if (user && user.Role === 2) {
+      // Jos vanha käyttäjä joka ei ole rekisteröitynyt
       // Luodaan tapahtuma
       const event = await Events.create(
         {
@@ -242,18 +242,23 @@ eventRouter.post("/create_event_unsigned", async (req, res) => {
 //Tapahtuman luonti kirjautumaton päättyy
 
 // Liity tapahtumaan
-eventRouter.post("/join_event", async (req, res) => {
+eventRouter.post("/join_event", userExtractor, async (req, res) => {
   const { UserID, EventID, TimeID } = req.body
-  try {
-    const response = await Joins.create({
-      UserID: UserID,
-      EventID: EventID,
-      TimeID: TimeID,
-    })
-    res.status(200).send()
-  } catch (error) {
-    console.error("Problems when joining event: " + error)
-    res.status(500).json({ error: "Internal Server Error" })
+  if (UserID === req.user?.dataValues?.UserID ?? "NAN") {
+    try {
+      const response = await Joins.create({
+        UserID: UserID,
+        EventID: EventID,
+        TimeID: TimeID,
+      })
+      res.status(200).send()
+    } catch (error) {
+      console.error("Problems when joining event: " + error)
+      res.status(500).json({ error: "Internal Server Error" })
+    }
+  } else {
+    console.error("Invalid token")
+    res.status(401).json({ error: "Unauthorized" })
   }
 })
 
@@ -262,19 +267,31 @@ eventRouter.post("/join_event_unsigned", async (req, res) => {
   const { Email, EventID, TimeID } = req.body
   console.log("email eventRouter: " + Email)
   try {
-    const newUser = await createUserUnSigned(Email)
-    console.log("Uusi käyttäjä luotu:", newUser)
-
-    try {
-      const response = await Joins.create({
-        UserID: newUser.UserID,
-        EventID: EventID,
-        TimeID: TimeID,
-      })
-      res.status(200).send()
-    } catch (error) {
-      console.error("Problems when joining event: " + error)
-      res.status(500).json({ error: "Internal Server Error" })
+    let user = await Users.findOne({
+      where: {
+        Email: Email,
+      },
+      attributes: ["UserID", "Role"],
+    })
+    if (!user) {
+      user = await createUserUnSigned(Email)
+      console.log("Uusi käyttäjä luotu:", newUser)
+    }
+    if (user.Role === 2) {
+      try {
+        const response = await Joins.create({
+          UserID: user.UserID,
+          EventID: EventID,
+          TimeID: TimeID,
+        })
+        res.status(200).send()
+      } catch (error) {
+        console.error("Problems when joining event: " + error)
+        res.status(500).json({ error: "Internal Server Error" })
+      }
+    } else {
+      res.status(401).json({ message: "User alredy registered" })
+      console.error("User already registered")
     }
   } catch (error) {
     console.error("Käyttäjän luominen epäonnistui:", error)
