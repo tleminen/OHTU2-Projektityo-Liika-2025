@@ -25,7 +25,8 @@ const CreateEventForm = () => {
   const [description, setDescription] = useState("")
   const [email, setEmail] = useState("")
   const [isOtpVerified, setIsOtpVerified] = useState(false)
-  const userID = useSelector((state) => state.user?.user?.userID ?? null) // Tälleen saa hienosti kokeiltua onko undefined ja jos on nii chain-kysely jatkuu
+  const userID = useSelector((state) => state.user?.user?.userID ?? null)
+  const storedToken = useSelector((state) => state.user?.user?.token ?? null)
 
   const handleSubmit = (event) => {
     const categoryID = activity.value
@@ -36,7 +37,7 @@ const CreateEventForm = () => {
     }
 
     try {
-      eventService.createEvent({
+      eventService.createEvent(storedToken, {
         title,
         userID,
         categoryID,

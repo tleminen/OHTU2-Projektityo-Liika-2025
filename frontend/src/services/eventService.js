@@ -28,10 +28,15 @@ const getSingleEventWithTimes = async (parameters) => {
 }
 
 // Luo tapahtuman
-const createEvent = async (parameters) => {
+const createEvent = async (storedToken, parameters) => {
+  setToken(storedToken)
+  const headers = {
+    headers: { Authorization: token }, // Asetetaan token headeriin
+  }
   const response = await axios.post(
     baseUrl + "/events/create_event",
-    parameters
+    parameters,
+    headers
   )
   return response.data
 }

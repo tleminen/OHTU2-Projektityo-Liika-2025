@@ -58,7 +58,7 @@ eventRouter.get("/categories", async (req, res) => {
 }) // Kategoriahaku päättyy
 
 // Luo tapahtuma
-eventRouter.post("/create_event", async (req, res) => {
+eventRouter.post("/create_event", userExtractor, async (req, res) => {
   const {
     event_location,
     title,
@@ -71,53 +71,62 @@ eventRouter.post("/create_event", async (req, res) => {
     startTime,
     endTime,
   } = req.body
-  const transaction = await sequelize.transaction()
+  if (userID === req.user?.dataValues?.UserID ?? "NAN") {
+    const transaction = await sequelize.transaction()
 
-  try {
-    // Luodaan event transaktion sisällä
-    const event = await Events.create(
-      {
-        Event_Location: Sequelize.fn(
-          "ST_SetSRID",
-          Sequelize.fn("ST_MakePoint", event_location.lng, event_location.lat),
-          4326
-        ),
-        Status: "Basic",
-        Title: title,
-        UserID: userID,
-        CategoryID: categoryID,
-        ParticipantMax: participantsMax,
-        ParticipantMin: participantsMin,
-        Description: description,
-      },
-      { transaction }
-    )
+    try {
+      // Luodaan event transaktion sisällä
+      const event = await Events.create(
+        {
+          Event_Location: Sequelize.fn(
+            "ST_SetSRID",
+            Sequelize.fn(
+              "ST_MakePoint",
+              event_location.lng,
+              event_location.lat
+            ),
+            4326
+          ),
+          Status: "Basic",
+          Title: title,
+          UserID: userID,
+          CategoryID: categoryID,
+          ParticipantMax: participantsMax,
+          ParticipantMin: participantsMin,
+          Description: description,
+        },
+        { transaction }
+      )
 
-    // Luodaan tapahtuman ajat
-    await Promise.all(
-      dates.map(async (timestamp) => {
-        const date = new Date(timestamp).toISOString().split("T")[0] // YYYY-MM-DD
+      // Luodaan tapahtuman ajat
+      await Promise.all(
+        dates.map(async (timestamp) => {
+          const date = new Date(timestamp).toISOString().split("T")[0] // YYYY-MM-DD
 
-        await Times.create(
-          {
-            StartTime: `${date} ${startTime}:00.000+2`,
-            EndTime: `${date} ${endTime}:00.000+2`,
-            EventID: event.EventID,
-          },
-          { transaction }
-        )
-      })
-    )
+          await Times.create(
+            {
+              StartTime: `${date} ${startTime}:00.000+2`,
+              EndTime: `${date} ${endTime}:00.000+2`,
+              EventID: event.EventID,
+            },
+            { transaction }
+          )
+        })
+      )
 
-    // Jos kaikki onnistui, commitoidaan transaktio
-    await transaction.commit()
-    res.status(201).send()
-  } catch (error) {
-    console.error("Virhe tapahtuman luonnissa:", error)
+      // Jos kaikki onnistui, commitoidaan transaktio
+      await transaction.commit()
+      res.status(201).send()
+    } catch (error) {
+      console.error("Virhe tapahtuman luonnissa:", error)
 
-    // Rollback jos virhe tapahtui
-    await transaction.rollback()
-    res.status(500).json({ error: "Internal Server Error" })
+      // Rollback jos virhe tapahtui
+      await transaction.rollback()
+      res.status(500).json({ error: "Internal Server Error" })
+    }
+  } else {
+    console.error("Invalid token")
+    res.status(401).json({ error: "Unauthorized" })
   }
 }) // Tapahtuman luonti päättyy
 
