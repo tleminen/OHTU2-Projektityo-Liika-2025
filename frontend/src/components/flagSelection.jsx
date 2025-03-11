@@ -2,7 +2,8 @@ import { useDispatch, useSelector } from "react-redux"
 import Select from "react-select"
 import { changeLanguage } from "../store/languageSlice"
 
-const FlagSelection = ({menuPlacement}) => {
+// eslint-disable-next-line react/prop-types
+const FlagSelection = ({ menuPlacement }) => {
   const dispatch = useDispatch()
   const selectedLanguage = useSelector((state) => state.language.language)
 

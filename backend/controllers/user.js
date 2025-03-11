@@ -33,7 +33,7 @@ userRouter.post("/user", userExtractor, async (request, response) => {
     console.error("Invalid token")
     response.status(401).json({ error: "Unauthorized" })
   }
-}) // Rekisteröinti päättyy
+}) // Tietojen haku päättyy
 
 userRouter.post("/update/email", userExtractor, async (request, response) => {
   const { UserID, Email } = request.body
@@ -67,7 +67,7 @@ userRouter.post("/update/email", userExtractor, async (request, response) => {
     console.error("Invalid token")
     response.status(401).json({ error: "Unauthorized" })
   }
-})
+}) // Sähköpostin päivitys päättyy
 
 module.exports = userRouter
 

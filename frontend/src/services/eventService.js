@@ -102,13 +102,20 @@ const leaveEvent = async (storedToken, parameters) => {
   return response.data
 }
 
-// Hakee käyttäjän liitytyt tapahtumat Onko tarpeeton nykyään??????? 11.3.2025
-/*
-const getJoined = async (parameters) => {
-  const response = await axios.post(baseUrl + "/events/joined", parameters)
+// Hakee käyttäjän liitytyt tapahtumat
+
+const getJoined = async (storedToken, parameters) => {
+  setToken(storedToken)
+  const headers = {
+    headers: { Authorization: token }, // Asetetaan token headeriin
+  }
+  const response = await axios.post(
+    baseUrl + "/events/joined",
+    parameters,
+    headers
+  )
   return response.data
 }
-  */
 
 // Hakee käyttäjän liitytyt tapahtumat
 const getUserJoinedEvents = async (storedToken, UserID) => {
@@ -189,7 +196,7 @@ export default {
   createEventUnSigned,
   joinEvent,
   joinEventUnSigned,
-  //getJoined,
+  getJoined,
   leaveEvent,
   createEventEmailSend,
   createEventVerifyOtp,

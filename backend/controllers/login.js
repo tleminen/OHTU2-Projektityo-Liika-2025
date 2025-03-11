@@ -18,11 +18,8 @@ loginRouter.post("/", async (req, res) => {
         Username: username,
       },
     })
-    console.log("Tietokannasta user: " + user)
-    console.log("salasana: " + password)
     const passwordCorrect =
       user === null ? false : await bcrypt.compare(password, user.Password)
-    console.log("Salasana on true/false = " + passwordCorrect)
     if (!(user && passwordCorrect)) {
       return res.status(401).json({
         error: "invalid username or password",
@@ -48,7 +45,7 @@ loginRouter.post("/", async (req, res) => {
       username: user.Username,
       location: user.Location.coordinates,
       email: user.Email,
-      language: "FI", // Kovakoodattu, laita kyselyyn populate with language jotenkin
+      language: user.LanguageID, // Kovakoodattu, laita kyselyyn populate with language jotenkin
     })
   } catch (error) {
     console.log(error)

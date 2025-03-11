@@ -9,6 +9,7 @@ import { useEffect } from "react"
 const MapView = () => {
   const startingLocation = useSelector((state) => state.location.location) // haetaan kartan aloituskohta
   const userID = useSelector((state) => state.user?.user?.userID ?? null)
+  const storedToken = useSelector((state) => state.user?.user?.token ?? null)
   const dispatch = useDispatch()
   const categories = useSelector(
     (state) => state.categories?.categories ?? null
@@ -38,7 +39,9 @@ const MapView = () => {
           userID &&
           (!events || (Array.isArray(events) && events.length === 0))
         ) {
-          const fetchedEvents = await eventService.getJoined({ UserID: userID })
+          const fetchedEvents = await eventService.getJoined(storedToken, {
+            UserID: userID,
+          })
 
           // Tarkistetaan, ettei tehdä turhaa päivitystä
           if (

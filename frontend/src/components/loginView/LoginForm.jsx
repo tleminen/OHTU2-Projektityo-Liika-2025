@@ -9,6 +9,7 @@ import { changeUser } from "../../store/userSlice.js"
 import { loginValidation } from "../../utils/validationSchemas.js"
 import { addNotification } from "../../store/notificationSlice.js"
 import { UserFailure } from "../notification/notificationTemplates.js"
+import { changeLanguage } from "../../store/languageSlice.js"
 
 const LoginForm = () => {
   const language = useSelector((state) => state.language.language)
@@ -58,6 +59,7 @@ const LoginForm = () => {
             zoom: 14, // Kovakoodattu etäisyys
           })
         )
+        dispatch(changeLanguage(user.language))
         navigate(`/`)
       } catch (error) {
         dispatch(addNotification(UserFailure(t.alert_incorrect)))
