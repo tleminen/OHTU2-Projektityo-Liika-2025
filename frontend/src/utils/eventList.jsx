@@ -55,41 +55,32 @@ const EventList = (listType) => {
 
   return (
     <div className="joined-view">
-      <table className="event-container">
-        <caption>{header()}</caption>
-        <thead>
-          <tr>
-            <th>PVM</th>
-            <th>AIKA</th>
-            <th>Otsikko</th>
-            <th>Osallistujia</th>
-          </tr>
-        </thead>
-        <tbody>
+      <div className="event-container">
+        <h1>{header()}</h1>
+
+        <div className="event-list-items">
           {events.map((event, index) => (
-            <tr key={index} className="event-item">
-              <th>
-                <Link to={`${parseLink()}${event.EventID}`}>
-                  {parseTimeAndDate(event.StartTime)[1].slice(0, -4)}
-                </Link>
-              </th>
-              <th>
-                <Link to={`${parseLink()}${event.EventID}`}>
-                  {parseTimeAndDate(event.StartTime)[0]}
-                </Link>
-              </th>
-              <th>
-                <Link to={`${parseLink()}${event.EventID}`}>{event.Title}</Link>
-              </th>
-              <th>
-                <Link to={`${parseLink()}${event.EventID}`}>
-                  {event.JoinedCount}
-                </Link>
-              </th>
-            </tr>
+            <Link
+              to={`${parseLink()}${event.EventID}`}
+              key={index}
+              className="event-item"
+            >
+              <p>
+                Aika<br/>
+                {parseTimeAndDate(event.StartTime)[1].slice(0, -4)} {""}
+                {parseTimeAndDate(event.StartTime)[0]}
+              </p>
+              <p>
+                Otsikko<br/>
+                {event.Title}</p>
+              <p>
+                Osallistujat<br/>
+                {event.JoinedCount}
+              </p>
+            </Link>
           ))}
-        </tbody>
-      </table>
+        </div>
+      </div>
     </div>
   )
 }
