@@ -463,7 +463,9 @@ h4 {
 /*ala paneelille tyyli*/
 .footer {
   width: 100%;
-  height: 100px; /* Muuta halutun kokoiseksi */
+  height: fit-content; /* Muuta halutun kokoiseksi */
+  padding-top: 12px;
+  padding-bottom: 12px;
   background: rgba(240, 240, 240, 0.75);
   backdrop-filter: blur(10px); /* Lasimainen sumennus */
   color: #1a1a1a;
@@ -476,7 +478,9 @@ h4 {
 /*alapaneelin sisällön tyyli*/
 .footer-content {
   display: flex;
+  flex-direction: row;
   justify-content: center;
+  flex-wrap: wrap;
   align-items: center;
   gap: 20px; /* Lisää väliä elementtien välille */
 }
