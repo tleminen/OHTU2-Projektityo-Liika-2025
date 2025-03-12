@@ -9,6 +9,13 @@
   top: 0;
 }
 
+/* Mobiilinäkymä: 100vw leveys */
+@media (max-width: 800px) {
+  .event-map-container {
+    width: 100vw;
+  }
+}
+
 .pikapainikkeet {
   display: flex;
   align-items: stretch;

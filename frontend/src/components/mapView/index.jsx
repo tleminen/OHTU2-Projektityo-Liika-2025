@@ -57,7 +57,7 @@ const MapView = () => {
     }
 
     fetchEvents()
-  }, [dispatch, events, userID]) // Riippuvuus vain userID, jotta se ei hae turhaan uudelleen
+  }, [dispatch, events, userID, storedToken]) // Riippuvuus vain userID, jotta se ei hae turhaan uudelleen
 
   return (
     <div

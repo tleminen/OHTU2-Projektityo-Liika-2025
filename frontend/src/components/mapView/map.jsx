@@ -77,6 +77,7 @@ const Map = ({ startingLocation }) => {
         }
         markerClusterGroup.addLayer(marker)
       })
+      // Tähän layerit
     } catch (error) {
       console.error(error)
     }

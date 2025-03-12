@@ -444,12 +444,19 @@ h4 {
 .map {
   display: flex;
   position: absolute;
-  flex: 1; /* Täyttää kaiken käytettävissä olevan tilan */
+
   background-color: lightgray; /* Väliaikainen taustaväri */
   height: 100vh;
+  max-height: 100vh;
   width: 80vw;
   margin: auto;
   z-index: 1000;
+}
+/* Mobiilinäkymä: 100vw leveys */
+@media (max-width: 800px) {
+  .map {
+    width: 100vw;
+  }
 }
 
 .map-location-setter {
