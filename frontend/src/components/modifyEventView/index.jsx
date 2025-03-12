@@ -285,7 +285,7 @@ const ModifyEvent = () => {
     >
       <Header />
       <div className="modify-event-view">
-        <h1>Tapahtuman muokkaus</h1>
+        <h1>{t.event_editing}</h1>
         <p>
           Muokkaa tapahtuman tietoja tässä näkymässä
           <br />
@@ -295,7 +295,7 @@ const ModifyEvent = () => {
           Voit poistua tallentamatta muutoksia painamalla takaisin
         </p>
         <div>
-          <h2>{t.activity}</h2>
+          <h2>{t.currentActivity}</h2>
           <p className="old-event-value">
             {t[selectCategoryName([event.CategoryID])]}
           </p>
@@ -318,7 +318,7 @@ const ModifyEvent = () => {
           />
         </div>
         <div className="own-event-item">
-          <h2>{t.title}</h2>
+          <h2>Nykyinen otsikko</h2>
           <p className="old-event-value">{event.Title}</p>
           <h3>Syötä uusi otsikko:</h3>
           <input
