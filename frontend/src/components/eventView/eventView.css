@@ -95,6 +95,13 @@
   text-align: center;
 }
 
+/* Mobiilinäkymä */
+@media (max-width: 500px) {
+  .time-child {
+    flex-direction: column;
+  }
+}
+
 /* Liitytty päivämäärä */
 .joined-time-btn {
   position: relative;

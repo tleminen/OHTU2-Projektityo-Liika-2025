@@ -4,7 +4,7 @@ const ICONSIZE = [64, 64]
 const ICONANCHOR = [32, 32]
 const POPUPANCHOR = [0, -16]
 
-const categoryMap = {
+export const categoryMap = {
   1: "amerikkalainen_jalkapallo",
   2: "avantouinti",
   3: "biljardi",
@@ -31,6 +31,7 @@ export const selectIcon = (categoryID) => {
   return Icongroup[categoryMapping[categoryID]] || null
 }
 
+// Voidaan käyttää traslation hakemisessa. Translatios sisältää avaimet näillä kategorianimillä
 export const selectCategoryName = (categoryID) => {
   return categoryMap[categoryID] || ""
 }

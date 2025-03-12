@@ -11,12 +11,14 @@ import { useNavigate } from "react-router-dom"
 import eventService from "../../services/eventService"
 import { createRoot } from "react-dom/client"
 import { selectIcon } from "../../assets/icons"
-import { categoryGroups } from "./categoryGroups"
+import { categories } from "./utils"
+import CategoryPanel from "./categoryPanel"
 
 const Map = ({ startingLocation }) => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [timeStamp, setTimeStamp] = useState("") // Aikaleima, milloin päivitetty
+  const [isCategoryPanelOpen, setCategoryPanelOpen] = useState(false)
   const timestampRef = useRef(null)
   const markerClusterGroup = L.markerClusterGroup()
   const user = useSelector((state) => state.user?.user?.username ?? null)
@@ -31,6 +33,46 @@ const Map = ({ startingLocation }) => {
       )
     }
   }, [timeStamp])
+
+  // Käsittele paneelin näkyvyys
+  const toggleCategoryPanel = () => {
+    setCategoryPanelOpen(!isCategoryPanelOpen)
+  }
+
+  // Kategorioiden suodatus (poisto)
+  const removeCategoryMarkers = (categoryId) => {
+    const category = categories[categoryId]
+    if (category && category.markers.length > 0) {
+      category.markers.forEach((marker) => {
+        markerClusterGroup.removeLayer(marker)
+      })
+    }
+  }
+
+  // Kategorioiden suodatus (lisäys)
+  const addCategoryMarkers = (categoryId) => {
+    const category = categories[categoryId]
+    if (category && category.markers.length > 0) {
+      category.markers.forEach((marker) => {
+        markerClusterGroup.addLayer(marker)
+      })
+    }
+  }
+
+  // Kategorian näkyvyyden käsittely
+  const toggleCategory = (categoryId) => {
+    const category = categories[categoryId]
+    if (!category) return
+
+    // Käännetään näkyvyys
+    category.visible = !category.visible
+
+    if (category.visible) {
+      addCategoryMarkers(categoryId)
+    } else {
+      removeCategoryMarkers(categoryId)
+    }
+  }
 
   // Funktio, joka hakee tapahtumat ja lisää markerit layerGroupeihin kategorioittain
   const refreshMarkers = async (map) => {
@@ -72,12 +114,15 @@ const Map = ({ startingLocation }) => {
         const categoryID = tapahtuma.CategoryID
 
         marker.setIcon(selectIcon(categoryID))
-        if (categoryGroups[categoryID]) {
-          categoryGroups[categoryID].push(marker) // Lisätään markkeri oman categorian ryhmäänsä
+        // Lisää marker oikeaan kategoriaan
+        if (categories[categoryID]) {
+          categories[categoryID].markers.push(marker)
+          // Lisää markerClusterGroupiin vain, jos kategoria on asetettu näkyväksi
+          if (categories[categoryID].visible) {
+            markerClusterGroup.addLayer(marker)
+          }
         }
-        markerClusterGroup.addLayer(marker)
       })
-      // Tähän layerit
     } catch (error) {
       console.error(error)
     }
@@ -111,18 +156,24 @@ const Map = ({ startingLocation }) => {
       ;(startingLocation.o_lat = 62.6013), (startingLocation.o_lng = 29.7639)
       startingLocation.zoom = 12
     }
+
+    // Lisää karttalaatta OpenStreetMapista
+    var osm = L.tileLayer(
+      "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+      {
+        attribution:
+          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      }
+    )
+
     const map = L.map("map", {
       center: [startingLocation.o_lat, startingLocation.o_lng],
       zoom: startingLocation.zoom,
+      layers: [osm],
     })
 
-    // Lisää karttalaatta OpenStreetMapista
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      attribution:
-        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-    }).addTo(map)
-
     const pikapainikkeet = L.control({ position: "topleft" })
+
     pikapainikkeet.onAdd = () => {
       const container = L.DomUtil.create("div")
       L.DomEvent.disableClickPropagation(container)
@@ -175,32 +226,12 @@ const Map = ({ startingLocation }) => {
       L.DomEvent.disableClickPropagation(container)
       const root = createRoot(container)
       root.render(
-        <div className="containerforshortcutbuttons">
-          <div className="shortcutbuttons">
-            <button
-              className="shortcut-button"
-              style={{
-                backgroundImage: "url(/options.png)", // Suora polku publicista
-              }}
-            ></button>
-            {user && (
-              <button
-                className="shortcut-button"
-                style={{
-                  backgroundImage: "url(/gategory.png)", // Suora polku publicista
-                }}
-              ></button>
-            )}
-            {user && (
-              <button
-                className="shortcut-button"
-                style={{
-                  backgroundImage: "url(/time.png)", // Suora polku publicista
-                }}
-              ></button>
-            )}
-          </div>
-        </div>
+        <CategoryPanel
+          isOpen={isCategoryPanelOpen}
+          toggleCategory={toggleCategory}
+          toggleCategoryPanel={toggleCategoryPanel}
+          onClose={() => setCategoryPanelOpen(false)}
+        />
       )
       return container
     }
