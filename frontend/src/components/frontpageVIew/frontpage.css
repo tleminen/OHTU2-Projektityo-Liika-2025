@@ -1,24 +1,19 @@
 .frontpage {
-  flex: 1; /* Ottaa kaiken käytettävissä olevan tilan */
   display: flex;
   flex-direction: column;
-  align-items: center; /* Keskittää sisällön vaakasuunnassa */
+  margin: auto;
 }
 
 .map-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  flex: 1; /* Ottaa kaiken käytettävissä olevan tilan */
+  justify-content: center; /* Keskitetään myös pystysuunnassa */
   width: 100%;
+  height: max-content;
   gap: 10px;
-  position: absolute;
-  top: 30%;
-  padding: 8px;
-  overflow-x: hidden;
-  padding: 0;
-  padding-bottom: 10px;
-  margin: 0;
+  padding: 10px 0;
+  margin: auto;
 }
 
 .image-wrapper {
@@ -31,7 +26,7 @@
 
 .placeholder {
   cursor: pointer;
-  max-width: 50%; /* 50% kuvan leveydestä */
+  max-width: 60%; /* 50% kuvan leveydestä */
   width: auto; /* Sallii tekstin skaalautumisen */
   overflow: hidden;
   position: absolute; /* Sijoitetaan paikkamerkki kuvan päälle */
@@ -39,7 +34,8 @@
   left: 50%; /* Keskitetään vaakasuunnassa */
   transform: translate(-50%, -50%); /* Korjataan keskitystä */
   color: rgb(63, 62, 62); /* Musta väri */
-  font-size: 8px;
+  font-size: 10px;
+  font-weight: 600;
   padding: 5px;
   background-color: rgb(240, 240, 240, 0.5);
 }
@@ -49,6 +45,7 @@
   position: static;
   left: 50%;
   max-width: 60%;
+  max-height: 60vh;
   border-radius: 5%;
 }
 
