@@ -25,7 +25,7 @@ const Footer = () => {
             i
           </button>
         </div>
-        <p style={{ fontWeight: "lighter" }}>Liika v. 1.0.2</p>
+        <p style={{ fontWeight: "lighter" }}>Liika v. 1.0.3</p>
         <p style={{ fontWeight: "lighter" }}>{t.contactUs}: annaturu@uef.fi</p>
       </div>
     </footer>
