@@ -44,7 +44,6 @@ const ModifyEvent = () => {
         const eventData = await eventService.getSingleEventWithTimes({
           EventID: id,
         })
-        console.log(eventData)
         setEvent(eventData)
         setTimes(eventData.Times)
         setActivity({
@@ -285,16 +284,18 @@ const ModifyEvent = () => {
     >
       <Header />
       <div className="modify-event-view">
-        <h1>{t.event_editing}</h1>
-        <p>
-          {t.editEventDetailsView}
-          <br />
-          {t.enterNewInfoEditable}
-          <br />
-          <br />
-          {t.exitWithoutSave}
-        </p>
-        <div>
+        <div className="own-event-item">
+          <h1>{t.event_editing}</h1>
+          <p>
+            {t.editEventDetailsView}
+            <br />
+            {t.enterNewInfoEditable}
+            <br />
+            <br />
+            {t.exitWithoutSave}
+          </p>
+        </div>
+        <div className="own-event-item">
           <h2>{t.currentActivity}</h2>
           <p className="old-event-value">
             {t[selectCategoryName([event.CategoryID])]}
@@ -306,6 +307,7 @@ const ModifyEvent = () => {
             height={100}
             className="event-view-icon"
           />
+          <span className="spacer-line"></span>
           <h3>{t.activity}</h3>
           <Select
             className="input-field"
@@ -320,7 +322,8 @@ const ModifyEvent = () => {
         <div className="own-event-item">
           <h2>{t.currentTitle}</h2>
           <p className="old-event-value">{event.Title}</p>
-          <h3>{t.newTitle}</h3>
+          <span className="spacer-line"></span>
+          <h2>{t.newTitle}</h2>
           <input
             type="text"
             value={title}
@@ -365,7 +368,8 @@ const ModifyEvent = () => {
               {t.leaveEvent}
             </button>
           )}
-          <h3>{t.scheduleMoreDates}</h3>
+          <span className="spacer-line"></span>
+          <h2>{t.scheduleMoreDates}</h2>
           <DatePicker
             value={dates}
             onChange={(newDates) =>
@@ -395,7 +399,8 @@ const ModifyEvent = () => {
             {parseTimeAndDate(times[0].StartTime)[0]} -{" "}
             {parseTimeAndDate(times[0].EndTime)[0]}
           </p>
-          <h3>{t.newTiming}</h3>
+          <span className="spacer-line"></span>
+          <h2>{t.newTiming}</h2>
           <h3>{t.startTime}</h3>
           <input
             type="time"
@@ -432,7 +437,8 @@ const ModifyEvent = () => {
           <p className="old-event-value">
             {event.ParticipantMin} - {event.ParticipantMax}
           </p>
-          <h3>{t.newParticipantLimits}</h3>
+          <span className="spacer-line"></span>
+          <h2>{t.newParticipantLimits}</h2>
           <input
             type="number"
             value={participantsMin}
@@ -455,7 +461,8 @@ const ModifyEvent = () => {
         <div className="own-event-item">
           <h2>{t.currentDescription}</h2>
           <p className="old-event-value">{event.Description}</p>
-          <h3>{t.newDescription}</h3>
+          <span className="spacer-line"></span>
+          <h2>{t.newDescription}</h2>
           <textarea
             type="description"
             value={description}

@@ -196,6 +196,19 @@ const RegisterForm = () => {
     <div className="register-form">
       <form onSubmit={handleSubmit}>
         <div className="register-form-item">
+          <h3>{t.email}</h3>
+          <input
+            type="text"
+            className={`input-field ${errors.email ? "error" : ""}`}
+            value={email}
+            name="email"
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder={t.email}
+            autoComplete="email"
+          />
+        </div>
+        {errors.email && <div className="error-forms">{errors.email}</div>}
+        <div className="register-form-item">
           <h3>{t.username}</h3>
           <input
             ref={inputRef}
@@ -211,19 +224,6 @@ const RegisterForm = () => {
         {errors.username && (
           <div className="error-forms">{errors.username}</div>
         )}
-        <div className="register-form-item">
-          <h3>{t.email}</h3>
-          <input
-            type="text"
-            className={`input-field ${errors.email ? "error" : ""}`}
-            value={email}
-            name="email"
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder={t.email}
-            autoComplete="email"
-          />
-        </div>
-        {errors.email && <div className="error-forms">{errors.email}</div>}
         <div className="register-form-item">
           <h3>{t.password}</h3>
           <div className="password-input-container">
@@ -260,6 +260,7 @@ const RegisterForm = () => {
               name="passwordAgain"
               onChange={(e) => setPasswordAgain(e.target.value)}
               placeholder={t.passwordAgain}
+              autoComplete="off"
             />
             <button
               type="button"

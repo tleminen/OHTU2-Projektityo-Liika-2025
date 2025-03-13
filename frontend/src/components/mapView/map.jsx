@@ -335,8 +335,8 @@ const Map = ({ startingLocation }) => {
         <img
           src={logo}
           alt="Logo"
-          width={100}
-          height={56}
+          width={70}
+          height={50}
           onClick={() => navigate("/")}
         />
       </div>

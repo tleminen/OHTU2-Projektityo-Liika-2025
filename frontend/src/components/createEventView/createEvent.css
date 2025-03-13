@@ -34,6 +34,7 @@
   justify-self: center;
   justify-content: center;
   justify-items: center;
+  min-width: 10%;
 }
 
 .custom-date-display {

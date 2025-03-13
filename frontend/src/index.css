@@ -315,6 +315,7 @@ button:focus-visible {
 /* Perustyylit käyttäjän muokattavalle tekstikentälle */
 .input-field {
   width: 100%;
+  min-width: 180px;
   max-width: 400px;
   padding: 10px;
   font-size: 1em;
@@ -330,8 +331,8 @@ button:focus-visible {
   align-items: center;
   align-self: center;
   justify-content: center;
-  margin-top: 1.5%;
-  margin-bottom: 3%;
+  margin-top: 15px;
+  margin-bottom: 20px;
 }
 .input-field:hover {
   border-color: #0097b2;
@@ -384,7 +385,7 @@ h2 {
 h3 {
   font-size: small;
   color: #1a1a1a;
-  margin-top: 5%;
+  margin-top: 10px;
 }
 
 h4 {
@@ -403,15 +404,6 @@ h4 {
   margin: 0;
   padding: 0;
 }
-
-/*kartta-oliolle container*/
-/*
-.container {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-}
-*/
 
 /*yläpaneelille tyyli*/
 .header {
@@ -474,7 +466,8 @@ h4 {
   position: relative;
   flex: 1; /* Täyttää kaiken käytettävissä olevan tilan */
   background-color: lightgray; /* Väliaikainen taustaväri */
-  width: 60vw;
+  height: 50vh;
+  width: 80vw;
 }
 
 /*ala paneelille tyyli*/
@@ -520,23 +513,6 @@ h4 {
 
 .forgot-password-text {
   margin: 0 10px;
-}
-
-.password-input-container {
-  position: relative; /* Jotta ikoni voidaan sijoittaa oikein */
-  display: flex; /* Asettaa elementit vierekkäin */
-  align-items: center; /* Keskitää elementit pystysuunnassa */
-}
-
-.password-toggle-button {
-  position: absolute; /* Sijoittaa napin salasanakentän päälle */
-  right: 10px;
-  cursor: pointer;
-  padding: 0;
-}
-
-.password-toggle-button span {
-  font-size: 20px;
 }
 
 .password-input-container {
