@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react"
 import { categoryMap } from "../../assets/icons"
 
 // eslint-disable-next-line react/prop-types
-const CategoryPanel = ({ toggleCategory }) => {
+const ShortcutButtons = ({ toggleCategory }) => {
   const [isOpen, setIsOpen] = useState(false)
   const [selectedCategories, setSelectedCategories] = useState({})
   const panelRef = useRef(null)
@@ -10,11 +10,15 @@ const CategoryPanel = ({ toggleCategory }) => {
   const togglePanel = () => setIsOpen((prev) => !prev)
 
   const handleCategoryClick = (categoryId) => {
-    toggleCategory(categoryId)
+    //toggleCategory(categoryId)
     setSelectedCategories((prev) => ({
       ...prev,
       [categoryId]: !prev[categoryId],
     }))
+  }
+
+  const handleClicks = () => {
+    toggleCategory(selectedCategories)
   }
 
   const handleClickOutside = (e) => {
@@ -43,7 +47,7 @@ const CategoryPanel = ({ toggleCategory }) => {
       />
 
       <div className={`category-panel ${isOpen ? "open" : ""}`}>
-        <div className="category-list">
+        <div className="category-list" onClick={handleClicks()}>
           {Object.entries(categoryMap).map(([id, name]) => (
             <button
               key={id}
@@ -66,4 +70,4 @@ const CategoryPanel = ({ toggleCategory }) => {
   )
 }
 
-export default CategoryPanel
+export default ShortcutButtons

@@ -24,7 +24,7 @@ const Header = ({ backButton }) => {
         width={100}
         height={100}
         className="logo"
-        onClick={() => navigate("/")}
+        onClick={() => navigate("/map")}
       />
       {!backButton && (
         <img

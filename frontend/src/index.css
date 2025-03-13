@@ -428,18 +428,6 @@ h4 {
   z-index: 2000;
 }
 
-#overlay {
-  position: absolute;
-  top: 2%;
-  left: 50%;
-  transform: translateX(-50%);
-  background: rgba(169, 169, 169, 0.47);
-  border-radius: 10px;
-  padding-left: 20px;
-  padding-right: 20px;
-  z-index: 1001;
-}
-
 #overlay:hover {
   cursor: pointer;
 }
@@ -449,10 +437,12 @@ h4 {
   top: 2%;
   left: 50%;
   transform: translateX(-50%);
-  background: #d9d9d9c2;
+  backdrop-filter: hue-rotate(-20deg); /* Lasimainen sumennus */
   border-radius: 12%;
-  padding-left: 12px;
-  padding-right: 12px;
+  padding-top: 6px;
+  padding-left: 10px;
+  padding-right: 10px;
+
   z-index: 1001;
 }
 

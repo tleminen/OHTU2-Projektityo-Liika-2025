@@ -6,13 +6,13 @@ import "leaflet/dist/leaflet.css"
 import "../../index.css"
 import { useDispatch, useSelector } from "react-redux"
 import { changeLocation } from "../../store/locationSlice"
-import logo from "../../assets/liika_logo.png"
+import logo from "../../assets/liika_logo169.png"
 import { useNavigate } from "react-router-dom"
 import eventService from "../../services/eventService"
 import { createRoot } from "react-dom/client"
 import { selectIcon } from "../../assets/icons"
 import { categories } from "./utils"
-import CategoryPanel from "./categoryPanel"
+import ShortcutButtons from "./shortcutButtons"
 
 const Map = ({ startingLocation }) => {
   const navigate = useNavigate()
@@ -60,18 +60,46 @@ const Map = ({ startingLocation }) => {
   }
 
   // Kategorian näkyvyyden käsittely
-  const toggleCategory = (categoryId) => {
-    const category = categories[categoryId]
-    if (!category) return
+  const toggleCategory = (selectedCategories) => {
+    let catSelected = []
 
-    // Käännetään näkyvyys
-    category.visible = !category.visible
+    Object.entries(selectedCategories).forEach(([categoryId, isSelected]) => {
+      // Käydään läpi paneelin valinnat
+      // categoryId on kategoria-ID (esim. 1, 2, 3)
+      // isSelected on Boolean-arvo (true tai false)
+      if (isSelected) {
+        // Käsitellään vain valittuja kategorioita
+        console.log(`Kategoria ${categoryId} on valittu!`)
+        catSelected.push(Number(categoryId))
+      }
+    })
 
-    if (category.visible) {
-      addCategoryMarkers(categoryId)
+    if (catSelected.length === 0) {
+      showAllCategories(true)
     } else {
-      removeCategoryMarkers(categoryId)
+      showAllCategories(false)
+      showCategories(catSelected)
     }
+  }
+
+  // Tämä funktio näyttää kaikki kategoriat ja lisää niiden markkerit
+  const showAllCategories = (show) => {
+    Object.keys(categories).forEach((categoryId) => {
+      categories[categoryId].visible = show
+      if (show) {
+        addCategoryMarkers(categoryId) // Lisätään markkerit, jos show === true
+      } else {
+        removeCategoryMarkers(categoryId) // Poistetaan markkerit, jos show === false
+      }
+    })
+  }
+
+  // Tämä funktio näyttää vain valitut kategoriat ja lisää niiden markkerit
+  const showCategories = (selectedCategories) => {
+    selectedCategories.forEach((categoryId) => {
+      categories[categoryId].visible = true
+      addCategoryMarkers(categoryId) // Lisätään markkerit valituille kategorioille
+    })
   }
 
   // Funktio, joka hakee tapahtumat ja lisää markerit layerGroupeihin kategorioittain
@@ -93,6 +121,10 @@ const Map = ({ startingLocation }) => {
 
       // Tyhjentää kaikki categoryGroupit ja poistaa ne kartalta
       markerClusterGroup.clearLayers()
+      // Poistetaan ne myös categoriesLayereistä
+      Object.keys(categories).forEach((categoryId) => {
+        categories[categoryId].markers = []
+      })
       // Lisätään markerit uudelleen
       eventList.forEach((tapahtuma) => {
         const { coordinates } = tapahtuma.Event_Location
@@ -226,7 +258,7 @@ const Map = ({ startingLocation }) => {
       L.DomEvent.disableClickPropagation(container)
       const root = createRoot(container)
       root.render(
-        <CategoryPanel
+        <ShortcutButtons
           isOpen={isCategoryPanelOpen}
           toggleCategory={toggleCategory}
           toggleCategoryPanel={toggleCategoryPanel}
@@ -304,7 +336,7 @@ const Map = ({ startingLocation }) => {
           src={logo}
           alt="Logo"
           width={100}
-          height={100}
+          height={56}
           onClick={() => navigate("/")}
         />
       </div>

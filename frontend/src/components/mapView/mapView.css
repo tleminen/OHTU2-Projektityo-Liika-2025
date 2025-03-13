@@ -91,7 +91,7 @@
   width: 60px;
   height: 60px;
   border-radius: 30%;
-  background: rgba(0, 151, 178, 0.667);
+  background: rgba(255, 255, 255, 0.667);
   background-size: cover;
   border: none;
   cursor: pointer;
@@ -100,7 +100,7 @@
 
 /* Aktiivinen kategoria: Läpinäkyvä punainen peite */
 .category-item.active {
-  filter: brightness(0.5) sepia(1) hue-rotate(-50deg) saturate(500%);
+  filter: brightness(0.5) sepia(1) hue-rotate(90deg) saturate(500%);
 }
 
 .shortcutbuttons {
