@@ -227,7 +227,7 @@ const EventView = () => {
             className="event-view-icon" // Ei taida toimia tää className??
           />
           <h1>{event.Title}</h1>
-          <h2>{t.date}</h2>
+          <h2>{t.chooseDate}</h2>
           <div className="time-parent">
             {times.map((time, index) => (
               <div key={index} className="time-child">
@@ -324,7 +324,7 @@ const EventView = () => {
           className="event-view-icon" // Ei taida toimia tää className??
         />
         <h1>{event.Title}</h1>
-        <h2>{t.date}</h2>
+        <h2>{t.chooseDate}</h2>
         <div className="time-parent">
           {times.map((time, index) => (
             <div key={index} className="time-child">

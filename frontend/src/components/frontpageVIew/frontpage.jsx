@@ -33,7 +33,7 @@ const Frontpage = () => {
         backgroundRepeat: "no-repeat",
       }}
     >
-      <Header />
+      <Header backButton={true} />
       <div className="frontpage">
         <div className="map-container">
           <div className="image-wrapper">

@@ -46,6 +46,26 @@ button:focus-visible {
 }
 
 /*Takaisinpaluun painike*/
+.header-back-btn {
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.2);
+  padding: 5px;
+  color: rgba(0, 151, 178, 0.5);
+  border: 2px solid transparent;
+  transition: all 0.2s;
+  cursor: pointer;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.5);
+}
+
+.header-back-btn:hover {
+  background-color: rgba(0, 151, 178, 1);
+  color: #ffffff;
+  border: 2px solid #0097b2;
+  transition: background-color 0.3s, box-shadow 0.3s;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.5);
+}
+
+/*Takaisinpaluun painike*/
 .back-btn {
   border-radius: 10px;
   background-color: #0097b2;
@@ -401,11 +421,11 @@ h4 {
   backdrop-filter: blur(10px); /* Lasimainen sumennus */
   color: #1a1a1a;
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
   position: sticky;
   top: 0;
-  z-index: 1000;
+  z-index: 2000;
 }
 
 #overlay {
@@ -480,6 +500,7 @@ h4 {
   justify-content: center;
   align-items: center;
   margin-top: auto;
+  z-index: 2000;
 }
 
 /*alapaneelin sisällön tyyli*/
