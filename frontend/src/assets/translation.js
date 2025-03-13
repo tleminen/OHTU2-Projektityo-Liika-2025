@@ -123,7 +123,7 @@ const translations = {
     email: "Sähköposti",
     email_confirmation: "Sähköposti vahvistettu",
     email_not_found: "Sähköpostia ei löytynyt",
-    email_send_error: "Virhe lähettäessä",
+    email_send_error: "Virhe lähettäessä sähköpostia",
     email_sent: "Sähköposti lähetetty",
     event_editing: "Tapahtuman muokkaus",
     forgot_pw: "Unohtuiko salasana?",

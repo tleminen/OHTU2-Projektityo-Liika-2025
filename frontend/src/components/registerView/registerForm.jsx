@@ -65,7 +65,7 @@ const RegisterForm = () => {
     try {
       const response = await registerService.sendOtp(email)
       console.log(response.data)
-      dispatch(addNotification(EmailSentSuccess("kovakoodaus"))) // Lähetä onnistumisilmoitus
+      dispatch(addNotification(EmailSentSuccess(t.email_sent))) // Lähetä onnistumisilmoitus
 
       // Jos OTP lähetettiin onnistuneesti, päivitä tila
       setOtpSent(true)
@@ -73,7 +73,7 @@ const RegisterForm = () => {
     } catch (error) {
       console.error("Virhe sähköpostin lähetyksessä:", error)
       //alert(t.email_send_error)
-      dispatch(addNotification(EmailSentFailure("kovakoodaus", error))) // Lähetä virheilmoitus
+      dispatch(addNotification(EmailSentFailure(t.email_send_error))) // Lähetä virheilmoitus
       setLoader(false)
     }
   }
