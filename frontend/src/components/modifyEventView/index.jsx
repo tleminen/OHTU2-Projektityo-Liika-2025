@@ -287,12 +287,12 @@ const ModifyEvent = () => {
       <div className="modify-event-view">
         <h1>{t.event_editing}</h1>
         <p>
-          Muokkaa tapahtuman tietoja tässä näkymässä
+          {t.editEventDetailsView}
           <br />
-          Syötä uusi tieto vain muokattaviin kenttiin
+          {t.enterNewInfoEditable}
           <br />
           <br />
-          Voit poistua tallentamatta muutoksia painamalla takaisin
+          {t.exitWithoutSave}
         </p>
         <div>
           <h2>{t.currentActivity}</h2>
@@ -318,9 +318,9 @@ const ModifyEvent = () => {
           />
         </div>
         <div className="own-event-item">
-          <h2>Nykyinen otsikko</h2>
+          <h2>{t.currentTitle}</h2>
           <p className="old-event-value">{event.Title}</p>
-          <h3>Syötä uusi otsikko:</h3>
+          <h3>{t.newTitle}</h3>
           <input
             type="text"
             value={title}
@@ -331,7 +331,7 @@ const ModifyEvent = () => {
           />
         </div>
         <div className="own-event-item">
-          <h2>Nykyiset esiintymät</h2>
+          <h2>{t.scheduledDates}</h2>
           <div className="time-parent">
             {times.map((time, index) => (
               <div key={index} className="time-child">
@@ -347,14 +347,14 @@ const ModifyEvent = () => {
                   </span>
                 </div>
                 <button onClick={() => handleCancelEvent(time)}>
-                  Poista Esiintymä
+                  {t.deleteDate}
                 </button>
               </div>
             ))}
           </div>
           {selectedTime && !isJoined(selectedTime) && (
             <button className="join-btn" onClick={() => handleJoin(userID, id)}>
-              Ilmoittaudu
+              {t.join}
             </button>
           )}
           {selectedTime && isJoined(selectedTime) && (
@@ -362,10 +362,10 @@ const ModifyEvent = () => {
               className="leave-btn"
               onClick={() => handleLeave(userID, id)}
             >
-              Peru ilmoittautuminen
+              {t.leaveEvent}
             </button>
           )}
-          <h3>Lisää esiintymiä</h3>
+          <h3>{t.scheduleMoreDates}</h3>
           <DatePicker
             value={dates}
             onChange={(newDates) =>
@@ -390,12 +390,12 @@ const ModifyEvent = () => {
           />
         </div>
         <div className="own-event-item">
-          <h2>Nykyinen ajankohta</h2>
+          <h2>{t.currentTime}</h2>
           <p className="old-event-value">
             {parseTimeAndDate(times[0].StartTime)[0]} -{" "}
             {parseTimeAndDate(times[0].EndTime)[0]}
           </p>
-          <h3>Uusi ajankohta</h3>
+          <h3>{t.newTiming}</h3>
           <h3>{t.startTime}</h3>
           <input
             type="time"
@@ -428,11 +428,11 @@ const ModifyEvent = () => {
           />
         </div>
         <div className="own-event-item">
-          <h2>Nykyinen osallistujamäärä</h2>
+          <h2>{t.participantLimits}</h2>
           <p className="old-event-value">
             {event.ParticipantMin} - {event.ParticipantMax}
           </p>
-          <h3>Uudet osallistujamäärät</h3>
+          <h3>{t.newParticipantLimits}</h3>
           <input
             type="number"
             value={participantsMin}
@@ -453,9 +453,9 @@ const ModifyEvent = () => {
           />
         </div>
         <div className="own-event-item">
-          <h2>Nykyinen kuvaus:</h2>
+          <h2>{t.currentDescription}</h2>
           <p className="old-event-value">{event.Description}</p>
-          <h3>Uusi kuvaus:</h3>
+          <h3>{t.newDescription}</h3>
           <textarea
             type="description"
             value={description}
@@ -465,13 +465,13 @@ const ModifyEvent = () => {
             placeholder={t.description}
           />
         </div>
-        <p style={{ fontWeight: "lighter" }}>Tapahtumaa viimeksi päivitetty:</p>
+        <p style={{ fontWeight: "lighter" }}>{t.lastUpdated}</p>
         <p style={{ fontWeight: "lighter" }}>
           {parseTimeAndDate(event.updatedAt)[1]}{" "}
           {parseTimeAndDate(event.updatedAt)[0]}
         </p>
         <button className="modify-event-btn" onClick={handleUpdateEvent}>
-          Tallenna muutokset
+          {t.saveChanges}
         </button>
         <Link to={"/map"} className="back-btn">
           <span>{t.back}</span>
