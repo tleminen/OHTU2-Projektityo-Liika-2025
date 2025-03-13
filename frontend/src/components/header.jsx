@@ -3,6 +3,7 @@ import backBtn from "../assets/backBtn.png"
 import home from "../assets/home.png"
 import { useNavigate } from "react-router-dom"
 
+// eslint-disable-next-line react/prop-types
 const Header = ({ backButton }) => {
   const navigate = useNavigate()
 

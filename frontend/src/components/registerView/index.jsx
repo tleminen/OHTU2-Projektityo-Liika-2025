@@ -1,5 +1,4 @@
 import { useSelector } from "react-redux"
-import { Link } from "react-router-dom"
 import Footer from "../footer"
 import Header from "../header"
 import translations from "../../assets/translation"

@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom"
 import Footer from "../footer"
 import Header from "../header"
 import { useSelector } from "react-redux"
