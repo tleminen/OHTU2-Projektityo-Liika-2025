@@ -95,10 +95,6 @@ const Login = () => {
             )}
           </form>
         )}
-
-        <Link to={"/"} className="back-btn">
-          <span>{t.back}</span>
-        </Link>
       </div>
       <Footer />
     </div>

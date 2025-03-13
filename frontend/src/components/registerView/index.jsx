@@ -32,9 +32,6 @@ const Register = () => {
           <br />
           <a href="/login">{t.login2}</a>
         </p>
-        <Link to={"/"} className="back-btn">
-          <span>{t.back}</span>
-        </Link>
       </div>
       <Footer />
     </div>

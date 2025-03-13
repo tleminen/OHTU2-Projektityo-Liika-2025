@@ -22,9 +22,6 @@ const CreateEventView = () => {
       <Header />
       <div className="create-event">
         <CreateEventForm />
-        <Link to={"/map"} className="back-btn">
-          <span>{t.back}</span>
-        </Link>
       </div>
       <footer>
         <Footer />

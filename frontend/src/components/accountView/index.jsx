@@ -115,9 +115,6 @@ const AccountView = () => {
           </div>
         </div>
       </div>
-      <Link to={"/map"} className="back-btn" style={{ alignSelf: "center" }}>
-        <span>{t.back}</span>
-      </Link>
       <Footer />
     </div>
   )
