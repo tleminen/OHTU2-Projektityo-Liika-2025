@@ -12,6 +12,9 @@ import { parseTimeAndDate } from "../../utils/helper"
 import LocationMap from "../locationMap"
 import "./modifyEventView.css"
 import DatePicker from "react-multi-date-picker"
+import NotificationContainer from "../notification/notificationContainer"
+import { EmailSentSuccess, EmailSentFailure, OtpRobotCheck, OtpVerified, OtpNotVerified, UserFailure, EventNotFound} from "../notification/notificationTemplates.js"
+import { addNotification } from "../../store/notificationSlice.js"
 
 const ModifyEvent = () => {
   const { id } = useParams()
@@ -52,7 +55,8 @@ const ModifyEvent = () => {
           label: t[selectCategoryName([eventData.CategoryID])],
         })
       } catch (error) {
-        console.error("Virhe hakiessa tapahtumaa: " + error)
+        dispatch(addNotification(EventNotFound(t.event_not_found)));
+        console.error(t.event_not_found + error)
       } finally {
         setLoading(false)
       }
@@ -76,14 +80,15 @@ const ModifyEvent = () => {
         EventID: id,
         TimeID: Number(selectedTime.TimeID),
       })
-      console.log(response) // TODO: Lisää notifikaatio?
+      console.log(response) 
       dispatch(
         addEvent({
           UserID: userID,
           EventID: Number(id),
           TimeID: Number(selectedTime.TimeID),
         })
-      )
+      );
+      dispatch(addNotificationEventCreated(t.event_join_success));
       // Päivitä frontendin Times-tila
       setTimes((prevTimes) =>
         prevTimes.map((time) =>

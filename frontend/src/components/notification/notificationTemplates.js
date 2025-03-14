@@ -34,5 +34,17 @@
     type: "error",
   })
 
+  const EventNotFound = (t) => ({
+    id: Date.now(),
+    message: t,
+    type: "error",
+  })
+  
+  const EventJoinSuccess = (t) => ({ 
+    id: Date.now(),
+    message: t,
+    type: "success",
+  })
 
-export {EmailSentSuccess, EmailSentFailure, OtpRobotCheck, OtpVerified, OtpNotVerified, UserFailure}
+
+export {EmailSentSuccess, EmailSentFailure, OtpRobotCheck, OtpVerified, OtpNotVerified, UserFailure, EventNotFound, EventCreated, EventJoinSuccess}
