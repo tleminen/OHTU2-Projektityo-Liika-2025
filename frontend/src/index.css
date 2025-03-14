@@ -474,8 +474,7 @@ h4 {
 .footer {
   width: 100%;
   height: fit-content; /* Muuta halutun kokoiseksi */
-  padding-top: 12px;
-  padding-bottom: 12px;
+  padding: 12px 0px;
   background: rgba(240, 240, 240, 0.75);
   backdrop-filter: blur(10px); /* Lasimainen sumennus */
   color: #1a1a1a;
@@ -488,6 +487,7 @@ h4 {
 
 /*alapaneelin sisällön tyyli*/
 .footer-content {
+  padding: 0px 20px;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -530,4 +530,12 @@ h4 {
 
 .password-toggle-button span {
   font-size: 20px;
+}
+
+.spacer-line {
+  display: block;
+  width: 100%; /* Viivan leveys */
+  border-top: 1px solid black; /* Viivan tyyli ja väri */
+  line-height: 1; /* Yhden rivin korkeus */
+  margin: 10px 0; /* Viivan ylä- ja alapuolen marginaali */
 }

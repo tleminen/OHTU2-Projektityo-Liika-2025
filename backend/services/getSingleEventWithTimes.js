@@ -17,10 +17,12 @@ const getSingleEventWithTimes = async (EventID) => {
       t."TimeID",
       t."StartTime",
       t."EndTime",
+      u."Username",
       COUNT(j."UserID") AS "JoinedCount"
     FROM "Events" e
     LEFT JOIN "Times" t ON t."EventID" = e."EventID"
     LEFT JOIN "Joins" j ON j."TimeID" = t."TimeID"
+    LEFT JOIN "Users" u ON e."UserID" = u."UserID"
     WHERE e."EventID" = :EventID
     GROUP BY 
       e."EventID",
@@ -36,7 +38,8 @@ const getSingleEventWithTimes = async (EventID) => {
       e."updatedAt",
       t."TimeID",
       t."StartTime",
-      t."EndTime"
+      t."EndTime",
+      u."Username"
     ORDER BY t."StartTime" ASC;
   `
 
@@ -69,6 +72,7 @@ const getSingleEventWithTimes = async (EventID) => {
         EndTime: row.EndTime,
         JoinedCount: row.JoinedCount,
       })),
+      Username: results[0].Username,
     }
 
     return eventData

@@ -34,10 +34,12 @@ const getEventsNearby = async (latitude, longitude, radius) => {
         t."TimeID",
         t."StartTime",
         t."EndTime",
+        u."Username",
         COUNT(j."UserID") AS "JoinedCount"
       FROM "Events" e
       LEFT JOIN NextOrOngoingTime t ON t."EventID" = e."EventID"
       LEFT JOIN "Joins" j ON j."TimeID" = t."TimeID"
+      LEFT JOIN "Users" u ON e."UserID" = u."UserID"
       WHERE ST_DWithin(
               e."Event_Location",
               ST_SetSRID(ST_MakePoint(:longitude, :latitude), 4326)::geography,
@@ -57,7 +59,8 @@ const getEventsNearby = async (latitude, longitude, radius) => {
         e."CategoryID",
         t."TimeID",
         t."StartTime",
-        t."EndTime"
+        t."EndTime",
+        u."Username"
       ORDER BY t."StartTime" ASC;
     `
 

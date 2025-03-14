@@ -162,6 +162,18 @@ const EventView = () => {
       : baseClass
   }
 
+  const showUsername = (username) => {
+    if (username.includes("@")) {
+      return ""
+    } else {
+      return (
+        <h1>
+          {username} {t.organizesEvent}:
+        </h1>
+      )
+    }
+  }
+
   if (loading) {
     // Tietokantahaku kesken
     return (
@@ -316,6 +328,8 @@ const EventView = () => {
     >
       <Header />
       <div className="event-view">
+        <span className="spacer-line"></span>
+        {showUsername(event.Username)}
         <img
           src={`/lajit/${selectCategoryName([event.CategoryID])}.png`}
           alt="Logo"
@@ -376,6 +390,7 @@ const EventView = () => {
         <Link to={"/map"} className="back-btn">
           <span>{t.back}</span>
         </Link>
+        <span className="spacer-line"></span>
       </div>
 
       <Footer />

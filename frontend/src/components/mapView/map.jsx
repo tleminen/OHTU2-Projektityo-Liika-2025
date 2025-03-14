@@ -82,7 +82,7 @@ const Map = ({ startingLocation }) => {
     }
   }
 
-  // Tämä funktio näyttää kaikki kategoriat ja lisää niiden markkerit
+  // Tämä funktio näyttää tai piilottaa kaikki kategoriat ja lisää tai poistaa niiden markkerit parametrin show mukaan
   const showAllCategories = (show) => {
     Object.keys(categories).forEach((categoryId) => {
       categories[categoryId].visible = show
@@ -100,6 +100,14 @@ const Map = ({ startingLocation }) => {
       categories[categoryId].visible = true
       addCategoryMarkers(categoryId) // Lisätään markkerit valituille kategorioille
     })
+  }
+
+  const showUsername = (username) => {
+    if (username.includes("@")) {
+      return ""
+    } else {
+      return username
+    }
   }
 
   // Funktio, joka hakee tapahtumat ja lisää markerit layerGroupeihin kategorioittain
@@ -133,8 +141,9 @@ const Map = ({ startingLocation }) => {
         const marker = L.marker([lat, lng]).bindPopup(() => {
           const container = document.createElement("div")
           container.innerHTML = `
-    <strong>${tapahtuma.Title} ${tapahtuma.JoinedCount}</strong><br>
-    ${tapahtuma.Description || ""}<br>
+    <h1>${tapahtuma.Title} ${tapahtuma.JoinedCount}</h1>
+    ${tapahtuma.Description || ""}<br/>
+    <em>${showUsername(tapahtuma.Username)}</em> <br/>
     <a href="/events/${
       tapahtuma.EventID
     }" style="color: blue; text-decoration: underline;">
