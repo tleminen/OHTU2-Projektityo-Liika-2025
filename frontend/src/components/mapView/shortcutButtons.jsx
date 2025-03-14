@@ -69,7 +69,7 @@ const ShortcutButtons = ({ toggleCategory }) => {
         onClick={toggleMorePanel}
       />
       <div className={`more-panel ${moreIsOpen ? "open" : ""}`}>
-        <div>Päivä Aika</div>
+        <div>...</div>
       </div>
       <button
         className="shortcut-button"
