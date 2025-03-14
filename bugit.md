@@ -1,5 +1,8 @@
 Bugit
 
+Datepicker:
+vuoden ja kuukauden selectorissa taustaväri edelleen valkoinen, korjattava
+
 Kartta:
 
 Tapahtumien luonti:
@@ -32,3 +35,4 @@ Chatin vastaus:
         Tämä voi johtua verkko-ongelmista, palvelimen estosta, tai CDN-ongelmista."
 
 Kysymyksiä ja muita huomioita:
+Järjestäjä, mihin kaikkialle näkyviin?
