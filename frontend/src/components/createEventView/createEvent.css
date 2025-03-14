@@ -55,6 +55,7 @@
   min-height: 40px;
   white-space: pre-wrap; /* Teksti menee riville */
   overflow-y: auto; /* Lisää scrollauksen, jos liian pitkä */
+  z-index: 3000;
 }
 
 .date-input-field {
