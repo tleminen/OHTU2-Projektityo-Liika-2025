@@ -6,43 +6,34 @@ import DatePicker from "react-multi-date-picker"
 const ShortcutButtons = ({ toggleCategory }) => {
   const [moreIsOpen, setMoreIsOpen] = useState(false)
   const [catIsOpen, setCatIsOpen] = useState(false)
-  const [timeIsOpen, setTimeIsOpen] = useState(false)
-  const [calendarIsOpen, setCalendarIsOpen] = useState(false)
   const [selectedCategories, setSelectedCategories] = useState({})
   const panelRef = useRef(null)
 
   const handleCalendarToggle = (openCalendar) => {
-    openCalendar() // Avaa kalenteri
-    setCalendarIsOpen((prev) => !prev) // Päivitä tila
+    if (moreIsOpen || catIsOpen) {
+      setCatIsOpen(false)
+      setMoreIsOpen(false)
+      setTimeout(() => openCalendar(), 300) // Avaa kalenteri
+    } else {
+      openCalendar()
+    }
   }
 
   const toggleCatPanel = () => {
     setMoreIsOpen(false)
-    setTimeIsOpen(false)
     if (catIsOpen) {
       setCatIsOpen(false)
     } else {
-      setTimeout(() => setCatIsOpen(true), 400)
+      setTimeout(() => setCatIsOpen(true), 300)
     }
   }
 
   const toggleMorePanel = () => {
-    setTimeIsOpen(false)
     setCatIsOpen(false)
     if (moreIsOpen) {
       setMoreIsOpen(false)
     } else {
-      setTimeout(() => setMoreIsOpen(true), 400)
-    }
-  }
-
-  const toggleTimePanel = () => {
-    setMoreIsOpen(false)
-    setCatIsOpen(false)
-    if (timeIsOpen) {
-      setTimeIsOpen(false)
-    } else {
-      setTimeout(() => setTimeIsOpen(true), 400)
+      setTimeout(() => setMoreIsOpen(true), 300)
     }
   }
 
@@ -99,45 +90,26 @@ const ShortcutButtons = ({ toggleCategory }) => {
           ))}
         </div>
       </div>
-      <button
-        className="shortcut-button"
-        style={{
-          backgroundImage: "url(/time.png)", // Suora polku publicista
-        }}
-        onClick={toggleTimePanel}
+      <DatePicker
+        onChange={(newDates) => console.log(newDates)}
+        range
+        minDate={Date.now()}
+        zIndex={1005}
+        displayWeekNumbers={true}
+        calendarPosition="top"
+        render={(value, openCalendar) => (
+          <div
+            className="time-shortcut-button"
+            onClick={() => handleCalendarToggle(openCalendar)}
+            style={{
+              backgroundImage: "url(/time.png)", // Suora polku publicista
+              overflow: "visible",
+            }}
+          ></div>
+        )}
+        format="DD.MM.YYYY"
+        weekStartDayIndex={1}
       />
-      <div
-        className={`time-panel ${timeIsOpen ? "open" : ""} ${
-          calendarIsOpen ? "expanded" : ""
-        }`}
-      >
-        <div className="time-list">
-          <h1>Rajoita aikavälille</h1>
-          <DatePicker
-            className="time-item"
-            onChange={(newDates) => console.log(newDates)}
-            range
-            style={{ textAlign: "center" }}
-            minDate={Date.now()}
-            zIndex={1005}
-            displayWeekNumbers={true}
-            render={(value, openCalendar) => (
-              <div
-                className="custom-date-display"
-                onClick={() => handleCalendarToggle(openCalendar)}
-              >
-                {Array.isArray(value) ? (
-                  value.map((date, index) => <div key={index}>{date}</div>)
-                ) : (
-                  <span>{value || "Valitse päivät"}</span>
-                )}
-              </div>
-            )}
-            format="DD.MM.YYYY"
-            weekStartDayIndex={1}
-          />
-        </div>
-      </div>
     </div>
   )
 }
