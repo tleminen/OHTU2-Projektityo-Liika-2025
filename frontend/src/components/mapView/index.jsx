@@ -67,6 +67,7 @@ const MapView = () => {
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
+        position: "relative",
       }}
     >
       <div className="event-map-container">
