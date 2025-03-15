@@ -13,7 +13,7 @@ const TermsOfServiceView = () => {
     <div
       className="fullpage"
       style={{
-        backgroundImage: "url('/backgroundpicture.jpg')",
+        backgroundImage: "url('/background-logandreg.png')",
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
