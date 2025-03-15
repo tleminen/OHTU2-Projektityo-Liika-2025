@@ -37,7 +37,13 @@ const ShortcutButtons = ({ toggleCategory, fetchEvents }) => {
     setEndTime("")
     setSelectedQuick(null)
     quickTime = 0
-    handleTimeFilterChange()
+    let time = {
+      dates: [],
+      startTime: "",
+      endTime: "",
+      quickTime: -1,
+    }
+    fetchEvents(time)
   }
 
   /**
@@ -293,7 +299,7 @@ const ShortcutButtons = ({ toggleCategory, fetchEvents }) => {
               <div
                 onClick={openTimePicker} // Tämä avaa ajanvalitsimen
                 style={{
-                  backgroundImage: "url(/time.png)", // Polku kuvaan
+                  backgroundImage: "url(/startTime.png)", // Polku kuvaan
                   backgroundSize: "cover",
                   width: "40px", // Sama koko kuin inputilla
                   height: "40px", // Sama koko kuin inputilla
@@ -303,17 +309,7 @@ const ShortcutButtons = ({ toggleCategory, fetchEvents }) => {
               {/* Näytettävä aika */}
               <span>{startTime || "Alkaen"}</span>
             </div>
-            <div
-              className="time-select-item"
-              style={{
-                fontSize: "40px",
-                background: "none",
-                boxShadow: "none",
-                cursor: "default",
-              }}
-            >
-              {"➜"}
-            </div>
+
             <div className="time-select-item">
               {/* Piilotettu input, joka on kuvakokoinen */}
               <input
@@ -333,7 +329,7 @@ const ShortcutButtons = ({ toggleCategory, fetchEvents }) => {
               <div
                 onClick={openTimePicker} // Tämä avaa ajanvalitsimen
                 style={{
-                  backgroundImage: "url(/time.png)", // Polku kuvaan
+                  backgroundImage: "url(/endTime.png)", // Polku kuvaan
                   backgroundSize: "cover",
                   width: "40px", // Sama koko kuin inputilla
                   height: "40px", // Sama koko kuin inputilla
@@ -346,6 +342,14 @@ const ShortcutButtons = ({ toggleCategory, fetchEvents }) => {
           </div>
         </div>
         <div className="quick-time-select-container">
+          <button
+            className={`quick-time-select ${
+              selectedQuick === -1 ? "selected" : ""
+            }`}
+            onClick={() => console.log("TODO: hakupainike")}
+          >
+            Filtteröi
+          </button>
           <button
             className={`quick-time-select ${
               selectedQuick === 1 ? "selected" : ""
