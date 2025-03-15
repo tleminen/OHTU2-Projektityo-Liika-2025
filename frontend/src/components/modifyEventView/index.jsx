@@ -13,7 +13,7 @@ import LocationMap from "../locationMap"
 import "./modifyEventView.css"
 import DatePicker from "react-multi-date-picker"
 import NotificationContainer from "../notification/notificationContainer"
-import { EmailSentSuccess, EmailSentFailure, OtpRobotCheck, OtpVerified, OtpNotVerified, UserFailure, EventNotFound} from "../notification/notificationTemplates.js"
+import { EmailSentSuccess, EmailSentFailure, OtpRobotCheck, OtpVerified, OtpNotVerified, UserFailure, EventNotFound, EventJoinSuccess, EventJoinFailure, EventCreated, EventDeletionWarning, EventDeletionFailure, EventLeaveSuccess} from "../notification/notificationTemplates.js"
 import { addNotification } from "../../store/notificationSlice.js"
 
 const ModifyEvent = () => {
@@ -55,7 +55,7 @@ const ModifyEvent = () => {
           label: t[selectCategoryName([eventData.CategoryID])],
         })
       } catch (error) {
-        dispatch(addNotification(EventNotFound(t.event_not_found)));
+        dispatch(addNotification(EventJoinFailure(t.event_not_found)));
         console.error(t.event_not_found + error)
       } finally {
         setLoading(false)
@@ -87,8 +87,9 @@ const ModifyEvent = () => {
           EventID: Number(id),
           TimeID: Number(selectedTime.TimeID),
         })
+        
       );
-      dispatch(addNotificationEventCreated(t.event_join_success));
+      
       // Päivitä frontendin Times-tila
       setTimes((prevTimes) =>
         prevTimes.map((time) =>
@@ -98,7 +99,8 @@ const ModifyEvent = () => {
         )
       )
     } catch (error) {
-      console.error("Virhe liityttäessä tapahtumaan" + error) //TODO NOTIYFY
+      console.error(t.event_join_error + error) //TODO NOTIYFY
+      dispatch(addNotification(EventCreated(t.event_join_error)));
     }
   }
 
@@ -133,12 +135,14 @@ const ModifyEvent = () => {
   const handleCancelEvent = async (time) => {
     // TODO: Lisää alert: Haluatko poistaa tapahtuman esiintymän?
     try {
+      dispatch(addNotification(EventDeletionWarning(t.event_deletion_warning)));
       var response = null
       if (times.length === 1) {
         response = await eventService.deleteEvent(storedToken, {
           UserID: userID,
           EventID: event.EventID,
           TimeID: time.TimeID,
+          
         })
         navigate("/created_events")
       } else {
@@ -159,6 +163,7 @@ const ModifyEvent = () => {
       console.log(response)
     } catch (error) {
       console.error("Virhe poistettaessa tapahtumaa" + error) //TODO NOTIYFY
+      dispatch(addNotification(EventDeletionFailure(t.event_deletion_failure)));
     }
   }
 
@@ -174,6 +179,7 @@ const ModifyEvent = () => {
         EventID: Number(id),
         TimeID: Number(selectedTime.TimeID),
       })
+      dispatch(addNotification(EventJoinSuccess(t.event_leave_success)));
       console.log(response) // TODO: Lisää notifikaatio?
       dispatch(
         removeEvent({
@@ -182,6 +188,7 @@ const ModifyEvent = () => {
           TimeID: selectedTime.TimeID,
         })
       )
+      
       // Päivitä frontendin Times-tila
       setTimes((prevTimes) =>
         prevTimes.map((time) =>
@@ -194,7 +201,9 @@ const ModifyEvent = () => {
         )
       )
     } catch (error) {
+      dispatch(addNotification(EventLeaveFailure(t.event__leave_failure)));
       console.error("Virhe poistuessa tapahumasta" + error)
+      
     }
   }
   const handleChange = (selectedOption) => {

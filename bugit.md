@@ -3,6 +3,7 @@ Bugit
 Kartta:
 Leveys ei toimi kunnolla
 Tarpeettomia tietokantakyselyitä categories ja joined
+Välillä, kun painaa karttanäkymässä Liika Logoa, joka vie etusivulle kartta ei lataudu kunnolla.
 
 Tapahtumien luonti:
 -Kirjautumaton:
@@ -23,6 +24,7 @@ CreateEvent:
 
 Azure:
 Tomille- Vaihda sprintistä 4 v2 -> v1, sprintistä 5 v3 -> v2 jne..
+
 
 
 Liika ei toimi FireFoxissa

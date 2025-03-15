@@ -46,5 +46,44 @@
     type: "success",
   })
 
+  const EventJoinFailure = (t) => ({
+    id: Date.now(),
+    message: t,
+    type: "error",
+  })
 
-export {EmailSentSuccess, EmailSentFailure, OtpRobotCheck, OtpVerified, OtpNotVerified, UserFailure, EventNotFound, EventCreated, EventJoinSuccess}
+  const EventCreated = (t) => ({
+    id: Date.now(),
+    message: t,
+    type: "success",
+  })
+
+  const EventDeletionWarning = (t) => ({
+    id: Date.now(),
+    message: t,
+    type: "warning",
+  })
+
+  const EventDeletionFailure = (t) => ({
+    id: Date.now(),
+    message: t,
+    type: "error",
+  })
+
+
+  const EventLeaveSuccess = (t) => ({
+    id: Date.now(),
+    message: t,
+    type: "success",
+  })
+
+  const EventLeaveFailure = (t) => ({
+    id: Date.now(),
+    message: t,
+    type: "error",
+  })
+
+  
+
+
+export {EmailSentSuccess, EmailSentFailure, OtpRobotCheck, OtpVerified, OtpNotVerified, UserFailure, EventNotFound, EventCreated, EventJoinSuccess, EventJoinFailure, EventDeletionWarning, EventDeletionFailure, EventLeaveSuccess, EventLeaveFailure}
