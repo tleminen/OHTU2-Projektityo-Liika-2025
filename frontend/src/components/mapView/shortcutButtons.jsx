@@ -3,19 +3,47 @@ import { categoryMap } from "../../assets/icons"
 import DatePicker from "react-multi-date-picker"
 
 // eslint-disable-next-line react/prop-types
-const ShortcutButtons = ({ toggleCategory }) => {
+const ShortcutButtons = ({ toggleCategory, fetchEvents }) => {
   const [moreIsOpen, setMoreIsOpen] = useState(false)
   const [catIsOpen, setCatIsOpen] = useState(false)
   const [timeIsOpen, setTimeIsOpen] = useState(false)
   const [timeSelectIsOpen, setTimeSelectIsOpen] = useState(false)
+  const [selectedQuick, setSelectedQuick] = useState(null)
+  const [overflowVisibility, setOverflowVisibility] = useState(false)
   const [selectedCategories, setSelectedCategories] = useState({})
   const [startTime, setStartTime] = useState("")
   const [endTime, setEndTime] = useState("")
-  const [selectedQuick, setSelectedQuick] = useState(null)
-  const [overflowVisibility, setOverflowVisibility] = useState(false)
+  const [dates, setDates] = useState([])
   const panelRef = useRef(null)
   const timeInputRef = useRef(null)
+  let quickTime = 0
+  /**
+   * Tämä funktio hoitaa aikafiltteröinnin tietojen keräyksen ja pyytää map-komponenttia suorittamaan fetchEvents
+   */
+  const handleTimeFilterChange = () => {
+    let time = {
+      dates: dates,
+      startTime: startTime,
+      endTime: endTime,
+      quickTime: quickTime,
+    }
+    fetchEvents(time)
+  }
 
+  const handleClearTimeFilter = () => {
+    setTimeSelectIsOpen(false)
+    setDates([])
+    setStartTime("")
+    setEndTime("")
+    setSelectedQuick(null)
+    quickTime = 0
+    handleTimeFilterChange()
+  }
+
+  /**
+   * Tämä funktio avaa aikasuodatuspaneelin, sulkee samalla muut
+   * @param {avattava kalenter} openCalendar
+   */
   const handleCalendarToggle = (openCalendar) => {
     if (moreIsOpen || catIsOpen || timeSelectIsOpen) {
       setCatIsOpen(false)
@@ -23,6 +51,8 @@ const ShortcutButtons = ({ toggleCategory }) => {
       setTimeSelectIsOpen(false)
       setTimeout(() => openCalendar(), 300) // Avaa kalenteri
     } else {
+      quickTime = 0
+      setSelectedQuick(null)
       openCalendar()
     }
   }
@@ -34,14 +64,26 @@ const ShortcutButtons = ({ toggleCategory }) => {
     setStartTime(e.target.value)
   }
 
+  /**
+   * Tämä funktio klikkaa ajanvalitsinta. Näin saamme kuvakkeen klikkauksella ajanvalitsimen auki
+   */
   const openTimePicker = () => {
     if (timeInputRef.current) {
       timeInputRef.current.click() // Klikkaa inputia, avaa ajanvalitsimen
     }
   }
 
+  /**
+   * Ajan pika-rajoittimet
+   */
   const handleQuickTime = (button) => {
+    setTimeSelectIsOpen(false)
+    setDates([])
+    setStartTime("")
+    setEndTime("")
     setSelectedQuick(button)
+    quickTime = button
+    handleTimeFilterChange()
     switch (button) {
       case 1:
         console.log("painettiin 3h")
@@ -58,6 +100,9 @@ const ShortcutButtons = ({ toggleCategory }) => {
     }
   }
 
+  /**
+   * Avaa ja sulkee kategoriapaneelia
+   */
   const toggleCatPanel = () => {
     setMoreIsOpen(false)
     setTimeIsOpen(false)
@@ -70,6 +115,9 @@ const ShortcutButtons = ({ toggleCategory }) => {
     }
   }
 
+  /**
+   * Avaa ja sulkee ... paneelia
+   */
   const toggleMorePanel = () => {
     setCatIsOpen(false)
     setTimeIsOpen(false)
@@ -82,6 +130,9 @@ const ShortcutButtons = ({ toggleCategory }) => {
     }
   }
 
+  /**
+   * Avaa ja sulkee aikafiltteröintipaneelia
+   */
   const toggleTimePanel = () => {
     setMoreIsOpen(false)
     setCatIsOpen(false)
@@ -95,10 +146,19 @@ const ShortcutButtons = ({ toggleCategory }) => {
     }
   }
 
+  /**
+   * Avaa ja sulkee aloitus- ja lopetusajan paneelia
+   */
   const toggleTimeSelectPanel = () => {
+    quickTime = 0
+    setSelectedQuick(null)
     setTimeSelectIsOpen((prev) => !prev)
   }
 
+  /**
+   * Toglaa kategoriaa valituksi ja pois
+   * @param {Painetun kategorian id} categoryId
+   */
   const handleCategoryClick = (categoryId) => {
     setSelectedCategories((prev) => ({
       ...prev,
@@ -106,10 +166,17 @@ const ShortcutButtons = ({ toggleCategory }) => {
     }))
   }
 
+  /**
+   * Lähettää map-komponentille pyynnön filtteröidä
+   */
   const handleClicks = () => {
     toggleCategory(selectedCategories)
   }
 
+  /**
+   * Sulkee kaikki paneelit kun klikataan ulkopulelle
+   * @param {eventti} e
+   */
   const handleClickOutside = (e) => {
     if (panelRef.current && !panelRef.current.contains(e.target)) {
       setCatIsOpen(false)
@@ -120,6 +187,9 @@ const ShortcutButtons = ({ toggleCategory }) => {
     }
   }
 
+  /**
+   * Tarkistaa jos klikataan ulkopulelle
+   */
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside)
     return () => document.removeEventListener("mousedown", handleClickOutside)
@@ -127,6 +197,8 @@ const ShortcutButtons = ({ toggleCategory }) => {
 
   return (
     <div className="containerforshortcutbuttons" ref={panelRef}>
+      {" "}
+      {/*Alapalkin kontaineri, sisältää paneelien avausnapit*/}
       <button
         className="shortcut-button"
         style={{
@@ -135,6 +207,8 @@ const ShortcutButtons = ({ toggleCategory }) => {
         onClick={toggleMorePanel}
       />
       <div className={`more-panel ${moreIsOpen ? "open" : ""}`}>
+        {" "}
+        {/*... paneeli*/}
         <div>...</div>
       </div>
       <button
@@ -143,6 +217,8 @@ const ShortcutButtons = ({ toggleCategory }) => {
         onClick={toggleCatPanel}
       />
       <div className={`category-panel ${catIsOpen ? "open" : ""}`}>
+        {" "}
+        {/*Kategorioiden suodatupaneeli*/}
         <div className="category-list" onClick={handleClicks()}>
           {Object.entries(categoryMap).map(([id, name]) => (
             <button
@@ -165,9 +241,13 @@ const ShortcutButtons = ({ toggleCategory }) => {
         className={`time-panel ${timeIsOpen ? "open" : ""}`}
         style={{ overflow: overflowVisibility ? "visible" : "hidden" }}
       >
+        {/*Aikajaksolla suodattamisen paneeli*/}
         <div className="time-list">
           <DatePicker
-            onChange={(newDates) => console.log(newDates)}
+            value={dates}
+            onChange={(newDates) =>
+              setDates([...newDates].sort((a, b) => new Date(a) - new Date(b)))
+            }
             range
             minDate={Date.now()}
             zIndex={1005}
@@ -186,7 +266,6 @@ const ShortcutButtons = ({ toggleCategory }) => {
             format="DD.MM.YYYY"
             weekStartDayIndex={1}
           />
-
           <button
             className="time-shortcut-button"
             style={{ backgroundImage: "url(/time.png)" }}
@@ -298,6 +377,12 @@ const ShortcutButtons = ({ toggleCategory }) => {
             onClick={() => handleQuickTime(4)}
           >
             1 kk
+          </button>
+          <button
+            className="clear-button" /* Nollaa ajan valinnan */
+            onClick={() => handleClearTimeFilter()}
+          >
+            Clear
           </button>
         </div>
       </div>

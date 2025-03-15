@@ -34,6 +34,19 @@ const Map = ({ startingLocation }) => {
     }
   }, [timeStamp])
 
+  const fetchEvents = (time) => {
+    if (!time) {
+      console.log("Hae normaalisti tapahtumat")
+    } else {
+      console.log(time)
+      if (time.quickTime) {
+        console.log("Haetaan pika-aika" + time.quickTime)
+      } else {
+        console.log("Hae tapahtumat aikavälillä" + JSON.stringify(time))
+      }
+    }
+  }
+
   // Käsittele paneelin näkyvyys
   const toggleCategoryPanel = () => {
     setCategoryPanelOpen(!isCategoryPanelOpen)
@@ -271,6 +284,7 @@ const Map = ({ startingLocation }) => {
           isOpen={isCategoryPanelOpen}
           toggleCategory={toggleCategory}
           toggleCategoryPanel={toggleCategoryPanel}
+          fetchEvents={fetchEvents}
           onClose={() => setCategoryPanelOpen(false)}
         />
       )

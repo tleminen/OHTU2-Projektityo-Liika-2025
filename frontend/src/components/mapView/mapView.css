@@ -1,3 +1,17 @@
+.containerforshortcutbuttons {
+  position: fixed;
+  bottom: 20px; /* Sijoitetaan alareunaan */
+  left: 50%;
+  transform: translateX(-50%); /* Keskittää vaakasuunnassa */
+  background-color: #0097b28d;
+  padding: 10px 20px;
+  border-radius: 20px; /* Pyöristetyt kulmat */
+  display: flex;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  gap: 8px;
+  z-index: 1001;
+}
+
 .event-map-container {
   display: flex;
   flex-direction: column;
@@ -38,19 +52,6 @@
 
 .pika-painike:active {
   animation: bounce 0.2s ease-in-out;
-}
-
-.containerforshortcutbuttons {
-  position: fixed;
-  bottom: 20px; /* Sijoitetaan alareunaan */
-  left: 50%;
-  transform: translateX(-50%); /* Keskittää vaakasuunnassa */
-  background-color: #0097b28d;
-  padding: 10px 20px;
-  border-radius: 20px; /* Pyöristetyt kulmat */
-  display: flex;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  z-index: 1001;
 }
 
 /* Avattava paneeli */
@@ -166,7 +167,6 @@
   width: fit-content;
   max-width: 600px;
   max-height: 0;
-  overflow: hidden;
   opacity: 0.7;
   transition: max-height 0.5s ease;
   background: rgba(0, 151, 178, 0.281);
@@ -178,7 +178,6 @@
 .time-panel.open {
   max-height: 70vh;
   opacity: 1;
-  overflow: visible;
   max-width: fit-content;
   margin: auto;
 }
@@ -194,6 +193,12 @@
   overflow: visible;
 }
 
+.time-list-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
 /* Avattava paneeli */
 /* Paneelin kontti */
 .time-select-panel {
@@ -207,13 +212,13 @@
   padding: 20px 20px;
   max-width: 600px;
   max-height: 0;
-  overflow: visible;
   opacity: 0;
   transition: max-height 0.5s ease;
   background: rgba(0, 151, 178, 0.281);
   border-radius: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   z-index: 1050;
+  overflow: hidden;
 }
 /* Paneelin avoin tila */
 .time-select-panel.open {
@@ -235,6 +240,7 @@
   cursor: pointer;
   transition: background-color 0.25s, color 0.25s;
   display: flex;
+  overflow: hidden;
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -328,7 +334,7 @@
 .quick-time-select-container {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 12px;
   margin: auto;
   padding-bottom: 20px;
 }
@@ -342,6 +348,12 @@
   color: white;
 }
 
+.clear-button:hover,
 .quick-time-select:hover {
   background-color: #ddd; /* Hover-efekti */
+}
+
+.clear-button {
+  width: 80%;
+  background-color: rgba(255, 45, 45, 0.653);
 }
