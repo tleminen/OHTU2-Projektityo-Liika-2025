@@ -78,6 +78,33 @@
   opacity: 1;
 }
 
+/* ... nappilista */
+.more-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 20px;
+  overflow-y: auto;
+  max-height: 70vh;
+}
+
+/* Yksittäinen painike */
+.more-item {
+  width: 60px;
+  height: 60px;
+  border-radius: 30%;
+  background: rgba(255, 255, 255, 0.667);
+  background-size: cover;
+  border: none;
+  cursor: pointer;
+  transition: filter 0.3s ease;
+}
+
+/* Aktiivinen kategoria: Läpinäkyvä vihreä peite */
+.more-item.active {
+  filter: brightness(0.5) sepia(1) hue-rotate(90deg) saturate(500%);
+}
+
 /* Avattava paneeli */
 /* Paneelin kontti */
 .category-panel {
@@ -100,33 +127,6 @@
 .category-panel.open {
   max-height: 70vh;
   opacity: 1;
-}
-
-/* Kategorian nappilista */
-.more-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  padding: 20px;
-  overflow-y: auto;
-  max-height: 70vh;
-}
-
-/* Yksittäinen kategoria-painike */
-.more-item {
-  width: 60px;
-  height: 60px;
-  border-radius: 30%;
-  background: rgba(255, 255, 255, 0.667);
-  background-size: cover;
-  border: none;
-  cursor: pointer;
-  transition: filter 0.3s ease;
-}
-
-/* Aktiivinen kategoria: Läpinäkyvä punainen peite */
-.more-item.active {
-  filter: brightness(0.5) sepia(1) hue-rotate(90deg) saturate(500%);
 }
 
 /* Kategorian nappilista */
@@ -168,12 +168,86 @@
   max-height: 0;
   overflow: hidden;
   opacity: 0.7;
-  transition: max-height 0.5s ease, opacity 0.5s ease;
+  transition: max-height 0.5s ease;
   background: rgba(0, 151, 178, 0.281);
   border-radius: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   z-index: 1050;
-  text-align: center;
+}
+/* Paneelin avoin tila */
+.time-panel.open {
+  max-height: 70vh;
+  opacity: 1;
+  overflow: visible;
+  max-width: fit-content;
+  margin: auto;
+}
+
+.time-list {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  padding: 20px;
+  overflow-y: auto;
+  max-height: fit-content;
+  max-width: fit-content;
+  overflow: visible;
+}
+
+/* Avattava paneeli */
+/* Paneelin kontti */
+.time-select-panel {
+  position: fixed;
+  display: flex;
+  flex-direction: row;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: fit-content;
+  padding: 20px 20px;
+  max-width: 600px;
+  max-height: 0;
+  overflow: visible;
+  opacity: 0;
+  transition: max-height 0.5s ease;
+  background: rgba(0, 151, 178, 0.281);
+  border-radius: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1050;
+}
+/* Paneelin avoin tila */
+.time-select-panel.open {
+  max-height: 70vh;
+  opacity: 1;
+  overflow: hidden;
+  max-width: fit-content;
+  margin: auto;
+  gap: 20px;
+}
+
+.time-select-item {
+  border-radius: 10px;
+  border: 2px solid transparent;
+  font-size: 1em;
+  font-weight: 500;
+  color: #ffffff;
+  background-color: #0097b27d;
+  cursor: pointer;
+  transition: background-color 0.25s, color 0.25s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.5);
+  margin: auto;
+  width: fit-content;
+  min-width: 50px;
+  height: fit-content;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  border: none;
+  gap: 2px;
 }
 
 .shortcutbuttons {
@@ -188,7 +262,7 @@
   font-size: 1em;
   font-weight: 500;
   color: #ffffff;
-  background-color: #0097b2;
+  background-color: #0097b27d;
   cursor: pointer;
   transition: background-color 0.25s, color 0.25s;
   display: flex;
@@ -202,7 +276,6 @@
   background-repeat: no-repeat;
   background-position: center;
   border: none;
-  background-color: transparent;
   cursor: pointer;
 }
 
@@ -229,6 +302,12 @@
   border-radius: 20px;
 }
 
+.rmdp-year-picker,
+.rmdp-month-picker {
+  background-color: rgba(193, 246, 255, 0.945) !important;
+  backdrop-filter: blur(10px);
+}
+
 .time-shortcut-button:active,
 .shortcut-button:active {
   animation: bounce 0.2s ease-in-out;
@@ -244,4 +323,25 @@
   100% {
     transform: scale(1);
   }
+}
+
+.quick-time-select-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: auto;
+  padding-bottom: 20px;
+}
+
+.quick-time-select {
+  width: 80%;
+}
+
+.quick-time-select.selected {
+  background-color: #4caf50; /* Valittu painike saa vihreän värin */
+  color: white;
+}
+
+.quick-time-select:hover {
+  background-color: #ddd; /* Hover-efekti */
 }
