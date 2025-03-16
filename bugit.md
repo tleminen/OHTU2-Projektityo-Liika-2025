@@ -21,6 +21,9 @@ CreateEvent:
 Azure:
 Tomille- Vaihda sprintistä 4 v2 -> v1, sprintistä 5 v3 -> v2 jne..
 
+Backend:
+! Nearby-haku hakee käyttäjätunnuksen vaikka se olisi sähköpostiosoitemuotoinen (sis. @). Frontti filtteröi sen, mutta pitää poistaa backendissä!
+
 Liika ei toimi FireFoxissa
 Chatin vastaus:
 "Näyttää siltä, että Frontpage-komponentissa on virhe ja että Leaflet-kirjaston resurssit eivät lataudu oikein.

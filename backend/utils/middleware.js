@@ -10,7 +10,6 @@ const unknownEndpoint = (request, response) => {
 const tokenExtractor = (request, response, next) => {
   const getTokenFrom = (request) => {
     const authorization = request.get("authorization")
-    console.log(authorization)
     if (authorization && authorization.startsWith("bearer")) {
       return authorization.replace("bearer ", "")
     }

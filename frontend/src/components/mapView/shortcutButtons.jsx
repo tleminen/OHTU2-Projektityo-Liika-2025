@@ -28,6 +28,8 @@ const ShortcutButtons = ({ toggleCategory, fetchEvents }) => {
       quickTime: quickTime,
     }
     fetchEvents(time)
+    setOverflowVisibility(false)
+    setTimeIsOpen(false)
   }
 
   const handleClearTimeFilter = () => {
@@ -44,6 +46,8 @@ const ShortcutButtons = ({ toggleCategory, fetchEvents }) => {
       quickTime: -1,
     }
     fetchEvents(time)
+    setOverflowVisibility(false)
+    setTimeIsOpen(false)
   }
 
   /**

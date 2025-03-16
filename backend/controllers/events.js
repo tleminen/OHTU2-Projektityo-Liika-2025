@@ -34,12 +34,29 @@ eventRouter.post("/singleEventWithTimes", async (req, res) => {
 /**
  * Hakee tapahtumat alueelta
  * Parametrina leveys- ja pituuspiiri, sekä maksimietäisyys pisteestä
+ * Lisäksi mukana aikaväli jolla haetaan. Default aikaväli on nykyinen päivämäärä ja 00:00 + 30 päivää 23:59
  * Palauttaa tapahtuman tiedot, sekä osallistujamäärän (aktiivinen tai seuraava esiintymä tapahtumasta)
  */
 eventRouter.post("/nearby", async (req, res) => {
-  const { latitude, longitude, radius } = req.body
+  const {
+    latitude,
+    longitude,
+    radius,
+    startTime,
+    endTime,
+    startDate,
+    endDate,
+  } = req.body
   try {
-    const events = await getEventsNearby(latitude, longitude, radius)
+    const events = await getEventsNearby(
+      latitude,
+      longitude,
+      radius,
+      startTime,
+      endTime,
+      startDate,
+      endDate
+    )
     res.json(events)
   } catch (error) {
     res.status(500).json({ error: "Jotain meni pieleen" })

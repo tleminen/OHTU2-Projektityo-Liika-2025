@@ -3,7 +3,15 @@ const { Events } = require("../models/Events")
 const { sequelize } = require("../models")
 
 // Tapahtumien hakukyselyn luonti
-const getEventsNearby = async (latitude, longitude, radius) => {
+const getEventsNearby = async (
+  latitude,
+  longitude,
+  radius,
+  startTime,
+  endTime,
+  startDate,
+  endDate
+) => {
   try {
     const query = `
       WITH NextOrOngoingTime AS (
@@ -45,6 +53,9 @@ const getEventsNearby = async (latitude, longitude, radius) => {
               ST_SetSRID(ST_MakePoint(:longitude, :latitude), 4326)::geography,
               :radius
             )
+      -- Päivämäärän ja kellonajan suodatus minuuttitarkkuudella
+      AND DATE(t."StartTime") BETWEEN :startDate AND :endDate
+      AND TO_CHAR(t."StartTime", 'HH24:MI') BETWEEN :startTime AND :endTime
       GROUP BY 
         e."EventID",
         e."Event_Location",
@@ -65,7 +76,15 @@ const getEventsNearby = async (latitude, longitude, radius) => {
     `
 
     const events = await sequelize.query(query, {
-      replacements: { latitude, longitude, radius },
+      replacements: {
+        latitude,
+        longitude,
+        radius,
+        startTime,
+        endTime,
+        startDate,
+        endDate,
+      },
       type: sequelize.QueryTypes.SELECT,
     })
 

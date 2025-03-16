@@ -14,6 +14,8 @@ import { selectIcon } from "../../assets/icons"
 import { categories } from "./utils"
 import ShortcutButtons from "./shortcutButtons"
 
+const DEFAULT_DAYS = 30
+
 const Map = ({ startingLocation }) => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -120,21 +122,54 @@ const Map = ({ startingLocation }) => {
     const width = northWest.distanceTo([northWest.lat, southEast.lng])
     const height = northWest.distanceTo([southEast.lat, northWest.lng])
     try {
+      let startDay = new Date()
+      let today = startDay.toISOString().split("T")[0] // Tämä himmeli tuottaa päivämäärän muotoa: YYYY-MM-DD
+      let endDay = new Date(startDay)
+      endDay.setDate(endDay.getDate() + DEFAULT_DAYS) // Asetettu komponentin alussa
+      let endDate = endDay.toISOString().split("T")[0]
       let eventList
-      if (!time) {
+      if (!time || time.quickTime === -1) {
+        console.log("Haetaan default")
         eventList = await eventService.getEvents({
           latitude: center.lat,
           longitude: center.lng,
           radius: Math.max(Math.max(width, height) / 2, 10000), // Haetaan kartallinen tapahtumia, kuitenkin vähintään 10km
+          startTime: "00:00",
+          endTime: "23:59",
+          startDate: today,
+          endDate: endDate,
         })
-      } else {
+      } else if (time.quickTime === 1) {
+        if (time.dates[1]) {
+          // Päivämääräväli
+          startDay = new Date(time.dates[0]).toISOString().split("T")[0] // Tämä himmeli tuottaa päivämäärän muotoa: YYYY-MM-DD
+          endDay = new Date(time.dates[1]).toISOString().split("T")[0]
+        } else if (time.dates[0]) {
+          // Yksi päivä
+          startDay = new Date(time.dates[0]).toISOString().split("T")[0]
+          endDay = new Date(time.dates[0]).toISOString().split("T")[0]
+        }
+        let starts = time.startTime
+        let ends = time.endTime
+        if (starts === "") {
+          // Asetellaan tapahtumalle kellonaikaväli
+          starts = "00:00"
+        }
+        if (ends === "") {
+          ends = "23:59"
+        }
         console.log("refreshMarkers: " + JSON.stringify(time))
         eventList = await eventService.getEvents({
           latitude: center.lat,
           longitude: center.lng,
-          time: time,
           radius: Math.max(Math.max(width, height) / 2, 10000), // Haetaan kartallinen tapahtumia, kuitenkin vähintään 10km
+          startTime: starts,
+          endTime: ends,
+          startDate: startDay,
+          endDate: endDay,
         })
+      } else {
+        console.log("Haetaan pika-haulla" + JSON.stringify(time))
       }
 
       // Tyhjentää kaikki categoryGroupit ja poistaa ne kartalta
