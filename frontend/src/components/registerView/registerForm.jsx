@@ -241,7 +241,10 @@ const RegisterForm = () => {
               className="password-toggle-button"
               onClick={togglePasswordVisibility}
             >
-              <span className="material-symbols-outlined">
+              <span
+                className="material-symbols-outlined"
+                style={{ maxWidth: "20px" }}
+              >
                 {showPassword ? "visibility_off" : "visibility"}
               </span>
             </button>
@@ -267,7 +270,10 @@ const RegisterForm = () => {
               className="password-toggle-button"
               onClick={togglePasswordVisibilityAgain}
             >
-              <span className="material-symbols-outlined">
+              <span
+                className="material-symbols-outlined"
+                style={{ maxWidth: "20px" }}
+              >
                 {showPasswordAgain ? "visibility_off" : "visibility"}
               </span>
             </button>

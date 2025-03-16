@@ -83,26 +83,20 @@ const ShortcutButtons = ({ toggleCategory, fetchEvents }) => {
    * Ajan pika-rajoittimet
    */
   const handleQuickTime = (button) => {
-    setTimeSelectIsOpen(false)
-    setDates([])
-    setStartTime("")
-    setEndTime("")
-    setSelectedQuick(button)
-    quickTime = button
-    handleTimeFilterChange()
-    switch (button) {
-      case 1:
-        console.log("painettiin 3h")
-        break
-      case 2:
-        console.log("painettiin 1d")
-        break
-      case 3:
-        console.log("painettiin 7d")
-        break
-      case 4:
-        console.log("painettiin 1kk")
-        break
+    if (button === 1) {
+      console.log("Halutaan filtteröidä")
+      setSelectedQuick(button)
+      quickTime = button
+      setTimeSelectIsOpen(false)
+      handleTimeFilterChange()
+    } else {
+      setTimeSelectIsOpen(false)
+      setDates([])
+      setStartTime("")
+      setEndTime("")
+      setSelectedQuick(button)
+      quickTime = button
+      handleTimeFilterChange()
     }
   }
 
@@ -344,19 +338,11 @@ const ShortcutButtons = ({ toggleCategory, fetchEvents }) => {
         <div className="quick-time-select-container">
           <button
             className={`quick-time-select ${
-              selectedQuick === -1 ? "selected" : ""
-            }`}
-            onClick={() => console.log("TODO: hakupainike")}
-          >
-            Filtteröi
-          </button>
-          <button
-            className={`quick-time-select ${
               selectedQuick === 1 ? "selected" : ""
             }`}
             onClick={() => handleQuickTime(1)}
           >
-            3 h
+            Filtteröi
           </button>
           <button
             className={`quick-time-select ${
@@ -364,7 +350,7 @@ const ShortcutButtons = ({ toggleCategory, fetchEvents }) => {
             }`}
             onClick={() => handleQuickTime(2)}
           >
-            1 d
+            3 h
           </button>
           <button
             className={`quick-time-select ${
@@ -372,13 +358,21 @@ const ShortcutButtons = ({ toggleCategory, fetchEvents }) => {
             }`}
             onClick={() => handleQuickTime(3)}
           >
-            7 d
+            1 d
           </button>
           <button
             className={`quick-time-select ${
               selectedQuick === 4 ? "selected" : ""
             }`}
             onClick={() => handleQuickTime(4)}
+          >
+            7 d
+          </button>
+          <button
+            className={`quick-time-select ${
+              selectedQuick === 5 ? "selected" : ""
+            }`}
+            onClick={() => handleQuickTime(5)}
           >
             1 kk
           </button>

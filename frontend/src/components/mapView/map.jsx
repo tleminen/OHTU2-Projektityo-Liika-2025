@@ -34,19 +34,6 @@ const Map = ({ startingLocation }) => {
     }
   }, [timeStamp])
 
-  const fetchEvents = (time) => {
-    if (!time) {
-      console.log("Hae normaalisti tapahtumat")
-    } else {
-      console.log(time)
-      if (time.quickTime) {
-        console.log("Haetaan pika-aika" + time.quickTime)
-      } else {
-        console.log("Hae tapahtumat aikavälillä" + JSON.stringify(time))
-      }
-    }
-  }
-
   // Käsittele paneelin näkyvyys
   const toggleCategoryPanel = () => {
     setCategoryPanelOpen(!isCategoryPanelOpen)
@@ -124,7 +111,7 @@ const Map = ({ startingLocation }) => {
   }
 
   // Funktio, joka hakee tapahtumat ja lisää markerit layerGroupeihin kategorioittain
-  const refreshMarkers = async (map) => {
+  const refreshMarkers = async (map, time) => {
     const center = map.getCenter()
     setTimeStamp(new Date().toLocaleTimeString().replaceAll(".", ":")) // Asetetaan milloin haettu viimeksi
     const bounds = map.getBounds() // Haetaan radiuksen laskemista varten rajat
@@ -132,13 +119,23 @@ const Map = ({ startingLocation }) => {
     const southEast = bounds.getSouthEast()
     const width = northWest.distanceTo([northWest.lat, southEast.lng])
     const height = northWest.distanceTo([southEast.lat, northWest.lng])
-
     try {
-      const eventList = await eventService.getEvents({
-        latitude: center.lat,
-        longitude: center.lng,
-        radius: Math.max(Math.max(width, height) / 2, 10000), // Haetaan kartallinen tapahtumia, kuitenkin vähintään 10km
-      })
+      let eventList
+      if (!time) {
+        eventList = await eventService.getEvents({
+          latitude: center.lat,
+          longitude: center.lng,
+          radius: Math.max(Math.max(width, height) / 2, 10000), // Haetaan kartallinen tapahtumia, kuitenkin vähintään 10km
+        })
+      } else {
+        console.log("refreshMarkers: " + JSON.stringify(time))
+        eventList = await eventService.getEvents({
+          latitude: center.lat,
+          longitude: center.lng,
+          time: time,
+          radius: Math.max(Math.max(width, height) / 2, 10000), // Haetaan kartallinen tapahtumia, kuitenkin vähintään 10km
+        })
+      }
 
       // Tyhjentää kaikki categoryGroupit ja poistaa ne kartalta
       markerClusterGroup.clearLayers()
@@ -182,8 +179,8 @@ const Map = ({ startingLocation }) => {
     }
   }
 
-  const onClickRefresh = async (map) => {
-    await refreshMarkers(map)
+  const onClickRefresh = async (map, time) => {
+    await refreshMarkers(map, time)
   }
 
   const onClickCreateEvent = () => {
@@ -225,6 +222,18 @@ const Map = ({ startingLocation }) => {
       zoom: startingLocation.zoom,
       layers: [osm],
     })
+
+    const fetchEvents = (time) => {
+      if (!time) {
+        console.log("Virhe!")
+      } else {
+        if (time.quickTime) {
+          onClickRefresh(map, time)
+        } else {
+          console.log("Virhe!" + JSON.stringify(time))
+        }
+      }
+    }
 
     const pikapainikkeet = L.control({ position: "topleft" })
 
@@ -301,7 +310,7 @@ const Map = ({ startingLocation }) => {
         <div className="refresh-events">
           <button
             className="pika-painike"
-            onClick={() => onClickRefresh(map)}
+            onClick={() => onClickRefresh(map, null)}
             style={{
               backgroundImage: "url(/refreshIcon.png)", // Suora polku publicista
             }}
