@@ -139,37 +139,137 @@ const Map = ({ startingLocation }) => {
           startDate: today,
           endDate: endDate,
         })
-      } else if (time.quickTime === 1) {
-        if (time.dates[1]) {
-          // Päivämääräväli
-          startDay = new Date(time.dates[0]).toISOString().split("T")[0] // Tämä himmeli tuottaa päivämäärän muotoa: YYYY-MM-DD
-          endDay = new Date(time.dates[1]).toISOString().split("T")[0]
-        } else if (time.dates[0]) {
-          // Yksi päivä
-          startDay = new Date(time.dates[0]).toISOString().split("T")[0]
-          endDay = new Date(time.dates[0]).toISOString().split("T")[0]
-        }
-        let starts = time.startTime
-        let ends = time.endTime
-        if (starts === "") {
-          // Asetellaan tapahtumalle kellonaikaväli
-          starts = "00:00"
-        }
-        if (ends === "") {
-          ends = "23:59"
-        }
-        console.log("refreshMarkers: " + JSON.stringify(time))
-        eventList = await eventService.getEvents({
-          latitude: center.lat,
-          longitude: center.lng,
-          radius: Math.max(Math.max(width, height) / 2, 10000), // Haetaan kartallinen tapahtumia, kuitenkin vähintään 10km
-          startTime: starts,
-          endTime: ends,
-          startDate: startDay,
-          endDate: endDay,
-        })
       } else {
-        console.log("Haetaan pika-haulla" + JSON.stringify(time))
+        switch (
+          time.quickTime // TODO! UTC-aika nyt, Ongelma on toISOString -komennossa. Käytä toLocaleDateString?
+        ) {
+          case 1:
+            {
+              console.log("Haetaan filtteröity ajanjakso")
+              if (time.dates[1]) {
+                // Päivämääräväli
+                startDay = new Date(time.dates[0]).toISOString().split("T")[0] // Tämä himmeli tuottaa päivämäärän muotoa: YYYY-MM-DD
+                endDay = new Date(time.dates[1]).toISOString().split("T")[0]
+              } else if (time.dates[0]) {
+                // Yksi päivä
+                startDay = new Date(time.dates[0]).toISOString().split("T")[0]
+                endDay = new Date(time.dates[0]).toISOString().split("T")[0]
+              }
+              let starts = time.startTime
+              let ends = time.endTime
+              if (starts === "") {
+                // Asetellaan tapahtumalle kellonaikaväli
+                starts = "00:00"
+              }
+              if (ends === "") {
+                ends = "23:59"
+              }
+              console.log("refreshMarkers: " + JSON.stringify(time))
+              eventList = await eventService.getEvents({
+                latitude: center.lat,
+                longitude: center.lng,
+                radius: Math.max(Math.max(width, height) / 2, 10000), // Haetaan kartallinen tapahtumia, kuitenkin vähintään 10km
+                startTime: starts,
+                endTime: ends,
+                startDate: startDay,
+                endDate: endDay,
+              })
+            }
+            break
+
+          case 2:
+            {
+              console.log("Haetaan +3h")
+              endDay = new Date(startDay)
+              endDay.setHours(endDay.getHours() + 3)
+              endDate = endDay.toISOString().split("T")[0]
+              const ends = endDay
+                .toISOString()
+                .split("T")[1]
+                .split(":")
+                .slice(0, 2)
+                .join(":")
+              const starts = startDay
+                .toISOString()
+                .split("T")[1]
+                .split(":")
+                .slice(0, 2)
+                .join(":")
+              eventList = await eventService.getEvents({
+                latitude: center.lat,
+                longitude: center.lng,
+                radius: Math.max(Math.max(width, height) / 2, 10000), // Haetaan kartallinen tapahtumia, kuitenkin vähintään 10km
+                startTime: starts,
+                endTime: ends,
+                startDate: today,
+                endDate: endDate,
+              })
+            }
+            break
+          case 3:
+            {
+              console.log("Haetaan +3h")
+              endDay = new Date(startDay)
+              endDay.setHours(endDay.getHours() + 24)
+              endDate = endDay.toISOString().split("T")[0] // TODO: HAKU EI TOIMI NÄIN, VAATISI BETWEEN TIMESTAPS HAUN, NYT HAKEE ERIKSEEN (kuten ajatuskin)
+              const ends = endDay
+                .toISOString()
+                .split("T")[1]
+                .split(":")
+                .slice(0, 2)
+                .join(":")
+              const starts = startDay
+                .toISOString()
+                .split("T")[1]
+                .split(":")
+                .slice(0, 2)
+                .join(":")
+              eventList = await eventService.getEvents({
+                latitude: center.lat,
+                longitude: center.lng,
+                radius: Math.max(Math.max(width, height) / 2, 10000), // Haetaan kartallinen tapahtumia, kuitenkin vähintään 10km
+                startTime: starts,
+                endTime: ends,
+                startDate: today,
+                endDate: endDate,
+              })
+            }
+            break
+          case 4:
+            {
+              console.log("Haetaan +7d")
+              endDay = new Date(startDay)
+              endDay.setDate(endDay.getDate() + 7)
+              endDate = endDay.toISOString().split("T")[0]
+              eventList = await eventService.getEvents({
+                latitude: center.lat,
+                longitude: center.lng,
+                radius: Math.max(Math.max(width, height) / 2, 10000), // Haetaan kartallinen tapahtumia, kuitenkin vähintään 10km
+                startTime: "00:00",
+                endTime: "23:59",
+                startDate: today,
+                endDate: endDate,
+              })
+            }
+            break
+          case 5:
+            {
+              console.log("Haetaan +7d")
+              endDay = new Date(startDay)
+              endDay.setDate(endDay.getDate() + 30) // Tää on sama määrä kuin default-haku nyt, mut haitanneeko?
+              endDate = endDay.toISOString().split("T")[0]
+              eventList = await eventService.getEvents({
+                latitude: center.lat,
+                longitude: center.lng,
+                radius: Math.max(Math.max(width, height) / 2, 10000), // Haetaan kartallinen tapahtumia, kuitenkin vähintään 10km
+                startTime: "00:00",
+                endTime: "23:59",
+                startDate: today,
+                endDate: endDate,
+              })
+            }
+            break
+        }
       }
 
       // Tyhjentää kaikki categoryGroupit ja poistaa ne kartalta
