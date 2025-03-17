@@ -54,6 +54,11 @@ const RegisterForm = () => {
     otpInputRefs.current = otpInputRefs.current.slice(0, 6) // Varmista, että ref-taulukko on oikean kokoinen
   }, [])
 
+  const handleReadyState = () => {
+    setBlockRegister(true)
+    setTimeout(() => navigate("/"), 3000)
+  }
+
   const handleOtpChange = (index, value) => {
     const newOtp = otp.split("")
     newOtp[index] = value
@@ -133,9 +138,9 @@ const RegisterForm = () => {
         })
       ) // Kovakoodattu etäisyys
       setIsOtpVerified(true)
-      navigate("/")
       dispatch(addNotification(OtpVerified(t.email_confirmation))) // Lähetä onnistumisilmoitus
       // Jos OTP on oikein, päivitä tila
+      handleReadyState()
     } catch (error) {
       if (error.message === "otp check failed") {
         dispatch(addNotification(OtpRobotCheck(t.opt_robot_check))) // Lähetä virheilmoitus

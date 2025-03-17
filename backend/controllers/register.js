@@ -22,16 +22,22 @@ registerRouter.post("/", async (request, response) => {
     const storedCode = VERIFICATION_CODES.get(email) //Hae tallennettu koodi
 
     if (!storedCode) {
-      response.status(404).json({ message: "Vahvistuskoodia ei löytynyt." })
+      return response
+        .status(404)
+        .json({ message: "Vahvistuskoodia ei löytynyt." })
     }
 
+    console.log(otp)
+    console.log(storedCode)
     if (storedCode === otp) {
       VERIFICATION_CODES.delete(email) //Poistetaan koodi, kun se on vahvistettu
     } else {
-      response.status(401).json({ message: "Vahvistuskoodi on virheellinen." })
+      return response
+        .status(401)
+        .json({ message: "Vahvistuskoodi on virheellinen." })
     }
   } catch (error) {
-    response.status(500).json({ message: "otp check failed" })
+    return response.status(500).json({ message: "otp check failed" })
   }
 
   const existingUser = await Users.findOne({
@@ -43,11 +49,15 @@ registerRouter.post("/", async (request, response) => {
 
   if (existingUser) {
     if (existingUser.Username === username) {
-      response.status(400).json({ message: "Käyttäjänimi on jo käytössä" })
+      return response
+        .status(400)
+        .json({ message: "Käyttäjänimi on jo käytössä" })
     }
     if (existingUser.Email === email) {
       if (existingUser.Role !== 2) {
-        response.status(400).json({ message: "Sähköposti on jo käytössä" })
+        return response
+          .status(400)
+          .json({ message: "Sähköposti on jo käytössä" })
       }
       console.log("päivitetään käyttäjälle tiedot...")
       try {
