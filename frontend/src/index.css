@@ -471,6 +471,7 @@ h4 {
   background-color: lightgray; /* Väliaikainen taustaväri */
   height: 50vh;
   width: 80vw;
+  max-width: 100%;
 }
 
 /*ala paneelille tyyli*/

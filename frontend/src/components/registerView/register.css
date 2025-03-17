@@ -30,6 +30,13 @@
   justify-items: center;
 }
 
+.register-form-location-container {
+  max-width: 700px;
+  max-height: 700px;
+  justify-items: center;
+  padding: 0px 8px;
+}
+
 .error-forms {
   color: red;
 }

@@ -282,7 +282,7 @@ const RegisterForm = () => {
         {errors.passwordAgain && (
           <div className="error-forms">{errors.passwordAgain}</div>
         )}
-        <div>
+        <div className="register-form-location-container">
           <h3>{t.setStartLocationInfo}</h3>
           <LocationMap onLocationChange={handleLocationChange} />
         </div>

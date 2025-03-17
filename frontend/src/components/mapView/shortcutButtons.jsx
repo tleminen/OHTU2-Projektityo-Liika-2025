@@ -292,7 +292,6 @@ const ShortcutButtons = ({ toggleCategory, fetchEvents }) => {
                   scale: 2,
                 }}
               />
-
               {/* Kuvapainike, joka avaa ajanvalinnan */}
               <div
                 onClick={openTimePicker} // Tämä avaa ajanvalitsimen
@@ -303,9 +302,8 @@ const ShortcutButtons = ({ toggleCategory, fetchEvents }) => {
                   height: "40px", // Sama koko kuin inputilla
                 }}
               />
-
               {/* Näytettävä aika */}
-              <span>{startTime || "Alkaen"}</span>
+              <span>{startTime || "Alkaen"}</span> {/*TODO: KOVAKOODAUS*/}
             </div>
 
             <div className="time-select-item">
@@ -322,7 +320,6 @@ const ShortcutButtons = ({ toggleCategory, fetchEvents }) => {
                   scale: 2,
                 }}
               />
-
               {/* Kuvapainike, joka avaa ajanvalinnan */}
               <div
                 onClick={openTimePicker} // Tämä avaa ajanvalitsimen
@@ -333,9 +330,8 @@ const ShortcutButtons = ({ toggleCategory, fetchEvents }) => {
                   height: "40px", // Sama koko kuin inputilla
                 }}
               />
-
               {/* Näytettävä aika */}
-              <span>{endTime || "Päättyen"}</span>
+              <span>{endTime || "Päättyen"}</span> {/*TODO: KOVAKOODAUS*/}
             </div>
           </div>
         </div>

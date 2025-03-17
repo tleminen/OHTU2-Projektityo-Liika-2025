@@ -5,6 +5,7 @@ import translations from "../../assets/translation"
 import RegisterForm from "./registerForm"
 import "../../index.css"
 import NotificationContainer from "../notification/notificationContainer"
+import { Link } from "react-router-dom"
 
 const Register = () => {
   const language = useSelector((state) => state.language.language)
@@ -30,7 +31,7 @@ const Register = () => {
         <p style={{ textAlign: "center" }}>
           {t.ready_account}
           <br />
-          <a href="/login">{t.login2}</a>
+          <Link to={"/login"}>{t.login2}</Link>
         </p>
       </div>
       <Footer />
