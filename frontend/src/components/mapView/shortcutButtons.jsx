@@ -52,7 +52,7 @@ const ShortcutButtons = ({ toggleCategory, fetchEvents }) => {
 
   /**
    * Tämä funktio avaa aikasuodatuspaneelin, sulkee samalla muut
-   * @param {avattava kalenter} openCalendar
+   * @param {avattava kalenteri} openCalendar
    */
   const handleCalendarToggle = (openCalendar) => {
     if (moreIsOpen || catIsOpen || timeSelectIsOpen) {

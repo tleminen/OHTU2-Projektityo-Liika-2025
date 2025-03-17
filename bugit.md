@@ -1,22 +1,28 @@
 Bugit
 
-Datepicker:
-vuoden ja kuukauden selectorissa taustaväri edelleen valkoinen, korjattava
+MapView:
 
-Kartta:
-
-Tapahtumien luonti:
 -Kirjautumaton:
 -css-poikkeamia
 
 Yksittäisen tapahtuman näkymä:
 
+- Poista menneiden tapahtumien haku!
 - // TODO: Jos mennään suoraan linkillä tapahtumaan niin userEvents ei ole haettu vielä reduxiin!
+
+Oman tapahtuman muokkaus:
+
+- Vanhat tapahtumat listana jossa osallistujamäärä, PItäisikö olla ettei voi enää perua?
 
 Login:
 
 CreateEvent:
-// TODO: kirjautumattoman näkymässä padding yms välit kuntoon
+Tapahtuman kesto pitäisi olla yli 0min?
+kirjautumattoman näkymässä padding yms välit kuntoon
+
+Omien tietojen muokkaus:
+! Tilin poistaminen !
+Oman aloitussijainnin muuttaminen pitää tehdä
 
 Azure:
 Tomille- Vaihda sprintistä 4 v2 -> v1, sprintistä 5 v3 -> v2 jne..
@@ -38,4 +44,4 @@ Chatin vastaus:
         Tämä voi johtua verkko-ongelmista, palvelimen estosta, tai CDN-ongelmista."
 
 Kysymyksiä ja muita huomioita:
-Järjestäjä, mihin kaikkialle näkyviin?
+Järjestäjän nimi, mihin kaikkialle näkyviin?

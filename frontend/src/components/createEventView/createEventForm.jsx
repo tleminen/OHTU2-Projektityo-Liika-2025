@@ -27,7 +27,8 @@ const CreateEventForm = () => {
   const [isOtpVerified, setIsOtpVerified] = useState(false)
   const userID = useSelector((state) => state.user?.user?.userID ?? null)
   const storedToken = useSelector((state) => state.user?.user?.token ?? null)
-
+  const yesterday = new Date()
+  yesterday.setDate(yesterday.getDate() - 1)
   const handleSubmit = (event) => {
     const categoryID = activity.value
     event.preventDefault()
@@ -132,11 +133,8 @@ const CreateEventForm = () => {
             <h3>{t.date}</h3>
             <DatePicker
               value={dates}
-              onChange={(newDates) =>
-                setDates(
-                  [...newDates].sort((a, b) => new Date(a) - new Date(b))
-                )
-              }
+              sort
+              onChange={setDates}
               multiple
               style={{ textAlign: "center" }}
               minDate={Date.now()}
@@ -275,12 +273,11 @@ const CreateEventForm = () => {
           <h3>{t.date}</h3>
           <DatePicker
             value={dates}
-            onChange={(newDates) =>
-              setDates([...newDates].sort((a, b) => new Date(a) - new Date(b)))
-            }
+            sort
+            onChange={setDates}
             multiple
             style={{ textAlign: "center" }}
-            minDate={Date.now()}
+            minDate={yesterday}
             zIndex={1005}
             displayWeekNumbers={true}
             render={(value, openCalendar) => (

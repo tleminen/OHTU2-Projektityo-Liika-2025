@@ -18,6 +18,12 @@ const getEvents = async (parameters) => {
   return response.data
 }
 
+// Hakee tapahtumat lähistölä (kartta)
+const getEventsQuick = async (parameters) => {
+  const response = await axios.post(baseUrl + "/events/nearbyQuick", parameters)
+  return response.data
+}
+
 // Hakee yksittäisen tapahtuman tiedot
 const getSingleEventWithTimes = async (parameters) => {
   const response = await axios.post(
@@ -206,4 +212,5 @@ export default {
   deleteEventTime,
   deleteEvent,
   modifyEvent,
+  getEventsQuick,
 }
