@@ -429,7 +429,7 @@ h4 {
   top: 2%;
   left: 50%;
   transform: translateX(-50%);
-  backdrop-filter: hue-rotate(-20deg); /* Lasimainen sumennus */
+  backdrop-filter: hue-rotate(5deg);
   border-radius: 12%;
   padding-top: 6px;
   padding-left: 10px;

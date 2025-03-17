@@ -21,10 +21,8 @@ const Register = () => {
         backgroundRepeat: "no-repeat",
       }}
     >
+      <NotificationContainer />
       <Header />
-      <div>
-        <NotificationContainer />
-      </div>
       <div className="register">
         <h1>{t.register_new_account}</h1>
         <RegisterForm />
