@@ -183,6 +183,7 @@ const CreateEventForm = () => {
             <LocationMap onLocationChange={handleLocationChange} />
           </div>
           <div className="form-item">
+            <h3>{t.minParticipants}</h3>
             <input
               type="number"
               value={participantsMin}
@@ -194,6 +195,7 @@ const CreateEventForm = () => {
             />
           </div>
           <div className="form-item">
+            <h3>{t.maxParticipants}</h3>
             <input
               type="number"
               value={participantsMax}
