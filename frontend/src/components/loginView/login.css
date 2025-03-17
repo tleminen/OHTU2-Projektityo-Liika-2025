@@ -33,6 +33,19 @@
 .login-form-item {
   justify-items: center;
 }
+.btn {
+  margin: auto;
+  margin-top: 2%;
+  background-color: #0097b2;
+}
+
+.btn:hover {
+  background-color: #ffffff;
+  color: #0097b2;
+  border: 2px solid #0097b2;
+  transition: background-color 0.3s, box-shadow 0.3s;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.5);
+}
 
 .error-forms {
   color: red;
@@ -78,6 +91,11 @@
 
 .forms-btn:disabled {
   background-color: rgba(159, 159, 159, 0.507);
+  cursor: default;
+}
+.forms-btn:disabled:hover::before {
+  width: 0;
+  cursor: default;
 }
 
 .loader {

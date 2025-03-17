@@ -7,6 +7,9 @@ const { sendEmail } = require("../services/email") // Tuo sendEmail-funktio
 
 const registerRouter = Router()
 
+//----VOIDAAN VAIHTAA TIETOKANTAAN JOS HALUTAAN----
+const VERIFICATION_CODES = new Map()
+
 /**
  * Uuden käyttäjän rekisteröinti
  */
@@ -132,8 +135,6 @@ const generateVerificationCode = () => {
   return code
 }
 
-const verificationCodes = new Map() //----VOIDAAN VAIHTAA TIETOKANTAAN JOS HALUTAAN----
-
 //Vahvistuskoodin lähetys sähköpostiin
 registerRouter.post("/sendOtp", async (req, res) => {
   const { email } = req.body
@@ -150,7 +151,7 @@ registerRouter.post("/sendOtp", async (req, res) => {
     if (success) {
       res.status(200).json({ message: "Sähköposti lähetetty!" })
 
-      verificationCodes.set(email, verificationCode) // Tallennetaan koodi karttaan sähköpostiosoitteen perusteella
+      VERIFICATION_CODES.set(email, verificationCode) // Tallennetaan koodi karttaan sähköpostiosoitteen perusteella
     } else {
       res.status(500).json({ message: "Sähköpostin lähetys epäonnistui." })
     }
@@ -167,21 +168,18 @@ registerRouter.post("/verifyOtp", async (req, res) => {
   //const testCode = "123456"
 
   const { email, otp } = req.body
-  console.log("VerifyOtp rq body : " + req.body)
 
   //verificationCodes.set(email, testCode);
 
   try {
-    const storedCode = verificationCodes.get(email) //Hae tallennettu koodi
-
-    console.log("storeCode: " + storedCode)
+    const storedCode = VERIFICATION_CODES.get(email) //Hae tallennettu koodi
 
     if (!storedCode) {
       return res.status(400).json({ message: "Vahvistuskoodi ei löytynyt." })
     }
 
     if (storedCode === otp) {
-      verificationCodes.delete(email) //Poistetaan koodi, kun se on vahvistettu
+      VERIFICATION_CODES.delete(email) //Poistetaan koodi, kun se on vahvistettu
       res.status(200).json({ message: "Vahvistuskoodi oikein!" })
     } else {
       res.status(400).json({ message: "Vahvistuskoodi on virheellinen." })

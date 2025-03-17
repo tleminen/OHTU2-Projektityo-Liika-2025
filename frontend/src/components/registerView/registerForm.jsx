@@ -34,6 +34,7 @@ const RegisterForm = () => {
   const [otpSent, setOtpSent] = useState(false) // Tila OTP:n lähetyksen seuraamiseksi
   const [isOtpVerified, setIsOtpVerified] = useState(false) // Tila OTP:n vahvistuksen seuraamiseksi
   const [loader, setLoader] = useState(false)
+  const [blockRegister, setBlockRegister] = useState(true)
 
   const schema = registerValidation()
 
@@ -70,6 +71,7 @@ const RegisterForm = () => {
       // Jos OTP lähetettiin onnistuneesti, päivitä tila
       setOtpSent(true)
       setLoader(false)
+      setBlockRegister(false)
     } catch (error) {
       console.error("Virhe sähköpostin lähetyksessä:", error)
       //alert(t.email_send_error)
@@ -86,6 +88,7 @@ const RegisterForm = () => {
       dispatch(addNotification(OtpVerified(t.email_confirmation))) // Lähetä onnistumisilmoitus
       // Jos OTP on oikein, päivitä tila
       setIsOtpVerified(true)
+      setTimeout(() => navigate("/"), 5000)
     } catch (error) {
       // Käsittele virhe (esim. näytä virheilmoitus)
       console.error("Virhe OTP:n vahvistuksessa:", error)
@@ -106,14 +109,6 @@ const RegisterForm = () => {
         { abortEarly: false }
       )
       setErrors({})
-      console.log("Register attempt:", {
-        username,
-        email,
-        password,
-        passwordAgain,
-        location,
-        language,
-      })
 
       console.log("register attempt:", { username, password })
       try {
@@ -144,8 +139,6 @@ const RegisterForm = () => {
             zoom: 14,
           })
         ) // Kovakoodattu etäisyys
-
-        navigate(`/`)
       } catch (error) {
         console.log(error)
       }
@@ -324,10 +317,6 @@ const RegisterForm = () => {
                   />
                 ))}
               </div>
-              {errors.otp && <div className="error-forms">{errors.otp}</div>}
-              <button type="button" onClick={verifyOtp} className="btn">
-                {t.confirm}
-              </button>
             </div>
           )
         ) : (
@@ -348,8 +337,13 @@ const RegisterForm = () => {
             )}
           </div>
         )}
-
-        <button type="submit" className="forms-btn" disabled={true}>
+        {errors.otp && <div className="error-forms">{errors.otp}</div>}
+        <button
+          type="submit"
+          className={`forms-btn`}
+          disabled={blockRegister}
+          onClick={verifyOtp}
+        >
           <span>{t.register}</span>
         </button>
       </form>
