@@ -7,7 +7,10 @@ import LocationMap from "../locationMap.jsx"
 import "./register.css"
 import { changeLocation } from "../../store/locationSlice.js"
 import { changeUser } from "../../store/userSlice.js"
-import { registerValidation } from "../../utils/validationSchemas.js"
+import {
+  otpValidation,
+  registerValidation,
+} from "../../utils/validationSchemas.js"
 import { addNotification } from "../../store/notificationSlice.js"
 import {
   EmailSentSuccess,
@@ -37,6 +40,7 @@ const RegisterForm = () => {
   const [blockRegister, setBlockRegister] = useState(true)
 
   const schema = registerValidation()
+  const schemaOtp = otpValidation()
 
   const inputRef = useRef(null)
 
@@ -62,6 +66,24 @@ const RegisterForm = () => {
   }
 
   const sendOtp = async () => {
+    try {
+      await schema.validate(
+        { username, email, password, passwordAgain },
+        { abortEarly: false }
+      )
+      setErrors({})
+    } catch (err) {
+      if (err.inner) {
+        const errorMap = {}
+        err.inner.forEach((error) => {
+          errorMap[error.path] = error.message
+        })
+        setErrors(errorMap)
+
+        console.log("Validation errors:", errorMap)
+      }
+      return
+    }
     setLoader(true)
     try {
       const response = await registerService.sendOtp(email)
@@ -81,76 +103,46 @@ const RegisterForm = () => {
   }
 
   const verifyOtp = async () => {
+    await schemaOtp.validate({ otp }, { abortEarly: false })
     try {
       // Lähetä OTP backendille vahvistusta varten
-      const response = await registerService.verifyOtp({ email, otp }) //TODO: backendiin otp vahvistus
-      console.log(response.data)
+      const user = await registerService.register({
+        username,
+        email,
+        password,
+        role: 0,
+        location,
+        language,
+        otp,
+      })
+      dispatch(
+        changeUser({
+          userID: user.userID,
+          username: user.username,
+          token: user.token,
+          email: user.email,
+        })
+      )
+      dispatch(
+        changeLocation({
+          o_lat: user.location[1],
+          o_lng: user.location[0],
+          lat: user.location[1],
+          lng: user.location[0],
+          zoom: 14,
+        })
+      ) // Kovakoodattu etäisyys
+      setIsOtpVerified(true)
+      navigate("/")
       dispatch(addNotification(OtpVerified(t.email_confirmation))) // Lähetä onnistumisilmoitus
       // Jos OTP on oikein, päivitä tila
-      setIsOtpVerified(true)
-      setTimeout(() => navigate("/"), 5000)
     } catch (error) {
-      // Käsittele virhe (esim. näytä virheilmoitus)
-      console.error("Virhe OTP:n vahvistuksessa:", error)
-      dispatch(addNotification(OtpNotVerified(t.otp_send_error))) // Lähetä virheilmoitus
-    }
-  }
-
-  const handleSubmit = async (event) => {
-    event.preventDefault()
-
-    if (!isOtpVerified) {
-      dispatch(addNotification(OtpRobotCheck(t.opt_robot_check))) // Lähetä virheilmoitus
-    }
-
-    try {
-      await schema.validate(
-        { username, email, password, passwordAgain, otp },
-        { abortEarly: false }
-      )
-      setErrors({})
-
-      console.log("register attempt:", { username, password })
-      try {
-        const user = await registerService.register({
-          username,
-          email,
-          password,
-          role: 0,
-          location,
-          language,
-        })
-        console.log("token saatu:" + user.token)
-
-        dispatch(
-          changeUser({
-            userID: user.userID,
-            username: user.username,
-            token: user.token,
-            email: user.email,
-          })
-        )
-        dispatch(
-          changeLocation({
-            o_lat: user.location[1],
-            o_lng: user.location[0],
-            lat: user.location[1],
-            lng: user.location[0],
-            zoom: 14,
-          })
-        ) // Kovakoodattu etäisyys
-      } catch (error) {
-        console.log(error)
-      }
-    } catch (err) {
-      if (err.inner) {
-        const errorMap = {}
-        err.inner.forEach((error) => {
-          errorMap[error.path] = error.message
-        })
-        setErrors(errorMap)
-
-        console.log("Validation errors:", errorMap)
+      if (error.message === "otp check failed") {
+        dispatch(addNotification(OtpRobotCheck(t.opt_robot_check))) // Lähetä virheilmoitus
+      } else {
+        // Käsittele virhe (esim. näytä virheilmoitus)
+        console.error("Virhe OTP:n vahvistuksessa:", error)
+        dispatch(addNotification(OtpNotVerified(t.otp_send_error))) // Lähetä virheilmoitus
       }
     }
   }
@@ -187,166 +179,158 @@ const RegisterForm = () => {
 
   return (
     <div className="register-form">
-      <form onSubmit={handleSubmit}>
-        <div className="register-form-item">
-          <h3>{t.email}</h3>
+      <div className="register-form-item">
+        <h3>{t.email}</h3>
+        <input
+          type="text"
+          className={`input-field ${errors.email ? "error" : ""}`}
+          value={email}
+          name="email"
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder={t.email}
+          autoComplete="email"
+        />
+      </div>
+      {errors.email && <div className="error-forms">{errors.email}</div>}
+      <div className="register-form-item">
+        <h3>{t.username}</h3>
+        <input
+          ref={inputRef}
+          type="text"
+          className={`input-field ${errors.username ? "error" : ""}`}
+          value={username}
+          name="username"
+          onChange={(e) => setUsername(e.target.value)}
+          placeholder={t.username}
+          autoComplete="username"
+        />
+      </div>
+      {errors.username && <div className="error-forms">{errors.username}</div>}
+      <div className="register-form-item">
+        <h3>{t.password}</h3>
+        <div className="password-input-container">
           <input
-            type="text"
-            className={`input-field ${errors.email ? "error" : ""}`}
-            value={email}
-            name="email"
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder={t.email}
-            autoComplete="email"
+            type={showPassword ? "text" : "password"}
+            className={`input-field ${errors.password ? "error" : ""}`}
+            value={password}
+            name="password"
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder={t.password}
+            autoComplete="new-password"
           />
+          <button
+            type="button"
+            className="password-toggle-button"
+            onClick={togglePasswordVisibility}
+          >
+            <span
+              className="material-symbols-outlined"
+              style={{ maxWidth: "20px" }}
+            >
+              {showPassword ? "visibility_off" : "visibility"}
+            </span>
+          </button>
         </div>
-        {errors.email && <div className="error-forms">{errors.email}</div>}
-        <div className="register-form-item">
-          <h3>{t.username}</h3>
+      </div>
+      {errors.password && <div className="error-forms">{errors.password}</div>}
+      <div className="register-form-item">
+        <h3>{t.passwordAgain}</h3>
+        <div className="password-input-container">
           <input
-            ref={inputRef}
-            type="text"
-            className={`input-field ${errors.username ? "error" : ""}`}
-            value={username}
-            name="username"
-            onChange={(e) => setUsername(e.target.value)}
-            placeholder={t.username}
-            autoComplete="username"
+            type={showPasswordAgain ? "text" : "password"}
+            className={`input-field ${errors.passwordAgain ? "error" : ""}`}
+            value={passwordAgain}
+            name="passwordAgain"
+            onChange={(e) => setPasswordAgain(e.target.value)}
+            placeholder={t.passwordAgain}
+            autoComplete="off"
           />
-        </div>
-        {errors.username && (
-          <div className="error-forms">{errors.username}</div>
-        )}
-        <div className="register-form-item">
-          <h3>{t.password}</h3>
-          <div className="password-input-container">
-            <input
-              type={showPassword ? "text" : "password"}
-              className={`input-field ${errors.password ? "error" : ""}`}
-              value={password}
-              name="password"
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder={t.password}
-              autoComplete="new-password"
-            />
-            <button
-              type="button"
-              className="password-toggle-button"
-              onClick={togglePasswordVisibility}
+          <button
+            type="button"
+            className="password-toggle-button"
+            onClick={togglePasswordVisibilityAgain}
+          >
+            <span
+              className="material-symbols-outlined"
+              style={{ maxWidth: "20px" }}
             >
-              <span
-                className="material-symbols-outlined"
-                style={{ maxWidth: "20px" }}
-              >
-                {showPassword ? "visibility_off" : "visibility"}
-              </span>
-            </button>
-          </div>
+              {showPasswordAgain ? "visibility_off" : "visibility"}
+            </span>
+          </button>
         </div>
-        {errors.password && (
-          <div className="error-forms">{errors.password}</div>
-        )}
-        <div className="register-form-item">
-          <h3>{t.passwordAgain}</h3>
-          <div className="password-input-container">
-            <input
-              type={showPasswordAgain ? "text" : "password"}
-              className={`input-field ${errors.passwordAgain ? "error" : ""}`}
-              value={passwordAgain}
-              name="passwordAgain"
-              onChange={(e) => setPasswordAgain(e.target.value)}
-              placeholder={t.passwordAgain}
-              autoComplete="off"
-            />
-            <button
-              type="button"
-              className="password-toggle-button"
-              onClick={togglePasswordVisibilityAgain}
-            >
-              <span
-                className="material-symbols-outlined"
-                style={{ maxWidth: "20px" }}
-              >
-                {showPasswordAgain ? "visibility_off" : "visibility"}
-              </span>
-            </button>
-          </div>
-        </div>
-        {errors.passwordAgain && (
-          <div className="error-forms">{errors.passwordAgain}</div>
-        )}
-        <div className="register-form-location-container">
-          <h3>{t.setStartLocationInfo}</h3>
-          <LocationMap onLocationChange={handleLocationChange} />
-        </div>
+      </div>
+      {errors.passwordAgain && (
+        <div className="error-forms">{errors.passwordAgain}</div>
+      )}
+      <div className="register-form-location-container">
+        <h3>{t.setStartLocationInfo}</h3>
+        <LocationMap onLocationChange={handleLocationChange} />
+      </div>
 
-        {otpSent ? (
-          isOtpVerified ? (
-            <div>
-              <img
-                src={"/checkCropped.png"}
-                alt="check"
-                width={100}
-                height={100}
-              />
-            </div>
-          ) : (
-            <div>
-              <h3>{t.otp_sent}</h3>{" "}
-              <div className="otp-input-container" onPaste={handlePaste}>
-                {[...Array(6)].map((_, index) => (
-                  <input
-                    key={index}
-                    type="text"
-                    maxLength="1"
-                    className={`otp-input ${errors.otp ? "error" : ""}`}
-                    value={otp[index] || ""}
-                    onChange={(e) => handleOtpChange(index, e.target.value)}
-                    ref={(el) => (otpInputRefs.current[index] = el)} // Aseta ref
-                    onKeyDown={(e) => {
-                      if (e.key === "Backspace" && !otp[index]) {
-                        if (index > 0) {
-                          otpInputRefs.current[index - 1]?.focus()
-                        }
-                      } else if (e.key === "ArrowLeft" && index > 0) {
-                        otpInputRefs.current[index - 1]?.focus()
-                      } else if (e.key === "ArrowRight" && index < 5) {
-                        otpInputRefs.current[index + 1]?.focus()
-                      }
-                    }}
-                  />
-                ))}
-              </div>
-            </div>
-          )
+      {otpSent ? (
+        isOtpVerified ? (
+          <div>
+            <img
+              src={"/checkCropped.png"}
+              alt="check"
+              width={100}
+              height={100}
+            />
+          </div>
         ) : (
           <div>
-            <h3>{t.opt_robot_check}</h3>
-            <h4>{t.otp_insert}</h4>
-            {loader ? (
-              <div className="loader"></div>
-            ) : (
-              <button
-                type="button"
-                onClick={sendOtp}
-                disabled={!email}
-                className="btn"
-              >
-                {t.send}
-              </button>
-            )}
+            <h3>{t.otp_sent}</h3>{" "}
+            <div className="otp-input-container" onPaste={handlePaste}>
+              {[...Array(6)].map((_, index) => (
+                <input
+                  key={index}
+                  type="text"
+                  maxLength="1"
+                  className={`otp-input ${errors.otp ? "error" : ""}`}
+                  value={otp[index] || ""}
+                  onChange={(e) => handleOtpChange(index, e.target.value)}
+                  ref={(el) => (otpInputRefs.current[index] = el)} // Aseta ref
+                  onKeyDown={(e) => {
+                    if (e.key === "Backspace" && !otp[index]) {
+                      if (index > 0) {
+                        otpInputRefs.current[index - 1]?.focus()
+                      }
+                    } else if (e.key === "ArrowLeft" && index > 0) {
+                      otpInputRefs.current[index - 1]?.focus()
+                    } else if (e.key === "ArrowRight" && index < 5) {
+                      otpInputRefs.current[index + 1]?.focus()
+                    }
+                  }}
+                />
+              ))}
+            </div>
           </div>
-        )}
-        {errors.otp && <div className="error-forms">{errors.otp}</div>}
-        <button
-          type="submit"
-          className={`forms-btn`}
-          disabled={blockRegister}
-          onClick={verifyOtp}
-        >
-          <span>{t.register}</span>
-        </button>
-      </form>
+        )
+      ) : (
+        <div>
+          <h3>{t.opt_robot_check}</h3>
+          <h4>{t.otp_insert}</h4>
+          {loader ? (
+            <div className="loader"></div>
+          ) : (
+            <button
+              onClick={sendOtp}
+              disabled={email === "" ? true : false}
+              className="btn"
+            >
+              {t.send}
+            </button>
+          )}
+        </div>
+      )}
+      {errors.otp && <div className="error-forms">{errors.otp}</div>}
+      <button
+        className={`forms-btn`}
+        disabled={blockRegister}
+        onClick={verifyOtp}
+      >
+        <span>{t.register}</span>
+      </button>
     </div>
   )
 }

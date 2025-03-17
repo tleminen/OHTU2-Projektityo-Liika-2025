@@ -14,7 +14,25 @@ const VERIFICATION_CODES = new Map()
  * Uuden käyttäjän rekisteröinti
  */
 registerRouter.post("/", async (request, response) => {
-  const { username, password, role, email, location, language } = request.body
+  const { username, password, role, email, location, language, otp } =
+    request.body
+
+  // Tarkistetaan ensin one time password
+  try {
+    const storedCode = VERIFICATION_CODES.get(email) //Hae tallennettu koodi
+
+    if (!storedCode) {
+      response.status(404).json({ message: "Vahvistuskoodia ei löytynyt." })
+    }
+
+    if (storedCode === otp) {
+      VERIFICATION_CODES.delete(email) //Poistetaan koodi, kun se on vahvistettu
+    } else {
+      response.status(401).json({ message: "Vahvistuskoodi on virheellinen." })
+    }
+  } catch (error) {
+    response.status(500).json({ message: "otp check failed" })
+  }
 
   const existingUser = await Users.findOne({
     // Tarkastetaan ensin löytyykö jo sama käyttäjänimi tai sähköpostiosoite
@@ -25,15 +43,11 @@ registerRouter.post("/", async (request, response) => {
 
   if (existingUser) {
     if (existingUser.Username === username) {
-      return response
-        .status(400)
-        .json({ message: "Käyttäjänimi on jo käytössä" })
+      response.status(400).json({ message: "Käyttäjänimi on jo käytössä" })
     }
     if (existingUser.Email === email) {
       if (existingUser.Role !== 2) {
-        return response
-          .status(400)
-          .json({ message: "Sähköposti on jo käytössä" })
+        response.status(400).json({ message: "Sähköposti on jo käytössä" })
       }
       console.log("päivitetään käyttäjälle tiedot...")
       try {
@@ -161,36 +175,5 @@ registerRouter.post("/sendOtp", async (req, res) => {
   }
 })
 //Vahvistuskoodin lähetys sähköpostiin päättyy
-
-//Vahvistuskoodin vertailu
-
-registerRouter.post("/verifyOtp", async (req, res) => {
-  //const testCode = "123456"
-
-  const { email, otp } = req.body
-
-  //verificationCodes.set(email, testCode);
-
-  try {
-    const storedCode = VERIFICATION_CODES.get(email) //Hae tallennettu koodi
-
-    if (!storedCode) {
-      return res.status(400).json({ message: "Vahvistuskoodi ei löytynyt." })
-    }
-
-    if (storedCode === otp) {
-      VERIFICATION_CODES.delete(email) //Poistetaan koodi, kun se on vahvistettu
-      res.status(200).json({ message: "Vahvistuskoodi oikein!" })
-    } else {
-      res.status(400).json({ message: "Vahvistuskoodi on virheellinen." })
-    }
-  } catch (error) {
-    console.error("Virhe:", error)
-    res.status(500).json({ message: "Vahvistus epäonnistui." })
-  }
-})
-
-//Vahvistuskoodin vertailu päättyy
-//..
 
 module.exports = registerRouter

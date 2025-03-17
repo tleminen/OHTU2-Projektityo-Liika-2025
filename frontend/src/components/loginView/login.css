@@ -39,12 +39,21 @@
   background-color: #0097b2;
 }
 
-.btn:hover {
-  background-color: #ffffff;
-  color: #0097b2;
-  border: 2px solid #0097b2;
-  transition: background-color 0.3s, box-shadow 0.3s;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.5);
+.btn:disabled {
+  background-color: rgba(159, 159, 159, 0.507);
+  cursor: default;
+}
+.btn:disabled:hover {
+  background-color: rgba(159, 159, 159, 0.507);
+  color: #ffffff;
+  transition: none;
+  box-shadow: none;
+}
+
+.btn:hover::before {
+  background-color: #007891; /* Muuta väriä tähän */
+  color: #ffffff;
+  transition: width 0.6s ease-in-out; /* Säädä täyttymisnopeutta */
 }
 
 .error-forms {

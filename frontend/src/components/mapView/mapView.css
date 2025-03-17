@@ -13,9 +13,8 @@
 }
 
 .event-map-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  position: relative;
+  display: block;
   margin: auto;
   width: 80vw;
   height: 100vh;

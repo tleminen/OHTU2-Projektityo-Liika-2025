@@ -424,10 +424,6 @@ h4 {
   z-index: 2000;
 }
 
-#overlay:hover {
-  cursor: pointer;
-}
-
 #overlay {
   position: absolute;
   top: 2%;
@@ -444,12 +440,22 @@ h4 {
 #overlay:hover {
   cursor: pointer;
 }
-
+.blur-overlay {
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  height: 100%;
+  width: 100%;
+  backdrop-filter: saturate(180%) brightness(90%) contrast(120%)
+    hue-rotate(30deg);
+  background: rgba(255, 255, 255, 0.3);
+  z-index: 3000;
+  pointer-events: none;
+}
 /*kartta-oliolle tyyli karttanäkymään*/
 .map {
   display: flex;
   position: absolute;
-
   background-color: lightgray; /* Väliaikainen taustaväri */
   height: 100vh;
   max-height: 100vh;
