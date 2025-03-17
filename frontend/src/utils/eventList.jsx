@@ -7,25 +7,29 @@ import { Link } from "react-router-dom"
 
 const EventList = (listType) => {
   const userID = useSelector((state) => state.user.user.userID)
+  const storedToken = useSelector((state) => state.user?.user?.token ?? null)
   const [events, setEvents] = useState([])
 
   useEffect(() => {
     const fetchEvents = async () => {
       if (listType.listType === "created") {
-        console.log("luodut!")
         try {
-          const events = await eventService.getUserCreatedEvents(userID)
+          const events = await eventService.getUserCreatedEvents(
+            storedToken,
+            userID
+          )
           if (events) {
             setEvents(events)
           }
-          console.log(events)
         } catch (error) {
           console.error("Virhe haettaessa käyttäjän tapahtumia: " + error)
         }
       } else if (listType.listType === "joined") {
-        console.log("liitytyt")
         try {
-          const events = await eventService.getUserJoinedEvents(userID)
+          const events = await eventService.getUserJoinedEvents(
+            storedToken,
+            userID
+          )
           if (events) {
             setEvents(events)
           }
@@ -35,7 +39,7 @@ const EventList = (listType) => {
       }
     }
     fetchEvents()
-  }, [userID])
+  }, [userID, storedToken, listType])
 
   const header = () => {
     if (listType.listType === "created") {
@@ -55,41 +59,33 @@ const EventList = (listType) => {
 
   return (
     <div className="joined-view">
-      <table className="event-container">
-        <caption>{header()}</caption>
-        <thead>
-          <tr>
-            <th>PVM</th>
-            <th>AIKA</th>
-            <th>Otsikko</th>
-            <th>Osallistujia</th>
-          </tr>
-        </thead>
-        <tbody>
+      <div className="event-container">
+        {header()}
+
+        <div className="event-list-items">
           {events.map((event, index) => (
-            <tr key={index} className="event-item">
-              <th>
-                <Link to={`${parseLink()}${event.EventID}`}>
-                  {parseTimeAndDate(event.StartTime)[1].slice(0, -4)}
-                </Link>
-              </th>
-              <th>
-                <Link to={`${parseLink()}${event.EventID}`}>
-                  {parseTimeAndDate(event.StartTime)[0]}
-                </Link>
-              </th>
-              <th>
-                <Link to={`${parseLink()}${event.EventID}`}>{event.Title}</Link>
-              </th>
-              <th>
-                <Link to={`${parseLink()}${event.EventID}`}>
-                  {event.JoinedCount}
-                </Link>
-              </th>
-            </tr>
+            <Link
+              to={`${parseLink()}${event.EventID}`}
+              key={index}
+              className="event-item"
+            >
+              <div>
+                <h2>Aika</h2>
+                {parseTimeAndDate(event.StartTime)[1].slice(0, -4)} {""}
+                {parseTimeAndDate(event.StartTime)[0]}
+              </div>
+              <div>
+                <h2>Otsikko</h2>
+                {event.Title}
+              </div>
+              <div>
+                <h2>Osallistujat</h2>
+                {event.JoinedCount}
+              </div>
+            </Link>
           ))}
-        </tbody>
-      </table>
+        </div>
+      </div>
     </div>
   )
 }

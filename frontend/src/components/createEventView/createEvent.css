@@ -1,11 +1,10 @@
 .create-event {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  gap: 8px;
   align-items: center;
+  gap: 8px;
   margin: auto;
-  width: 30%;
+  width: fit-content;
   margin-top: 2%;
   margin-bottom: 2%;
   background-color: rgba(
@@ -21,14 +20,21 @@
 
 .create-event-form {
   display: flex;
-  gap: 8px;
-  margin: auto;
-  text-align: center;
+  flex-direction: column;
+  align-self: center;
+  align-items: center;
   justify-content: center;
+  text-align: center;
+
   margin-top: 20px;
   margin-bottom: 20px;
-  width: 100%;
-  flex: 1;
+}
+
+.form-item {
+  justify-self: center;
+  justify-content: center;
+  justify-items: center;
+  min-width: 10%;
 }
 
 .custom-date-display {
@@ -49,6 +55,7 @@
   min-height: 40px;
   white-space: pre-wrap; /* Teksti menee riville */
   overflow-y: auto; /* Lisää scrollauksen, jos liian pitkä */
+  z-index: 3000;
 }
 
 .date-input-field {

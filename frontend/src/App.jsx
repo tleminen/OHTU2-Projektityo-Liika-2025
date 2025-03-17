@@ -15,7 +15,6 @@ import ChangePassword from "./components/accountView/changeInfo/changePassword"
 import CreatedEvents from "./components/createdEventsView"
 import ModifyEvent from "./components/modifyEventView"
 import ChangeLanguage from "./components/accountView/changeInfo/changeLanguage"
-import { changeLanguage } from "./store/languageSlice"
 
 const App = () => {
   return (

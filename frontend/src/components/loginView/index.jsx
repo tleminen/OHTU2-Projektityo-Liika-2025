@@ -1,55 +1,51 @@
-import translations from "../../assets/translation";
-import Header from "../header";
-import LoginForm from "./LoginForm";
-import Footer from "../footer";
-import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
-import { useState } from "react";
-import loginService from "../../services/loginService.js"; // Tuo loginService
-import "./login.css";
-import NotificationContainer from "../notification/notificationContainer";
+import translations from "../../assets/translation"
+import Header from "../header"
+import LoginForm from "./LoginForm"
+import Footer from "../footer"
+import { useDispatch, useSelector } from "react-redux"
+import { useState } from "react"
+import loginService from "../../services/loginService.js" // Tuo loginService
+import "./login.css"
+import NotificationContainer from "../notification/notificationContainer"
 import {
   EmailSentSuccess,
   EmailSentFailure,
-  OtpRobotCheck,
-  OtpVerified,
-  OtpNotVerified,
-  UserFailure,
-} from "../notification/notificationTemplates.js";
+} from "../notification/notificationTemplates.js"
+import { addNotification } from "../../store/notificationSlice.js"
 
 const Login = () => {
-  const [emailForm, setEmailForm] = useState(false);
-  const [email, setEmail] = useState("");
-  const [resetMessage, setResetMessage] = useState("");
-  const [loader, setLoader] = useState(false);
+  const [emailForm, setEmailForm] = useState(false)
+  const [email, setEmail] = useState("")
+  const [resetMessage, setResetMessage] = useState("")
+  const [loader, setLoader] = useState(false)
+  const dispatch = useDispatch()
 
   const handleEmailSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
 
-    setLoader(true);
+    setLoader(true)
 
     try {
-      console.log("Sähköposti: " + email);
-      const response = await loginService.sendEmail(email);
-      console.log("SendEmail response " + response);
-      setLoader(false);
+      const response = await loginService.sendEmail(email)
+      setLoader(false)
       if (response.message === "Sähköposti lähetetty!") {
-        dispatch(addNotification(EmailSentSuccess(t.email_sent)));
-        setResetMessage(t.email_sent);
-        setEmail(""); // Tyhjennä sähköposti-kenttä
+        dispatch(addNotification(EmailSentSuccess(t.email_sent)))
+        setResetMessage(t.email_sent)
+        setEmail("") // Tyhjennä sähköposti-kenttä
       } else {
-        dispatch(addNotification(EmailSentFailure(t.email_not_found)));
-        setResetMessage(response.message || t.email_not_found);
+        dispatch(addNotification(EmailSentFailure(t.email_not_found)))
+        setResetMessage(response.message || t.email_not_found)
       }
+      // eslint-disable-next-line no-unused-vars
     } catch (error) {
-      dispatch(addNotification(EmailSentFailure(t.email_not_found)));
-      setResetMessage("");
-      setLoader(false);
+      dispatch(addNotification(EmailSentFailure(t.email_not_found)))
+      setResetMessage("")
+      setLoader(false)
     }
-  };
+  }
 
-  const language = useSelector((state) => state.language.language);
-  const t = translations[language];
+  const language = useSelector((state) => state.language.language)
+  const t = translations[language]
   return (
     <div
       className="fullpage"
@@ -101,14 +97,10 @@ const Login = () => {
             )}
           </form>
         )}
-
-        <Link to={"/"} className="back-btn">
-          <span>{t.back}</span>
-        </Link>
       </div>
       <Footer />
     </div>
-  );
-};
+  )
+}
 
-export default Login;
+export default Login

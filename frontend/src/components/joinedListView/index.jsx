@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom"
 import Footer from "../footer"
 import Header from "../header"
 import { useSelector } from "react-redux"
@@ -20,9 +19,6 @@ const JoinedView = () => {
     >
       <Header />
       <EventList listType="joined" />
-      <Link to={"/map"} className="back-btn" style={{ alignSelf: "center" }}>
-        <span>{t.back}</span>
-      </Link>
       <Footer />
     </div>
   )

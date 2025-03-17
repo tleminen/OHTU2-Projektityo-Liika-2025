@@ -26,48 +26,49 @@ const EventView = () => {
   const [isOtpVerified, setIsOtpVerified] = useState(false)
   const dispatch = useDispatch()
   const [unSignedJoined, setUnSignedJoined] = useState(false)
+  const storedToken = useSelector((state) => state.user?.user?.token ?? null)
 
   useEffect(() => {
     const fetchEventInfo = async () => {
       try {
         const eventData = await eventService.getSingleEventWithTimes({
           EventID: id,
-        });
-        setEvent(eventData);
-        setTimes(eventData.Times);
+        })
+        setEvent(eventData)
+        setTimes(eventData.Times)
       } catch (error) {
-        console.error("Virhe hakiessa tapahtumaa: " + error);
+        console.error("Virhe hakiessa tapahtumaa: " + error)
       } finally {
-        setLoading(false);
+        setLoading(false)
       }
-    };
-    fetchEventInfo();
-  }, [id]);
+    }
+    fetchEventInfo()
+  }, [id])
 
   // Kun times latautuu, asetetaan ensimmäinen aika selectedTime:ksi, jos sitä ei vielä ole
   useEffect(() => {
     if (times.length > 0 && !selectedTime) {
-      setSelectedTime(times[0]);
+      setSelectedTime(times[0])
     }
-  }, [times, selectedTime]);
+  }, [times, selectedTime])
 
   // Tapahtumaan liittymisen painikkeen handleri
   const handleJoin = async (userID, id) => {
-    console.log(selectedTime.id);
+    console.log(selectedTime.id)
     try {
-      const response = await eventService.joinEvent({
+      const response = await eventService.joinEvent(storedToken, {
         UserID: userID,
         EventID: id,
         TimeID: Number(selectedTime.TimeID),
-      });
-      console.log(response); // TODO: Lisää notifikaatio?
+      })
+      console.log(response) // TODO: Lisää notifikaatio?
       dispatch(
         addEvent({
           UserID: userID,
           EventID: Number(id),
           TimeID: Number(selectedTime.TimeID),
         })
-      );
+      )
       // Päivitä frontendin Times-tila
       setTimes((prevTimes) =>
         prevTimes.map((time) =>
@@ -75,9 +76,9 @@ const EventView = () => {
             ? { ...time, JoinedCount: (Number(time.JoinedCount) || 0) + 1 }
             : time
         )
-      );
+      )
     } catch (error) {
-      console.error("Virhe liityttäessä tapahtumaan" + error);
+      console.error("Virhe liityttäessä tapahtumaan" + error)
     }
   }
 
@@ -100,7 +101,6 @@ const EventView = () => {
         )
       )
       setUnSignedJoined(true)
-
     } catch (error) {
       console.error("Virhe liityttäessä tapahtumaan" + error)
       setUnSignedJoined(false)
@@ -110,19 +110,19 @@ const EventView = () => {
   // Tapahtumasta eroamisen painikkeen handleri
   const handleLeave = async (userID, id) => {
     try {
-      const response = await eventService.leaveEvent({
+      const response = await eventService.leaveEvent(storedToken, {
         UserID: userID,
         EventID: Number(id),
         TimeID: Number(selectedTime.TimeID),
-      });
-      console.log(response); // TODO: Lisää notifikaatio?
+      })
+      console.log(response) // TODO: Lisää notifikaatio?
       dispatch(
         removeEvent({
           EventID: Number(id),
           UserID: userID,
           TimeID: selectedTime.TimeID,
         })
-      );
+      )
       // Päivitä frontendin Times-tila
       setTimes((prevTimes) =>
         prevTimes.map((time) =>
@@ -133,16 +133,16 @@ const EventView = () => {
               }
             : time
         )
-      );
+      )
     } catch (error) {
-      console.error("Virhe poistuessa tapahumasta" + error);
+      console.error("Virhe poistuessa tapahumasta" + error)
     }
-  };
+  }
 
   // Päivämäärän valinnan handleri
   const handleTimeClick = (time) => {
-    setSelectedTime(time);
-  };
+    setSelectedTime(time)
+  }
 
   // Tarkistaa onko käyttäjä liittynyt tiettyyn aikaan
   const isJoined = (time) => {
@@ -150,17 +150,29 @@ const EventView = () => {
       (userEvent) =>
         String(userEvent.EventID) === String(id) &&
         Number(userEvent.TimeID) === Number(time.TimeID)
-    );
-  };
+    )
+  }
 
   const getTimeButtonClass = (time) => {
-    let baseClass = isJoined(time) ? "joined-time-btn" : "not-joined-time-btn";
+    let baseClass = isJoined(time) ? "joined-time-btn" : "not-joined-time-btn"
     return selectedTime && selectedTime.TimeID === time.TimeID
       ? `${baseClass} ${
           isJoined(time) ? "selected-not-joined" : "selected-joined"
         }`
-      : baseClass;
-  };
+      : baseClass
+  }
+
+  const showUsername = (username) => {
+    if (username.includes("@")) {
+      return ""
+    } else {
+      return (
+        <h1>
+          {username} {t.organizesEvent}:
+        </h1>
+      )
+    }
+  }
 
   if (loading) {
     // Tietokantahaku kesken
@@ -180,7 +192,7 @@ const EventView = () => {
         </div>
         <Footer />
       </div>
-    );
+    )
   }
 
   if (!event) {
@@ -201,7 +213,7 @@ const EventView = () => {
         </div>
         <Footer />
       </div>
-    );
+    )
   }
 
   //Kirjautumaton tarvittavat tiedot löydetty
@@ -227,7 +239,7 @@ const EventView = () => {
             className="event-view-icon" // Ei taida toimia tää className??
           />
           <h1>{event.Title}</h1>
-          <h2>{t.date}</h2>
+          <h2>{t.chooseDate}</h2>
           <div className="time-parent">
             {times.map((time, index) => (
               <div key={index} className="time-child">
@@ -276,7 +288,10 @@ const EventView = () => {
             />
           </div>
           {selectedTime && isOtpVerified && !unSignedJoined && (
-            <button className="join-btn" onClick={() => handleJoinUnSigned(email, id)}>
+            <button
+              className="join-btn"
+              onClick={() => handleJoinUnSigned(email, id)}
+            >
               Ilmoittaudu
             </button>
           )}
@@ -313,6 +328,8 @@ const EventView = () => {
     >
       <Header />
       <div className="event-view">
+        <span className="spacer-line"></span>
+        {showUsername(event.Username)}
         <img
           src={`/lajit/${selectCategoryName([event.CategoryID])}.png`}
           alt="Logo"
@@ -321,7 +338,7 @@ const EventView = () => {
           className="event-view-icon" // Ei taida toimia tää className??
         />
         <h1>{event.Title}</h1>
-        <h2>{t.date}</h2>
+        <h2>{t.chooseDate}</h2>
         <div className="time-parent">
           {times.map((time, index) => (
             <div key={index} className="time-child">
@@ -373,11 +390,12 @@ const EventView = () => {
         <Link to={"/map"} className="back-btn">
           <span>{t.back}</span>
         </Link>
+        <span className="spacer-line"></span>
       </div>
 
       <Footer />
     </div>
-  );
-};
+  )
+}
 
-export default EventView;
+export default EventView

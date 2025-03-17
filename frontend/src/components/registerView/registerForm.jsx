@@ -8,9 +8,14 @@ import "./register.css"
 import { changeLocation } from "../../store/locationSlice.js"
 import { changeUser } from "../../store/userSlice.js"
 import { registerValidation } from "../../utils/validationSchemas.js"
-import { addNotification } from '../../store/notificationSlice.js';
-import { EmailSentSuccess, EmailSentFailure, OtpRobotCheck, OtpVerified, OtpNotVerified } from '../notification/notificationTemplates.js';
-
+import { addNotification } from "../../store/notificationSlice.js"
+import {
+  EmailSentSuccess,
+  EmailSentFailure,
+  OtpRobotCheck,
+  OtpVerified,
+  OtpNotVerified,
+} from "../notification/notificationTemplates.js"
 
 const RegisterForm = () => {
   const language = useSelector((state) => state.language.language)
@@ -60,7 +65,7 @@ const RegisterForm = () => {
     try {
       const response = await registerService.sendOtp(email)
       console.log(response.data)
-      dispatch(addNotification(EmailSentSuccess("kovakoodaus"))); // Lähetä onnistumisilmoitus
+      dispatch(addNotification(EmailSentSuccess(t.email_sent))) // Lähetä onnistumisilmoitus
 
       // Jos OTP lähetettiin onnistuneesti, päivitä tila
       setOtpSent(true)
@@ -68,7 +73,7 @@ const RegisterForm = () => {
     } catch (error) {
       console.error("Virhe sähköpostin lähetyksessä:", error)
       //alert(t.email_send_error)
-      dispatch(addNotification(EmailSentFailure("kovakoodaus",error))); // Lähetä virheilmoitus
+      dispatch(addNotification(EmailSentFailure(t.email_send_error))) // Lähetä virheilmoitus
       setLoader(false)
     }
   }
@@ -78,13 +83,13 @@ const RegisterForm = () => {
       // Lähetä OTP backendille vahvistusta varten
       const response = await registerService.verifyOtp({ email, otp }) //TODO: backendiin otp vahvistus
       console.log(response.data)
-      dispatch(addNotification(OtpVerified(t.email_confirmation))); // Lähetä onnistumisilmoitus
+      dispatch(addNotification(OtpVerified(t.email_confirmation))) // Lähetä onnistumisilmoitus
       // Jos OTP on oikein, päivitä tila
       setIsOtpVerified(true)
     } catch (error) {
       // Käsittele virhe (esim. näytä virheilmoitus)
       console.error("Virhe OTP:n vahvistuksessa:", error)
-      dispatch(addNotification(OtpNotVerified(t.otp_send_error))); // Lähetä virheilmoitus
+      dispatch(addNotification(OtpNotVerified(t.otp_send_error))) // Lähetä virheilmoitus
     }
   }
 
@@ -92,7 +97,7 @@ const RegisterForm = () => {
     event.preventDefault()
 
     if (!isOtpVerified) {
-      dispatch(addNotification(OtpRobotCheck(t.opt_robot_check))); // Lähetä virheilmoitus
+      dispatch(addNotification(OtpRobotCheck(t.opt_robot_check))) // Lähetä virheilmoitus
     }
 
     try {
@@ -190,23 +195,7 @@ const RegisterForm = () => {
   return (
     <div className="register-form">
       <form onSubmit={handleSubmit}>
-        <div>
-          <h3>{t.username}</h3>
-          <input
-            ref={inputRef}
-            type="text"
-            className={`input-field ${errors.username ? "error" : ""}`}
-            value={username}
-            name="username"
-            onChange={(e) => setUsername(e.target.value)}
-            placeholder={t.username}
-            autoComplete="nickname"
-          />
-        </div>
-        {errors.username && (
-          <div className="error-forms">{errors.username}</div>
-        )}
-        <div>
+        <div className="register-form-item">
           <h3>{t.email}</h3>
           <input
             type="text"
@@ -219,50 +208,76 @@ const RegisterForm = () => {
           />
         </div>
         {errors.email && <div className="error-forms">{errors.email}</div>}
-
-        <h3>{t.password}</h3>
-        <div className="password-input-container">
+        <div className="register-form-item">
+          <h3>{t.username}</h3>
           <input
-            type={showPassword ? "text" : "password"}
-            className={`input-field ${errors.password ? "error" : ""}`}
-            value={password}
-            name="password"
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder={t.password}
-            autoComplete="new-password"
+            ref={inputRef}
+            type="text"
+            className={`input-field ${errors.username ? "error" : ""}`}
+            value={username}
+            name="username"
+            onChange={(e) => setUsername(e.target.value)}
+            placeholder={t.username}
+            autoComplete="username"
           />
-          <button
-            type="button"
-            className="password-toggle-button"
-            onClick={togglePasswordVisibility}
-          >
-            <span className="material-symbols-outlined">
-              {showPassword ? "visibility_off" : "visibility"}
-            </span>
-          </button>
+        </div>
+        {errors.username && (
+          <div className="error-forms">{errors.username}</div>
+        )}
+        <div className="register-form-item">
+          <h3>{t.password}</h3>
+          <div className="password-input-container">
+            <input
+              type={showPassword ? "text" : "password"}
+              className={`input-field ${errors.password ? "error" : ""}`}
+              value={password}
+              name="password"
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder={t.password}
+              autoComplete="new-password"
+            />
+            <button
+              type="button"
+              className="password-toggle-button"
+              onClick={togglePasswordVisibility}
+            >
+              <span
+                className="material-symbols-outlined"
+                style={{ maxWidth: "20px" }}
+              >
+                {showPassword ? "visibility_off" : "visibility"}
+              </span>
+            </button>
+          </div>
         </div>
         {errors.password && (
           <div className="error-forms">{errors.password}</div>
         )}
-        <h3>{t.passwordAgain}</h3>
-        <div className="password-input-container">
-          <input
-            type={showPasswordAgain ? "text" : "password"}
-            className={`input-field ${errors.passwordAgain ? "error" : ""}`}
-            value={passwordAgain}
-            name="passwordAgain"
-            onChange={(e) => setPasswordAgain(e.target.value)}
-            placeholder={t.passwordAgain}
-          />
-          <button
-            type="button"
-            className="password-toggle-button"
-            onClick={togglePasswordVisibilityAgain}
-          >
-            <span className="material-symbols-outlined">
-              {showPasswordAgain ? "visibility_off" : "visibility"}
-            </span>
-          </button>
+        <div className="register-form-item">
+          <h3>{t.passwordAgain}</h3>
+          <div className="password-input-container">
+            <input
+              type={showPasswordAgain ? "text" : "password"}
+              className={`input-field ${errors.passwordAgain ? "error" : ""}`}
+              value={passwordAgain}
+              name="passwordAgain"
+              onChange={(e) => setPasswordAgain(e.target.value)}
+              placeholder={t.passwordAgain}
+              autoComplete="off"
+            />
+            <button
+              type="button"
+              className="password-toggle-button"
+              onClick={togglePasswordVisibilityAgain}
+            >
+              <span
+                className="material-symbols-outlined"
+                style={{ maxWidth: "20px" }}
+              >
+                {showPasswordAgain ? "visibility_off" : "visibility"}
+              </span>
+            </button>
+          </div>
         </div>
         {errors.passwordAgain && (
           <div className="error-forms">{errors.passwordAgain}</div>
@@ -275,10 +290,12 @@ const RegisterForm = () => {
         {otpSent ? (
           isOtpVerified ? (
             <div>
-              <img src={"/checkCropped.png"}
-                      alt="check"
-                      width={100}
-                      height={100}/>
+              <img
+                src={"/checkCropped.png"}
+                alt="check"
+                width={100}
+                height={100}
+              />
             </div>
           ) : (
             <div>

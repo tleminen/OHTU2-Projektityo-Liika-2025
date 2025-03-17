@@ -8,8 +8,8 @@ import { changeLocation } from "../../store/locationSlice.js"
 import { changeUser } from "../../store/userSlice.js"
 import { loginValidation } from "../../utils/validationSchemas.js"
 import { addNotification } from "../../store/notificationSlice.js"
-import { EmailSentSuccess, EmailSentFailure, OtpRobotCheck, OtpVerified, OtpNotVerified, UserFailure } from "../notification/notificationTemplates.js"
-
+import { UserFailure } from "../notification/notificationTemplates.js"
+import { changeLanguage } from "../../store/languageSlice.js"
 
 const LoginForm = () => {
   const language = useSelector((state) => state.language.language)
@@ -21,7 +21,6 @@ const LoginForm = () => {
   const [password, setPassword] = useState("")
   const [showPassword, setShowPassword] = useState(false)
   const [errors, setErrors] = useState({})
-
 
   // Tallennetaan muuttujaan return arvo
   const schema = loginValidation()
@@ -38,14 +37,11 @@ const LoginForm = () => {
       await schema.validate({ username, password }, { abortEarly: false })
       setErrors({})
 
-      console.log("Login attempt:", { username, password })
       try {
         const user = await loginService.login({
           username,
           password,
         })
-        console.log(`Tokeni: ${user.token} Käyttäjätunnus: ${user.username}`)
-        console.log(user)
         dispatch(
           changeUser({
             userID: user.userID,
@@ -63,20 +59,19 @@ const LoginForm = () => {
             zoom: 14, // Kovakoodattu etäisyys
           })
         )
+        dispatch(changeLanguage(user.language))
         navigate(`/`)
       } catch (error) {
-        dispatch(addNotification(UserFailure(t.alert_incorrect)));
+        dispatch(addNotification(UserFailure(t.alert_incorrect)))
         console.log(error)
       }
     } catch (err) {
-      
       if (err.inner) {
         const errorMap = {}
         err.inner.forEach((error) => {
           errorMap[error.path] = error.message
         })
         setErrors(errorMap)
-
         console.log("Validation errors:", errorMap)
       }
     }
@@ -89,7 +84,7 @@ const LoginForm = () => {
   return (
     <div className="login-form">
       <form onSubmit={handleSubmit}>
-        <div>
+        <div className="login-form-item">
           <h3>{t.username}</h3>
           <input
             ref={inputRef}
@@ -105,26 +100,28 @@ const LoginForm = () => {
         {errors.username && (
           <div className="error-forms">{errors.username}</div>
         )}
-        <h3>{t.password}</h3>
-        <div className="password-input-container">
-          <input
-            type={showPassword ? "text" : "password"}
-            className={`input-field ${errors.password ? "error" : ""}`}
-            value={password}
-            name="password"
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder={t.password}
-            autoComplete="current-password"
-          />
-          <button
-            type="button"
-            className="password-toggle-button"
-            onClick={togglePasswordVisibility}
-          >
-            <span className="material-symbols-outlined">
-              {showPassword ? "visibility_off" : "visibility"}
-            </span>
-          </button>
+        <div className="login-form-item">
+          <h3>{t.password}</h3>
+          <div className="password-input-container">
+            <input
+              type={showPassword ? "text" : "password"}
+              className={`input-field ${errors.password ? "error" : ""}`}
+              value={password}
+              name="password"
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder={t.password}
+              autoComplete="current-password"
+            />
+            <button
+              type="button"
+              className="password-toggle-button"
+              onClick={togglePasswordVisibility}
+            >
+              <span className="material-symbols-outlined">
+                {showPassword ? "visibility_off" : "visibility"}
+              </span>
+            </button>
+          </div>
         </div>
         {errors.password && (
           <div className="error-forms">{errors.password}</div>

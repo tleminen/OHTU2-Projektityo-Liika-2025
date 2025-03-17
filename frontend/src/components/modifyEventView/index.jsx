@@ -1,6 +1,7 @@
 import { Link, useNavigate, useParams } from "react-router-dom"
 import Footer from "../footer"
 import Header from "../header"
+import Select from "react-select"
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import translations from "../../assets/translation"
@@ -10,18 +11,30 @@ import { selectCategoryName } from "../../assets/icons"
 import { parseTimeAndDate } from "../../utils/helper"
 import LocationMap from "../locationMap"
 import "./modifyEventView.css"
+import DatePicker from "react-multi-date-picker"
 
 const ModifyEvent = () => {
   const { id } = useParams()
   const [event, setEvent] = useState(null)
   const [times, setTimes] = useState([])
   const [loading, setLoading] = useState(true)
+  const storedToken = useSelector((state) => state.user?.user?.token ?? null)
   const language = useSelector((state) => state.language.language)
   const t = translations[language]
   const userID = useSelector((state) => state.user.user.userID)
   const userEvents = useSelector((state) => state.event.events || [])
   const [selectedTime, setSelectedTime] = useState(null)
-  const [eventLocation, setEventLocation] = useState(null)
+  // Uudet tiedot:
+  const [event_location, setEventLocation] = useState(null)
+  const [title, setTitle] = useState("")
+  const [participantsMin, setParticipantsMin] = useState("")
+  const [participantsMax, setParticipantsMax] = useState("")
+  const [description, setDescription] = useState("")
+  const [activity, setActivity] = useState({})
+  const [dates, setDates] = useState([])
+  const [startTime, setStartTime] = useState("")
+  const [endTime, setEndTime] = useState("")
+
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
@@ -31,9 +44,12 @@ const ModifyEvent = () => {
         const eventData = await eventService.getSingleEventWithTimes({
           EventID: id,
         })
-        console.log(eventData)
         setEvent(eventData)
         setTimes(eventData.Times)
+        setActivity({
+          value: eventData.CategoryID,
+          label: t[selectCategoryName([eventData.CategoryID])],
+        })
       } catch (error) {
         console.error("Virhe hakiessa tapahtumaa: " + error)
       } finally {
@@ -41,7 +57,7 @@ const ModifyEvent = () => {
       }
     }
     fetchEventInfo()
-  }, [id])
+  }, [id, t])
 
   // Kun times latautuu, asetetaan ensimmäinen aika selectedTime:ksi, jos sitä ei vielä ole
   useEffect(() => {
@@ -54,7 +70,7 @@ const ModifyEvent = () => {
   const handleJoin = async (userID, id) => {
     console.log(selectedTime.id)
     try {
-      const response = await eventService.joinEvent({
+      const response = await eventService.joinEvent(storedToken, {
         UserID: userID,
         EventID: id,
         TimeID: Number(selectedTime.TimeID),
@@ -82,22 +98,57 @@ const ModifyEvent = () => {
 
   // Päivitä tapahtumaa
   const handleUpdateEvent = () => {
-    console.log(eventLocation)
+    const updatedtitle = title || event.Title
+
+    const updatedStartTime =
+      startTime || parseTimeAndDate(times[0].StartTime)[0]
+    const updatedEndTime = endTime || parseTimeAndDate(times[0].EndTime)[0]
+    const updatedParticipantsMin = participantsMin || event.ParticipantMin
+    const updatedParticipantsMax = participantsMax || event.ParticipantMax
+    const updatedDescription = description || event.Description
+    const updatedCategoryID = activity.value || event.CategoryID // Jos kategoria on tyhjä, käytetään oletusarvoa
+
+    eventService.modifyEvent(storedToken, {
+      Title: updatedtitle,
+      UserID: userID,
+      CategoryID: updatedCategoryID,
+      Dates: dates,
+      StartTime: updatedStartTime,
+      EndTime: updatedEndTime,
+      Event_Location: event_location,
+      ParticipantsMin: updatedParticipantsMin,
+      ParticipantsMax: updatedParticipantsMax,
+      Description: updatedDescription,
+      EventID: id,
+    })
   }
 
   // Poista tapahtuman päivä
   const handleCancelEvent = async (time) => {
-    console.log(time)
+    // TODO: Lisää alert: Haluatko poistaa tapahtuman esiintymän?
     try {
       var response = null
       if (times.length === 1) {
-        response = await eventService.deleteEvent({
+        response = await eventService.deleteEvent(storedToken, {
+          UserID: userID,
           EventID: event.EventID,
           TimeID: time.TimeID,
         })
         navigate("/created_events")
       } else {
-        response = await eventService.deleteEventTime({ TimeID: time.TimeID })
+        response = await eventService.deleteEventTime(storedToken, {
+          UserID: userID,
+          TimeID: time.TimeID,
+        })
+        // Päivitä frontendin times-tila poistamalla kyseinen aika listasta
+        setTimes((prevTimes) =>
+          prevTimes.filter((t) => t.TimeID !== time.TimeID)
+        )
+
+        // Jos poistettiin valittu aika, asetetaan ensimmäinen jäljelle jäänyt valituksi
+        if (selectedTime?.TimeID === time.TimeID) {
+          setSelectedTime(times.find((t) => t.TimeID !== time.TimeID) || null)
+        }
       }
       console.log(response)
     } catch (error) {
@@ -112,7 +163,7 @@ const ModifyEvent = () => {
   // Tapahtumasta eroamisen painikkeen handleri
   const handleLeave = async (userID, id) => {
     try {
-      const response = await eventService.leaveEvent({
+      const response = await eventService.leaveEvent(storedToken, {
         UserID: userID,
         EventID: Number(id),
         TimeID: Number(selectedTime.TimeID),
@@ -138,6 +189,22 @@ const ModifyEvent = () => {
       )
     } catch (error) {
       console.error("Virhe poistuessa tapahumasta" + error)
+    }
+  }
+  const handleChange = (selectedOption) => {
+    setActivity(selectedOption)
+  }
+
+  const categories = useSelector((state) => state.categories.categories)
+
+  const options = () => {
+    try {
+      return categories.map((cat) => ({
+        value: cat.CategoryID,
+        label: t[selectCategoryName([cat.CategoryID])],
+      }))
+    } catch (error) {
+      console.log(error)
     }
   }
 
@@ -216,69 +283,202 @@ const ModifyEvent = () => {
       }}
     >
       <Header />
-      <div className="event-view">
-        <img
-          src={`/lajit/${selectCategoryName([event.CategoryID])}.png`}
-          alt="Logo"
-          width={100}
-          height={100}
-          className="event-view-icon" // Ei taida toimia tää className??
-        />
-        <h1>{event.Title}</h1>
-        <h2>{t.date}</h2>
-        <div className="time-parent">
-          {times.map((time, index) => (
-            <div key={index} className="time-child">
-              <button
-                onClick={() => handleTimeClick(time)}
-                className={getTimeButtonClass(time)}
-              >
-                {parseTimeAndDate(time.StartTime)[1]}
-              </button>
-              <p>{time.JoinedCount}</p>
-              <button onClick={() => handleCancelEvent(time)}>Poista</button>
-            </div>
-          ))}
+      <div className="modify-event-view">
+        <div className="own-event-item">
+          <h1>{t.event_editing}</h1>
+          <p>
+            {t.editEventDetailsView}
+            <br />
+            {t.enterNewInfoEditable}
+            <br />
+            <br />
+            {t.exitWithoutSave}
+          </p>
         </div>
-        <h2>{t.time}</h2>
-        <p style={{ fontWeight: "bold" }}>
-          {parseTimeAndDate(times[0].StartTime)[0]} -{" "}
-          {parseTimeAndDate(times[0].EndTime)[0]}
-        </p>
-        <h2>{t.location}</h2>
-        <LocationMap
-          onLocationChange={handleLocationChange}
-          oldLocation={[
-            event.Event_Location.coordinates[0],
-            event.Event_Location.coordinates[1],
-          ]}
-        />
-
-        <h2>Osallistujamäärä</h2>
-        <p>
-          {event.ParticipantMin} - {event.ParticipantMax}
-        </p>
-        <h2>Liittyneitä</h2>
-        <p>{selectedTime && selectedTime.JoinedCount}</p>
-        <h2>Kuvaus:</h2>
-        <p>{event.Description}</p>
-        {selectedTime && !isJoined(selectedTime) && (
-          <button className="join-btn" onClick={() => handleJoin(userID, id)}>
-            Ilmoittaudu
-          </button>
-        )}
-        {selectedTime && isJoined(selectedTime) && (
-          <button className="leave-btn" onClick={() => handleLeave(userID, id)}>
-            Peru ilmoittautuminen
-          </button>
-        )}
-        <p style={{ fontWeight: "lighter" }}>Tapahtumaa viimeksi päivitetty:</p>
+        <div className="own-event-item">
+          <h2>{t.currentActivity}</h2>
+          <p className="old-event-value">
+            {t[selectCategoryName([event.CategoryID])]}
+          </p>
+          <img
+            src={`/lajit/${selectCategoryName([event.CategoryID])}.png`}
+            alt="Logo"
+            width={100}
+            height={100}
+            className="event-view-icon"
+          />
+          <span className="spacer-line"></span>
+          <h3>{t.activity}</h3>
+          <Select
+            className="input-field"
+            placeholder={t.activity}
+            value={activity}
+            onChange={handleChange}
+            options={options()}
+            isSearchable={true}
+            required={true}
+          />
+        </div>
+        <div className="own-event-item">
+          <h2>{t.currentTitle}</h2>
+          <p className="old-event-value">{event.Title}</p>
+          <span className="spacer-line"></span>
+          <h2>{t.newTitle}</h2>
+          <input
+            type="text"
+            value={title}
+            placeholder={`${event.Title}`}
+            className="input-field"
+            onChange={(e) => setTitle(e.target.value)}
+            required={true}
+          />
+        </div>
+        <div className="own-event-item">
+          <h2>{t.scheduledDates}</h2>
+          <div className="time-parent">
+            {times.map((time, index) => (
+              <div key={index} className="time-child">
+                <button
+                  onClick={() => handleTimeClick(time)}
+                  className={getTimeButtonClass(time)}
+                >
+                  {parseTimeAndDate(time.StartTime)[1]}
+                </button>
+                <div className="counter-icon">
+                  <span>
+                    {time.JoinedCount}/{event.ParticipantMax}
+                  </span>
+                </div>
+                <button onClick={() => handleCancelEvent(time)}>
+                  {t.deleteDate}
+                </button>
+              </div>
+            ))}
+          </div>
+          {selectedTime && !isJoined(selectedTime) && (
+            <button className="join-btn" onClick={() => handleJoin(userID, id)}>
+              {t.join}
+            </button>
+          )}
+          {selectedTime && isJoined(selectedTime) && (
+            <button
+              className="leave-btn"
+              onClick={() => handleLeave(userID, id)}
+            >
+              {t.leaveEvent}
+            </button>
+          )}
+          <span className="spacer-line"></span>
+          <h2>{t.scheduleMoreDates}</h2>
+          <DatePicker
+            value={dates}
+            onChange={(newDates) =>
+              setDates([...newDates].sort((a, b) => new Date(a) - new Date(b)))
+            }
+            multiple
+            style={{ textAlign: "center" }}
+            minDate={Date.now()}
+            zIndex={1005}
+            displayWeekNumbers={true}
+            render={(value, openCalendar) => (
+              <div className="custom-date-display" onClick={openCalendar}>
+                {Array.isArray(value) ? (
+                  value.map((date, index) => <div key={index}>{date}</div>)
+                ) : (
+                  <span>{value || "Choose dates"}</span>
+                )}
+              </div>
+            )}
+            format="DD.MM.YYYY"
+            weekStartDayIndex={1}
+          />
+        </div>
+        <div className="own-event-item">
+          <h2>{t.currentTime}</h2>
+          <p className="old-event-value">
+            {parseTimeAndDate(times[0].StartTime)[0]} -{" "}
+            {parseTimeAndDate(times[0].EndTime)[0]}
+          </p>
+          <span className="spacer-line"></span>
+          <h2>{t.newTiming}</h2>
+          <h3>{t.startTime}</h3>
+          <input
+            type="time"
+            value={startTime}
+            name="startTime"
+            className="input-field"
+            onChange={(e) => setStartTime(e.target.value)}
+            placeholder={t.dateAndTime}
+            required={true}
+          />
+          <h3>{t.endTime}</h3>
+          <input
+            type="time"
+            value={endTime}
+            name="endTime"
+            className="input-field"
+            onChange={(e) => setEndTime(e.target.value)}
+            placeholder={t.dateAndTime}
+            required={true}
+          />
+        </div>
+        <div className="own-event-item">
+          <h2>{t.location}</h2>
+          <LocationMap
+            onLocationChange={handleLocationChange}
+            oldLocation={[
+              event.Event_Location.coordinates[0],
+              event.Event_Location.coordinates[1],
+            ]}
+          />
+        </div>
+        <div className="own-event-item">
+          <h2>{t.participantLimits}</h2>
+          <p className="old-event-value">
+            {event.ParticipantMin} - {event.ParticipantMax}
+          </p>
+          <span className="spacer-line"></span>
+          <h2>{t.newParticipantLimits}</h2>
+          <input
+            type="number"
+            value={participantsMin}
+            name="minParticipants"
+            className="input-field"
+            onChange={(e) => setParticipantsMin(e.target.value)}
+            placeholder={t.minParticipants}
+            required={true}
+          />
+          <input
+            type="number"
+            value={participantsMax}
+            name="maxParticipants"
+            className="input-field"
+            onChange={(e) => setParticipantsMax(e.target.value)}
+            placeholder={t.maxParticipants}
+            required={true}
+          />
+        </div>
+        <div className="own-event-item">
+          <h2>{t.currentDescription}</h2>
+          <p className="old-event-value">{event.Description}</p>
+          <span className="spacer-line"></span>
+          <h2>{t.newDescription}</h2>
+          <textarea
+            type="description"
+            value={description}
+            name="description"
+            className="input-field"
+            onChange={(e) => setDescription(e.target.value)}
+            placeholder={t.description}
+          />
+        </div>
+        <p style={{ fontWeight: "lighter" }}>{t.lastUpdated}</p>
         <p style={{ fontWeight: "lighter" }}>
           {parseTimeAndDate(event.updatedAt)[1]}{" "}
           {parseTimeAndDate(event.updatedAt)[0]}
         </p>
         <button className="modify-event-btn" onClick={handleUpdateEvent}>
-          Tallenna muutokset
+          {t.saveChanges}
         </button>
         <Link to={"/map"} className="back-btn">
           <span>{t.back}</span>
