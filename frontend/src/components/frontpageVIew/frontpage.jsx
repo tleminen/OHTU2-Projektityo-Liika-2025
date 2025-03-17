@@ -1,33 +1,33 @@
-import Header from "../header"
-import mapImage from "../../assets/map_kuvituskuva.png"
-import Footer from "../footer"
-import { useNavigate } from "react-router-dom"
-import { useSelector } from "react-redux"
-import SignedOut from "./singedOut"
-import SignedIn from "./signedIn"
-import translations from "../../assets/translation"
+import Header from "../header";
+import mapImage from "../../assets/map_kuvituskuva.png";
+import Footer from "../footer";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import SignedOut from "./singedOut";
+import SignedIn from "./signedIn";
+import translations from "../../assets/translation";
 const Frontpage = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const navigateTo = (path) => {
-    navigate(`/${path}`)
-  }
-  const language = useSelector((state) => state.language.language)
-  const t = translations[language]
-  const user = useSelector((state) => state.user.user)
+    navigate(`/${path}`);
+  };
+  const language = useSelector((state) => state.language.language);
+  const t = translations[language];
+  const user = useSelector((state) => state.user.user);
 
   const singedOrNot = () => {
     if (user === null) {
-      return <SignedOut />
+      return <SignedOut />;
     } else {
-      return <SignedIn />
+      return <SignedIn />;
     }
-  }
+  };
 
   return (
     <div
       className="fullpage"
       style={{
-        backgroundImage: "url('/backgroundpicture.jpg')",
+        backgroundImage: "url('/background-logandreg.png')",
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
@@ -56,7 +56,7 @@ const Frontpage = () => {
       </div>
       <Footer />
     </div>
-  )
-}
+  );
+};
 
-export default Frontpage
+export default Frontpage;

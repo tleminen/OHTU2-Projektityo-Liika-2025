@@ -1,13 +1,13 @@
-import { Link } from "react-router-dom"
-import Header from "../header"
-import Info from "./info"
-import Footer from "../footer"
-import { useSelector } from "react-redux"
-import translations from "../../assets/translation"
+import { Link } from "react-router-dom";
+import Header from "../header";
+import Info from "./info";
+import Footer from "../footer";
+import { useSelector } from "react-redux";
+import translations from "../../assets/translation";
 
 const TermsOfServiceView = () => {
-  const language = useSelector((state) => state.language.language)
-  const t = translations[language]
+  const language = useSelector((state) => state.language.language);
+  const t = translations[language];
 
   return (
     <div
@@ -26,7 +26,7 @@ const TermsOfServiceView = () => {
       </Link>
       <Footer />
     </div>
-  )
-}
+  );
+};
 
-export default TermsOfServiceView
+export default TermsOfServiceView;
