@@ -349,7 +349,7 @@ const RegisterForm = () => {
           </div>
         )}
 
-        <button type="submit" className="forms-btn">
+        <button type="submit" className="forms-btn" disabled={true}>
           <span>{t.register}</span>
         </button>
       </form>

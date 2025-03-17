@@ -76,6 +76,10 @@
   width: 100%;
 }
 
+.forms-btn:disabled {
+  background-color: rgba(159, 159, 159, 0.507);
+}
+
 .loader {
   margin: auto;
   width: 50px;
