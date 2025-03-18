@@ -1,5 +1,8 @@
 const { Router } = require("express")
-const getEventsNearby = require("../services/getEventsNearby")
+const {
+  getEventsNearby,
+  getEventsNearbyQuick,
+} = require("../services/getEventsNearby")
 const {
   getSingleEventWithTimes,
 } = require("../services/getSingleEventWithTimes")
@@ -34,12 +37,51 @@ eventRouter.post("/singleEventWithTimes", async (req, res) => {
 /**
  * Hakee tapahtumat alueelta
  * Parametrina leveys- ja pituuspiiri, sekä maksimietäisyys pisteestä
+ * Lisäksi mukana aikaväli jolla haetaan. Default aikaväli on nykyinen päivämäärä ja 00:00 + 30 päivää 23:59
  * Palauttaa tapahtuman tiedot, sekä osallistujamäärän (aktiivinen tai seuraava esiintymä tapahtumasta)
  */
 eventRouter.post("/nearby", async (req, res) => {
-  const { latitude, longitude, radius } = req.body
+  const {
+    latitude,
+    longitude,
+    radius,
+    startTime,
+    endTime,
+    startDate,
+    endDate,
+  } = req.body
   try {
-    const events = await getEventsNearby(latitude, longitude, radius)
+    const events = await getEventsNearby(
+      latitude,
+      longitude,
+      radius,
+      startTime,
+      endTime,
+      startDate,
+      endDate
+    )
+    res.json(events)
+  } catch (error) {
+    res.status(500).json({ error: "Jotain meni pieleen" })
+  }
+}) // Tapahtumahaku päättyy
+
+/**
+ * Hakee tapahtumat alueelta
+ * Parametrina leveys- ja pituuspiiri, sekä maksimietäisyys pisteestä
+ * Lisäksi mukana aikaväli jolla haetaan. Default aikaväli on nykyinen päivämäärä ja 00:00 + 30 päivää 23:59
+ * Palauttaa tapahtuman tiedot, sekä osallistujamäärän (aktiivinen tai seuraava esiintymä tapahtumasta)
+ */
+eventRouter.post("/nearbyQuick", async (req, res) => {
+  const { latitude, longitude, radius, startTimeDate, endTimeDate } = req.body
+  try {
+    const events = await getEventsNearbyQuick(
+      latitude,
+      longitude,
+      radius,
+      startTimeDate,
+      endTimeDate
+    )
     res.json(events)
   } catch (error) {
     res.status(500).json({ error: "Jotain meni pieleen" })
@@ -102,11 +144,14 @@ eventRouter.post("/create_event", userExtractor, async (req, res) => {
       await Promise.all(
         dates.map(async (timestamp) => {
           const date = new Date(timestamp).toISOString().split("T")[0] // YYYY-MM-DD
+          console.log(date)
+          console.log(startTime)
+          console.log(endTime)
 
           await Times.create(
             {
-              StartTime: `${date} ${startTime}:00.000+2`,
-              EndTime: `${date} ${endTime}:00.000+2`,
+              StartTime: `${date} ${startTime}:00`,
+              EndTime: `${date} ${endTime}:00`,
               EventID: event.EventID,
             },
             { transaction }
@@ -215,8 +260,8 @@ eventRouter.post("/create_event_unsigned", async (req, res) => {
 
           await Times.create(
             {
-              StartTime: `${date} ${startTime}:00.000+2`,
-              EndTime: `${date} ${endTime}:00.000+2`,
+              StartTime: `${date} ${startTime}:00`,
+              EndTime: `${date} ${endTime}:00`,
               EventID: event.EventID,
             },
             { transaction }

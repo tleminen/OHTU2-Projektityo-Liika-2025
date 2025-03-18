@@ -31,10 +31,6 @@ loginRouter.post("/", async (req, res) => {
       id: user.UserID,
     }
 
-    console.log("JSON: " + JSON.stringify(userForToken))
-
-    console.log(user)
-
     const token = jwt.sign(userForToken, process.env.JWT_SECRET, {
       expiresIn: "60d",
     })
@@ -45,7 +41,7 @@ loginRouter.post("/", async (req, res) => {
       username: user.Username,
       location: user.Location.coordinates,
       email: user.Email,
-      language: user.LanguageID, // Kovakoodattu, laita kyselyyn populate with language jotenkin
+      language: user.LanguageID,
     })
   } catch (error) {
     console.log(error)

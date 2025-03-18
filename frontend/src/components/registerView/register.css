@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 8px;
+  gap: 18px;
   align-items: center;
   margin: auto;
   margin-top: 2%;
@@ -28,6 +28,13 @@
 
 .register-form-item {
   justify-items: center;
+}
+
+.register-form-location-container {
+  max-width: 700px;
+  max-height: 700px;
+  justify-items: center;
+  padding: 0px 8px;
 }
 
 .error-forms {
@@ -62,57 +69,6 @@
 /* Voit lisätä tarvittaessa tyylejä virhetiloille */
 .otp-input.error {
   border-color: red;
-}
-
-.btn {
-  margin: auto;
-  margin-top: 2%;
-}
-
-.btn:hover {
-  background-color: #ffffff;
-  color: #0097b2;
-  border: 2px solid #0097b2;
-  transition: background-color 0.3s, box-shadow 0.3s;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.5);
-}
-
-.forms-btn {
-  border-radius: 5px;
-  border: none;
-  padding: 0.8em 5em;
-  position: relative;
-  overflow: hidden;
-  color: #ffffff;
-  background-color: #0097b2;
-  transition: transform 0.6s ease-in-out;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.5);
-  margin: auto;
-  margin-top: 5%;
-  text-transform: uppercase;
-}
-.forms-btn span {
-  position: relative;
-  z-index: 1; /* Tuo teksti napin päälle */
-}
-.forms-btn::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 0;
-  height: 100%;
-  background-color: #007891; /* Muuta väriä tähän */
-  color: #ffffff;
-  transition: width 0.6s ease-in-out; /* Säädä täyttymisnopeutta */
-}
-
-.forms-btn:hover::before {
-  width: 100%;
 }
 
 .loader {

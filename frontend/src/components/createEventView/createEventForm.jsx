@@ -27,7 +27,8 @@ const CreateEventForm = () => {
   const [isOtpVerified, setIsOtpVerified] = useState(false)
   const userID = useSelector((state) => state.user?.user?.userID ?? null)
   const storedToken = useSelector((state) => state.user?.user?.token ?? null)
-
+  const yesterday = new Date()
+  yesterday.setDate(yesterday.getDate() - 1)
   const handleSubmit = (event) => {
     const categoryID = activity.value
     event.preventDefault()
@@ -106,39 +107,34 @@ const CreateEventForm = () => {
     return (
       <div className="create-event-form">
         <form onSubmit={handleSubmitUnSigned}>
-          <div>
-            <div>
-              <h3>{t.title}</h3>
-              <input
-                type="text"
-                value={title}
-                className="input-field"
-                onChange={(e) => setTitle(e.target.value)}
-                required={true}
-              />
-            </div>
-            <div>
-              <h3>{t.activity}</h3>
-              <Select
-                className="input-field"
-                placeholder={t.activity}
-                value={activity}
-                onChange={handleChange}
-                options={options()}
-                isSearchable={true}
-                required={true}
-              />
-            </div>
+          <div className="form-item">
+            <h3>{t.title}</h3>
+            <input
+              type="text"
+              value={title}
+              className="input-field"
+              onChange={(e) => setTitle(e.target.value)}
+              required={true}
+            />
           </div>
-          <div>
+          <div className="form-item">
+            <h3>{t.activity}</h3>
+            <Select
+              className="input-field"
+              placeholder={t.activity}
+              value={activity}
+              onChange={handleChange}
+              options={options()}
+              isSearchable={true}
+              required={true}
+            />
+          </div>
+          <div className="form-item">
             <h3>{t.date}</h3>
             <DatePicker
               value={dates}
-              onChange={(newDates) =>
-                setDates(
-                  [...newDates].sort((a, b) => new Date(a) - new Date(b))
-                )
-              }
+              sort
+              onChange={setDates}
               multiple
               style={{ textAlign: "center" }}
               minDate={Date.now()}
@@ -154,9 +150,10 @@ const CreateEventForm = () => {
                 </div>
               )}
               format="DD.MM.YYYY"
+              weekStartDayIndex={1}
             />
           </div>
-          <div>
+          <div className="form-item">
             <h3>{t.startTime}</h3>
             <input
               type="time"
@@ -168,7 +165,7 @@ const CreateEventForm = () => {
               required={true}
             />
           </div>
-          <div>
+          <div className="form-item">
             <h3>{t.endTime}</h3>
             <input
               type="time"
@@ -180,12 +177,13 @@ const CreateEventForm = () => {
               required={true}
             />
           </div>
-          <div>
+          <div className="form-item">
             <br />
             <h3>{t.setEventLocationInfo}</h3>
             <LocationMap onLocationChange={handleLocationChange} />
           </div>
-          <div>
+          <div className="form-item">
+            <h3>{t.minParticipants}</h3>
             <input
               type="number"
               value={participantsMin}
@@ -196,7 +194,8 @@ const CreateEventForm = () => {
               required={true}
             />
           </div>
-          <div>
+          <div className="form-item">
+            <h3>{t.maxParticipants}</h3>
             <input
               type="number"
               value={participantsMax}
@@ -207,7 +206,8 @@ const CreateEventForm = () => {
               required={true}
             />
           </div>
-          <div>
+          <div className="form-item">
+            <h3>{t.description}</h3>
             <textarea
               type="description"
               value={description}
@@ -217,15 +217,18 @@ const CreateEventForm = () => {
               placeholder={t.description}
             />
           </div>
-          <input
-            type="text"
-            value={email}
-            name="email"
-            className="input-field"
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder={t.email}
-            required={true}
-          />
+          <div className="form-item">
+            <h3>{t.email}</h3>
+            <input
+              type="text"
+              value={email}
+              name="email"
+              className="input-field"
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder={t.email}
+              required={true}
+            />
+          </div>
 
           <div>
             <SendEmail
@@ -234,7 +237,7 @@ const CreateEventForm = () => {
             />
           </div>
 
-          <button type="submit" style={{ margin: "auto" }}>
+          <button className="btn" type="submit" style={{ margin: "auto" }}>
             {t.createEvent}
           </button>
         </form>
@@ -272,12 +275,11 @@ const CreateEventForm = () => {
           <h3>{t.date}</h3>
           <DatePicker
             value={dates}
-            onChange={(newDates) =>
-              setDates([...newDates].sort((a, b) => new Date(a) - new Date(b)))
-            }
+            sort
+            onChange={setDates}
             multiple
             style={{ textAlign: "center" }}
-            minDate={Date.now()}
+            minDate={yesterday}
             zIndex={1005}
             displayWeekNumbers={true}
             render={(value, openCalendar) => (
@@ -356,7 +358,7 @@ const CreateEventForm = () => {
             placeholder={t.description}
           />
         </div>
-        <button type="submit" style={{ margin: "auto" }}>
+        <button className="btn" type="submit" style={{ margin: "auto" }}>
           {t.createEvent}
         </button>
       </form>

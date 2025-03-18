@@ -1,32 +1,37 @@
 Bugit
 
-Kartta:
-Leveys ei toimi kunnolla
-Tarpeettomia tietokantakyselyitä categories ja joined
+MapView:
 
-Tapahtumien luonti:
 -Kirjautumaton:
 -css-poikkeamia
 
 Yksittäisen tapahtuman näkymä:
 
+- Poista menneiden tapahtumien haku!
 - // TODO: Jos mennään suoraan linkillä tapahtumaan niin userEvents ei ole haettu vielä reduxiin!
-- "Liittyneitä" alaotsikon numero ei päivity heti liityttyessä/ peruessa. Bugi ei mitenkään vakava
+
+Oman tapahtuman muokkaus:
+
+- Vanhat tapahtumat listana jossa osallistujamäärä, PItäisikö olla ettei voi enää perua?
 
 Login:
 
-Muita huomioita:
-Laita toimimaan kaikki tokenilla
-
 CreateEvent:
-// TODO: kirjautumattoman näkymässä padding yms välit kuntoon
+Tapahtuman kesto pitäisi olla yli 0min?
+kirjautumattoman näkymässä padding yms välit kuntoon
+
+Omien tietojen muokkaus:
+! Tilin poistaminen !
+Oman aloitussijainnin muuttaminen pitää tehdä
 
 Azure:
 Tomille- Vaihda sprintistä 4 v2 -> v1, sprintistä 5 v3 -> v2 jne..
 
+Backend:
+! Nearby-haku hakee käyttäjätunnuksen vaikka se olisi sähköpostiosoitemuotoinen (sis. @). Frontti filtteröi sen, mutta pitää poistaa backendissä!
 
 Liika ei toimi FireFoxissa
-Chatin vastaus: 
+Chatin vastaus:
 "Näyttää siltä, että Frontpage-komponentissa on virhe ja että Leaflet-kirjaston resurssit eivät lataudu oikein.
 🔍 Mitä virheilmoitukset kertovat?
 
@@ -38,4 +43,5 @@ Chatin vastaus:
         Leafletin ja sen marker cluster -lisäosan tiedostot eivät lataudu.
         Tämä voi johtua verkko-ongelmista, palvelimen estosta, tai CDN-ongelmista."
 
-Kysymyksiä:
+Kysymyksiä ja muita huomioita:
+Järjestäjän nimi, mihin kaikkialle näkyviin?

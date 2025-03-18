@@ -6,6 +6,7 @@
   align-items: center;
   margin: auto;
   width: fit-content;
+  max-width: 90vw;
   margin-top: 2%;
   margin-bottom: 2%;
   background-color: rgba(
@@ -95,6 +96,13 @@
   text-align: center;
 }
 
+/* Mobiilinäkymä */
+@media (max-width: 500px) {
+  .time-child {
+    flex-direction: column;
+  }
+}
+
 /* Liitytty päivämäärä */
 .joined-time-btn {
   position: relative;
@@ -147,7 +155,8 @@
   background-color: #194480;
   border-radius: 10px;
   height: 35px;
-  width: 35px;
+  width: fit-content;
+  padding: 0px 10px;
   color: #ffffff;
   display: flex;
   align-items: center; /* Pystysuuntainen keskitys */

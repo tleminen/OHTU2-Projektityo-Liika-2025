@@ -1,11 +1,11 @@
 import { useSelector } from "react-redux"
-import { Link } from "react-router-dom"
 import Footer from "../footer"
 import Header from "../header"
 import translations from "../../assets/translation"
 import RegisterForm from "./registerForm"
 import "../../index.css"
 import NotificationContainer from "../notification/notificationContainer"
+import { Link } from "react-router-dom"
 
 const Register = () => {
   const language = useSelector((state) => state.language.language)
@@ -21,20 +21,16 @@ const Register = () => {
         backgroundRepeat: "no-repeat",
       }}
     >
+      <NotificationContainer />
       <Header />
-      <div>
-        <NotificationContainer />
-      </div>
       <div className="register">
+        <h1>{t.register_new_account}</h1>
         <RegisterForm />
         <p style={{ textAlign: "center" }}>
           {t.ready_account}
           <br />
-          <a href="/login">{t.login2}</a>
+          <Link to={"/login"}>{t.login2}</Link>
         </p>
-        <Link to={"/"} className="back-btn">
-          <span>{t.back}</span>
-        </Link>
       </div>
       <Footer />
     </div>

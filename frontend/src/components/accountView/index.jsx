@@ -8,9 +8,11 @@ import { changeUser } from "../../store/userSlice"
 import { Link } from "react-router-dom"
 import "../../index.css"
 import translations from "../../assets/translation"
+import LocationMap from "../locationMap"
 
 const AccountView = () => {
   const [user, setUser] = useState(null)
+  const [location, setLocation] = useState([])
   const userID = useSelector((state) => state.user?.user?.userID ?? null)
   const dispatch = useDispatch()
   const language = useSelector((state) => state.language.language)
@@ -36,6 +38,10 @@ const AccountView = () => {
     }
     fetchUserInfo()
   }, [userID, dispatch, storedToken]) // Suoritetaan vain kun userID muuttuu
+
+  const handleLocationChange = (newLocation) => {
+    setLocation(newLocation)
+  }
 
   if (!user) {
     // Tietokantahaku kesken
@@ -113,6 +119,9 @@ const AccountView = () => {
               {t.change}
             </Link>
           </div>
+        </div>
+        <div className="information">
+          <LocationMap onLocationChange={handleLocationChange} />
         </div>
       </div>
       <Link to={"/map"} className="back-btn" style={{ alignSelf: "center" }}>

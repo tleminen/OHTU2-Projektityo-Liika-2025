@@ -3,7 +3,6 @@ import Header from "../header"
 import LoginForm from "./LoginForm"
 import Footer from "../footer"
 import { useDispatch, useSelector } from "react-redux"
-import { Link } from "react-router-dom"
 import { useState } from "react"
 import loginService from "../../services/loginService.js" // Tuo loginService
 import "./login.css"
@@ -60,6 +59,7 @@ const Login = () => {
       <Header />
       <NotificationContainer />
       <div className="login">
+        <h1>{t.login2}</h1>
         <LoginForm />
         <div className="forgot-password-text">
           <a href="#" onClick={() => setEmailForm(!emailForm)}>
@@ -81,7 +81,9 @@ const Login = () => {
               <div className="loader"></div>
             ) : (
               <div>
-                <button type="submit">{t.reset_pw}</button>
+                <button className="btn" type="submit">
+                  {t.reset_pw}
+                </button>
                 {resetMessage && (
                   <img
                     src={"/checkCropped.png"}
@@ -95,10 +97,6 @@ const Login = () => {
             )}
           </form>
         )}
-
-        <Link to={"/"} className="back-btn">
-          <span>{t.back}</span>
-        </Link>
       </div>
       <Footer />
     </div>

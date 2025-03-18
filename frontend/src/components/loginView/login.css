@@ -5,7 +5,7 @@
   gap: 8px;
   align-items: center;
   margin: auto;
-  width: 30%;
+  width: fit-content;
   margin-top: 2%;
   margin-bottom: 2%;
   background-color: rgba(
@@ -25,8 +25,35 @@
   text-align: center;
 }
 
+.btn {
+  margin: auto;
+  margin-top: 2%;
+  background-color: #0097b2;
+}
 .login-form-item {
   justify-items: center;
+}
+.btn {
+  margin: auto;
+  margin-top: 2%;
+  background-color: #0097b2;
+}
+
+.btn:disabled {
+  background-color: rgba(159, 159, 159, 0.507);
+  cursor: default;
+}
+.btn:disabled:hover {
+  background-color: rgba(159, 159, 159, 0.507);
+  color: #ffffff;
+  transition: none;
+  box-shadow: none;
+}
+
+.btn:hover::before {
+  background-color: #007891; /* Muuta väriä tähän */
+  color: #ffffff;
+  transition: width 0.6s ease-in-out; /* Säädä täyttymisnopeutta */
 }
 
 .error-forms {
@@ -48,7 +75,7 @@
   justify-content: center;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.5);
   margin: auto;
-  margin-top: 5%;
+  margin-top: 30px;
   text-transform: uppercase;
 }
 .forms-btn span {
@@ -69,6 +96,15 @@
 
 .forms-btn:hover::before {
   width: 100%;
+}
+
+.forms-btn:disabled {
+  background-color: rgba(159, 159, 159, 0.507);
+  cursor: default;
+}
+.forms-btn:disabled:hover::before {
+  width: 0;
+  cursor: default;
 }
 
 .loader {
