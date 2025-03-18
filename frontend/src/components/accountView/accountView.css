@@ -6,8 +6,8 @@
   margin: auto;
   width: fit-content;
   max-width: 100vw;
-  margin-top: 2%;
-  margin-bottom: 2%;
+  margin-top: 20px;
+  margin-bottom: 10px;
   background-color: rgba(
     255,
     255,
@@ -17,6 +17,13 @@
   padding: 20px; /* Lisätty sisäistä tilaa */
   border-radius: 10px; /* Lisätty pyöristetyt reunat */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Lisätty varjo */
+}
+
+.account-view-form {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  padding: 0px 12px;
 }
 
 .information-row {
@@ -58,6 +65,23 @@
   cursor: pointer;
   margin-left: 20px;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.5);
+}
+
+.save-btn {
+  width: 20;
+  height: 20;
+  opacity: 1;
+  color: black;
+  background-color: rgb(104, 255, 162);
+  border: 2px solid #198065;
+  width: 200px;
+}
+.save-btn:hover {
+  color: #ffffff;
+  background: #00b24a;
+  outline-offset: 3px;
+  border: 2px solid #198065;
+  outline: 2px solid #198072;
 }
 
 .delete-account-btn {

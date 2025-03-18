@@ -152,10 +152,10 @@ const AccountView = () => {
         <div className="spacer-line" />
         <div className="information-row">
           <div className="information">
-            <h3>Muuta karttasi asetuksia</h3>
+            <h3>{t.changeMapSettings}</h3>
           </div>
           <div className="information">
-            <Link to={`/own_info/language`} className="link-btn">
+            <Link to={`/own_info/map`} className="link-btn">
               {t.change}
             </Link>
           </div>

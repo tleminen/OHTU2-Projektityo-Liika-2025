@@ -5,10 +5,9 @@ import { useSelector } from "react-redux"
 import "../../../index.css"
 import "../accountView.css"
 import { Link } from "react-router-dom"
-import FlagSelection from "../../flagSelection.jsx"
 import userService from "../../../services/userService.js"
 
-const ChangeLanguage = () => {
+const ChangeMap = () => {
   const language = useSelector((state) => state.language.language)
   const t = translations[language]
   const userID = useSelector((state) => state.user.user.userID)
@@ -26,7 +25,7 @@ const ChangeLanguage = () => {
         })
         console.log("Vaihdettu" + response) //TODO lisää notifikaatio kun vaihdettu
       } catch (error) {
-        console.error("virhe käyttäjätunnuksen vaihdossa" + error)
+        console.error("virhe kartan asetusten vaihdossa" + error)
       }
     } else {
       console.error("No token provided")
@@ -45,8 +44,8 @@ const ChangeLanguage = () => {
     >
       <Header />
       <div className="account-view">
-        <h1>{t.ChangeLanguage}</h1>
-        <FlagSelection menuPlacement="bottom" />
+        <h1>{t.mapSettings}</h1>
+
         <button className="save-btn" onClick={saveHandler}>
           {t.save}
         </button>
@@ -63,4 +62,4 @@ const ChangeLanguage = () => {
   )
 }
 
-export default ChangeLanguage
+export default ChangeMap

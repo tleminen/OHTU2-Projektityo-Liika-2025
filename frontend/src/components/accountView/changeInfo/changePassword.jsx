@@ -15,8 +15,7 @@ const ChangePassword = () => {
   const [newPasswordAgain, setNewPasswordAgain] = useState("")
   const storedToken = useSelector((state) => state.user?.user?.token ?? null)
 
-  const handleSubmit = (event) => {
-    event.preventDefault()
+  const handleSubmit = () => {
     if (storedToken) {
       console.log("Create event attempt: UNDER CONSTRUCTION")
     } else {
@@ -36,34 +35,32 @@ const ChangePassword = () => {
     >
       <Header />
       <div className="account-view">
-        <h1>{t.ChangePassword}</h1>
-        <form onSubmit={handleSubmit}>
-          <div>
-            <h3>{t.newPassword}</h3>
-            <input
-              className="input-field"
-              type="text"
-              value={newPassword}
-              name="newPassword"
-              onChange={(e) => setNewPassword(e.target.value)}
-              placeholder={t.newPassword}
-              required={true}
-            />
-          </div>
-          <div>
-            <h3>{t.newPasswordAgain}</h3>
-            <input
-              className="input-field"
-              type="text"
-              value={newPasswordAgain}
-              name="newPasswordAgain"
-              onChange={(e) => setNewPasswordAgain(e.target.value)}
-              placeholder={t.newPasswordAgain}
-              required={true}
-            />
-          </div>
-          <button type="submit">{t.save}</button>
-        </form>
+        <div className="account-view-form">
+          <h1>{t.ChangePassword}</h1>
+          <h3>{t.newPassword}</h3>
+          <input
+            className="input-field"
+            type="text"
+            value={newPassword}
+            name="newPassword"
+            onChange={(e) => setNewPassword(e.target.value)}
+            placeholder={t.newPassword}
+            required={true}
+          />
+          <h3>{t.newPasswordAgain}</h3>
+          <input
+            className="input-field"
+            type="text"
+            value={newPasswordAgain}
+            name="newPasswordAgain"
+            onChange={(e) => setNewPasswordAgain(e.target.value)}
+            placeholder={t.newPasswordAgain}
+            required={true}
+          />
+          <button className="save-btn" onClick={() => handleSubmit}>
+            {t.save}
+          </button>
+        </div>
       </div>
       <Link
         to={"/own_info"}
