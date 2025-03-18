@@ -3,7 +3,9 @@ const bcrypt = require("bcryptjs")
 const { Router } = require("express")
 const Users = require("../models/users")
 const { Sequelize, where, Op } = require("sequelize")
+const { Events, Times, Joins, sequelize } = require("../models")
 const { sendEmail } = require("../services/email") // Tuo sendEmail-funktio
+const { userExtractor } = require("../utils/middleware")
 
 const registerRouter = Router()
 
@@ -185,5 +187,48 @@ registerRouter.post("/sendOtp", async (req, res) => {
   }
 })
 //Vahvistuskoodin lähetys sähköpostiin päättyy
+
+registerRouter.post("/unregister", userExtractor, async (req, res) => {
+  const { UserID } = req.body
+  if (UserID === req.user.dataValues.UserID) {
+    const transaction = await sequelize.transaction()
+    try {
+      // Poista liittymiset
+      await Joins.destroy({ where: { UserID: UserID }, transaction })
+
+      // Hae käyttäjän tapahtumat
+      const userEvents = await Events.findAll({
+        where: { UserID: UserID },
+        transaction,
+      })
+
+      // Poista tapahtumien ajat ja liittymiset
+      for (const event of userEvents) {
+        await Joins.destroy({ where: { EventID: event.EventID }, transaction })
+        await Times.destroy({ where: { EventID: event.EventID }, transaction })
+      }
+
+      // Poista tapahtumat
+      await Events.destroy({ where: { UserID: UserID }, transaction })
+
+      // Poista käyttäjä
+      await Users.destroy({ where: { UserID: UserID }, transaction })
+
+      // Hyväksy transaktio
+      await transaction.commit()
+      console.log("✅ Käyttäjä ja siihen liittyvät tiedot poistettu.")
+      res
+        .status(200)
+        .json({ message: "User and affiliated data has been removed" })
+    } catch (error) {
+      // Perutaan transaktio, jos virhe tapahtuu
+      await transaction.rollback()
+      console.error("❌ Virhe käyttäjän poistossa:", error)
+      res.status(500).json({
+        error: "Error has occured while removing user from database...",
+      })
+    }
+  }
+})
 
 module.exports = registerRouter

@@ -16,7 +16,11 @@ const unregister = async (storedToken, UserID) => {
   const headers = {
     headers: { Authorization: token }, // Asetetaan token headeriin
   }
-  const response = await axios.post(baseUrl + "/unregister", UserID, headers)
+  const response = await axios.post(
+    baseUrl + "/register/unregister",
+    UserID,
+    headers
+  )
   return response.status
 }
 

@@ -5,10 +5,9 @@ import "./accountView.css"
 import userService from "../../services/userService"
 import { useDispatch, useSelector } from "react-redux"
 import { changeUser } from "../../store/userSlice"
-import { Link, useNavigate } from "react-router-dom"
+import { Link } from "react-router-dom"
 import "../../index.css"
 import translations from "../../assets/translation"
-import LocationMap from "../locationMap"
 import registerService from "../../services/registerService"
 
 const AccountView = () => {
@@ -41,7 +40,7 @@ const AccountView = () => {
 
   const handleDeleteClick = async () => {
     const isConfirmed = window.confirm(
-      "🔴Haluatko varmasti poistaa käyttäjätilin? ⚠️"
+      "🔴Käyttäjätilin poistaminen poistaa myös kaikki tapahtumasi.⚠️\n🔴Haluatko varmasti poistaa käyttäjätilin? ⚠️"
     )
     if (isConfirmed) {
       const userInput = window.prompt(
@@ -50,15 +49,14 @@ const AccountView = () => {
       if (userInput === user.user.Username) {
         try {
           console.log(user.user.UserID)
-          const response = await registerService.unregister(
-            storedToken,
-            user.user.UserID
-          )
+          const response = await registerService.unregister(storedToken, {
+            UserID: user.user.UserID,
+          })
           console.log(response)
-          localStorage.clear()
           alert(
             "Käyttäjätilisi poistettu. Muista, että voit aina rekisteröityä uudelleen!"
           )
+          localStorage.clear()
           window.location.href = "/"
         } catch (e) {
           console.error(e)
