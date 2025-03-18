@@ -1,8 +1,8 @@
-import L from "leaflet"
+import L from "leaflet";
 
-const ICONSIZE = [64, 64]
-const ICONANCHOR = [32, 32]
-const POPUPANCHOR = [0, -16]
+const ICONSIZE = [64, 64];
+const ICONANCHOR = [32, 32];
+const POPUPANCHOR = [0, -16];
 
 export const categoryMap = {
   1: "amerikkalainen_jalkapallo",
@@ -24,17 +24,17 @@ export const categoryMap = {
   17: "sulkapallo",
   18: "tennis",
   19: "uinti",
-}
+};
 
 export const selectIcon = (categoryID) => {
-  const categoryMapping = categoryMap
-  return Icongroup[categoryMapping[categoryID]] || null
-}
+  const categoryMapping = categoryMap;
+  return Icongroup[categoryMapping[categoryID]] || null;
+};
 
 // Voidaan käyttää traslation hakemisessa. Translatios sisältää avaimet näillä kategorianimillä
 export const selectCategoryName = (categoryID) => {
-  return categoryMap[categoryID] || ""
-}
+  return categoryMap[categoryID] || "";
+};
 
 const Icongroup = {
   amerikkalainen_jalkapallo: L.icon({
@@ -42,6 +42,9 @@ const Icongroup = {
     iconSize: ICONSIZE, // Ikonin koko pixeleinä
     iconAnchor: ICONANCHOR, // Minkä verran offsettiä painalluskohdasta
     popupAnchor: POPUPANCHOR, // -""-
+    shadowUrl: "/lajit/uusintaustapalloMusta.png", // Varjon polku
+    shadowSize: [70, 70], // Varjon koko
+    shadowAnchor: [34, 34], // Varjon ankkuripiste
   }),
 
   avantouinti: L.icon({
@@ -49,6 +52,9 @@ const Icongroup = {
     iconSize: ICONSIZE,
     iconAnchor: ICONANCHOR,
     popupAnchor: POPUPANCHOR,
+    shadowUrl: "/lajit/uusintaustapalloMusta.png", // Varjon polku
+    shadowSize: [70, 70], // Varjon koko
+    shadowAnchor: [34, 34], // Varjon ankkuripiste
   }),
 
   biljardi: L.icon({
@@ -56,6 +62,9 @@ const Icongroup = {
     iconSize: ICONSIZE,
     iconAnchor: ICONANCHOR,
     popupAnchor: POPUPANCHOR,
+    shadowUrl: "/lajit/uusintaustapalloMusta.png", // Varjon polku
+    shadowSize: [70, 70], // Varjon koko
+    shadowAnchor: [34, 34], // Varjon ankkuripiste
   }),
 
   golf: L.icon({
@@ -63,6 +72,9 @@ const Icongroup = {
     iconSize: ICONSIZE,
     iconAnchor: ICONANCHOR,
     popupAnchor: POPUPANCHOR,
+    shadowUrl: "/lajit/uusintaustapalloMusta.png", // Varjon polku
+    shadowSize: [70, 70], // Varjon koko
+    shadowAnchor: [34, 34], // Varjon ankkuripiste
   }),
 
   jaakiekko: L.icon({
@@ -70,6 +82,9 @@ const Icongroup = {
     iconSize: ICONSIZE,
     iconAnchor: ICONANCHOR,
     popupAnchor: POPUPANCHOR,
+    shadowUrl: "/lajit/uusintaustapalloMusta.png", // Varjon polku
+    shadowSize: [70, 70], // Varjon koko
+    shadowAnchor: [34, 34], // Varjon ankkuripiste
   }),
 
   jalkapallo: L.icon({
@@ -77,6 +92,9 @@ const Icongroup = {
     iconSize: ICONSIZE,
     iconAnchor: ICONANCHOR,
     popupAnchor: POPUPANCHOR,
+    shadowUrl: "/lajit/uusintaustapalloMusta.png", // Varjon polku
+    shadowSize: [70, 70], // Varjon koko
+    shadowAnchor: [34, 34], // Varjon ankkuripiste
   }),
 
   juoksu: L.icon({
@@ -84,6 +102,9 @@ const Icongroup = {
     iconSize: ICONSIZE,
     iconAnchor: ICONANCHOR,
     popupAnchor: POPUPANCHOR,
+    shadowUrl: "/lajit/uusintaustapalloMusta.png", // Varjon polku
+    shadowSize: [70, 70], // Varjon koko
+    shadowAnchor: [34, 34], // Varjon ankkuripiste
   }),
 
   keilaus: L.icon({
@@ -91,6 +112,19 @@ const Icongroup = {
     iconSize: ICONSIZE,
     iconAnchor: ICONANCHOR,
     popupAnchor: POPUPANCHOR,
+    shadowUrl: "/lajit/uusintaustapalloMusta.png", // Varjon polku
+    shadowSize: [70, 70], // Varjon koko
+    shadowAnchor: [34, 34], // Varjon ankkuripiste
+  }),
+
+  koiralenkki: L.icon({
+    iconUrl: "/lajit/koiralenkki.png",
+    iconSize: ICONSIZE,
+    iconAnchor: ICONANCHOR,
+    popupAnchor: POPUPANCHOR,
+    shadowUrl: "/lajit/uusintaustapalloMusta.png", // Varjon polku
+    shadowSize: [70, 70], // Varjon koko
+    shadowAnchor: [34, 34], // Varjon ankkuripiste
   }),
 
   koripallo: L.icon({
@@ -98,6 +132,9 @@ const Icongroup = {
     iconSize: ICONSIZE,
     iconAnchor: ICONANCHOR,
     popupAnchor: POPUPANCHOR,
+    shadowUrl: "/lajit/uusintaustapalloMusta.png", // Varjon polku
+    shadowSize: [70, 70], // Varjon koko
+    shadowAnchor: [34, 34], // Varjon ankkuripiste
   }),
 
   lentopallo: L.icon({
@@ -105,6 +142,9 @@ const Icongroup = {
     iconSize: ICONSIZE,
     iconAnchor: ICONANCHOR,
     popupAnchor: POPUPANCHOR,
+    shadowUrl: "/lajit/uusintaustapalloMusta.png", // Varjon polku
+    shadowSize: [70, 70], // Varjon koko
+    shadowAnchor: [34, 34], // Varjon ankkuripiste
   }),
 
   nyrkkeily: L.icon({
@@ -112,6 +152,9 @@ const Icongroup = {
     iconSize: ICONSIZE,
     iconAnchor: ICONANCHOR,
     popupAnchor: POPUPANCHOR,
+    shadowUrl: "/lajit/uusintaustapalloMusta.png", // Varjon polku
+    shadowSize: [70, 70], // Varjon koko
+    shadowAnchor: [34, 34], // Varjon ankkuripiste
   }),
 
   padel: L.icon({
@@ -119,6 +162,9 @@ const Icongroup = {
     iconSize: ICONSIZE,
     iconAnchor: ICONANCHOR,
     popupAnchor: POPUPANCHOR,
+    shadowUrl: "/lajit/uusintaustapalloMusta.png", // Varjon polku
+    shadowSize: [70, 70], // Varjon koko
+    shadowAnchor: [34, 34], // Varjon ankkuripiste
   }),
 
   pesapallo: L.icon({
@@ -126,6 +172,19 @@ const Icongroup = {
     iconSize: ICONSIZE,
     iconAnchor: ICONANCHOR,
     popupAnchor: POPUPANCHOR,
+    shadowUrl: "/lajit/uusintaustapalloMusta.png", // Varjon polku
+    shadowSize: [70, 70], // Varjon koko
+    shadowAnchor: [34, 34], // Varjon ankkuripiste
+  }),
+
+  pihapelit: L.icon({
+    iconUrl: "/lajit/pihapelit.png",
+    iconSize: ICONSIZE,
+    iconAnchor: ICONANCHOR,
+    popupAnchor: POPUPANCHOR,
+    shadowUrl: "/lajit/uusintaustapalloMusta.png", // Varjon polku
+    shadowSize: [70, 70], // Varjon koko
+    shadowAnchor: [34, 34], // Varjon ankkuripiste
   }),
 
   pingis: L.icon({
@@ -133,6 +192,9 @@ const Icongroup = {
     iconSize: ICONSIZE,
     iconAnchor: ICONANCHOR,
     popupAnchor: POPUPANCHOR,
+    shadowUrl: "/lajit/uusintaustapalloMusta.png", // Varjon polku
+    shadowSize: [70, 70], // Varjon koko
+    shadowAnchor: [34, 34], // Varjon ankkuripiste
   }),
 
   puntti: L.icon({
@@ -140,6 +202,9 @@ const Icongroup = {
     iconSize: ICONSIZE,
     iconAnchor: ICONANCHOR,
     popupAnchor: POPUPANCHOR,
+    shadowUrl: "/lajit/uusintaustapalloMusta.png", // Varjon polku
+    shadowSize: [70, 70], // Varjon koko
+    shadowAnchor: [34, 34], // Varjon ankkuripiste
   }),
 
   pyoraily: L.icon({
@@ -147,6 +212,9 @@ const Icongroup = {
     iconSize: ICONSIZE,
     iconAnchor: ICONANCHOR,
     popupAnchor: POPUPANCHOR,
+    shadowUrl: "/lajit/uusintaustapalloMusta.png", // Varjon polku
+    shadowSize: [70, 70], // Varjon koko
+    shadowAnchor: [34, 34], // Varjon ankkuripiste
   }),
 
   sulkapallo: L.icon({
@@ -154,6 +222,9 @@ const Icongroup = {
     iconSize: ICONSIZE,
     iconAnchor: ICONANCHOR,
     popupAnchor: POPUPANCHOR,
+    shadowUrl: "/lajit/uusintaustapalloMusta.png", // Varjon polku
+    shadowSize: [70, 70], // Varjon koko
+    shadowAnchor: [34, 34], // Varjon ankkuripiste
   }),
 
   tennis: L.icon({
@@ -161,6 +232,9 @@ const Icongroup = {
     iconSize: ICONSIZE,
     iconAnchor: ICONANCHOR,
     popupAnchor: POPUPANCHOR,
+    shadowUrl: "/lajit/uusintaustapalloMusta.png", // Varjon polku
+    shadowSize: [70, 70], // Varjon koko
+    shadowAnchor: [34, 34], // Varjon ankkuripiste
   }),
 
   uinti: L.icon({
@@ -168,7 +242,10 @@ const Icongroup = {
     iconSize: ICONSIZE,
     iconAnchor: ICONANCHOR,
     popupAnchor: POPUPANCHOR,
+    shadowUrl: "/lajit/uusintaustapalloMusta.png", // Varjon polku
+    shadowSize: [70, 70], // Varjon koko
+    shadowAnchor: [34, 34], // Varjon ankkuripiste
   }),
-}
+};
 
-export default { Icongroup, selectIcon }
+export default { Icongroup, selectIcon };
