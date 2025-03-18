@@ -34,8 +34,12 @@ const Frontpage = () => {
       }}
     >
       <Header />
+      
       <div className="frontpage">
         <div className="map-container">
+        <div>
+          <h5>{t.welcomeText}</h5>
+          </div>
           <div className="image-wrapper">
             <span
               href="/map"

@@ -372,6 +372,13 @@ h4 {
   color: #1a1a1a;
 }
 
+h5 {
+  font-size: large;
+  line-height: 0.8;
+  
+  color: #1a1a1a;
+}
+
 .fullpage {
   display: flex;
   flex-direction: column;
