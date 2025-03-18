@@ -332,19 +332,6 @@ const Map = ({ startingLocation }) => {
       }
     }
 
-    const mapFilterOverlay = L.control({ position: "bottomleft" })
-    mapFilterOverlay.onAdd = () => {
-      const container = L.DomUtil.create("div")
-      const root = createRoot(container)
-      root.render(
-        <div className="blur-overlay">
-          <p></p>
-        </div>
-      )
-      return container
-    }
-    mapFilterOverlay.addTo(map)
-
     const pikapainikkeet = L.control({ position: "topleft" })
 
     pikapainikkeet.onAdd = () => {
@@ -481,6 +468,9 @@ const Map = ({ startingLocation }) => {
           height={100}
           onClick={() => navigate("/")}
         />
+      </div>
+      <div className="blur-overlay">
+        <p></p>
       </div>
     </div>
   )

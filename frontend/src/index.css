@@ -442,9 +442,8 @@ h4 {
 }
 
 .blur-overlay {
-  height: 120vh;
-  width: 120vw;
-  transform: translateY(3%) translateX(-3%);
+  height: 100%;
+  width: 100%;
   overflow: visible;
   backdrop-filter: saturate(150%) brightness(82%) contrast(165%)
     hue-rotate(30deg);
