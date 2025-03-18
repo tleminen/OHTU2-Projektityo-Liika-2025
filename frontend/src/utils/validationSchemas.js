@@ -7,8 +7,8 @@ const loginValidation = () => {
 
   return Yup.object().shape({
     username: Yup.string()
-      .min(5, t.validation_min_username)
-      .max(16, t.validation_max_username)
+      .min(3, t.validation_min_username)
+      .max(40, t.validation_max_username)
       .required(t.validation_username),
     password: Yup.string()
       .min(8, t.validation_min_psw)
@@ -27,7 +27,7 @@ const registerValidation = () => {
   return Yup.object().shape({
     username: Yup.string()
       .min(3, t.validation_min_username)
-      .max(16, t.validation_max_username)
+      .max(40, t.validation_max_username)
       .required(t.validation_username),
     email: Yup.string()
       .email(t.validation_email_at_sign)
@@ -45,8 +45,15 @@ const registerValidation = () => {
     passwordAgain: Yup.string()
       .oneOf([Yup.ref("password"), null], t.validation_psw_match)
       .required(t.validation_psw_again),
+  })
+}
+
+const otpValidation = () => {
+  const t = translations[useSelector((state) => state.language.language)]
+
+  return Yup.object().shape({
     otp: Yup.string().required(t.validation_otp),
   })
 }
 
-export { loginValidation, registerValidation }
+export { loginValidation, registerValidation, otpValidation }

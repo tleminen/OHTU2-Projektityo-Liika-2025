@@ -1,4 +1,3 @@
-import React from "react"
 import translations from "../../assets/translation.js"
 import { useSelector } from "react-redux"
 

@@ -162,6 +162,18 @@ const EventView = () => {
       : baseClass
   }
 
+  const showUsername = (username) => {
+    if (username.includes("@")) {
+      return ""
+    } else {
+      return (
+        <h1>
+          {username} {t.organizesEvent}:
+        </h1>
+      )
+    }
+  }
+
   if (loading) {
     // Tietokantahaku kesken
     return (
@@ -227,7 +239,7 @@ const EventView = () => {
             className="event-view-icon" // Ei taida toimia tää className??
           />
           <h1>{event.Title}</h1>
-          <h2>{t.date}</h2>
+          <h2>{t.chooseDate}</h2>
           <div className="time-parent">
             {times.map((time, index) => (
               <div key={index} className="time-child">
@@ -316,6 +328,8 @@ const EventView = () => {
     >
       <Header />
       <div className="event-view">
+        <span className="spacer-line"></span>
+        {showUsername(event.Username)}
         <img
           src={`/lajit/${selectCategoryName([event.CategoryID])}.png`}
           alt="Logo"
@@ -324,7 +338,7 @@ const EventView = () => {
           className="event-view-icon" // Ei taida toimia tää className??
         />
         <h1>{event.Title}</h1>
-        <h2>{t.date}</h2>
+        <h2>{t.chooseDate}</h2>
         <div className="time-parent">
           {times.map((time, index) => (
             <div key={index} className="time-child">
@@ -376,6 +390,7 @@ const EventView = () => {
         <Link to={"/map"} className="back-btn">
           <span>{t.back}</span>
         </Link>
+        <span className="spacer-line"></span>
       </div>
 
       <Footer />
