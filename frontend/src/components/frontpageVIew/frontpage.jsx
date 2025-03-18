@@ -36,7 +36,7 @@ const Frontpage = () => {
       <Header backButton={true} />
       <div className="frontpage">
         <div className="map-container">
-        <div>
+        <div className="text-background"> 
           <h5>{t.welcomeText}</h5>
           </div>
           <div className="image-wrapper">

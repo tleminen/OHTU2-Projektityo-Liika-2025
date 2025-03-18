@@ -52,3 +52,17 @@
 .map-image:hover {
   cursor: pointer;
 }
+
+.text-background {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 2% auto;
+  max-width: 70%;
+  width: fit-content;
+  background-color: rgba(153, 229, 236, 0.421);
+  padding: 20px 40px; /* Enemmän tilaa ympärille */
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
