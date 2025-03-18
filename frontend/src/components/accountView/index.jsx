@@ -5,14 +5,14 @@ import "./accountView.css"
 import userService from "../../services/userService"
 import { useDispatch, useSelector } from "react-redux"
 import { changeUser } from "../../store/userSlice"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import "../../index.css"
 import translations from "../../assets/translation"
 import LocationMap from "../locationMap"
+import registerService from "../../services/registerService"
 
 const AccountView = () => {
   const [user, setUser] = useState(null)
-  const [location, setLocation] = useState([])
   const userID = useSelector((state) => state.user?.user?.userID ?? null)
   const dispatch = useDispatch()
   const language = useSelector((state) => state.language.language)
@@ -29,7 +29,7 @@ const AccountView = () => {
           console.error("Response tyhjä")
           return
         }
-        const email = response.Email // EI VIELÄ TOIMI
+        const email = response.Email
         dispatch(changeUser(email))
         setUser(response)
       } catch (error) {
@@ -39,8 +39,36 @@ const AccountView = () => {
     fetchUserInfo()
   }, [userID, dispatch, storedToken]) // Suoritetaan vain kun userID muuttuu
 
-  const handleLocationChange = (newLocation) => {
-    setLocation(newLocation)
+  const handleDeleteClick = async () => {
+    const isConfirmed = window.confirm(
+      "🔴Haluatko varmasti poistaa käyttäjätilin? ⚠️"
+    )
+    if (isConfirmed) {
+      const userInput = window.prompt(
+        "🔴Syötä käyttäjänimi vahvistaaksesi poiston: ⚠️"
+      )
+      if (userInput === user.user.Username) {
+        try {
+          console.log(user.user.UserID)
+          const response = await registerService.unregister(
+            storedToken,
+            user.user.UserID
+          )
+          console.log(response)
+          localStorage.clear()
+          alert(
+            "Käyttäjätilisi poistettu. Muista, että voit aina rekisteröityä uudelleen!"
+          )
+          window.location.href = "/"
+        } catch (e) {
+          console.error(e)
+          alert("Virhe poistossa, ota yhteyttä liikaservice@gmail.com")
+        }
+        // Tässä voit suorittaa tilin poistamiseen liittyvät toimenpiteet
+      } else {
+        alert("Virheellinen käyttäjänimi. Käyttäjätiliä ei poistettu.")
+      }
+    }
   }
 
   if (!user) {
@@ -87,6 +115,7 @@ const AccountView = () => {
             </Link>
           </div>
         </div>
+        <div className="spacer-line" />
         <div className="information-row">
           <div className="information">
             <h3>{t.username}</h3>
@@ -98,6 +127,7 @@ const AccountView = () => {
             </Link>
           </div>
         </div>
+        <div className="spacer-line" />
         <div className="information-row">
           <div className="information">
             <h3>{t.password} </h3>
@@ -109,6 +139,7 @@ const AccountView = () => {
             </Link>
           </div>
         </div>
+        <div className="spacer-line" />
         <div className="information-row">
           <div className="information">
             <h3>{t.language} </h3>
@@ -120,8 +151,30 @@ const AccountView = () => {
             </Link>
           </div>
         </div>
-        <div className="information">
-          <LocationMap onLocationChange={handleLocationChange} />
+        <div className="spacer-line" />
+        <div className="information-row">
+          <div className="information">
+            <h3>Muuta karttasi asetuksia</h3>
+          </div>
+          <div className="information">
+            <Link to={`/own_info/language`} className="link-btn">
+              {t.change}
+            </Link>
+          </div>
+        </div>
+        <div className="spacer-line" />
+        <div className="information-row">
+          <div className="information">
+            <h3>Poista käyttäjätili</h3>
+          </div>
+          <div>
+            <button
+              className="link-btn delete-account-btn"
+              onClick={handleDeleteClick}
+            >
+              poista käyttäjätili
+            </button>
+          </div>
         </div>
       </div>
       <Link to={"/map"} className="back-btn" style={{ alignSelf: "center" }}>
