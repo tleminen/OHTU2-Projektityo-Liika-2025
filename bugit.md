@@ -21,7 +21,6 @@ Tapahtuman kesto pitäisi olla yli 0min?
 kirjautumattoman näkymässä padding yms välit kuntoon
 
 Omien tietojen muokkaus:
-! Tilin poistaminen !
 Oman aloitussijainnin muuttaminen pitää tehdä
 
 Azure:

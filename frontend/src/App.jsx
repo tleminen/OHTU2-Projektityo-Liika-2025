@@ -15,6 +15,7 @@ import ChangePassword from "./components/accountView/changeInfo/changePassword"
 import CreatedEvents from "./components/createdEventsView"
 import ModifyEvent from "./components/modifyEventView"
 import ChangeLanguage from "./components/accountView/changeInfo/changeLanguage"
+import ChangeMap from "./components/accountView/changeInfo/changeMap"
 
 const App = () => {
   return (
@@ -35,6 +36,7 @@ const App = () => {
       <Route path="/created_events" element={<CreatedEvents />} />
       <Route path="/events/own/:id" element={<ModifyEvent />} />
       <Route path="/own_info/language" element={<ChangeLanguage />} />
+      <Route path="/own_info/map" element={<ChangeMap />} />
     </Routes>
   )
 }

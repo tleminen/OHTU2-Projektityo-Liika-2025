@@ -401,6 +401,16 @@ h4 {
   color: #1a1a1a;
 }
 
+h5 {
+  font-size: x-large;
+  line-height: 1;
+  color: #00247d;
+  text-align: center;
+  padding: 20px 50px;
+  display: inline-block;
+  text-shadow: 2px 2px 5px rgba(26, 26, 26, 0.5);
+}
+
 .fullpage {
   display: flex;
   flex-direction: column;
