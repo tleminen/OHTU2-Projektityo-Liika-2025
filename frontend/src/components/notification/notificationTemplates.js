@@ -83,7 +83,13 @@
     type: "error",
   })
 
+  const EventCreationFailure = (t) => ({
+    id: Date.now(),
+    message: t,
+    type:"error"
+  })
+
   
 
 
-export {EmailSentSuccess, EmailSentFailure, OtpRobotCheck, OtpVerified, OtpNotVerified, UserFailure, EventNotFound, EventCreated, EventJoinSuccess, EventJoinFailure, EventDeletionWarning, EventDeletionFailure, EventLeaveSuccess, EventLeaveFailure}
+export {EmailSentSuccess, EmailSentFailure, OtpRobotCheck, OtpVerified, OtpNotVerified, UserFailure, EventNotFound, EventCreated, EventJoinSuccess, EventJoinFailure, EventDeletionWarning, EventDeletionFailure, EventLeaveSuccess, EventLeaveFailure, EventCreationFailure}

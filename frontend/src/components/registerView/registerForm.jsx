@@ -97,7 +97,7 @@ const RegisterForm = () => {
     event.preventDefault()
 
     if (!isOtpVerified) {
-      dispatch(addNotification(OtpRobotCheck(t.opt_robot_check))) // Lähetä virheilmoitus
+      dispatch(addNotification(OtpRobotCheck(t.otp_robot_check))) // Lähetä virheilmoitus
     }
 
     try {

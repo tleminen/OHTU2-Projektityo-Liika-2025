@@ -13,7 +13,13 @@ import LocationMap from "../locationMap"
 import "./modifyEventView.css"
 import DatePicker from "react-multi-date-picker"
 import NotificationContainer from "../notification/notificationContainer"
-import { EmailSentSuccess, EmailSentFailure, OtpRobotCheck, OtpVerified, OtpNotVerified, UserFailure, EventNotFound, EventJoinSuccess, EventJoinFailure, EventCreated, EventDeletionWarning, EventDeletionFailure, EventLeaveSuccess} from "../notification/notificationTemplates.js"
+import { EventNotFound, 
+        EventJoinSuccess, 
+        EventJoinFailure, 
+        EventCreated, 
+        EventDeletionWarning, 
+        EventDeletionFailure, 
+        EventLeaveSuccess} from "../notification/notificationTemplates.js"
 import { addNotification } from "../../store/notificationSlice.js"
 
 const ModifyEvent = () => {
@@ -100,7 +106,7 @@ const ModifyEvent = () => {
       )
     } catch (error) {
       console.error(t.event_join_error + error) //TODO NOTIYFY
-      dispatch(addNotification(EventCreated(t.event_join_error)));
+      dispatch(addNotification(EventJoinFailure(t.event_join_error)));
     }
   }
 
@@ -179,7 +185,7 @@ const ModifyEvent = () => {
         EventID: Number(id),
         TimeID: Number(selectedTime.TimeID),
       })
-      dispatch(addNotification(EventJoinSuccess(t.event_leave_success)));
+      dispatch(addNotification(EventJoinSuccess(t.event_join_success)));
       console.log(response) // TODO: Lisää notifikaatio?
       dispatch(
         removeEvent({
@@ -201,7 +207,7 @@ const ModifyEvent = () => {
         )
       )
     } catch (error) {
-      dispatch(addNotification(EventLeaveFailure(t.event__leave_failure)));
+      dispatch(addNotification(EventLeaveFailure(t.event_leave_failure)));
       console.error("Virhe poistuessa tapahumasta" + error)
       
     }
