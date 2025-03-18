@@ -1,8 +1,8 @@
-import L from "leaflet"
+import L from "leaflet";
 
-const ICONSIZE = [64, 64]
-const ICONANCHOR = [32, 32]
-const POPUPANCHOR = [0, -16]
+const ICONSIZE = [64, 64];
+const ICONANCHOR = [32, 32];
+const POPUPANCHOR = [0, -16];
 
 export const categoryMap = {
   1: "amerikkalainen_jalkapallo",
@@ -24,17 +24,17 @@ export const categoryMap = {
   17: "sulkapallo",
   18: "tennis",
   19: "uinti",
-}
+};
 
 export const selectIcon = (categoryID) => {
-  const categoryMapping = categoryMap
-  return Icongroup[categoryMapping[categoryID]] || null
-}
+  const categoryMapping = categoryMap;
+  return Icongroup[categoryMapping[categoryID]] || null;
+};
 
 // Voidaan käyttää traslation hakemisessa. Translatios sisältää avaimet näillä kategorianimillä
 export const selectCategoryName = (categoryID) => {
-  return categoryMap[categoryID] || ""
-}
+  return categoryMap[categoryID] || "";
+};
 
 const Icongroup = {
   amerikkalainen_jalkapallo: L.icon({
@@ -49,6 +49,9 @@ const Icongroup = {
     iconSize: ICONSIZE,
     iconAnchor: ICONANCHOR,
     popupAnchor: POPUPANCHOR,
+    shadowUrl: "/lajit/uusintaustapalloMusta.png", // Varjon polku
+    shadowSize: [70, 70], // Varjon koko
+    shadowAnchor: [34, 34], // Varjon ankkuripiste
   }),
 
   biljardi: L.icon({
@@ -98,6 +101,9 @@ const Icongroup = {
     iconSize: ICONSIZE,
     iconAnchor: ICONANCHOR,
     popupAnchor: POPUPANCHOR,
+    shadowUrl: "/lajit/uusintaustapalloMusta.png", // Varjon polku
+    shadowSize: [70, 70], // Varjon koko
+    shadowAnchor: [34, 34], // Varjon ankkuripiste
   }),
 
   lentopallo: L.icon({
@@ -169,6 +175,6 @@ const Icongroup = {
     iconAnchor: ICONANCHOR,
     popupAnchor: POPUPANCHOR,
   }),
-}
+};
 
-export default { Icongroup, selectIcon }
+export default { Icongroup, selectIcon };
