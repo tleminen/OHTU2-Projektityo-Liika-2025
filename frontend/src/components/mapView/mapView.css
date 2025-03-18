@@ -356,6 +356,18 @@
   gap: 12px;
   margin: auto;
   padding-bottom: 20px;
+  min-height: fit-content;
+  max-height: fit-content;
+  overflow: hidden;
+}
+
+/* Mobiilinäkymä: landscape ja näytön korkeus */
+@media (orientation: landscape) and (max-height: 550px) {
+  .quick-time-select-container {
+    max-height: 20vh;
+    min-height: auto;
+    overflow: scroll !important;
+  }
 }
 
 .quick-time-select {

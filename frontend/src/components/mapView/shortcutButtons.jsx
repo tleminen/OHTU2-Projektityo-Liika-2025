@@ -14,9 +14,28 @@ const ShortcutButtons = ({ toggleCategory, fetchEvents }) => {
   const [startTime, setStartTime] = useState("")
   const [endTime, setEndTime] = useState("")
   const [dates, setDates] = useState([])
+  const [calendarPosition, setCalendarPosition] = useState("top")
   const panelRef = useRef(null)
   const timeInputRef = useRef(null)
   let quickTime = 0
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerHeight < 580) {
+        setCalendarPosition("left")
+      } else if (window.innerHeight < 830) {
+        setCalendarPosition("bottom")
+      } else {
+        setCalendarPosition("top")
+      }
+    }
+
+    // Aseta alkuarvo ja kuuntele ikkunan koon muutosta
+    handleResize()
+    window.addEventListener("resize", handleResize)
+    return () => window.removeEventListener("resize", handleResize)
+  }, [])
+
   /**
    * Tämä funktio hoitaa aikafiltteröinnin tietojen keräyksen ja pyytää map-komponenttia suorittamaan fetchEvents
    */
@@ -256,7 +275,7 @@ const ShortcutButtons = ({ toggleCategory, fetchEvents }) => {
             minDate={Date.now()}
             zIndex={1005}
             displayWeekNumbers={true}
-            calendarPosition="top"
+            calendarPosition={calendarPosition}
             render={(value, openCalendar) => (
               <div
                 className="time-shortcut-button"

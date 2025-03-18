@@ -446,9 +446,9 @@ h4 {
   left: 0px;
   height: 100%;
   width: 100%;
-  backdrop-filter: saturate(170%) brightness(80%) contrast(115%)
+  backdrop-filter: saturate(150%) brightness(79%) contrast(180%)
     hue-rotate(30deg);
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 244, 202, 0.075);
   z-index: 3000;
   pointer-events: none;
 }
