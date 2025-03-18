@@ -31,7 +31,7 @@ const translations = {
     event_join_success:"Joined event",
     event_deletion_warning: "Are you sure you want to delete this event?",
     event_deletion_failure:"Error deleting event",
-    event_leave_success: "Left event",
+    event_leave_success: "Removed from event",
     event__leave_failure: "Error leaving event",
     forgot_pw: "Forgot password?",
     otp_send_error: "Incorrect OTP",

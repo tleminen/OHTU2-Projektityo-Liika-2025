@@ -185,8 +185,8 @@ const ModifyEvent = () => {
         EventID: Number(id),
         TimeID: Number(selectedTime.TimeID),
       })
-      dispatch(addNotification(EventJoinSuccess(t.event_join_success)));
-      console.log(response) // TODO: Lisää notifikaatio?
+      console.log(response)
+      dispatch(addNotification(EventLeaveSuccess(t.event_leave_success))); // TODO: Lisää notifikaatio?
       dispatch(
         removeEvent({
           EventID: Number(id),
@@ -207,8 +207,8 @@ const ModifyEvent = () => {
         )
       )
     } catch (error) {
-      dispatch(addNotification(EventLeaveFailure(t.event_leave_failure)));
       console.error("Virhe poistuessa tapahumasta" + error)
+      dispatch(addNotification(EventLeaveFailure(t.event_leave_failure)));
       
     }
   }
