@@ -440,15 +440,15 @@ h4 {
 #overlay:hover {
   cursor: pointer;
 }
+
 .blur-overlay {
-  position: absolute;
-  bottom: 0px;
-  left: 0px;
-  height: 100%;
-  width: 100%;
-  backdrop-filter: saturate(150%) brightness(79%) contrast(180%)
+  height: 120vh;
+  width: 120vw;
+  transform: translateY(3%) translateX(-3%);
+  overflow: visible;
+  backdrop-filter: saturate(150%) brightness(82%) contrast(165%)
     hue-rotate(30deg);
-  background: rgba(255, 244, 202, 0.075);
+  background: rgba(255, 244, 202, 0);
   z-index: 3000;
   pointer-events: none;
 }
