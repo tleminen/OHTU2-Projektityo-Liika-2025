@@ -32,9 +32,10 @@ const ChangeMap = () => {
   }
 
   const saveHandler = async () => {
-    console.log("Tallenna kartan sijainti ja kartan filtteri:", {
-      location,
-    })
+    console.warn(
+      "Ominaisuuden toiminnallisuus puuttuu. Odottele muutama päivä tai viikko! :)"
+    )
+    console.log("Tallenna kartan sijainti ja kartan filtteri:") // TODO KESKEN
     if (storedToken) {
       try {
         console.log("Vaihdettu") //TODO lisää notifikaatio kun vaihdettu
