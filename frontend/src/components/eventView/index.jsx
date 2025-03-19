@@ -114,7 +114,6 @@ const EventView = () => {
         TimeID: Number(selectedTime.TimeID),
       })
       console.log(response) // TODO: Lisää notifikaatio?
-      console.log("Dispatchataan notificaatio", EventJoinSuccess(t.event_joined))
       dispatch(addNotification(EventJoinSuccess(t.event_joined))),
       // Päivitä frontendin Times-tila
       setTimes((prevTimes) =>
@@ -161,7 +160,7 @@ const EventView = () => {
         )
       )
     } catch (error) {
-      console.error("Virhe poistuessa tapahumasta" + error)
+      console.error(t.event_join_failure + error)
       dispatch(addNotification(EventJoinFailure(t.event_join_failure)))
     }
   }

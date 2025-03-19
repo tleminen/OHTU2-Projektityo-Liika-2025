@@ -16,8 +16,6 @@ import { addNotification } from "../../store/notificationSlice.js"
 import { EventNotFound, 
         EventJoinSuccess, 
         EventJoinFailure, 
-        EventCreated, 
-        EventDeletionWarning, 
         EventDeletionFailure, 
         EventLeaveSuccess} from "../notification/notificationTemplates.js"
 
