@@ -3,6 +3,8 @@ import { useEffect, useRef, useState } from "react"
 import L from "leaflet"
 import "leaflet.markercluster"
 import "leaflet/dist/leaflet.css"
+import "leaflet-control-geocoder/dist/Control.Geocoder.css";
+import "leaflet-control-geocoder"
 import "../../index.css"
 import { useDispatch, useSelector } from "react-redux"
 import { changeLocation } from "../../store/locationSlice"
@@ -314,11 +316,14 @@ const Map = ({ startingLocation }) => {
       }
     )
 
+
     const map = L.map("map", {
       center: [startingLocation.o_lat, startingLocation.o_lng],
       zoom: startingLocation.zoom,
       layers: [osm],
     })
+
+    L.Control.geocoder().addTo(map)
 
     const fetchEvents = (time) => {
       if (!time) {
