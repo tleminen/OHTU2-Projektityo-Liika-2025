@@ -13,13 +13,6 @@ import { addNotification } from "../../store/notificationSlice.js"
 import {
   EventCreated,
   EventCreationFailure,
-  EventJoinSuccess,
-  EventJoinFailure,
-  EventLeaveSuccess,
-  EventDeletionFailure, 
-  EventDeletionWarning,
-  EventDeletion
-
   } from "../notification/notificationTemplates.js"
 
 
@@ -64,7 +57,7 @@ const CreateEventForm = () => {
         description,
       })
     } catch (error) {
-      console.error(t.even + error)
+      console.error(t.event_creation_failure + error)
       dispatch(addNotification(EventCreationFailure(t.eventCreationFailure)))
     }
 
@@ -112,6 +105,7 @@ const CreateEventForm = () => {
       })
     } catch (error) {
       console.error("Erron while creating event (unsigned): " + error)
+      dispatch(addNotification(EventCreationFailure(t.eventCreationFailure)))
     }
     navigate(`/map`)
   }

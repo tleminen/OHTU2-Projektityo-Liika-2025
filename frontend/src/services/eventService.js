@@ -76,7 +76,7 @@ const joinEvent = async (storedToken, parameters) => {
   const headers = {
     headers: { Authorization: token }, // Asetetaan token headeriin
   }
-  try{ //Debuggausta varten lisätty, poistetaan myöhemmin (jos pitää)
+  try{ //Debuggausta varten lisätty, poistetaan myöhemmin
   console.log("Lähetetään POST-pyyntö", parameters)
   const response = await axios.post(
     baseUrl + "/events/join_event",

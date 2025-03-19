@@ -12,7 +12,7 @@ import { parseTimeAndDate } from "../../utils/helper"
 import LocationMap from "../locationMap"
 import "./modifyEventView.css"
 import DatePicker from "react-multi-date-picker"
-import NotificationContainer from "../notification/notificationContainer"
+import { addNotification } from "../../store/notificationSlice.js"
 import { EventNotFound, 
         EventJoinSuccess, 
         EventJoinFailure, 
@@ -20,7 +20,7 @@ import { EventNotFound,
         EventDeletionWarning, 
         EventDeletionFailure, 
         EventLeaveSuccess} from "../notification/notificationTemplates.js"
-import { addNotification } from "../../store/notificationSlice.js"
+
 
 const ModifyEvent = () => {
   const { id } = useParams()
@@ -140,8 +140,11 @@ const ModifyEvent = () => {
   // Poista tapahtuman päivä
   const handleCancelEvent = async (time) => {
     // TODO: Lisää alert: Haluatko poistaa tapahtuman esiintymän?
+    const userConfirmed = window.confirm(t.event_deletion_warning)
+    if (!userConfirmed) {
+      return
+    }
     try {
-      dispatch(addNotification(EventDeletionWarning(t.event_deletion_warning)));
       var response = null
       if (times.length === 1) {
         response = await eventService.deleteEvent(storedToken, {
