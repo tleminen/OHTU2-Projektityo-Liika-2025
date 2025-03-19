@@ -69,8 +69,6 @@ userRouter.post("/update/email", userExtractor, async (request, response) => {
   }
 }) // Sähköpostin päivitys päättyy
 
-module.exports = userRouter
-
 userRouter.post(
   "/update/username",
   userExtractor,
@@ -111,8 +109,6 @@ userRouter.post(
   }
 )
 
-module.exports = userRouter
-
 userRouter.post(
   "/update/language",
   userExtractor,
@@ -123,6 +119,42 @@ userRouter.post(
       try {
         const user = await Users.update(
           { LanguageID: LanguageID },
+          { where: { UserID: UserID } }
+        )
+        console.log(user)
+        if (!user) {
+          response.status(500).json({ error: "Internal server error" })
+        }
+        response.json(user)
+      } catch (error) {
+        console.error("Problems with updating email" + error)
+        response.status(500).json({ error: "Internal server error" })
+      }
+    } else {
+      console.error("Invalid token")
+      response.status(401).json({ error: "Unauthorized" })
+    }
+  }
+)
+
+userRouter.post(
+  "/update/map_preferences",
+  userExtractor,
+  async (request, response) => {
+    const { UserID, location } = request.body
+    if (UserID === request.user.dataValues.UserID) {
+      // Eli userExtractorin tokenista ekstraktoima userID
+      try {
+        const user = await Users.update(
+          {
+            Location: Sequelize.fn(
+              "ST_SetSRID",
+              Sequelize.fn("ST_MakePoint", location.lng, location.lat),
+              4326
+            ),
+            MapPreferences: location.preferences,
+            MapZoom: location.zoom,
+          },
           { where: { UserID: UserID } }
         )
         console.log(user)

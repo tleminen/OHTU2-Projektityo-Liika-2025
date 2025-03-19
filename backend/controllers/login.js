@@ -42,6 +42,8 @@ loginRouter.post("/", async (req, res) => {
       location: user.Location.coordinates,
       email: user.Email,
       language: user.LanguageID,
+      mapZoom: user.MapZoom,
+      mapPreferences: user.MapPreferences,
     })
   } catch (error) {
     console.log(error)

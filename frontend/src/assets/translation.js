@@ -233,6 +233,8 @@ const translations = {
     validation_psw_number: "Salasanassa on oltava numero",
     validation_psw_all: "Salasana saa sisältää vain kirjaimia ja numeroita",
     validation_otp: "Sähköpostiosoitteen vahvistuskoodi vaaditaan",
+    welcomeText1: "Tervetuloa liikkumaan ja kokemaan yhdessä!",
+    welcomeText2: "Connecting people... ...live!",
     welcomeText:
       "Liika.eu tuo tapahtumat lähellesi - ja antaa sinulle mahdollisuuden luoda omasi! Etsitpä sitten kiinnostavaa tekemistä tai haluat koota porukan kasaan, meiltä löydät helpon tavan ilmoittautua tapahtumiin ja järjestää omia. Tee arjesta elämyksiä ja yhdistä ihmiset oikeassa paikassa, oikeaan aikaan.",
     // Lajit / Categoriat

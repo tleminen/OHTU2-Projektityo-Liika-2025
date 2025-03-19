@@ -14,6 +14,14 @@ const Users = sequelize.define("Users", {
     allowNull: true, // Voiko käyttäjällä olla NULL kieli?
     references: { model: Languages, key: "LanguageID" },
   },
+  MapZoom: {
+    type: DataTypes.INTEGER,
+    allowNull: true, // Saa olla null
+  },
+  MapPreferences: {
+    type: DataTypes.STRING(40),
+    allowNull: true, // Saa olla null
+  },
 })
 
 // Yhteys kieliin (Foreign Key)
