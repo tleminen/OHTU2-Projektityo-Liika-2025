@@ -17,18 +17,3 @@ module.exports = {
     return queryInterface.bulkDelete("ClubMembers", null, {})
   },
 }
-
-/*
-      {
-        ClubId: clubs[2].ID,
-        UserId: users[2].ID,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-      {
-        ClubId: clubs[3].ID,
-        UserId: users[3].ID,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-      */

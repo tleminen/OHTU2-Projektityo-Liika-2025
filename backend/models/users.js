@@ -1,6 +1,7 @@
 const { DataTypes } = require("sequelize")
 const { sequelize } = require("../utils/database")
 const Languages = require("./languages")
+const Clubs = require("./club")
 
 const Users = sequelize.define("Users", {
   UserID: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },

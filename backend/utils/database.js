@@ -30,6 +30,18 @@ const connectDB = async () => {
 
     try {
       await sequelize.query(`
+  ALTER TABLE "Events"
+  ADD COLUMN "ClubID" INTEGER NULL,
+  ADD CONSTRAINT "FK_Events_Clubs"
+    FOREIGN KEY ("ClubID")
+    REFERENCES "Clubs"("ClubID")
+    ON DELETE SET NULL;
+`)
+    } catch (e) {
+      console.warn(e)
+    }
+    try {
+      await sequelize.query(`
   ALTER TABLE "Users"
   ADD COLUMN "MapZoom" INTEGER NULL,
   ADD COLUMN "MapPreferences" VARCHAR(40) NULL;

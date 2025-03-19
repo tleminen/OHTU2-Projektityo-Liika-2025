@@ -3,6 +3,8 @@ import { useEffect, useRef, useState } from "react"
 import L from "leaflet"
 import "leaflet.markercluster"
 import "leaflet/dist/leaflet.css"
+import "leaflet-control-geocoder/dist/Control.Geocoder.css"
+import "leaflet-control-geocoder"
 import "../../index.css"
 import { useDispatch, useSelector } from "react-redux"
 import { changeLocation } from "../../store/locationSlice"
@@ -13,12 +15,21 @@ import { createRoot } from "react-dom/client"
 import { selectIcon } from "../../assets/icons"
 import { categories } from "./utils"
 import ShortcutButtons from "./shortcutButtons"
+import {
+  DarkOverlay,
+  LiikaOverlay as LiikaOverlay,
+  UserOverlay,
+} from "./layers/overlayLayers"
+import { parseTimeAndDate } from "../../utils/helper"
+import translations from "../../assets/translation"
 
 const DEFAULT_DAYS = 31
 
 const Map = ({ startingLocation }) => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const language = useSelector((state) => state.language.language)
+  const t = translations[language]
   const [timeStamp, setTimeStamp] = useState("") // Aikaleima, milloin päivitetty
   const [isCategoryPanelOpen, setCategoryPanelOpen] = useState(false)
   const timestampRef = useRef(null)
@@ -130,7 +141,6 @@ const Map = ({ startingLocation }) => {
       let eventList
       if (!time || time.quickTime === -1) {
         // Haetaan normaali haku, refresh-nappulasta esimerkiksi. //TODO: Tallenna filtteri Reduksiin
-        console.log("Haetaan default")
         eventList = await eventService.getEvents({
           latitude: center.lat,
           longitude: center.lng,
@@ -248,8 +258,14 @@ const Map = ({ startingLocation }) => {
         const marker = L.marker([lat, lng]).bindPopup(() => {
           const container = document.createElement("div")
           container.innerHTML = `
-    <h1>${tapahtuma.Title} ${tapahtuma.JoinedCount}</h1>
+    <h1>${tapahtuma.Title}</h1>
+    <em>${parseTimeAndDate(tapahtuma.StartTime)[0]} - ${
+            parseTimeAndDate(tapahtuma.EndTime)[0]
+          }<em><br/>
     ${tapahtuma.Description || ""}<br/>
+    <p style="text-transform: lowercase; padding: 4px 0px; margin:0;">${
+      t.participants
+    }: ${tapahtuma.JoinedCount} / ${tapahtuma.ParticipantMax || "-"}</p>
     <em>${showUsername(tapahtuma.Username)}</em> <br/>
     <a href="/events/${
       tapahtuma.EventID
@@ -297,6 +313,9 @@ const Map = ({ startingLocation }) => {
   }
 
   useEffect(() => {
+    const liikaLayer = new LiikaOverlay()
+    const darkLayer = new DarkOverlay()
+    const userLayer = new UserOverlay()
     // Luo karttaelementti kun komponentti mounttaa
     // Tarkastetaan ensin, että kartalla on aloitussijainti:
     if (!startingLocation.o_lat) {
@@ -317,8 +336,19 @@ const Map = ({ startingLocation }) => {
     const map = L.map("map", {
       center: [startingLocation.o_lat, startingLocation.o_lng],
       zoom: startingLocation.zoom,
-      layers: [osm],
+      layers: [osm, liikaLayer],
     })
+
+    //Search bar
+    L.Control.geocoder().addTo(map)
+    // Lisää overlay-valikkoon
+    const overlays = {
+      Liika: liikaLayer,
+      Dark: darkLayer,
+      User: userLayer,
+    }
+
+    L.control.layers(overlays).addTo(map)
 
     const fetchEvents = (time) => {
       if (!time) {
@@ -451,6 +481,7 @@ const Map = ({ startingLocation }) => {
       onClickRefresh(map)
       first = false
     }
+
     return () => {
       // Tuhoaa karttaelementin kun komponentti unmounttaa
       map.remove()
@@ -468,9 +499,6 @@ const Map = ({ startingLocation }) => {
           height={100}
           onClick={() => navigate("/")}
         />
-      </div>
-      <div className="blur-overlay">
-        <p></p>
       </div>
     </div>
   )
