@@ -19,7 +19,7 @@ import {
   DarkOverlay,
   LiikaOverlay as LiikaOverlay,
   UserOverlay,
-} from "./layers/liikaLayer"
+} from "./layers/overlayLayers"
 
 const DEFAULT_DAYS = 31
 
@@ -28,7 +28,6 @@ const Map = ({ startingLocation }) => {
   const dispatch = useDispatch()
   const [timeStamp, setTimeStamp] = useState("") // Aikaleima, milloin päivitetty
   const [isCategoryPanelOpen, setCategoryPanelOpen] = useState(false)
-  const [activeOverlay, setActiveOverlay] = useState(null)
   const timestampRef = useRef(null)
   const markerClusterGroup = L.markerClusterGroup()
   const user = useSelector((state) => state.user?.user?.username ?? null)
