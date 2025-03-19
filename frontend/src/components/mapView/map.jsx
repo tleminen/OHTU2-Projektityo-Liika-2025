@@ -304,6 +304,9 @@ const Map = ({ startingLocation }) => {
   }
 
   useEffect(() => {
+    const liikaLayer = new LiikaOverlay()
+    const darkLayer = new DarkOverlay()
+    const userLayer = new UserOverlay()
     // Luo karttaelementti kun komponentti mounttaa
     // Tarkastetaan ensin, että kartalla on aloitussijainti:
     if (!startingLocation.o_lat) {
@@ -324,12 +327,8 @@ const Map = ({ startingLocation }) => {
     const map = L.map("map", {
       center: [startingLocation.o_lat, startingLocation.o_lng],
       zoom: startingLocation.zoom,
-      layers: [osm],
+      layers: [osm, liikaLayer],
     })
-
-    const liikaLayer = new LiikaOverlay()
-    const darkLayer = new DarkOverlay()
-    const userLayer = new UserOverlay()
 
     //Search bar
     L.Control.geocoder().addTo(map)
