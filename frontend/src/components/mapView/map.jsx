@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react"
 import L from "leaflet"
 import "leaflet.markercluster"
 import "leaflet/dist/leaflet.css"
-import "leaflet-control-geocoder/dist/Control.Geocoder.css";
+import "leaflet-control-geocoder/dist/Control.Geocoder.css"
 import "leaflet-control-geocoder"
 import "../../index.css"
 import { useDispatch, useSelector } from "react-redux"
@@ -37,6 +37,35 @@ const Map = ({ startingLocation }) => {
       )
     }
   }, [timeStamp])
+
+  const BlurOverlay = L.Layer.extend({
+    onAdd(map) {
+      this._div = L.DomUtil.create("div", "blur-layer")
+      this._div.innerHTML = "</>"
+
+      map.getPanes().overlayPane.appendChild(this._div)
+
+      // Päivitä overlayn sijainti kartan mukana
+      this._updatePosition(map)
+      map.on("move", this._onMapMove, this)
+    },
+
+    onRemove(map) {
+      if (this._div) {
+        map.getPanes().overlayPane.removeChild(this._div)
+      }
+      map.off("move", this._onMapMove, this)
+    },
+
+    _onMapMove() {
+      this._updatePosition(this._map)
+    },
+
+    _updatePosition(map) {
+      const center = map.latLngToLayerPoint(map.getCenter())
+      L.DomUtil.setPosition(this._div, center)
+    },
+  })
 
   // Käsittele paneelin näkyvyys
   const toggleCategoryPanel = () => {
@@ -132,7 +161,6 @@ const Map = ({ startingLocation }) => {
       let eventList
       if (!time || time.quickTime === -1) {
         // Haetaan normaali haku, refresh-nappulasta esimerkiksi. //TODO: Tallenna filtteri Reduksiin
-        console.log("Haetaan default")
         eventList = await eventService.getEvents({
           latitude: center.lat,
           longitude: center.lng,
@@ -316,15 +344,22 @@ const Map = ({ startingLocation }) => {
       }
     )
 
-
     const map = L.map("map", {
       center: [startingLocation.o_lat, startingLocation.o_lng],
       zoom: startingLocation.zoom,
       layers: [osm],
     })
 
+    const blurLayer = new BlurOverlay()
+    blurLayer.addTo(map)
+
     //Search bar
     L.Control.geocoder().addTo(map)
+    // Lisää overlay-valikkoon
+    const overlays = {
+      Liika: blurLayer,
+    }
+    L.control.layers(null, overlays).addTo(map)
 
     const fetchEvents = (time) => {
       if (!time) {
@@ -457,6 +492,7 @@ const Map = ({ startingLocation }) => {
       onClickRefresh(map)
       first = false
     }
+
     return () => {
       // Tuhoaa karttaelementin kun komponentti unmounttaa
       map.remove()
@@ -474,9 +510,6 @@ const Map = ({ startingLocation }) => {
           height={100}
           onClick={() => navigate("/")}
         />
-      </div>
-      <div className="blur-overlay">
-        <p></p>
       </div>
     </div>
   )
