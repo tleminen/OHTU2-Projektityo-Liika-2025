@@ -20,11 +20,7 @@ CreateEvent:
 Tapahtuman kesto pitäisi olla yli 0min?
 kirjautumattoman näkymässä padding yms välit kuntoon
 
-Omien tietojen muokkaus:
-Oman aloitussijainnin muuttaminen pitää tehdä
 
-Azure:
-Tomille- Vaihda sprintistä 4 v2 -> v1, sprintistä 5 v3 -> v2 jne..
 
 Backend:
 ! Nearby-haku hakee käyttäjätunnuksen vaikka se olisi sähköpostiosoitemuotoinen (sis. @). Frontti filtteröi sen, mutta pitää poistaa backendissä!

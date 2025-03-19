@@ -455,14 +455,15 @@ h5 {
   cursor: pointer;
 }
 
-.blur-overlay {
-  height: 100%;
-  width: 100%;
-  overflow: visible;
+.blur-layer {
+  position: absolute;
+  top: -50vh;
+  left: -50vw;
+  width: 100vw;
+  height: 100vh;
   backdrop-filter: saturate(150%) brightness(82%) contrast(165%)
     hue-rotate(30deg);
   background: rgba(255, 244, 202, 0);
-  z-index: 3000;
   pointer-events: none;
 }
 /*kartta-oliolle tyyli karttanäkymään*/
