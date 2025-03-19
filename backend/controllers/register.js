@@ -9,7 +9,6 @@ const { userExtractor } = require("../utils/middleware")
 
 const registerRouter = Router()
 
-//----VOIDAAN VAIHTAA TIETOKANTAAN JOS HALUTAAN----
 const VERIFICATION_CODES = new Map()
 
 /**
@@ -77,6 +76,8 @@ registerRouter.post("/", async (request, response) => {
             ),
             LanguageID: language,
             Password: passwordhash,
+            MapPreferences: null,
+            MapZoom: 14,
           },
           { where: { Email: email } }
         )
@@ -126,6 +127,8 @@ registerRouter.post("/", async (request, response) => {
         4326
       ),
       LanguageID: language,
+      MapPreferences: null,
+      MapZoom: 14,
     })
 
     const userForToken = {
