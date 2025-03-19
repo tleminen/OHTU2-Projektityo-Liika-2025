@@ -20,6 +20,9 @@ CreateEvent:
 Tapahtuman kesto pitäisi olla yli 0min?
 kirjautumattoman näkymässä padding yms välit kuntoon
 
+EventView: 
+Kun rämppää osallistu/poistu näppäintä jää näkymään, että olisi tapahtumassa vaikka sieltä on poistunut. 
+
 Omien tietojen muokkaus:
 ! Tilin poistaminen !
 Oman aloitussijainnin muuttaminen pitää tehdä

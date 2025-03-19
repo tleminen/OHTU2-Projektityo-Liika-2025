@@ -11,6 +11,14 @@ import { addEvent, removeEvent } from "../../store/eventSlice"
 import StaticMap from "../../utils/staticMap"
 import { parseTimeAndDate } from "../../utils/helper"
 import SendEmail from "../../utils/sendEmail.jsx"
+import { addNotification } from "../../store/notificationSlice.js"
+import {
+  EventNotFound,
+  EventJoinSuccess,
+  EventJoinFailure,
+  EventLeaveSuccess
+  } from "../notification/notificationTemplates.js"
+
 
 const EventView = () => {
   const { id } = useParams()
@@ -38,6 +46,7 @@ const EventView = () => {
         setTimes(eventData.Times)
       } catch (error) {
         console.error("Virhe hakiessa tapahtumaa: " + error)
+        dispatch(addNotification(EventNotFound(t.event_not_found)))
       } finally {
         setLoading(false)
       }
@@ -62,6 +71,7 @@ const EventView = () => {
         TimeID: Number(selectedTime.TimeID),
       })
       console.log(response) // TODO: Lisää notifikaatio?
+      dispatch(addNotification(EventJoinSuccess(t.event_joined)))
       dispatch(
         addEvent({
           UserID: userID,
@@ -78,7 +88,8 @@ const EventView = () => {
         )
       )
     } catch (error) {
-      console.error("Virhe liityttäessä tapahtumaan" + error)
+      console.error(t.event_join_failure + error)
+      dispatch(addNotification(EventJoinFailure(t.event_join_failure)))
     }
   }
 
@@ -92,6 +103,7 @@ const EventView = () => {
         TimeID: Number(selectedTime.TimeID),
       })
       console.log(response) // TODO: Lisää notifikaatio?
+      dispatch(addNotification(EventJoinSuccess(t.event_joined))),
       // Päivitä frontendin Times-tila
       setTimes((prevTimes) =>
         prevTimes.map((time) =>
@@ -103,6 +115,7 @@ const EventView = () => {
       setUnSignedJoined(true)
     } catch (error) {
       console.error("Virhe liityttäessä tapahtumaan" + error)
+      dispatch(addNotification(EventJoinFailure(t.event_join_failure)))
       setUnSignedJoined(false)
     }
   }
@@ -116,6 +129,8 @@ const EventView = () => {
         TimeID: Number(selectedTime.TimeID),
       })
       console.log(response) // TODO: Lisää notifikaatio?
+      console.log("Dispatchataan notifikaatio", EventLeaveSuccess(t.event_left))
+      dispatch(addNotification(EventLeaveSuccess(t.event_left)))
       dispatch(
         removeEvent({
           EventID: Number(id),
@@ -136,6 +151,7 @@ const EventView = () => {
       )
     } catch (error) {
       console.error("Virhe poistuessa tapahumasta" + error)
+      dispatch(addNotification(EventJoinFailure(t.event_join_failure)))
     }
   }
 
