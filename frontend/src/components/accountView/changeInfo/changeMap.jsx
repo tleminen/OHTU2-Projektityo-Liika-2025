@@ -1,19 +1,21 @@
 import Footer from "../../footer"
 import Header from "../../header"
 import translations from "../../../assets/translation.js"
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import "../../../index.css"
 import "../accountView.css"
 import { Link } from "react-router-dom"
 import userService from "../../../services/userService.js"
 import LocationMap from "../../locationMap.jsx"
 import { useState } from "react"
+import { changeLocation } from "../../../store/locationSlice.js"
 
 const ChangeMap = () => {
   const language = useSelector((state) => state.language.language)
   const t = translations[language]
   const userID = useSelector((state) => state.user.user.userID)
   const storedToken = useSelector((state) => state.user?.user?.token ?? null)
+  const dispatch = useDispatch()
   const [location, setLocation] = useState(null)
   const oldLocation = [
     useSelector((state) => state.location.location.o_lng),
@@ -25,8 +27,6 @@ const ChangeMap = () => {
   const [hue, setHue] = useState(30)
   const [currentSetting, setCurrentSetting] = useState("brightness") // Asetus, jota säädetään (kirkkaus, äänenvoimakkuus, lämpötila)
 
-  console.log(oldLocation)
-
   const handleOnLocationChange = (location) => {
     setLocation(location)
   }
@@ -37,8 +37,22 @@ const ChangeMap = () => {
     )
     console.log("Tallenna kartan sijainti ja kartan filtteri:") // TODO KESKEN
     if (storedToken) {
+      console.log(location)
       try {
-        console.log("Vaihdettu") //TODO lisää notifikaatio kun vaihdettu
+        const response = await userService.updateUserMapLocation(storedToken, {
+          UserID: userID,
+          location: location,
+        })
+        console.log("Vaihdettu" + response) //TODO lisää notifikaatio kun vaihdettu
+        dispatch(
+          changeLocation({
+            o_lat: location.lat,
+            o_lng: location.lng,
+            lat: location.lat,
+            lng: location.lng,
+            zoom: location.zoom,
+          })
+        )
       } catch (error) {
         console.error("virhe kartan asetusten vaihdossa" + error)
       }

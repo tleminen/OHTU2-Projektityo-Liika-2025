@@ -11,22 +11,27 @@ const LocationMap = ({ onLocationChange, oldLocation }) => {
     startingLocation = {
       lat: oldLocation[1],
       lng: oldLocation[0],
+      zoom: 14,
     }
   }
   useEffect(() => {
     // Luo karttaelementti kun komponentti mounttaa
     const map = L.map("map", {
       center: [startingLocation.lat, startingLocation.lng],
-      zoom: 14,
+      zoom: startingLocation.zoom,
     })
     // Tarkastetaan ensin, että kartalla on aloitussijainti:
     if (!startingLocation.o_lat) {
       console.log("Ei aloituskordinaatteja..\nAsetetaan defaultit")
       ;(startingLocation.o_lat = 62.6013), (startingLocation.o_lng = 29.7639)
-      startingLocation.zoom = 12
+      startingLocation.zoom = 14
     }
     // Asetetaan nämä aluksi, jos käyttäjä unohtaakin klikata karttaa
-    onLocationChange({ lat: startingLocation.lat, lng: startingLocation.lng })
+    onLocationChange({
+      lat: startingLocation.lat,
+      lng: startingLocation.lng,
+      zoom: startingLocation.zoom,
+    })
 
     // Lisää OpenStreetMap-laatta
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -47,8 +52,9 @@ const LocationMap = ({ onLocationChange, oldLocation }) => {
 
     map.on("click", (e) => {
       const { lat, lng } = e.latlng // Sijainti, johon kartalle on klikattu
+      const zoom = map.getZoom()
       centerMarker.setLatLng([lat, lng]) // Asetetaan marker klikatulle paikalle
-      onLocationChange({ lat, lng }) // Päivitetään sijainti vanhemman komponentin tilassa
+      onLocationChange({ lat, lng, zoom }) // Päivitetään sijainti vanhemman komponentin tilassa
     })
 
     return () => {
