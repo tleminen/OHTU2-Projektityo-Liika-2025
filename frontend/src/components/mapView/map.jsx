@@ -20,12 +20,16 @@ import {
   LiikaOverlay as LiikaOverlay,
   UserOverlay,
 } from "./layers/overlayLayers"
+import { parseTimeAndDate } from "../../utils/helper"
+import translations from "../../assets/translation"
 
 const DEFAULT_DAYS = 31
 
 const Map = ({ startingLocation }) => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const language = useSelector((state) => state.language.language)
+  const t = translations[language]
   const [timeStamp, setTimeStamp] = useState("") // Aikaleima, milloin päivitetty
   const [isCategoryPanelOpen, setCategoryPanelOpen] = useState(false)
   const timestampRef = useRef(null)
@@ -254,8 +258,14 @@ const Map = ({ startingLocation }) => {
         const marker = L.marker([lat, lng]).bindPopup(() => {
           const container = document.createElement("div")
           container.innerHTML = `
-    <h1>${tapahtuma.Title} ${tapahtuma.JoinedCount}</h1>
+    <h1>${tapahtuma.Title}</h1>
+    <em>${parseTimeAndDate(tapahtuma.StartTime)[0]} - ${
+            parseTimeAndDate(tapahtuma.EndTime)[0]
+          }<em><br/>
     ${tapahtuma.Description || ""}<br/>
+    <p style="text-transform: lowercase; padding: 4px 0px; margin:0;">${
+      t.participants
+    }: ${tapahtuma.JoinedCount} / ${tapahtuma.ParticipantMax || "-"}</p>
     <em>${showUsername(tapahtuma.Username)}</em> <br/>
     <a href="/events/${
       tapahtuma.EventID

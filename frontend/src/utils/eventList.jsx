@@ -5,9 +5,13 @@ import eventService from "../services/eventService"
 import { parseTimeAndDate } from "./helper"
 import { Link } from "react-router-dom"
 
+import translations from "../assets/translation"
+
 const EventList = (listType) => {
   const userID = useSelector((state) => state.user.user.userID)
   const storedToken = useSelector((state) => state.user?.user?.token ?? null)
+  const language = useSelector((state) => state.language.language)
+  const t = translations[language]
   const [events, setEvents] = useState([])
 
   useEffect(() => {
@@ -43,9 +47,9 @@ const EventList = (listType) => {
 
   const header = () => {
     if (listType.listType === "created") {
-      return <h1>Luodut tapahtumat</h1>
+      return <h1>{t.createdEvents}:</h1>
     } else {
-      return <h1>Liitytyt tapahtumat</h1>
+      return <h1>{t.joinedEvents}:</h1>
     }
   }
 
