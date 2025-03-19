@@ -323,6 +323,7 @@ const Map = ({ startingLocation }) => {
       layers: [osm],
     })
 
+    //Search bar
     L.Control.geocoder().addTo(map)
 
     const fetchEvents = (time) => {

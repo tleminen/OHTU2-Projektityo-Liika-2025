@@ -357,7 +357,10 @@
 }
 
 .leaflet-control-geocoder-icon {
-  background-image: url("uusi-kuvake.png"); /* Vaihda uuden kuvakkeen tiedostopolku */
+  background-image: url("/magnifyingGlassCropped.png"); /* Vaihda uuden kuvakkeen tiedostopolku */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .quick-time-select-container {
