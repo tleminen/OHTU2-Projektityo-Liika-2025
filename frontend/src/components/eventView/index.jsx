@@ -20,6 +20,7 @@ import {
   } from "../notification/notificationTemplates.js"
 
 
+
 const EventView = () => {
   const { id } = useParams()
   const [event, setEvent] = useState(null)
@@ -45,7 +46,7 @@ const EventView = () => {
         setEvent(eventData)
         setTimes(eventData.Times)
       } catch (error) {
-        console.error("Virhe hakiessa tapahtumaa: " + error)
+        console.error(t.event_not_found + error)
         dispatch(addNotification(EventNotFound(t.event_not_found)))
       } finally {
         setLoading(false)
@@ -70,15 +71,22 @@ const EventView = () => {
         EventID: id,
         TimeID: Number(selectedTime.TimeID),
       })
-      console.log(response) // TODO: Lisää notifikaatio?
-      dispatch(addNotification(EventJoinSuccess(t.event_joined)))
-      dispatch(
-        addEvent({
-          UserID: userID,
-          EventID: Number(id),
-          TimeID: Number(selectedTime.TimeID),
-        })
-      )
+    
+      console.log("join API response:", response) // TODO: Lisää notifikaatio?
+      if (!response) {
+        throw new Error(t.event_join_failure)
+      }
+      if (response && response.status >= 200 && response.status < 300) {
+        console.log("Dispatchataan notificaatio", EventJoinSuccess(t.event_joined))
+        dispatch(addNotification(EventJoinSuccess(t.event_joined)))
+        dispatch(
+          addEvent({
+            UserID: userID,
+            EventID: Number(id),
+            TimeID: Number(selectedTime.TimeID),
+          })
+        )
+      
       // Päivitä frontendin Times-tila
       setTimes((prevTimes) =>
         prevTimes.map((time) =>
@@ -87,12 +95,15 @@ const EventView = () => {
             : time
         )
       )
+      } else {
+        throw new Error(t.event_join_failure)
+      }
     } catch (error) {
       console.error(t.event_join_failure + error)
       dispatch(addNotification(EventJoinFailure(t.event_join_failure)))
     }
   }
-
+  //Kirjautumattoman tapahtumaan liitymisen painikkeen handleri
   const handleJoinUnSigned = async (email, id) => {
     console.log(email)
     console.log(selectedTime.id)
@@ -103,6 +114,7 @@ const EventView = () => {
         TimeID: Number(selectedTime.TimeID),
       })
       console.log(response) // TODO: Lisää notifikaatio?
+      console.log("Dispatchataan notificaatio", EventJoinSuccess(t.event_joined))
       dispatch(addNotification(EventJoinSuccess(t.event_joined))),
       // Päivitä frontendin Times-tila
       setTimes((prevTimes) =>
@@ -114,7 +126,7 @@ const EventView = () => {
       )
       setUnSignedJoined(true)
     } catch (error) {
-      console.error("Virhe liityttäessä tapahtumaan" + error)
+      console.error(t.event_join_failure + error)
       dispatch(addNotification(EventJoinFailure(t.event_join_failure)))
       setUnSignedJoined(false)
     }
@@ -129,7 +141,6 @@ const EventView = () => {
         TimeID: Number(selectedTime.TimeID),
       })
       console.log(response) // TODO: Lisää notifikaatio?
-      console.log("Dispatchataan notifikaatio", EventLeaveSuccess(t.event_left))
       dispatch(addNotification(EventLeaveSuccess(t.event_left)))
       dispatch(
         removeEvent({

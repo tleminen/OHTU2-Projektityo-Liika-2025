@@ -60,7 +60,7 @@ const ModifyEvent = () => {
           label: t[selectCategoryName([eventData.CategoryID])],
         })
       } catch (error) {
-        dispatch(addNotification(EventJoinFailure(t.event_not_found)));
+        dispatch(addNotification(EventNotFound(t.event_not_found)));
         console.error(t.event_not_found + error)
       } finally {
         setLoading(false)
@@ -86,6 +86,7 @@ const ModifyEvent = () => {
         TimeID: Number(selectedTime.TimeID),
       })
       console.log(response) 
+      dispatch(addNotification(EventJoinSuccess(t.event_join_success)));
       dispatch(
         addEvent({
           UserID: userID,

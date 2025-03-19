@@ -22,6 +22,7 @@ kirjautumattoman näkymässä padding yms välit kuntoon
 
 EventView: 
 Kun rämppää osallistu/poistu näppäintä jää näkymään, että olisi tapahtumassa vaikka sieltä on poistunut. 
+Notifikaatiot eivät lataudu kunnolla, koodi valmis muuten Chatti(enkä mä) ymmärrä mistä ongelma kiikastaa. 
 
 Omien tietojen muokkaus:
 ! Tilin poistaminen !

@@ -70,6 +70,11 @@
     type: "error",
   })
 
+  const EventDeletion =  (t) => ({
+    id: Date.now(),
+    message: t,
+    type: "success",
+  })
 
   const EventLeaveSuccess = (t) => ({
     id: Date.now(),
@@ -79,7 +84,7 @@
 
   const EventLeaveFailure = (t) => ({
     id: Date.now(),
-    message: t,
+    message: `${t}: ${error.message}`,
     type: "error",
   })
 

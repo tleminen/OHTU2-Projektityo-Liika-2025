@@ -9,6 +9,19 @@ import { useNavigate } from "react-router-dom"
 import DatePicker from "react-multi-date-picker"
 import SendEmail from "../../utils/sendEmail.jsx"
 import { selectCategoryName } from "../../assets/icons.js"
+import { addNotification } from "../../store/notificationSlice.js"
+import {
+  EventCreated,
+  EventCreationFailure,
+  EventJoinSuccess,
+  EventJoinFailure,
+  EventLeaveSuccess,
+  EventDeletionFailure, 
+  EventDeletionWarning,
+  EventDeletion
+
+  } from "../notification/notificationTemplates.js"
+
 
 const CreateEventForm = () => {
   const language = useSelector((state) => state.language.language)
@@ -51,7 +64,8 @@ const CreateEventForm = () => {
         description,
       })
     } catch (error) {
-      console.error("Erron while creating event: " + error)
+      console.error(t.even + error)
+      dispatch(addNotification(EventCreationFailure(t.eventCreationFailure)))
     }
 
     navigate(`/map`)
