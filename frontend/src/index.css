@@ -455,7 +455,7 @@ h5 {
   cursor: pointer;
 }
 
-.blur-layer {
+.liika-layer {
   position: absolute;
   top: -50vh;
   left: -50vw;
@@ -466,6 +466,29 @@ h5 {
   background: rgba(255, 244, 202, 0);
   pointer-events: none;
 }
+
+.dark-layer {
+  position: absolute;
+  top: -50vh;
+  left: -50vw;
+  width: 100vw;
+  height: 100vh;
+  backdrop-filter: brightness(80%) invert(90%) contrast(190%) hue-rotate(180deg);
+  background: rgba(0, 0, 0, 0.114);
+  pointer-events: none;
+}
+
+.user-layer {
+  position: absolute;
+  top: -50vh;
+  left: -50vw;
+  width: 100vw;
+  height: 100vh;
+  backdrop-filter: brightness(80%) invert(90%) contrast(190%) hue-rotate(180deg);
+  background: rgba(0, 0, 0, 0.114);
+  pointer-events: none;
+}
+
 /*kartta-oliolle tyyli karttanäkymään*/
 .map {
   display: flex;

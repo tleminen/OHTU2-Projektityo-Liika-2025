@@ -15,6 +15,11 @@ import { createRoot } from "react-dom/client"
 import { selectIcon } from "../../assets/icons"
 import { categories } from "./utils"
 import ShortcutButtons from "./shortcutButtons"
+import {
+  DarkOverlay,
+  LiikaOverlay as LiikaOverlay,
+  UserOverlay,
+} from "./layers/liikaLayer"
 
 const DEFAULT_DAYS = 31
 
@@ -23,6 +28,7 @@ const Map = ({ startingLocation }) => {
   const dispatch = useDispatch()
   const [timeStamp, setTimeStamp] = useState("") // Aikaleima, milloin päivitetty
   const [isCategoryPanelOpen, setCategoryPanelOpen] = useState(false)
+  const [activeOverlay, setActiveOverlay] = useState(null)
   const timestampRef = useRef(null)
   const markerClusterGroup = L.markerClusterGroup()
   const user = useSelector((state) => state.user?.user?.username ?? null)
@@ -37,35 +43,6 @@ const Map = ({ startingLocation }) => {
       )
     }
   }, [timeStamp])
-
-  const BlurOverlay = L.Layer.extend({
-    onAdd(map) {
-      this._div = L.DomUtil.create("div", "blur-layer")
-      this._div.innerHTML = "</>"
-
-      map.getPanes().overlayPane.appendChild(this._div)
-
-      // Päivitä overlayn sijainti kartan mukana
-      this._updatePosition(map)
-      map.on("move", this._onMapMove, this)
-    },
-
-    onRemove(map) {
-      if (this._div) {
-        map.getPanes().overlayPane.removeChild(this._div)
-      }
-      map.off("move", this._onMapMove, this)
-    },
-
-    _onMapMove() {
-      this._updatePosition(this._map)
-    },
-
-    _updatePosition(map) {
-      const center = map.latLngToLayerPoint(map.getCenter())
-      L.DomUtil.setPosition(this._div, center)
-    },
-  })
 
   // Käsittele paneelin näkyvyys
   const toggleCategoryPanel = () => {
@@ -350,16 +327,20 @@ const Map = ({ startingLocation }) => {
       layers: [osm],
     })
 
-    const blurLayer = new BlurOverlay()
-    blurLayer.addTo(map)
+    const liikaLayer = new LiikaOverlay()
+    const darkLayer = new DarkOverlay()
+    const userLayer = new UserOverlay()
 
     //Search bar
     L.Control.geocoder().addTo(map)
     // Lisää overlay-valikkoon
     const overlays = {
-      Liika: blurLayer,
+      Liika: liikaLayer,
+      Dark: darkLayer,
+      User: userLayer,
     }
-    L.control.layers(null, overlays).addTo(map)
+
+    L.control.layers(overlays).addTo(map)
 
     const fetchEvents = (time) => {
       if (!time) {
