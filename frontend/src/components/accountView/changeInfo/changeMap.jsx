@@ -182,7 +182,7 @@ const ChangeMap = () => {
               }`}
               onClick={() => toggleSlider("brightness")}
             >
-              <span>Säädä kirkkaus</span>
+              <span>Kirkkaus</span>
             </div>
             <div
               className={`slider-toggle ${
@@ -190,7 +190,7 @@ const ChangeMap = () => {
               }`}
               onClick={() => toggleSlider("saturate")}
             >
-              <span>Säädä saturaatio</span>
+              <span>Saturaatio</span>
             </div>
             <div
               className={`slider-toggle ${
@@ -198,7 +198,7 @@ const ChangeMap = () => {
               }`}
               onClick={() => toggleSlider("contrast")}
             >
-              <span>Säädä kontrasti</span>
+              <span>Kontrasti</span>
             </div>
             <div
               className={`slider-toggle ${
@@ -206,7 +206,7 @@ const ChangeMap = () => {
               }`}
               onClick={() => toggleSlider("hue")}
             >
-              <span>Säädä hue</span>
+              <span>Hue</span>
             </div>
           </div>
         </div>
