@@ -21,11 +21,18 @@ const ChangeMap = () => {
     useSelector((state) => state.location.location.o_lng),
     useSelector((state) => state.location.location.o_lat),
   ]
-  const [brightness, setBrightness] = useState(50) // Kirkkaus
-  const [saturate, setSaturate] = useState(50) // Äänenvoimakkuus
-  const [contrast, setContrast] = useState(20) // Lämpötila
-  const [hue, setHue] = useState(30)
+  const [brightness, setBrightness] = useState(100)
+  const [saturate, setSaturate] = useState(100)
+  const [contrast, setContrast] = useState(100)
+  const [hue, setHue] = useState(0)
   const [currentSetting, setCurrentSetting] = useState("brightness") // Asetus, jota säädetään (kirkkaus, äänenvoimakkuus, lämpötila)
+
+  const saturateLimits = { min: 0, max: 300 } // Kylläisyys: 50%-300%
+  const brightnessLimits = { min: 0, max: 200 } // Kirkkaus: 50%-150%
+  const contrastLimits = { min: 0, max: 300 } // Kontrasti: 0%-300%
+  const hueLimits = { min: -360, max: 360 }
+
+  const updateValue = (value, min, max) => Math.min(Math.max(value, min), max)
 
   const handleOnLocationChange = (location) => {
     setLocation(location)
@@ -62,21 +69,41 @@ const ChangeMap = () => {
   }
 
   const handleSliderChange = (e) => {
-    const newValue = e.target.value
+    const newValue = Number(e.target.value)
     if (currentSetting === "brightness") {
-      setBrightness(newValue)
+      setBrightness(
+        updateValue(newValue, brightnessLimits.min, brightnessLimits.max)
+      )
     } else if (currentSetting === "saturate") {
-      setSaturate(newValue)
+      setSaturate(updateValue(newValue, saturateLimits.min, saturateLimits.max))
     } else if (currentSetting === "contrast") {
-      setContrast(newValue)
+      setContrast(updateValue(newValue, contrastLimits.min, contrastLimits.max))
     } else if (currentSetting === "hue") {
-      setHue(newValue)
+      setHue(updateValue(newValue, hueLimits.min, hueLimits.max))
     }
   }
+
   const toggleSlider = (setting) => {
     setCurrentSetting(currentSetting === setting ? null : setting)
   }
 
+  // Määritetään aktiivinen sliderin min/max
+  const getSliderLimits = () => {
+    switch (currentSetting) {
+      case "brightness":
+        return brightnessLimits
+      case "saturate":
+        return saturateLimits
+      case "contrast":
+        return contrastLimits
+      case "hue":
+        return hueLimits
+      default:
+        return { min: 0, max: 100 }
+    }
+  }
+
+  const sliderLimits = getSliderLimits()
   return (
     <div
       className="fullpage"
@@ -109,8 +136,8 @@ const ChangeMap = () => {
             <div className="slider-wrapper">
               <input
                 type="range"
-                min="0"
-                max="300"
+                min={sliderLimits.min}
+                max={sliderLimits.max}
                 value={
                   currentSetting === "brightness"
                     ? brightness
@@ -131,17 +158,17 @@ const ChangeMap = () => {
                 )}
                 {currentSetting === "saturate" && (
                   <>
-                    saturaatio: <span>{saturate}</span>%
+                    Saturaatio: <span>{saturate}</span>%
                   </>
                 )}
                 {currentSetting === "contrast" && (
                   <>
-                    kontrasti: <span>{contrast}</span>%
+                    Kontrasti: <span>{contrast}</span>%
                   </>
                 )}
                 {currentSetting === "hue" && (
                   <>
-                    hue: <span>{hue}</span>deg
+                    Hue: <span>{hue}</span>°
                   </>
                 )}
               </p>
