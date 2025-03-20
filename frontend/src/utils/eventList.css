@@ -14,7 +14,7 @@
     255,
     0.421
   ); /* Lisätty läpinäkyvä taustaväri */
-  padding: 20px; /* Lisätty sisäistä tilaa */
+  padding: 20px 30px; /* Lisätty sisäistä tilaa */
   border-radius: 10px; /* Lisätty pyöristetyt reunat */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Lisätty varjo */
 }
@@ -32,8 +32,8 @@
   justify-content: space-between;
   flex-direction: column;
   color: black;
-  margin-bottom: 10px;
-  margin-top: 10px;
+  margin-bottom: 9px;
+  margin-top: 9px;
   text-align: center;
   gap: 8px;
 }

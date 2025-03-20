@@ -24,9 +24,7 @@ const CreateEventView = () => {
         <h1>{t.createEvent}</h1>
         <CreateEventForm />
       </div>
-      <footer>
-        <Footer />
-      </footer>
+      <Footer />
     </div>
   )
 }

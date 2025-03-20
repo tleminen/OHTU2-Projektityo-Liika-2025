@@ -40,12 +40,13 @@ const EventList = (listType) => {
         const groupedEvents = clubIds.map((clubId) => {
           const club = clubs.find((c) => c.ClubID === clubId)
           return {
-            clubId,
-            clubName: club?.Name || "Tuntematon klubi",
+            club: {
+              ClubID: clubId,
+              clubName: club?.Name || "Tuntematon klubi",
+            },
             events: clubEvents.filter((event) => event.ClubID === clubId),
           }
         })
-        console.log(groupedEvents)
         setClubEvents(groupedEvents)
       } else if (listType.listType === "joined") {
         try {
@@ -123,55 +124,58 @@ const EventList = (listType) => {
         </div>
         {listType.listType === "created" && clubEvents[0] && (
           <div>
-            <h1>Yhteistyö {clubEvents[0].Name}</h1>
-            <div className="event-container">
-              <h2>{clubEvents[0].Name}</h2>
+            {clubEvents.map(({ club, events }) => (
+              <div key={club.ClubID} className="event-container">
+                <div className="spacer-line"></div>
+                <h1>{club.clubName}</h1>
+                <div className="spacer-line"></div>
+                <div className="event-list-items">
+                  {events.length === 0 ? (
+                    <p>Ei tulevia tapahtumia</p>
+                  ) : (
+                    events.map((event, index) => (
+                      <Link
+                        to={`${parseLink()}${event.EventID}`}
+                        key={index}
+                        className="event-item-container"
+                      >
+                        <div className="event-item">
+                          <div>
+                            <em>{club.clubName}</em>
+                            <h3>Otsikko</h3>
+                            {event.Title}
+                          </div>
+                          <div>
+                            <h3>Aika</h3>
+                            {parseTimeAndDate(event.StartTime)[1].slice(
+                              0,
+                              -4
+                            )}{" "}
+                            {parseTimeAndDate(event.StartTime)[0]}
+                          </div>
+                          <div>
+                            <h3>Osallistujat</h3>
+                            {event.JoinedCount}
+                          </div>
+                        </div>
 
-              <div className="event-list-items">
-                {events.length === 0 ? (
-                  <p>Ei tulevia tapahtumia</p>
-                ) : (
-                  events.map((event) => (
-                    <Link
-                      to={`${parseLink()}${event.EventID}`}
-                      key={event.EventID}
-                      className="event-item-container"
-                    >
-                      <div className="event-item">
-                        <div>
-                          <h3>Otsikko</h3>
-                          {event.Title}
+                        <div className="event-item">
+                          <img
+                            src={`/lajit/${selectCategoryName([
+                              event.CategoryID,
+                            ])}.png`}
+                            alt="Logo"
+                            width={100}
+                            height={100}
+                            className="event-view-icon"
+                          />
                         </div>
-                        <div>
-                          <h3>Aika</h3>
-                          {parseTimeAndDate(event.StartTime)[1].slice(
-                            0,
-                            -4
-                          )}{" "}
-                          {parseTimeAndDate(event.StartTime)[0]}
-                        </div>
-                        <div>
-                          <h3>Osallistujat</h3>
-                          {event.JoinedCount}
-                        </div>
-                      </div>
-
-                      <div className="event-item">
-                        <img
-                          src={`/lajit/${selectCategoryName([
-                            event.CategoryID,
-                          ])}.png`}
-                          alt="Logo"
-                          width={100}
-                          height={100}
-                          className="event-view-icon"
-                        />
-                      </div>
-                    </Link>
-                  ))
-                )}
+                      </Link>
+                    ))
+                  )}
+                </div>
               </div>
-            </div>
+            ))}
           </div>
         )}
       </div>
