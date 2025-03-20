@@ -261,16 +261,16 @@ const EventView = () => {
           <h2>{t.location}</h2>
           <StaticMap mapCenter={event.Event_Location.coordinates} />
 
-          <h2>Osallistujamäärä</h2>
+          <h2>{t.participantCount}</h2>
           <p>
             {event.ParticipantMin} - {event.ParticipantMax}
           </p>
-          <h2>Liittyneitä</h2>
+          <h2>{t.joined}</h2>
           <p>{selectedTime && selectedTime.JoinedCount}</p>
-          <h2>Kuvaus:</h2>
+          <h2>{t.description}</h2>
           <p>{event.Description}</p>
 
-          <h3>Syötä sähköposti, jotta voit liittyä tapahtumaan</h3>
+          <h3>{t.enterEmailToJoinEvent}</h3>
           <input
             type="text"
             value={email}
@@ -292,14 +292,14 @@ const EventView = () => {
               className="join-btn"
               onClick={() => handleJoinUnSigned(email, id)}
             >
-              Ilmoittaudu
+              {t.join}
             </button>
           )}
           {selectedTime && unSignedJoined && (
-            <h3>Olet ilmoittautunut tapahtumaan</h3>
+            <h3>{t.youHaveJoinedForTheEvent}</h3>
           )}
           <p style={{ fontWeight: "lighter" }}>
-            Tapahtumaa viimeksi päivitetty:
+            {t.eventLastUpdated}
           </p>
           <p style={{ fontWeight: "lighter" }}>
             {parseTimeAndDate(event.updatedAt)[1]}{" "}
@@ -364,25 +364,25 @@ const EventView = () => {
         <h2>{t.location}</h2>
         <StaticMap mapCenter={event.Event_Location.coordinates} />
 
-        <h2>Osallistujamäärä</h2>
+        <h2>{t.participants}</h2>
         <p>
           {event.ParticipantMin} - {event.ParticipantMax}
         </p>
-        <h2>Liittyneitä</h2>
+        <h2>{t.joined}</h2>
         <p>{selectedTime && selectedTime.JoinedCount}</p>
-        <h2>Kuvaus:</h2>
+        <h2>{t.description}</h2>
         <p>{event.Description}</p>
         {selectedTime && !isJoined(selectedTime) && (
           <button className="join-btn" onClick={() => handleJoin(userID, id)}>
-            Ilmoittaudu
+            {t.join}
           </button>
         )}
         {selectedTime && isJoined(selectedTime) && (
           <button className="leave-btn" onClick={() => handleLeave(userID, id)}>
-            Peru ilmoittautuminen
+            {t.leaveEvent}
           </button>
         )}
-        <p style={{ fontWeight: "lighter" }}>Tapahtumaa viimeksi päivitetty:</p>
+        <p style={{ fontWeight: "lighter" }}>{t.eventLastUpdated}</p>
         <p style={{ fontWeight: "lighter" }}>
           {parseTimeAndDate(event.updatedAt)[1]}{" "}
           {parseTimeAndDate(event.updatedAt)[0]}
