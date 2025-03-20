@@ -1,9 +1,9 @@
 const jwt = require("jsonwebtoken")
 const bcrypt = require("bcryptjs")
-const crypto = require("crypto")
 const { Router } = require("express")
 const User = require("../models/users")
 const { sendEmail } = require("../services/email") // Tuo sendEmail-funktio
+const { getUserClubs } = require("../services/getUserClubs")
 
 const loginRouter = Router()
 
@@ -35,6 +35,9 @@ loginRouter.post("/", async (req, res) => {
       expiresIn: "60d",
     })
 
+    const clubs = await getUserClubs(user.UserID)
+    console.log(clubs)
+
     res.status(200).send({
       token,
       userID: user.UserID,
@@ -42,6 +45,10 @@ loginRouter.post("/", async (req, res) => {
       location: user.Location.coordinates,
       email: user.Email,
       language: user.LanguageID,
+      mapZoom: user.MapZoom,
+      mapPreferences: user.MapPreferences,
+      role: user.Role,
+      clubs: clubs,
     })
   } catch (error) {
     console.log(error)

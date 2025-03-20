@@ -47,7 +47,9 @@ const ChangeLanguage = () => {
       <div className="account-view">
         <h1>{t.ChangeLanguage}</h1>
         <FlagSelection menuPlacement="bottom" />
-        <button onClick={saveHandler}>{t.save}</button>
+        <button className="save-btn" onClick={saveHandler}>
+          {t.save}
+        </button>
       </div>
       <Link
         to={"/own_info"}

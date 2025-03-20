@@ -56,9 +56,23 @@ const updateUserLanguage = async (storedToken, parameters) => {
   return response.data
 }
 
+const updateUserMapLocation = async (storedToken, parameters) => {
+  setToken(storedToken)
+  const headers = {
+    headers: { Authorization: token }, // Asetetaan token headeriin
+  }
+  const response = await axios.post(
+    baseUrl + "/users/update/map_preferences",
+    parameters,
+    headers
+  )
+  return response.data
+}
+
 export default {
   getUserData,
   updateUserEmail,
   updateUserUsername,
   updateUserLanguage,
+  updateUserMapLocation,
 }

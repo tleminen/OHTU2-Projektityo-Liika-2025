@@ -58,6 +58,10 @@ button:focus-visible {
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.5);
 }
 
+.leaflet-shadow-pane {
+  opacity: 0.1 !important;
+}
+
 .header-back-btn:hover {
   background-color: rgba(0, 151, 178, 1);
   color: #ffffff;
@@ -397,6 +401,16 @@ h4 {
   color: #1a1a1a;
 }
 
+h5 {
+  font-size: x-large;
+  line-height: 1;
+  color: #00247d;
+  text-align: center;
+  padding: 20px 50px;
+  display: inline-block;
+  text-shadow: 2px 2px 5px rgba(26, 26, 26, 0.5);
+}
+
 .fullpage {
   display: flex;
   flex-direction: column;
@@ -440,18 +454,41 @@ h4 {
 #overlay:hover {
   cursor: pointer;
 }
-.blur-overlay {
+
+.liika-layer {
   position: absolute;
-  bottom: 0px;
-  left: 0px;
-  height: 100%;
-  width: 100%;
-  backdrop-filter: saturate(150%) brightness(79%) contrast(180%)
+  top: -50vh;
+  left: -50vw;
+  width: 100vw;
+  height: 100vh;
+  backdrop-filter: saturate(150%) brightness(82%) contrast(165%)
     hue-rotate(30deg);
-  background: rgba(255, 244, 202, 0.075);
-  z-index: 3000;
+  background: rgba(255, 244, 202, 0);
   pointer-events: none;
 }
+
+.dark-layer {
+  position: absolute;
+  top: -50vh;
+  left: -50vw;
+  width: 100vw;
+  height: 100vh;
+  backdrop-filter: brightness(80%) invert(90%) contrast(190%) hue-rotate(180deg);
+  background: rgba(0, 0, 0, 0.114);
+  pointer-events: none;
+}
+
+.user-layer {
+  position: absolute;
+  top: -50vh;
+  left: -50vw;
+  width: 100vw;
+  height: 100vh;
+  backdrop-filter: brightness(80%) invert(90%) contrast(190%) hue-rotate(180deg);
+  background: rgba(0, 0, 0, 0.114);
+  pointer-events: none;
+}
+
 /*kartta-oliolle tyyli karttanäkymään*/
 .map {
   display: flex;

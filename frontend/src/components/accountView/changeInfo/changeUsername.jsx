@@ -12,13 +12,15 @@ const ChangeUsername = () => {
   const language = useSelector((state) => state.language.language)
   const t = translations[language]
   const [newUsername, setNewUsername] = useState("")
-  const username = useSelector((state) => state.user.user.username)
+
+  const [oldUsername, setOldUsername] = useState(
+    useSelector((state) => state.user.user.username)
+  )
   const userID = useSelector((state) => state.user.user.userID)
   const [newUserNameAgain, setNewUserNameAgain] = useState("")
   const storedToken = useSelector((state) => state.user?.user?.token ?? null)
 
-  const handleSubmit = async (event) => {
-    event.preventDefault()
+  const handleSubmit = async () => {
     console.log("Change Username attempt:" + newUsername)
     if (storedToken) {
       try {
@@ -27,6 +29,7 @@ const ChangeUsername = () => {
           Username: newUsername,
         })
         console.log("Vaihdettu" + response) //TODO lisää notifikaatio kun vaihdettu
+        setOldUsername(newUsername)
       } catch (error) {
         console.error("virhe käyttäjätunnuksen vaihdossa" + error)
       }
@@ -47,37 +50,35 @@ const ChangeUsername = () => {
     >
       <Header />
       <div className="account-view">
-        <h1>{t.changeUsername}</h1>
-        <p>
-          {t.currentUsername} {username}
-        </p>
-        <form onSubmit={handleSubmit}>
-          <div>
-            <h3>{t.newUsername}</h3>
-            <input
-              className="input-field"
-              type="text"
-              value={newUsername}
-              name="newUsername"
-              onChange={(e) => setNewUsername(e.target.value)}
-              placeholder={t.newUsername}
-              required={true}
-            />
-          </div>
-          <div>
-            <h3>{t.newUsernameAgain}</h3>
-            <input
-              className="input-field"
-              type="text"
-              value={newUserNameAgain}
-              name="newUserNameAgain"
-              onChange={(e) => setNewUserNameAgain(e.target.value)}
-              placeholder={t.newUsernameAgain}
-              required={true}
-            />
-          </div>
-          <button type="submit">{t.save}</button>
-        </form>
+        <div className="account-view-form">
+          <h1>{t.changeUsername}</h1>
+          <p>
+            {t.currentUsername} {oldUsername}
+          </p>
+          <h3>{t.newUsername}</h3>
+          <input
+            className="input-field"
+            type="text"
+            value={newUsername}
+            name="newUsername"
+            onChange={(e) => setNewUsername(e.target.value)}
+            placeholder={t.newUsername}
+            required={true}
+          />
+          <h3>{t.newUsernameAgain}</h3>
+          <input
+            className="input-field"
+            type="text"
+            value={newUserNameAgain}
+            name="newUserNameAgain"
+            onChange={(e) => setNewUserNameAgain(e.target.value)}
+            placeholder={t.newUsernameAgain}
+            required={true}
+          />
+          <button className="save-btn" onClick={handleSubmit}>
+            {t.save}
+          </button>
+        </div>
       </div>
       <Link
         to={"/own_info"}

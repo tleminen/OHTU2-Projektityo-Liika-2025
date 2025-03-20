@@ -28,11 +28,33 @@ const connectDB = async () => {
     await sequelize.authenticate()
     console.log(`PosgreSQL-tietokantayhteys luotu!`)
 
+    try {
+      await sequelize.query(`
+  ALTER TABLE "Events"
+  ADD COLUMN "ClubID" INTEGER NULL,
+  ADD CONSTRAINT "FK_Events_Clubs"
+    FOREIGN KEY ("ClubID")
+    REFERENCES "Clubs"("ClubID")
+    ON DELETE SET NULL;
+`)
+    } catch (e) {
+      console.warn(e)
+    }
+    try {
+      await sequelize.query(`
+  ALTER TABLE "Users"
+  ADD COLUMN "MapZoom" INTEGER NULL,
+  ADD COLUMN "MapPreferences" VARCHAR(40) NULL;
+`)
+    } catch (e) {
+      console.warn(e)
+    }
+
     // Luo PostGIS-laajennus, jos sitä ei ole
-    await sequelize.query('CREATE EXTENSION IF NOT EXISTS "postgis";')
-    console.log("✅ PostGIS extension created!")
+    // await sequelize.query('CREATE EXTENSION IF NOT EXISTS "postgis";')
+    console.log("✅ connectDB suoritettu!")
   } catch (error) {
-    console.error(`PostgreSQL-yhteys epäonnistu`, error)
+    console.error(`PostgreSQL-yhteys epäonnistui`, error)
   }
 }
 

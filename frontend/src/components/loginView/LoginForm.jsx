@@ -42,6 +42,13 @@ const LoginForm = () => {
           username,
           password,
         })
+        let zoom
+        if (user.mapZoom) {
+          zoom = user.mapZoom
+          console.log(zoom)
+        } else {
+          zoom = 10
+        }
         dispatch(
           changeUser({
             userID: user.userID,
@@ -56,7 +63,7 @@ const LoginForm = () => {
             o_lng: user.location[0],
             lat: user.location[1],
             lng: user.location[0],
-            zoom: 14, // Kovakoodattu etäisyys
+            zoom: zoom,
           })
         )
         dispatch(changeLanguage(user.language))

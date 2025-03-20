@@ -1,6 +1,7 @@
 Bugit
 
 MapView:
+Search jää logon alle
 
 -Kirjautumaton:
 -css-poikkeamia
@@ -12,7 +13,7 @@ Yksittäisen tapahtuman näkymä:
 
 Oman tapahtuman muokkaus:
 
-- Vanhat tapahtumat listana jossa osallistujamäärä, PItäisikö olla ettei voi enää perua?
+- Vanhat tapahtumat listana jossa osallistujamäärä, ei voi enää perua tapahtumaa
 
 Login:
 
@@ -23,13 +24,6 @@ kirjautumattoman näkymässä padding yms välit kuntoon
 EventView: 
 Kun rämppää osallistu/poistu näppäintä jää näkymään, että olisi tapahtumassa vaikka sieltä on poistunut. 
 Notifikaatiot eivät lataudu kunnolla, koodi valmis muuten Chatti(enkä mä) ymmärrä mistä ongelma kiikastaa. 
-
-Omien tietojen muokkaus:
-! Tilin poistaminen !
-Oman aloitussijainnin muuttaminen pitää tehdä
-
-Azure:
-Tomille- Vaihda sprintistä 4 v2 -> v1, sprintistä 5 v3 -> v2 jne..
 
 Backend:
 ! Nearby-haku hakee käyttäjätunnuksen vaikka se olisi sähköpostiosoitemuotoinen (sis. @). Frontti filtteröi sen, mutta pitää poistaa backendissä!
