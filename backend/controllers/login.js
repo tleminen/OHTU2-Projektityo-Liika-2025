@@ -37,6 +37,7 @@ loginRouter.post("/", async (req, res) => {
 
     const clubs = await getUserClubs(user.UserID)
     console.log(clubs)
+    console.log("Yhteistyökumppanit")
 
     res.status(200).send({
       token,

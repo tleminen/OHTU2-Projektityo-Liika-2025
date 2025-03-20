@@ -31,7 +31,19 @@
   display: flex;
   justify-content: space-between;
   flex-direction: column;
-  padding: 20px;
+  color: black;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  text-align: center;
+  gap: 8px;
+}
+
+.event-item-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-direction: row;
+  padding: 10px;
   color: black;
   background-color: rgba(
     255,
