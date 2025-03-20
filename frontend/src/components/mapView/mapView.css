@@ -350,19 +350,6 @@
   }
 }
 
-/* search bar leaflet */
-.leaflet-control-geocoder-form input {
-  color: black; /* Vaihda haluamasi tekstin väri */
-  background-color: white; /* Vaihda haluamasi taustaväri */
-}
-
-.leaflet-control-geocoder-icon {
-  background-image: url("/magnifyingGlassCropped.png"); /* Vaihda uuden kuvakkeen tiedostopolku */
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-
 .quick-time-select-container {
   display: flex;
   flex-direction: column;
