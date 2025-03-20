@@ -4,7 +4,8 @@ import translations from "../assets/translation.js"
 import "../components/registerView/register.css"
 import eventService from "../services/eventService.js"
 
-const SendEmail = ({ setIsOtpVerifiedFromParent, email }) => {
+// eslint-disable-next-line react/prop-types
+const SendEmail = ({ setIsOtpVerifiedFromParent, email, setDisableButton }) => {
   const language = useSelector((state) => state.language.language)
   const t = translations[language]
   const [errors, setErrors] = useState({})
@@ -41,6 +42,7 @@ const SendEmail = ({ setIsOtpVerifiedFromParent, email }) => {
       // Jos OTP lähetettiin onnistuneesti, päivitä tila
       setOtpSent(true)
       setLoader(false)
+      setDisableButton(false)
     } catch (error) {
       console.error("Virhe axios-pyynnössä:", error)
       if (error.response) {
@@ -105,7 +107,7 @@ const SendEmail = ({ setIsOtpVerifiedFromParent, email }) => {
               {[...Array(6)].map((_, index) => (
                 <input
                   key={index}
-                  type="text"
+                  type="number"
                   maxLength="1"
                   className={`otp-input ${errors.otp ? "error" : ""}`}
                   value={otp[index] || ""}
