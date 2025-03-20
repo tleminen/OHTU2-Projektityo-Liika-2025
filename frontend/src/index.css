@@ -9,6 +9,7 @@
   color: rgba(0, 0, 0, 0.87);
   background-color: #ffffff;
 
+  max-height: 100dvh;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -416,7 +417,6 @@ h5 {
   flex-direction: column;
   justify-content: center;
   min-height: 100dvh; /* Koko näkymän korkeus */
-  max-height: 100dvh;
 }
 
 * {
