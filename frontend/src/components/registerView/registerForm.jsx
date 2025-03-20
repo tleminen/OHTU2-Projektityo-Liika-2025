@@ -290,6 +290,7 @@ const RegisterForm = () => {
                 <input
                   key={index}
                   type="text"
+                  inputMode="numeric"
                   maxLength="1"
                   className={`otp-input ${errors.otp ? "error" : ""}`}
                   value={otp[index] || ""}
