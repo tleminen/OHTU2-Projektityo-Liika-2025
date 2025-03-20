@@ -506,6 +506,9 @@ h5 {
   .map {
     width: 100vw;
   }
+  .h1-resizeable {
+    font-size: 120%;
+  }
 }
 
 .map-location-setter {

@@ -49,9 +49,9 @@ const EventList = (listType) => {
 
   const header = () => {
     if (listType.listType === "created") {
-      return <h1>{t.createdEvents}:</h1>
+      return <h1 className="h1-resizeable">{t.createdEvents}:</h1>
     } else {
-      return <h1>{t.joinedEvents}:</h1>
+      return <h1 className="h1-resizeable">{t.joinedEvents}:</h1>
     }
   }
 
