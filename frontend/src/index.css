@@ -415,7 +415,8 @@ h5 {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  min-height: 100vh; /* Koko näkymän korkeus */
+  min-height: 100dvh; /* Koko näkymän korkeus */
+  max-height: 100dvh;
 }
 
 * {
