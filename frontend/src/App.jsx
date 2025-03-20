@@ -37,6 +37,10 @@ const App = () => {
       <Route path="/events/own/:id" element={<ModifyEvent />} />
       <Route path="/own_info/language" element={<ChangeLanguage />} />
       <Route path="/own_info/map" element={<ChangeMap />} />
+      <Route
+        path="/create_club_event"
+        element={<CreateEventView club={true} />}
+      />
     </Routes>
   )
 }

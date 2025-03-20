@@ -107,6 +107,18 @@
   filter: brightness(0.5) sepia(1) hue-rotate(90deg) saturate(500%);
 }
 
+.club-selection-container {
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px 14px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+/*Yhteistyökumppanin radiobuttonvalinta*/
+.club-radio-item {
+}
+
 /* Avattava paneeli */
 /* Paneelin kontti */
 .category-panel {

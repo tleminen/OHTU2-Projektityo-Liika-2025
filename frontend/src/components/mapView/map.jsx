@@ -35,6 +35,7 @@ const Map = ({ startingLocation }) => {
   const timestampRef = useRef(null)
   const markerClusterGroup = L.markerClusterGroup()
   const user = useSelector((state) => state.user?.user?.username ?? null)
+  const clubs = useSelector((state) => state.user?.user?.clubs ?? null)
   var first = true
 
   useEffect(() => {
@@ -308,6 +309,10 @@ const Map = ({ startingLocation }) => {
     navigate("/create_event")
   }
 
+  const onClickCreateClubEvent = () => {
+    navigate("/create_club_event")
+  }
+
   const onClickListJoinedEvents = () => {
     navigate("/joined_events")
   }
@@ -387,6 +392,15 @@ const Map = ({ startingLocation }) => {
               backgroundImage: "url(/addeventCropped.png)", // Suora polku publicista
             }}
           ></button>
+          {user && clubs && (
+            <button
+              className="pika-painike"
+              onClick={() => onClickCreateClubEvent()}
+              style={{
+                backgroundImage: "url(/addeventCropped.png)", // Suora polku publicista
+              }}
+            ></button>
+          )}
           {user && (
             <button
               className="pika-painike"

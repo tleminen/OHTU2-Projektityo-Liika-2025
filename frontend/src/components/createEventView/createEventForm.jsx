@@ -10,7 +10,8 @@ import DatePicker from "react-multi-date-picker"
 import SendEmail from "../../utils/sendEmail.jsx"
 import { selectCategoryName } from "../../assets/icons.js"
 
-const CreateEventForm = () => {
+// eslint-disable-next-line react/prop-types
+const CreateEventForm = ({ club }) => {
   const language = useSelector((state) => state.language.language)
   const t = translations[language]
   const navigate = useNavigate()
@@ -26,10 +27,41 @@ const CreateEventForm = () => {
   const [email, setEmail] = useState("")
   const [isOtpVerified, setIsOtpVerified] = useState(false)
   const [blockRegister, setBlockCreate] = useState(true)
+  const [selectedClub, setSelectedClub] = useState(null)
   const userID = useSelector((state) => state.user?.user?.userID ?? null)
   const storedToken = useSelector((state) => state.user?.user?.token ?? null)
+  const clubs = useSelector((state) => state.user?.user?.clubs ?? null)
   const yesterday = new Date()
   yesterday.setDate(yesterday.getDate() - 1)
+
+  const handleClubSelect = (clubId) => {
+    setSelectedClub(clubId)
+  }
+
+  const clubEventView = () => {
+    console.log(club)
+    if (club && clubs) {
+      return (
+        <div className="form-item">
+          <div className="club-selection-container">
+            <h2>Valitse järjestäjä:</h2>
+            {clubs.map((club) => (
+              <label key={club.ClubID} className="club-radio-item">
+                <input
+                  type="radio"
+                  name="club"
+                  value={club.ClubID}
+                  checked={selectedClub === club.ClubID}
+                  onChange={() => handleClubSelect(club.ClubID)}
+                />
+                {club.Name}
+              </label>
+            ))}
+          </div>
+        </div>
+      )
+    } else return null
+  }
 
   const handleSubmit = (event) => {
     const categoryID = activity.value
@@ -255,6 +287,7 @@ const CreateEventForm = () => {
     // Kirjautuneen käyttäjän näkymä
     <div className="create-event-form">
       <form onSubmit={handleSubmit}>
+        {clubEventView()}
         <div className="form-item">
           <h3>{t.title}</h3>
           <input

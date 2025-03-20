@@ -5,7 +5,8 @@ import "./createEvent.css"
 import { useSelector } from "react-redux"
 import translations from "../../assets/translation"
 
-const CreateEventView = () => {
+// eslint-disable-next-line react/prop-types
+const CreateEventView = ({ club }) => {
   const language = useSelector((state) => state.language.language)
   const t = translations[language]
 
@@ -22,7 +23,7 @@ const CreateEventView = () => {
       <Header />
       <div className="create-event">
         <h1>{t.createEvent}</h1>
-        <CreateEventForm />
+        <CreateEventForm club={club} />
       </div>
       <Footer />
     </div>
