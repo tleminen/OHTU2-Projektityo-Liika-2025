@@ -289,8 +289,7 @@ const RegisterForm = () => {
               {[...Array(6)].map((_, index) => (
                 <input
                   key={index}
-                  type="text"
-                  inputMode="numeric"
+                  type="number"
                   maxLength="1"
                   className={`otp-input ${errors.otp ? "error" : ""}`}
                   value={otp[index] || ""}

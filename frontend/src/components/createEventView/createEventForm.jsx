@@ -112,6 +112,7 @@ const CreateEventForm = () => {
             <input
               type="text"
               value={title}
+              placeholder={t.title}
               className="input-field"
               onChange={(e) => setTitle(e.target.value)}
               required={true}
@@ -254,6 +255,7 @@ const CreateEventForm = () => {
           <input
             type="text"
             value={title}
+            placeholder={t.title}
             className="input-field"
             onChange={(e) => setTitle(e.target.value)}
             required={true}
