@@ -365,8 +365,8 @@ const CreateEventForm = () => {
             placeholder={t.description}
           />
         </div>
-        <button className="btn" type="submit" style={{ margin: "auto" }}>
-          {t.createEvent}
+        <button className={`forms-btn`} onClick={handleSubmit}>
+          <span>{t.createEvent}</span>
         </button>
       </form>
     </div>
