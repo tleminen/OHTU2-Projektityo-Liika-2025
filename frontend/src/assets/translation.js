@@ -1,5 +1,5 @@
-import termsOfServiceText from "./termsOfServiceText"
-import infoText from "./infoText"
+import termsOfServiceText from "./termsOfServiceText";
+import infoText from "./infoText";
 const translations = {
   EN: {
     activity: "Activity",
@@ -33,9 +33,12 @@ const translations = {
     email_sent: "Email sent",
     endTime: "Ends at",
     enterNewInfoEditable: "Enter new information only in the editable fields",
+    enterEmailToJoinEvent: "Enter your email to join the event",
     event_editing: "Event editing",
+    eventLastUpdated: "Event last updated",
     exitWithoutSave: "You can exit without saving changes by pressing back",
     forgot_pw: "Forgot password?",
+    joined: "Joined",
     otp_send_error: "Incorrect OTP",
     otp_robot_check: "Making sure you're a human",
     otp_sent: "Input the code sent to your e-mail",
@@ -48,6 +51,7 @@ const translations = {
     language: "Default language",
     lastUpdated: "Event last updated",
     leaveEvent: "Leave event",
+    liika_text: "Liika.eu",
     loading_event: "Loading event info...",
     location: "Location",
     login: "Log in",
@@ -68,6 +72,7 @@ const translations = {
     newUsernameAgain: "New username again",
     no_event_found: "Event not found",
     participants: "Participants",
+    participantCount: "Number of participants",
     participantLimits: "Current participant limits",
     password: "Password",
     password_ph: "Password",
@@ -88,6 +93,7 @@ const translations = {
     startLocation: "Start location",
     startTime: "Starts at",
     terms_of_service: "Terms of service",
+    terms_of_service_accept: "Accept terms of service",
     terms_of_service_txt: termsOfServiceText.getText("en"),
     time: "Scheduled at",
     title: "Title",
@@ -108,7 +114,10 @@ const translations = {
     validation_otp: "Email verification code required",
     welcomeText1: "Welcome to move and experience together!",
     welcomeText:
-      "Liika.eu brings events close to you - and gives you the opportunity to create your own! Whether you're looking for exciting activities or want to gather a group together, we offer an easy way to sign up for events and organize your own. Turn everyday moments into experiences and connect people in the right place at the right time.",
+      " brings events close to you - and gives you the opportunity to create your own!",
+    welcomeText2:
+      " Whether you're looking for exciting activities or want to gather a group together, we offer an easy way to sign up for events and organize your own. Turn everyday moments into experiences and connect people in the right place at the right time.",
+    youHaveJoinedForTheEvent: "You have joined for the event",
     // Lajit / Categoriat
     amerikkalainen_jalkapallo: "American Football",
     avantouinti: "Ice Swimming",
@@ -162,10 +171,13 @@ const translations = {
     email_send_error: "Virhe lähettäessä sähköpostia",
     email_sent: "Sähköposti lähetetty",
     endTime: "Päättymisaika",
+    enterEmailToJoinEvent: "Syötä sähköposti, jotta voit liittyä tapahtumaan",
     enterNewInfoEditable: "Syötä uusi tieto vain muokattaviin kenttiin",
     event_editing: "Tapahtuman muokkaus",
+    eventLastUpdated: "Tapahtumaa viimeksi päivitetty",
     exitWithoutSave: "Voit poistua tallentamatta muutoksia painamalla takaisin",
     forgot_pw: "Unohtuiko salasana?",
+    joined: "Liittyneitä",
     otp_send_error: "Väärä OTP",
     otp_robot_check: "Vahvista että et ole robotti",
     otp_sent: "Syötä koodi saadustasi sähköpostista",
@@ -178,6 +190,7 @@ const translations = {
     language: "Oletuskieli",
     lastUpdated: "Tapahtumaa viimeksi päivitetty",
     leaveEvent: "Peru ilmoittautuminen",
+    liika_text: "Liika.eu",
     loading_event: "Lataa tapahtuman tietoja...",
     location: "Sijainti",
     login: "Kirjaudu",
@@ -198,6 +211,7 @@ const translations = {
     newUsernameAgain: "Syötä käyttäjätunnus uudestaan",
     no_event_found: "Tapahtumaa ei löytynyt",
     participants: "Osallistujat",
+    participantCount: "Osallistujamäärä",
     participantLimits: "Nykyinen osallistujamäärä",
     password: "Salasana",
     password_ph: "Salasana",
@@ -217,6 +231,7 @@ const translations = {
     startLocation: "Oletussijainti",
     startTime: "Aloitusaika",
     terms_of_service: "Käyttöehdot",
+    terms_of_service_accept: "Hyväksy käyttöehdot",
     terms_of_service_txt: termsOfServiceText.getText("fi"),
     time: "Ajankohta",
     title: "Otsikko",
@@ -238,9 +253,13 @@ const translations = {
     validation_psw_number: "Salasanassa on oltava numero",
     validation_psw_all: "Salasana saa sisältää vain kirjaimia ja numeroita",
     validation_otp: "Sähköpostiosoitteen vahvistuskoodi vaaditaan",
+
     welcomeText1: "Tervetuloa liikkumaan ja kokemaan yhdessä!",
     welcomeText:
-      "Liika.eu tuo tapahtumat lähellesi - ja antaa sinulle mahdollisuuden luoda omasi! Etsitpä sitten kiinnostavaa tekemistä tai haluat koota porukan kasaan, meiltä löydät helpon tavan ilmoittautua tapahtumiin ja järjestää omia. Tee arjesta elämyksiä ja yhdistä ihmiset oikeassa paikassa, oikeaan aikaan.",
+      " tuo tapahtumat lähellesi - ja antaa sinulle mahdollisuuden luoda omasi!",
+    welcomeText2:
+      "Etsitpä sitten kiinnostavaa tekemistä tai haluat koota porukan kasaan, meiltä löydät helpon tavan ilmoittautua tapahtumiin ja järjestää omia. Tee arjesta elämyksiä ja yhdistä ihmiset oikeassa paikassa, oikeaan aikaan.",
+    youHaveJoinedForTheEvent: "Olet ilmoittautunut tapahtumaan",
     // Lajit / Categoriat
     amerikkalainen_jalkapallo: "Amerikkalainen jalkapallo",
     avantouinti: "Avantouinti",
@@ -262,6 +281,6 @@ const translations = {
     tennis: "Tennis",
     uinti: "Uinti",
   },
-}
+};
 
-export default translations
+export default translations;
