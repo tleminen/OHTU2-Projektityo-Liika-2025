@@ -268,8 +268,9 @@ const EventView = () => {
           <h2>Liittyneitä</h2>
           <p>{selectedTime && selectedTime.JoinedCount}</p>
           <h2>Kuvaus:</h2>
-          <p>{event.Description}</p>
-
+          <div style={{ maxWidth: "600px", marginBottom: "10px" }}>
+            {event.Description}
+          </div>
           <h3>Syötä sähköposti, jotta voit liittyä tapahtumaan</h3>
           <input
             type="text"
@@ -371,7 +372,9 @@ const EventView = () => {
         <h2>Liittyneitä</h2>
         <p>{selectedTime && selectedTime.JoinedCount}</p>
         <h2>Kuvaus:</h2>
-        <p>{event.Description}</p>
+        <div style={{ maxWidth: "600px", marginBottom: "10px" }}>
+          {event.Description}
+        </div>
         {selectedTime && !isJoined(selectedTime) && (
           <button className="join-btn" onClick={() => handleJoin(userID, id)}>
             Ilmoittaudu
