@@ -56,18 +56,14 @@ const Frontpage = () => {
           </div>
           <div className="button-container">{singedOrNot(user)}</div>
           <div className="text-background">
-            <div className="frontpage-descriptive-text">
-              <h5>
-                <style className={"text-h6"}>Liika.eu</style> {t.welcomeText}
-              </h5>
-            </div>
+            <h5 className="frontpage-descriptive-text">
+              <style className={"text-h6"}>Liika.eu</style> {t.welcomeText}
+            </h5>
           </div>
           <div className="text-background3">
             {" "}
-            <div className="h7">
-              <div className="frontpage-smaller-descriptive-text">
-                {t.welcomeText2}
-              </div>
+            <div className="frontpage-smaller-descriptive-text">
+              {t.welcomeText2}
             </div>
           </div>
         </div>

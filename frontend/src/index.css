@@ -427,31 +427,6 @@ h6 {
   text-shadow: 2px 2px 5px rgba(26, 26, 26, 0.5);
 }
 
-/*Liika.eu teksti pääsivulla*/
-.text-h6 {
-  color: rgb(48, 104, 202);
-  font-family: "Copperplate", "Fantasy", sans-serif;
-  font-size: xx-large;
-  line-height: 1;
-  text-align: center;
-  display: inline-block;
-  font-size: inherit; /* Perii <h5>:n fonttikoon */
-  line-height: inherit; /* Säilyttää saman rivivälin */
-  display: inline;
-  text-shadow: 2px 2px 5px rgba(26, 26, 26, 0.5);
-}
-
-/*Liika.eu jälkeinen asiateksti*/
-.h7 {
-  font-family: "Copperplate", "Fantasy", sans-serif;
-  font-size: large;
-  line-height: 1;
-  text-align: center;
-  padding: 20px 50px;
-  display: inline-block;
-  text-shadow: 2px 2px 5px rgba(26, 26, 26, 0.5);
-}
-
 .fullpage {
   display: flex;
   flex-direction: column;

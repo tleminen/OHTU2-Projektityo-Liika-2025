@@ -36,7 +36,17 @@ const EventList = (listType) => {
           storedToken,
           { UserID: userID, Clubs: clubs }
         )
-        setClubEvents(clubEvents)
+        const clubIds = clubs.map((club) => club.ClubID) // Tehdään taulukko clubIDitä
+        const groupedEvents = clubIds.map((clubId) => {
+          const club = clubs.find((c) => c.ClubID === clubId)
+          return {
+            clubId,
+            clubName: club?.Name || "Tuntematon klubi",
+            events: clubEvents.filter((event) => event.ClubID === clubId),
+          }
+        })
+        console.log(groupedEvents)
+        setClubEvents(groupedEvents)
       } else if (listType.listType === "joined") {
         try {
           const events = await eventService.getUserJoinedEvents(
@@ -111,46 +121,56 @@ const EventList = (listType) => {
             </Link>
           ))}
         </div>
-        {listType.listType === "created" && (
-          <div className="event-container">
-            <h1>Yhteistyö</h1>
-            <div className="event-list-items">
-              {clubEvents.map((event, index) => (
-                <Link
-                  to={`${parseLink()}${event.EventID}`}
-                  key={index}
-                  className="event-item-container"
-                >
-                  <div className="event-item">
-                    <div>
-                      <h2>Otsikko</h2>
-                      {event.Title}
-                    </div>
-                    <div>
-                      <h2>Aika</h2>
-                      {parseTimeAndDate(event.StartTime)[1].slice(0, -4)} {""}
-                      {parseTimeAndDate(event.StartTime)[0]}
-                    </div>
+        {listType.listType === "created" && clubEvents[0] && (
+          <div>
+            <h1>Yhteistyö {clubEvents[0].Name}</h1>
+            <div className="event-container">
+              <h2>{clubEvents[0].Name}</h2>
 
-                    <div>
-                      <h2>Osallistujat</h2>
-                      {event.JoinedCount}
-                    </div>
-                  </div>
+              <div className="event-list-items">
+                {events.length === 0 ? (
+                  <p>Ei tulevia tapahtumia</p>
+                ) : (
+                  events.map((event) => (
+                    <Link
+                      to={`${parseLink()}${event.EventID}`}
+                      key={event.EventID}
+                      className="event-item-container"
+                    >
+                      <div className="event-item">
+                        <div>
+                          <h3>Otsikko</h3>
+                          {event.Title}
+                        </div>
+                        <div>
+                          <h3>Aika</h3>
+                          {parseTimeAndDate(event.StartTime)[1].slice(
+                            0,
+                            -4
+                          )}{" "}
+                          {parseTimeAndDate(event.StartTime)[0]}
+                        </div>
+                        <div>
+                          <h3>Osallistujat</h3>
+                          {event.JoinedCount}
+                        </div>
+                      </div>
 
-                  <div className="event-item">
-                    <img
-                      src={`/lajit/${selectCategoryName([
-                        event.CategoryID,
-                      ])}.png`}
-                      alt="Logo"
-                      width={100}
-                      height={100}
-                      className="event-view-icon" // Ei taida toimia tää className??
-                    />
-                  </div>
-                </Link>
-              ))}
+                      <div className="event-item">
+                        <img
+                          src={`/lajit/${selectCategoryName([
+                            event.CategoryID,
+                          ])}.png`}
+                          alt="Logo"
+                          width={100}
+                          height={100}
+                          className="event-view-icon"
+                        />
+                      </div>
+                    </Link>
+                  ))
+                )}
+              </div>
             </div>
           </div>
         )}
