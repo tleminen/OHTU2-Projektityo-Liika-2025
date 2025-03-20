@@ -72,6 +72,14 @@ const Map = ({ startingLocation }) => {
     }
   }
 
+  // Jos kuvaus on pitkä niin rajataan se 250merkkiin
+  const handleDescription = (description) => {
+    if (description.length > 200) {
+      return description.slice(0, 200) + "..."
+    }
+    return description
+  }
+
   // Kategorian näkyvyyden käsittely
   const toggleCategory = (selectedCategories) => {
     let catSelected = []
@@ -262,7 +270,7 @@ const Map = ({ startingLocation }) => {
     <em>${parseTimeAndDate(tapahtuma.StartTime)[0]} - ${
             parseTimeAndDate(tapahtuma.EndTime)[0]
           }<em><br/>
-    ${tapahtuma.Description || ""}<br/>
+    ${handleDescription(tapahtuma.Description)}<br/>
     <p style="text-transform: lowercase; padding: 4px 0px; margin:0;">${
       t.participants
     }: ${tapahtuma.JoinedCount} / ${tapahtuma.ParticipantMax || "-"}</p>
