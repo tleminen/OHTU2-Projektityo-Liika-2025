@@ -1,27 +1,27 @@
-import Header from "../header";
-import mapImage from "../../assets/map_kuvituskuva.png";
-import Footer from "../footer";
-import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-import SignedOut from "./singedOut";
-import SignedIn from "./signedIn";
-import translations from "../../assets/translation";
+import Header from "../header"
+import mapImage from "../../assets/map_kuvituskuva.png"
+import Footer from "../footer"
+import { useNavigate } from "react-router-dom"
+import { useSelector } from "react-redux"
+import SignedOut from "./singedOut"
+import SignedIn from "./signedIn"
+import translations from "../../assets/translation"
 const Frontpage = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
   const navigateTo = (path) => {
-    navigate(`/${path}`);
-  };
-  const language = useSelector((state) => state.language.language);
-  const t = translations[language];
-  const user = useSelector((state) => state.user.user);
+    navigate(`/${path}`)
+  }
+  const language = useSelector((state) => state.language.language)
+  const t = translations[language]
+  const user = useSelector((state) => state.user.user)
 
   const singedOrNot = () => {
     if (user === null) {
-      return <SignedOut />;
+      return <SignedOut />
     } else {
-      return <SignedIn />;
+      return <SignedIn />
     }
-  };
+  }
 
   return (
     <div
@@ -56,21 +56,25 @@ const Frontpage = () => {
           </div>
           <div className="button-container">{singedOrNot(user)}</div>
           <div className="text-background">
-            <h5 className="frontpage-descriptive-text">
-              <h6>Liika.eu</h6> {t.welcomeText}
-            </h5>
+            <div className="frontpage-descriptive-text">
+              <h5>
+                <style className={"text-h6"}>Liika.eu</style> {t.welcomeText}
+              </h5>
+            </div>
           </div>
           <div className="text-background3">
             {" "}
-            <h7 className="frontpage-smaller-descriptive-text">
-              {t.welcomeText2}
-            </h7>
+            <div className="h7">
+              <div className="frontpage-smaller-descriptive-text">
+                {t.welcomeText2}
+              </div>
+            </div>
           </div>
         </div>
       </div>
       <Footer />
     </div>
-  );
-};
+  )
+}
 
-export default Frontpage;
+export default Frontpage
