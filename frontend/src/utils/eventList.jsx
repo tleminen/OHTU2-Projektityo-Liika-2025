@@ -28,6 +28,8 @@ const EventList = (listType) => {
         } catch (error) {
           console.error("Virhe haettaessa käyttäjän tapahtumia: " + error)
         }
+        // TODO: Hae käyttäjän clubiroolin tapahtumat
+        const clubEvents = []
       } else if (listType.listType === "joined") {
         try {
           const events = await eventService.getUserJoinedEvents(

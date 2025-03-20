@@ -55,6 +55,7 @@ const LoginForm = () => {
             username: user.username,
             token: user.token,
             email: user.email,
+            clubs: user.clubs,
           })
         )
         dispatch(

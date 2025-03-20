@@ -1,6 +1,8 @@
 Bugit
 
 MapView:
+Search jää logon alle
+Ratkaisu?: Logosta myös layer (ei valikoihin) ja searchin taakse?
 
 -Kirjautumaton:
 -css-poikkeamia
@@ -12,15 +14,13 @@ Yksittäisen tapahtuman näkymä:
 
 Oman tapahtuman muokkaus:
 
-- Vanhat tapahtumat listana jossa osallistujamäärä, PItäisikö olla ettei voi enää perua?
+- Vanhat tapahtumat listana jossa osallistujamäärä, ei voi enää perua tapahtumaa
 
 Login:
 
 CreateEvent:
 Tapahtuman kesto pitäisi olla yli 0min?
 kirjautumattoman näkymässä padding yms välit kuntoon
-
-
 
 Backend:
 ! Nearby-haku hakee käyttäjätunnuksen vaikka se olisi sähköpostiosoitemuotoinen (sis. @). Frontti filtteröi sen, mutta pitää poistaa backendissä!
