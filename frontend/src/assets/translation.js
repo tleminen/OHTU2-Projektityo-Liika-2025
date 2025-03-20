@@ -106,6 +106,7 @@ const translations = {
     validation_psw_again: "Confirm password",
     validation_psw_all: "Password must contain only letters and numbers",
     validation_otp: "Email verification code required",
+    welcomeText1: "Welcome to move and experience together!",
     welcomeText:
       "Liika.eu brings events close to you - and gives you the opportunity to create your own! Whether you're looking for exciting activities or want to gather a group together, we offer an easy way to sign up for events and organize your own. Turn everyday moments into experiences and connect people in the right place at the right time.",
     // Lajit / Categoriat
@@ -238,7 +239,6 @@ const translations = {
     validation_psw_all: "Salasana saa sisältää vain kirjaimia ja numeroita",
     validation_otp: "Sähköpostiosoitteen vahvistuskoodi vaaditaan",
     welcomeText1: "Tervetuloa liikkumaan ja kokemaan yhdessä!",
-    welcomeText2: "Connecting people... ...live!",
     welcomeText:
       "Liika.eu tuo tapahtumat lähellesi - ja antaa sinulle mahdollisuuden luoda omasi! Etsitpä sitten kiinnostavaa tekemistä tai haluat koota porukan kasaan, meiltä löydät helpon tavan ilmoittautua tapahtumiin ja järjestää omia. Tee arjesta elämyksiä ja yhdistä ihmiset oikeassa paikassa, oikeaan aikaan.",
     // Lajit / Categoriat
