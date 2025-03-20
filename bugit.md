@@ -2,6 +2,7 @@ Bugit
 
 MapView:
 Search jää logon alle
+Ratkaisu?: Logosta myös layer (ei valikoihin) ja searchin taakse?
 
 -Kirjautumaton:
 -css-poikkeamia

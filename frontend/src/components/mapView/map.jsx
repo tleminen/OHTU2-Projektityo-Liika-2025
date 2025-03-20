@@ -313,6 +313,7 @@ const Map = ({ startingLocation }) => {
   }
 
   useEffect(() => {
+    /*Overlayt haetaan käyttöön tässä*/
     const liikaLayer = new LiikaOverlay()
     const darkLayer = new DarkOverlay()
     const userLayer = new UserOverlay()
@@ -341,7 +342,8 @@ const Map = ({ startingLocation }) => {
 
     //Search bar
     L.Control.geocoder().addTo(map)
-    // Lisää overlay-valikkoon
+
+    // Lisää uuden layerit täällä
     const overlays = {
       Liika: liikaLayer,
       Dark: darkLayer,
