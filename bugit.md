@@ -3,8 +3,6 @@ Bugit
 TODO: Jos ei tarvittavia tietoja lataamiseen (redux) niin navigate("/") ja localstorage.clear()
 
 MapView:
-Search jää logon alle
-Ratkaisu?: Logosta myös layer (ei valikoihin) ja searchin taakse?
 
 -Kirjautumaton:
 

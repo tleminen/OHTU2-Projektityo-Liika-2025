@@ -17,7 +17,10 @@ const {
 const { Sequelize } = require("sequelize")
 const Users = require("../models/users")
 const { sendEmail } = require("../services/email")
-const { createUserUnSigned } = require("../services/createUserUnSigned")
+const {
+  createUserUnSigned,
+  generateUserId,
+} = require("../services/createUserUnSigned")
 const {
   getUserJoinedEvents,
   getUserCreatedEvents,
@@ -241,9 +244,10 @@ eventRouter.post("/create_event_unsigned", async (req, res) => {
     })
     if (!user) {
       // Jos uusi käyttäjä
+      const UUID = generateUserId()
       user = await Users.create(
         {
-          Username: email,
+          Username: UUID,
           Password: password,
           Role: 2,
           Email: email,
