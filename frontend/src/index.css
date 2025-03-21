@@ -321,8 +321,8 @@ button:focus-visible {
 /* Perustyylit käyttäjän muokattavalle tekstikentälle */
 .input-field {
   width: 100%;
-  min-width: 180px;
-  max-width: 400px;
+  min-width: 400px;
+  max-width: 500px;
   padding: 10px;
   font-size: 1em;
   font-family: inherit;
@@ -612,5 +612,9 @@ h6 {
   }
   .h1-resizeable {
     font-size: 120%;
+  }
+  .input-field {
+    min-width: 200px;
+    max-width: 90%;
   }
 }
