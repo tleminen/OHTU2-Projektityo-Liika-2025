@@ -6,7 +6,14 @@ const {
 const {
   getSingleEventWithTimes,
 } = require("../services/getSingleEventWithTimes")
-const { Categories, Events, Times, Joins, sequelize } = require("../models")
+const {
+  Categories,
+  Events,
+  Times,
+  Joins,
+  sequelize,
+  ClubMembers,
+} = require("../models")
 const { Sequelize } = require("sequelize")
 const Users = require("../models/users")
 const { sendEmail } = require("../services/email")
@@ -113,8 +120,31 @@ eventRouter.post("/create_event", userExtractor, async (req, res) => {
     dates,
     startTime,
     endTime,
+    clubID,
   } = req.body
+
+  console.log("Saapuva clubID:", clubID)
+  console.log("Saapuva req.body:", req.body)
   if (userID === req.user?.dataValues?.UserID ?? "NAN") {
+    if (clubID) {
+      // Tarkastetaan onko oikeus luoda yhteistyökumppanille tapahtumia (eli ei ole feikattu postpyyntö tavallisella käyttäjällä)
+      try {
+        const result = await ClubMembers.findOne({
+          where: {
+            UserID: userID,
+            ClubID: clubID,
+          },
+        })
+        if (!result) {
+          res.status(403).json({ error: "Not part of the club at request" })
+        }
+        console.log("löytyi vastaavuus tietokannasta")
+      } catch (e) {
+        console.error(e)
+        res.status(500).send()
+      }
+    }
+
     const transaction = await sequelize.transaction()
 
     try {
@@ -137,6 +167,7 @@ eventRouter.post("/create_event", userExtractor, async (req, res) => {
           ParticipantMax: participantsMax,
           ParticipantMin: participantsMin,
           Description: description,
+          ClubID: clubID,
         },
         { transaction }
       )
@@ -145,9 +176,6 @@ eventRouter.post("/create_event", userExtractor, async (req, res) => {
       await Promise.all(
         dates.map(async (timestamp) => {
           const date = new Date(timestamp).toISOString().split("T")[0] // YYYY-MM-DD
-          console.log(date)
-          console.log(startTime)
-          console.log(endTime)
 
           await Times.create(
             {

@@ -124,11 +124,14 @@ const Map = ({ startingLocation }) => {
     })
   }
 
-  const showUsername = (username) => {
-    if (username.includes("@")) {
+  const showUsername = ({ user, club }) => {
+    if (club) {
+      return club
+    }
+    if (user.includes("@")) {
       return ""
     } else {
-      return username
+      return user
     }
   }
 
@@ -275,7 +278,10 @@ const Map = ({ startingLocation }) => {
     <p style="text-transform: lowercase; padding: 4px 0px; margin:0;">${
       t.participants
     }: ${tapahtuma.JoinedCount} / ${tapahtuma.ParticipantMax || "-"}</p>
-    <em>${showUsername(tapahtuma.Username)}</em> <br/>
+    <em>${showUsername({
+      user: tapahtuma.Username,
+      club: tapahtuma.ClubName,
+    })}</em> <br/>
     <a href="/events/${
       tapahtuma.EventID
     }" style="color: blue; text-decoration: underline;">
@@ -392,7 +398,7 @@ const Map = ({ startingLocation }) => {
               backgroundImage: "url(/addeventCropped.png)", // Suora polku publicista
             }}
           ></button>
-          {user && clubs && (
+          {user && clubs[0] && (
             <button
               className="pika-painike"
               onClick={() => onClickCreateClubEvent()}

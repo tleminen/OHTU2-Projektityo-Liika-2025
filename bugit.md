@@ -5,7 +5,9 @@ Search jää logon alle
 Ratkaisu?: Logosta myös layer (ei valikoihin) ja searchin taakse?
 
 -Kirjautumaton:
--css-poikkeamia
+
+- css-poikkeamia
+- Notifikaatio kirjautumattoman tapahtumaluonnille jos jo rekisteröity! (error)
 
 Yksittäisen tapahtuman näkymä:
 
@@ -21,6 +23,7 @@ Login:
 CreateEvent:
 Tapahtuman kesto pitäisi olla yli 0min?
 kirjautumattoman näkymässä padding yms välit kuntoon
+Validate tehtävä
 
 Backend:
 ! Nearby-haku hakee käyttäjätunnuksen vaikka se olisi sähköpostiosoitemuotoinen (sis. @). Frontti filtteröi sen, mutta pitää poistaa backendissä!

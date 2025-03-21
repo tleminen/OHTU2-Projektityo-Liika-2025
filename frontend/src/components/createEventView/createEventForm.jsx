@@ -1,5 +1,6 @@
+/* eslint-disable react/prop-types */
 import { useSelector } from "react-redux"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import translations from "../../assets/translation.js"
 import LocationMap from "../locationMap.jsx"
 import "./createEvent.css"
@@ -10,7 +11,6 @@ import DatePicker from "react-multi-date-picker"
 import SendEmail from "../../utils/sendEmail.jsx"
 import { selectCategoryName } from "../../assets/icons.js"
 
-// eslint-disable-next-line react/prop-types
 const CreateEventForm = ({ club }) => {
   const language = useSelector((state) => state.language.language)
   const t = translations[language]
@@ -33,6 +33,7 @@ const CreateEventForm = ({ club }) => {
   const clubs = useSelector((state) => state.user?.user?.clubs ?? null)
   const yesterday = new Date()
   yesterday.setDate(yesterday.getDate() - 1)
+  let clubID = null // Tallennettava yhteistyökumppani ID. Oletus on null
 
   const handleClubSelect = (clubId) => {
     setSelectedClub(clubId)
@@ -40,7 +41,7 @@ const CreateEventForm = ({ club }) => {
 
   const clubEventView = () => {
     console.log(club)
-    if (club && clubs) {
+    if (club && clubs[0]) {
       return (
         <div className="form-item">
           <div className="club-selection-container">
@@ -64,13 +65,17 @@ const CreateEventForm = ({ club }) => {
   }
 
   const handleSubmit = (event) => {
-    const categoryID = activity.value
     event.preventDefault()
+    const categoryID = activity.value
 
     if (!isOtpVerified) {
       alert(t.opt_robot_check)
     }
 
+    if (club) {
+      console.log("clubitapahtuma")
+      clubID = selectedClub
+    }
     try {
       eventService.createEvent(storedToken, {
         title,
@@ -83,6 +88,7 @@ const CreateEventForm = ({ club }) => {
         participantsMin,
         participantsMax,
         description,
+        clubID,
       })
     } catch (error) {
       console.error("Erron while creating event: " + error)
@@ -129,6 +135,7 @@ const CreateEventForm = ({ club }) => {
         participantsMax,
         description,
         email,
+        clubID,
       })
     } catch (error) {
       console.error("Erron while creating event (unsigned): " + error)
