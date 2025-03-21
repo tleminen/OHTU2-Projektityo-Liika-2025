@@ -162,13 +162,20 @@ const EventView = () => {
       : baseClass
   }
 
-  const showUsername = (username) => {
-    if (username.includes("@")) {
+  const showUsername = ({ user, club }) => {
+    if (club) {
+      return (
+        <h1 style={{ textAlign: "center" }}>
+          {club} {t.organizesEvent}:
+        </h1>
+      )
+    }
+    if (user.includes("@")) {
       return ""
     } else {
       return (
         <h1>
-          {username} {t.organizesEvent}:
+          {user} {t.organizesEvent}:
         </h1>
       )
     }
@@ -328,7 +335,7 @@ const EventView = () => {
       <Header />
       <div className="event-view">
         <span className="spacer-line"></span>
-        {showUsername(event.Username)}
+        {showUsername({ user: event.Username, club: event.ClubName })}
         <img
           src={`/lajit/${selectCategoryName([event.CategoryID])}.png`}
           alt="Logo"
