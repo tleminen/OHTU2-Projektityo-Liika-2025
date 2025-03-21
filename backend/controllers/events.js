@@ -123,8 +123,6 @@ eventRouter.post("/create_event", userExtractor, async (req, res) => {
     clubID,
   } = req.body
 
-  console.log("Saapuva clubID:", clubID)
-  console.log("Saapuva req.body:", req.body)
   if (userID === req.user?.dataValues?.UserID ?? "NAN") {
     if (clubID) {
       // Tarkastetaan onko oikeus luoda yhteistyökumppanille tapahtumia (eli ei ole feikattu postpyyntö tavallisella käyttäjällä)
@@ -138,7 +136,6 @@ eventRouter.post("/create_event", userExtractor, async (req, res) => {
         if (!result) {
           res.status(403).json({ error: "Not part of the club at request" })
         }
-        console.log("löytyi vastaavuus tietokannasta")
       } catch (e) {
         console.error(e)
         res.status(500).send()
@@ -643,8 +640,6 @@ eventRouter.post("/verifyOtp", async (req, res) => {
 
   try {
     const storedCode = verificationCodes.get(email) //Hae tallennettu koodi
-
-    console.log("storeCode: " + storedCode)
 
     if (!storedCode) {
       return res.status(400).json({ message: "Vahvistuskoodi ei löytynyt." })

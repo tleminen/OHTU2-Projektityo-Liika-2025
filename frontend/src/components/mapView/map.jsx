@@ -12,7 +12,7 @@ import logo from "../../assets/liika_logo169.png"
 import { useNavigate } from "react-router-dom"
 import eventService from "../../services/eventService"
 import { createRoot } from "react-dom/client"
-import { selectIcon } from "../../assets/icons"
+import { selectClubIcon, selectIcon } from "../../assets/icons"
 import { categories } from "./utils"
 import ShortcutButtons from "./shortcutButtons"
 import {
@@ -291,8 +291,17 @@ const Map = ({ startingLocation }) => {
           return container
         })
         const categoryID = tapahtuma.CategoryID
-
-        marker.setIcon(selectIcon(categoryID))
+        console.log(tapahtuma)
+        if (tapahtuma.ClubName) {
+          marker.setIcon(
+            selectClubIcon({
+              clubName: tapahtuma.ClubName,
+              categoryID: tapahtuma.CategoryID,
+            })
+          )
+        } else {
+          marker.setIcon(selectIcon(categoryID))
+        }
         // Lisää marker oikeaan kategoriaan
         if (categories[categoryID]) {
           categories[categoryID].markers.push(marker)
