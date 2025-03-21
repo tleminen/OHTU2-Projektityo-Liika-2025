@@ -455,14 +455,18 @@ h6 {
   cursor: pointer;
 }
 
+.overlay-container {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 400;
+}
+
 /*Kartan logon containeri*/
 .overlay {
-  position: fixed; /* Fixattu yläreunaan ja keskelle */
-  top: 1%;
-  left: 50%;
-  transform: translateX(-50%); /* Keskittää vaakasuunnassa */
-  transform: translateX(-50%);
-  backdrop-filter: hue-rotate(5deg);
+  display: flex;
+  justify-content: center;
+  backdrop-filter: hue-rotate(50deg);
   border-radius: 12%;
   padding-top: 6px;
   padding-left: 10px;
@@ -518,15 +522,6 @@ h6 {
   width: 80vw;
   margin: auto;
   z-index: 1000;
-}
-/* Mobiilinäkymä: 100vw leveys */
-@media (max-width: 800px) {
-  .map {
-    width: 100vw;
-  }
-  .h1-resizeable {
-    font-size: 120%;
-  }
 }
 
 .map-location-setter {
@@ -608,4 +603,14 @@ h6 {
   border-top: 1px solid black; /* Viivan tyyli ja väri */
   line-height: 1; /* Yhden rivin korkeus */
   margin: 10px 0; /* Viivan ylä- ja alapuolen marginaali */
+}
+
+/* Mobiilinäkymä: 100vw leveys */
+@media (max-width: 800px) {
+  .map {
+    width: 100vw;
+  }
+  .h1-resizeable {
+    font-size: 120%;
+  }
 }

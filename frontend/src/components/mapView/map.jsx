@@ -91,7 +91,6 @@ const Map = ({ startingLocation }) => {
       // isSelected on Boolean-arvo (true tai false)
       if (isSelected) {
         // Käsitellään vain valittuja kategorioita
-        console.log(`Kategoria ${categoryId} on valittu!`)
         catSelected.push(Number(categoryId))
       }
     })
@@ -186,7 +185,6 @@ const Map = ({ startingLocation }) => {
               if (ends === "") {
                 ends = "23:59"
               }
-              console.log("refreshMarkers: " + JSON.stringify(time))
               eventList = await eventService.getEvents({
                 latitude: center.lat,
                 longitude: center.lng,
@@ -292,7 +290,6 @@ const Map = ({ startingLocation }) => {
           return container
         })
         const categoryID = tapahtuma.CategoryID
-        console.log(tapahtuma)
         if (tapahtuma.ClubName) {
           // Mikäli tapahtuma on yhteistyötapahtuma laitetaan yhteistyökumppanin ikoni
           marker.setIcon(
@@ -352,7 +349,6 @@ const Map = ({ startingLocation }) => {
 
     // Tarkastetaan ensin, että kartalla on aloitussijainti:
     if (!startingLocation.o_lat) {
-      console.log("Ei aloituskordinaatteja..\nAsetetaan defaultit")
       ;(startingLocation.o_lat = 62.6013), (startingLocation.o_lng = 29.7639)
       startingLocation.zoom = 12
     }
@@ -396,16 +392,13 @@ const Map = ({ startingLocation }) => {
       }
     }
 
-    /*
-    const logoControl = L.control({ position: "bottomleft" })
-    logoControl.onAdd = () => {
-      const container = L.DomUtil.create("div", "overlay")
-      const root = createRoot(container)
-      root.render(<img src={logo} alt="Logo" width={120} height={100} />)
-      return container
-    }
-    logoControl.addTo(map)
-*/
+    const customDiv = L.DomUtil.create("div", "overlay-container")
+    customDiv.innerHTML = `<img src=${logo} alt="Logo" width=${120} height=${100} />`
+    customDiv.addEventListener("click", () => {
+      navigate("/")
+    })
+    map.getContainer().appendChild(customDiv)
+
     const pikapainikkeet = L.control({ position: "topleft" })
 
     pikapainikkeet.onAdd = () => {
@@ -487,23 +480,14 @@ const Map = ({ startingLocation }) => {
       L.DomEvent.disableClickPropagation(container)
       const root = createRoot(container)
       root.render(
-        <div>
-          <img
-            className="overlay"
-            src={logo}
-            alt="Logo"
-            width={120}
-            height={100}
-          />
-          <div className="refresh-events">
-            <button
-              className="pika-painike"
-              onClick={() => onClickRefresh(map, null)}
-              style={{
-                backgroundImage: "url(/refreshCropped.png)", // Suora polku publicista
-              }}
-            ></button>
-          </div>
+        <div className="refresh-events">
+          <button
+            className="pika-painike"
+            onClick={() => onClickRefresh(map, null)}
+            style={{
+              backgroundImage: "url(/refreshCropped.png)", // Suora polku publicista
+            }}
+          ></button>
         </div>
       )
       return container
