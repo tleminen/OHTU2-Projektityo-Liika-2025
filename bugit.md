@@ -22,8 +22,7 @@ Login:
 
 CreateEvent:
 Tapahtuman kesto pitäisi olla yli 0min?
-kirjautumattoman näkymässä padding yms välit kuntoon
-Validate tehtävä
+Validate tehtävä. Nyt voi luoda tapahtumia miten sattuu
 
 Backend:
 
@@ -42,3 +41,6 @@ Chatin vastaus:
 
 Kysymyksiä ja muita huomioita:
 Järjestäjän nimi, mihin kaikkialle näkyviin?
+
+Yhteistyökumppanien tapahtumat:
+Nyt muokkausoikeus vain tapahtuman luoneella. Varmaan jää niin? Hieman monimutkainen toteuttaa muuten.
