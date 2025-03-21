@@ -268,7 +268,8 @@ const Map = ({ startingLocation }) => {
         const lat = coordinates[1]
         const lng = coordinates[0]
         const marker = L.marker([lat, lng]).bindPopup(() => {
-          const container = document.createElement("div")
+          // Asetetaan markkeri oikeisiin koordinaatteihin ja liitetään siihen popUp
+          const container = document.createElement("div") // Popupin containeri, seuraavana sisältö:
           container.innerHTML = `
     <h1>${tapahtuma.Title}</h1>
     <em>${parseTimeAndDate(tapahtuma.StartTime)[0]} - ${
@@ -293,6 +294,7 @@ const Map = ({ startingLocation }) => {
         const categoryID = tapahtuma.CategoryID
         console.log(tapahtuma)
         if (tapahtuma.ClubName) {
+          // Mikäli tapahtuma on yhteistyötapahtuma laitetaan yhteistyökumppanin ikoni
           marker.setIcon(
             selectClubIcon({
               clubName: tapahtuma.ClubName,
@@ -304,6 +306,7 @@ const Map = ({ startingLocation }) => {
         }
         // Lisää marker oikeaan kategoriaan
         if (categories[categoryID]) {
+          // Muuten laitetaan kategoriaikoni
           categories[categoryID].markers.push(marker)
           // Lisää markerClusterGroupiin vain, jos kategoria on asetettu näkyväksi
           if (categories[categoryID].visible) {
@@ -346,6 +349,7 @@ const Map = ({ startingLocation }) => {
     const darkLayer = new DarkOverlay()
     const userLayer = new UserOverlay()
     // Luo karttaelementti kun komponentti mounttaa
+
     // Tarkastetaan ensin, että kartalla on aloitussijainti:
     if (!startingLocation.o_lat) {
       console.log("Ei aloituskordinaatteja..\nAsetetaan defaultit")
@@ -392,6 +396,16 @@ const Map = ({ startingLocation }) => {
       }
     }
 
+    /*
+    const logoControl = L.control({ position: "bottomleft" })
+    logoControl.onAdd = () => {
+      const container = L.DomUtil.create("div", "overlay")
+      const root = createRoot(container)
+      root.render(<img src={logo} alt="Logo" width={120} height={100} />)
+      return container
+    }
+    logoControl.addTo(map)
+*/
     const pikapainikkeet = L.control({ position: "topleft" })
 
     pikapainikkeet.onAdd = () => {
@@ -473,14 +487,23 @@ const Map = ({ startingLocation }) => {
       L.DomEvent.disableClickPropagation(container)
       const root = createRoot(container)
       root.render(
-        <div className="refresh-events">
-          <button
-            className="pika-painike"
-            onClick={() => onClickRefresh(map, null)}
-            style={{
-              backgroundImage: "url(/refreshCropped.png)", // Suora polku publicista
-            }}
-          ></button>
+        <div>
+          <img
+            className="overlay"
+            src={logo}
+            alt="Logo"
+            width={120}
+            height={100}
+          />
+          <div className="refresh-events">
+            <button
+              className="pika-painike"
+              onClick={() => onClickRefresh(map, null)}
+              style={{
+                backgroundImage: "url(/refreshCropped.png)", // Suora polku publicista
+              }}
+            ></button>
+          </div>
         </div>
       )
       return container
@@ -530,7 +553,12 @@ const Map = ({ startingLocation }) => {
   return (
     <div className="map">
       <div id="map" className="map"></div>
-      <div id="overlay">
+    </div>
+  )
+}
+
+/** Oli ennen div id="map" --- jälkeen
+ * <div id="overlay">
         <img
           src={logo}
           alt="Logo"
@@ -539,8 +567,6 @@ const Map = ({ startingLocation }) => {
           onClick={() => navigate("/")}
         />
       </div>
-    </div>
-  )
-}
+ */
 
 export default Map
