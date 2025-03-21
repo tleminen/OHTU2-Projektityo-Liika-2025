@@ -127,7 +127,7 @@ const Map = ({ startingLocation }) => {
     if (club) {
       return club
     }
-    if (user.includes("@")) {
+    if (user.includes("@") || user.includes("-")) {
       return ""
     } else {
       return user

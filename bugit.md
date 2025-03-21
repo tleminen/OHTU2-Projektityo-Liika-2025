@@ -26,7 +26,6 @@ kirjautumattoman näkymässä padding yms välit kuntoon
 Validate tehtävä
 
 Backend:
-! Nearby-haku hakee käyttäjätunnuksen vaikka se olisi sähköpostiosoitemuotoinen (sis. @). Frontti filtteröi sen, mutta pitää poistaa backendissä!
 
 Liika ei toimi FireFoxissa
 Chatin vastaus:

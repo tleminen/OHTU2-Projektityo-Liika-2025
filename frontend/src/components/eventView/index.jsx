@@ -170,7 +170,7 @@ const EventView = () => {
         </h1>
       )
     }
-    if (user.includes("@")) {
+    if (user.includes("@") || user.includes("-")) {
       return ""
     } else {
       return (
