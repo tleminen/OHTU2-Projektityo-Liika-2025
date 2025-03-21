@@ -4,6 +4,7 @@ const { Router } = require("express")
 const User = require("../models/users")
 const { sendEmail } = require("../services/email") // Tuo sendEmail-funktio
 const { getUserClubs } = require("../services/getUserClubs")
+const { Op } = require("sequelize")
 
 const loginRouter = Router()
 
@@ -15,7 +16,7 @@ loginRouter.post("/", async (req, res) => {
   try {
     const user = await User.findOne({
       where: {
-        Username: username,
+        [Op.or]: [{ Username: username }, { Email: username }],
       },
     })
     const passwordCorrect =
