@@ -270,7 +270,9 @@ const Map = ({ startingLocation }) => {
           const container = document.createElement("div") // Popupin containeri, seuraavana sisältö:
           container.innerHTML = `
     <h1>${tapahtuma.Title}</h1>
-    <em>${parseTimeAndDate(tapahtuma.StartTime)[0]} - ${
+    <em>📅${parseTimeAndDate(tapahtuma.StartTime)[1]}
+          <em> 
+    <em>🕒${parseTimeAndDate(tapahtuma.StartTime)[0]} - ${
             parseTimeAndDate(tapahtuma.EndTime)[0]
           }<em><br/>
     ${handleDescription(tapahtuma.Description)}<br/>
@@ -284,7 +286,7 @@ const Map = ({ startingLocation }) => {
     <a href="/events/${
       tapahtuma.EventID
     }" style="color: blue; text-decoration: underline;">
-      Siirry tapahtumaan
+      ${t.show_event_info}
     </a>
   `
           return container
@@ -540,17 +542,5 @@ const Map = ({ startingLocation }) => {
     </div>
   )
 }
-
-/** Oli ennen div id="map" --- jälkeen
- * <div id="overlay">
-        <img
-          src={logo}
-          alt="Logo"
-          width={120}
-          height={100}
-          onClick={() => navigate("/")}
-        />
-      </div>
- */
 
 export default Map

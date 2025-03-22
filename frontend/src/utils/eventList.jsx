@@ -95,17 +95,17 @@ const EventList = (listType) => {
             >
               <div className="event-item">
                 <div>
-                  <h2>Otsikko</h2>
+                  <h2>{t.title}</h2>
                   {event.Title}
                 </div>
                 <div>
-                  <h2>Aika</h2>
+                  <h2>{t.time}</h2>
                   {parseTimeAndDate(event.StartTime)[1].slice(0, -4)} {""}
                   {parseTimeAndDate(event.StartTime)[0]}
                 </div>
 
                 <div>
-                  <h2>Osallistujat</h2>
+                  <h2>{t.participants}</h2>
                   {event.JoinedCount}
                 </div>
               </div>
@@ -131,7 +131,7 @@ const EventList = (listType) => {
                 <div className="spacer-line"></div>
                 <div className="event-list-items">
                   {events.length === 0 ? (
-                    <p>Ei tulevia tapahtumia</p>
+                    <p>{t.no_upcoming_events}</p>
                   ) : (
                     events.map((event, index) => (
                       <Link
@@ -142,11 +142,11 @@ const EventList = (listType) => {
                         <div className="event-item">
                           <div>
                             <em>{club.clubName}</em>
-                            <h3>Otsikko</h3>
+                            <h3>{t.title}</h3>
                             {event.Title}
                           </div>
                           <div>
-                            <h3>Aika</h3>
+                            <h3>{t.time}</h3>
                             {parseTimeAndDate(event.StartTime)[1].slice(
                               0,
                               -4
@@ -154,7 +154,7 @@ const EventList = (listType) => {
                             {parseTimeAndDate(event.StartTime)[0]}
                           </div>
                           <div>
-                            <h3>Osallistujat</h3>
+                            <h3>{t.participants}</h3>
                             {event.JoinedCount}
                           </div>
                         </div>

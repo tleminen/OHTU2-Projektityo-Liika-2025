@@ -1,5 +1,5 @@
-import termsOfServiceText from "./termsOfServiceText";
-import infoText from "./infoText";
+import termsOfServiceText from "./termsOfServiceText"
+import infoText from "./infoText"
 const translations = {
   EN: {
     activity: "Activity",
@@ -11,6 +11,7 @@ const translations = {
     changeMapSettings: "Map style and settings",
     changeUsername: "Change username",
     chooseDate: "Choose date",
+    choose_organiser: "Choose event organiser",
     confirm: "Confirm",
     createEvent: "Create event",
     createdEvents: "Created events",
@@ -71,6 +72,7 @@ const translations = {
     newUsername: "New username",
     newUsernameAgain: "New username again",
     no_event_found: "Event not found",
+    no_upcoming_events: "No upcoming events",
     participants: "Participants",
     participantCount: "Number of participants",
     participantLimits: "Current participant limits",
@@ -89,6 +91,7 @@ const translations = {
     selectedLanguage: "Language",
     setEventLocationInfo: "Set the location for the event",
     setStartLocationInfo: "Set the starting location for searching events",
+    show_event_info: "Show event",
     start: "Press the map to start",
     startLocation: "Start location",
     startTime: "Starts at",
@@ -149,6 +152,7 @@ const translations = {
     changeEmail: "Vaihda sähköposti",
     changeUsername: "Vaihda käyttäjätunnus",
     chooseDate: "Valitse päivä",
+    choose_organiser: "Valitse järjestäjä",
     createEvent: "Luo tapahtuma",
     createdEvents: "Tulevat tapahtumasi",
     confirm: "Vahvista",
@@ -210,6 +214,7 @@ const translations = {
     newUsername: "Uusi käyttäjätunnus",
     newUsernameAgain: "Syötä käyttäjätunnus uudestaan",
     no_event_found: "Tapahtumaa ei löytynyt",
+    no_upcoming_events: "Ei tulevia tapahtumia",
     participants: "Osallistujat",
     participantCount: "Osallistujamäärä",
     participantLimits: "Nykyinen osallistujamäärä",
@@ -228,6 +233,7 @@ const translations = {
     setEventLocationInfo: "Tapahtuman sijainti",
     setStartLocationInfo: "Aseta tapahtumakartan aloitussijainti",
     start: "Napauta karttaa aloittaaksesi",
+    show_event_info: "Siirry tapahtumaan",
     startLocation: "Oletussijainti",
     startTime: "Aloitusaika",
     terms_of_service: "Käyttöehdot",
@@ -281,6 +287,6 @@ const translations = {
     tennis: "Tennis",
     uinti: "Uinti",
   },
-};
+}
 
-export default translations;
+export default translations

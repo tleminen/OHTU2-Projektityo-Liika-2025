@@ -45,7 +45,7 @@ const CreateEventForm = ({ club }) => {
       return (
         <div className="form-item">
           <div className="club-selection-container">
-            <h2>Valitse järjestäjä:</h2>
+            <h2>{t.choose_organiser}:</h2>
             {clubs.map((club) => (
               <label key={club.ClubID} className="club-radio-item">
                 <input
