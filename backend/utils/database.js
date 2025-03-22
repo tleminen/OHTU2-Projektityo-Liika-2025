@@ -29,6 +29,9 @@ const connectDB = async () => {
     console.log(`PosgreSQL-tietokantayhteys luotu!`)
 
     try {
+      console.error("Kysy Ollilta tietokannan päivittämisestä!")
+      // Nollaa tietokannasta clubit, lisää sähköpostiosoitteen mukaan clubiin jäsenen. Kysy ennenkuin ajat
+      /*
       await sequelize.query(`
   ALTER TABLE "Users" ALTER COLUMN "MapPreferences" TYPE VARCHAR(160);
   DELETE FROM "ClubMembers";
@@ -39,8 +42,8 @@ INSERT INTO "ClubMembers" ("ClubID", "UserID")
 SELECT 
     (SELECT "ClubID" FROM "Clubs" WHERE "Name" = 'Liika' LIMIT 1), 
     (SELECT "UserID" FROM "Users" WHERE "Email" = 'h.illo@hotmail.com' LIMIT 1);
-INSERT INTO "ClubMembers" ("ClubID", "UserID")
-`)
+`) 
+*/
     } catch (e) {
       console.warn(e)
     }
