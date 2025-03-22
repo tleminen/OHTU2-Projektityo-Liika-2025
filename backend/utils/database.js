@@ -30,7 +30,6 @@ const connectDB = async () => {
 
     try {
       await sequelize.query(`
-  ALTER TABLE "Users" ALTER COLUMN "MapPreferences" TYPE VARCHAR(160);
   DELETE FROM "ClubMembers";
 DELETE FROM "Clubs";
   INSERT INTO "Clubs" ("Name", "Email", "createdAt", "updatedAt")
