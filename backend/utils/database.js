@@ -31,6 +31,15 @@ const connectDB = async () => {
     try {
       await sequelize.query(`
   ALTER TABLE "Users" ALTER COLUMN "MapPreferences" TYPE VARCHAR(160);
+  DELETE FROM "ClubMembers";
+DELETE FROM "Clubs";
+  INSERT INTO "Clubs" ("Name", "Email", "createdAt", "updatedAt")
+VALUES ('Liika', 'liikaservice@gmail.com', NOW(), NOW());
+INSERT INTO "ClubMembers" ("ClubID", "UserID")
+SELECT 
+    (SELECT "ClubID" FROM "Clubs" WHERE "Name" = 'Liika' LIMIT 1), 
+    (SELECT "UserID" FROM "Users" WHERE "Email" = 'h.illo@hotmail.com' LIMIT 1);
+INSERT INTO "ClubMembers" ("ClubID", "UserID")
 `)
     } catch (e) {
       console.warn(e)
