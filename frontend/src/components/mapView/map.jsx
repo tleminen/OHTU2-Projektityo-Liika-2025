@@ -15,11 +15,7 @@ import { createRoot } from "react-dom/client"
 import { selectClubIcon, selectIcon } from "../../assets/icons"
 import { categories } from "./utils"
 import ShortcutButtons from "./shortcutButtons"
-import {
-  DarkOverlay,
-  LiikaOverlay as LiikaOverlay,
-  UserOverlay,
-} from "./layers/overlayLayers"
+import { DarkOverlay, LiikaOverlay, UserOverlay } from "./layers/overlayLayers"
 import { parseTimeAndDate } from "../../utils/helper"
 import translations from "../../assets/translation"
 
@@ -36,6 +32,9 @@ const Map = ({ startingLocation }) => {
   const markerClusterGroup = L.markerClusterGroup()
   const user = useSelector((state) => state.user?.user?.username ?? null)
   const clubs = useSelector((state) => state.user?.user?.clubs ?? null)
+  const mapPreferences = useSelector(
+    (state) => state.user?.user?.mapPreferences ?? null
+  )
   var first = true
 
   useEffect(() => {
@@ -346,7 +345,7 @@ const Map = ({ startingLocation }) => {
     /*Overlayt haetaan käyttöön tässä*/
     const liikaLayer = new LiikaOverlay()
     const darkLayer = new DarkOverlay()
-    const userLayer = new UserOverlay()
+    const userLayer = new UserOverlay(mapPreferences)
     // Luo karttaelementti kun komponentti mounttaa
 
     // Tarkastetaan ensin, että kartalla on aloitussijainti:

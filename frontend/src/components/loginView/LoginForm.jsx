@@ -56,6 +56,7 @@ const LoginForm = () => {
             token: user.token,
             email: user.email,
             clubs: user.clubs,
+            mapPreferences: user.mapPreferences,
           })
         )
         dispatch(

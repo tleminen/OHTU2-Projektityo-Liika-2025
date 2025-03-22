@@ -507,8 +507,6 @@ h6 {
   left: -50vw;
   width: 100vw;
   height: 100vh;
-  backdrop-filter: brightness(80%) invert(90%) contrast(190%) hue-rotate(180deg);
-  background: rgba(0, 0, 0, 0.114);
   pointer-events: none;
 }
 
@@ -616,5 +614,11 @@ h6 {
   .input-field {
     min-width: 200px;
     max-width: 90%;
+  }
+}
+
+@media (max-width: 400px) {
+  h1 {
+    font-size: x-large;
   }
 }

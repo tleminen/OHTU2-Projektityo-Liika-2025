@@ -20,7 +20,7 @@ const Users = sequelize.define("Users", {
     allowNull: true, // Saa olla null
   },
   MapPreferences: {
-    type: DataTypes.STRING(40),
+    type: DataTypes.STRING(160),
     allowNull: true, // Saa olla null
   },
 })
