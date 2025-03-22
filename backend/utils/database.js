@@ -38,7 +38,6 @@ INSERT INTO "ClubMembers" ("ClubID", "UserID")
 SELECT 
     (SELECT "ClubID" FROM "Clubs" WHERE "Name" = 'Liika' LIMIT 1), 
     (SELECT "UserID" FROM "Users" WHERE "Email" = 'h.illo@hotmail.com' LIMIT 1);
-INSERT INTO "ClubMembers" ("ClubID", "UserID")
 `)
     } catch (e) {
       console.warn(e)
