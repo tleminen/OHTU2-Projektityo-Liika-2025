@@ -68,10 +68,6 @@ const CreateEventForm = ({ club }) => {
     event.preventDefault()
     const categoryID = activity.value
 
-    if (!isOtpVerified) {
-      alert(t.opt_robot_check)
-    }
-
     if (club) {
       console.log("clubitapahtuma")
       clubID = selectedClub
