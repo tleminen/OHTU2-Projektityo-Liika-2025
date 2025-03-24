@@ -138,6 +138,37 @@ userRouter.post(
 )
 
 userRouter.post(
+  "/update/password",
+  userExtractor,
+  async (request, response) => {
+    const { UserID, newPassword } = request.body
+    if (UserID === request.user.dataValues.UserID) {
+      // Eli userExtractorin tokenista ekstraktoima userID
+      const saltRounds = 10
+      const passwordhash = await bcrypt.hash(newPassword, saltRounds)
+
+      try {
+        const user = await Users.update(
+          { Password: passwordhash },
+          { where: { UserID: UserID } }
+        )
+        console.log(user)
+        if (!user) {
+          response.status(500).json({ error: "Internal server error" })
+        }
+        response.json(user)
+      } catch (error) {
+        console.error("Problems with updating email" + error)
+        response.status(500).json({ error: "Internal server error" })
+      }
+    } else {
+      console.error("Invalid token")
+      response.status(401).json({ error: "Unauthorized" })
+    }
+  }
+)
+
+userRouter.post(
   "/update/map_preferences",
   userExtractor,
   async (request, response) => {

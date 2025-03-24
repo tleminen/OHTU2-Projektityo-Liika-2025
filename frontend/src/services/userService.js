@@ -69,10 +69,24 @@ const updateUserMapLocation = async (storedToken, parameters) => {
   return response.data
 }
 
+const updateUserPassword = async (storedToken, parameters) => {
+  setToken(storedToken)
+  const headers = {
+    headers: { Authorization: token }, // Asetetaan token headeriin
+  }
+  const response = await axios.post(
+    baseUrl + "/users/update/password",
+    parameters,
+    headers
+  )
+  return response.data
+}
+
 export default {
   getUserData,
   updateUserEmail,
   updateUserUsername,
   updateUserLanguage,
   updateUserMapLocation,
+  updateUserPassword,
 }

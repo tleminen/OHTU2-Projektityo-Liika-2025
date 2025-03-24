@@ -6,19 +6,34 @@ import { useSelector } from "react-redux"
 import "../../../index.css"
 import "../accountView.css"
 import { Link } from "react-router-dom"
+import userService from "../../../services/userService.js"
 
 const ChangePassword = () => {
   const language = useSelector((state) => state.language.language)
   const t = translations[language]
   const [newPassword, setNewPassword] = useState("")
-  const password = useSelector((state) => state.user.user.username)
   const [newPasswordAgain, setNewPasswordAgain] = useState("")
   const storedToken = useSelector((state) => state.user?.user?.token ?? null)
+  const userID = useSelector((state) => state.user?.user?.userID ?? null)
 
-  const handleChangePassword = () => {
+  const handleChangePassword = async () => {
     if (storedToken) {
-      console.log("Create event attempt: UNDER CONSTRUCTION")
-      console.log(password)
+      try {
+        const result = await userService.updateUserPassword(storedToken, {
+          UserID: userID,
+          newPassword: newPassword,
+        })
+        console.log(result)
+        setNewPassword("")
+        setNewPasswordAgain("")
+        if (result) {
+          // TODO: Notifikaatio onnistui
+          console.log("Onnistui!")
+        }
+      } catch (error) {
+        console.error(error)
+        // TODO: Notifikaatio
+      }
     } else {
       console.error("No token provided")
     }
@@ -58,7 +73,7 @@ const ChangePassword = () => {
             placeholder={t.newPasswordAgain}
             required={true}
           />
-          <button className="save-btn" onClick={() => handleChangePassword}>
+          <button className="save-btn" onClick={handleChangePassword}>
             {t.save}
           </button>
         </div>
