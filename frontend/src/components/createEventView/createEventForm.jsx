@@ -68,10 +68,6 @@ const CreateEventForm = ({ club }) => {
     event.preventDefault()
     const categoryID = activity.value
 
-    if (!isOtpVerified) {
-      alert(t.opt_robot_check)
-    }
-
     if (club) {
       console.log("clubitapahtuma")
       clubID = selectedClub
@@ -122,25 +118,29 @@ const CreateEventForm = ({ club }) => {
     const categoryID = activity.value
     event.preventDefault()
 
-    try {
-      eventService.createEventUnSigned({
-        // TODO: Tee varmennus, että kyselyn tekijä on sama joka varmensi emailin
-        title,
-        categoryID,
-        dates,
-        startTime,
-        endTime,
-        event_location,
-        participantsMin,
-        participantsMax,
-        description,
-        email,
-        clubID,
-      })
-    } catch (error) {
-      console.error("Erron while creating event (unsigned): " + error)
+    if (!isOtpVerified) {
+      //TODO NOTIFIKAATIO!
+    } else {
+      try {
+        eventService.createEventUnSigned({
+          // TODO: Tee varmennus, että kyselyn tekijä on sama joka varmensi emailin
+          title,
+          categoryID,
+          dates,
+          startTime,
+          endTime,
+          event_location,
+          participantsMin,
+          participantsMax,
+          description,
+          email,
+          clubID,
+        })
+      } catch (error) {
+        console.error("Erron while creating event (unsigned): " + error)
+      }
+      navigate(`/map`)
     }
-    navigate(`/map`)
   }
 
   if (!userID) {
@@ -286,6 +286,9 @@ const CreateEventForm = ({ club }) => {
         >
           <span>{t.createEvent}</span>
         </button>
+        <div style={{ marginTop: "20px" }}>
+          <em>{t.modify_event_later}.</em>
+        </div>
       </div>
     )
   }

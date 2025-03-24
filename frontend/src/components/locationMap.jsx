@@ -3,9 +3,21 @@ import L from "leaflet"
 import "leaflet/dist/leaflet.css"
 import "../index.css"
 import { useSelector } from "react-redux"
+import { LiikaOverlay } from "./mapView/layers/overlayLayers"
 
 // eslint-disable-next-line react/prop-types
 const LocationMap = ({ onLocationChange, oldLocation }) => {
+  const liikaLayer = new LiikaOverlay()
+
+  // Lisää karttalaatta OpenStreetMapista
+  var osm = L.tileLayer(
+    "https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png",
+    {
+      attribution:
+        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    }
+  )
+
   var startingLocation = useSelector((state) => state.location.location)
   if (oldLocation) {
     startingLocation = {
@@ -19,7 +31,9 @@ const LocationMap = ({ onLocationChange, oldLocation }) => {
     const map = L.map("map", {
       center: [startingLocation.lat, startingLocation.lng],
       zoom: startingLocation.zoom,
+      layers: [osm, liikaLayer],
     })
+
     // Tarkastetaan ensin, että kartalla on aloitussijainti:
     if (!startingLocation.o_lat) {
       console.log("Ei aloituskordinaatteja..\nAsetetaan defaultit")
@@ -32,12 +46,6 @@ const LocationMap = ({ onLocationChange, oldLocation }) => {
       lng: startingLocation.lng,
       zoom: startingLocation.zoom,
     })
-
-    // Lisää OpenStreetMap-laatta
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      attribution:
-        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-    }).addTo(map)
 
     // Luo marker, joka asetetaan kartan keskelle
     const centerMarker = L.marker(map.getCenter(), {

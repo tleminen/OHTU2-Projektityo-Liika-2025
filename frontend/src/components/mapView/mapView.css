@@ -42,8 +42,8 @@
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
-  width: 40px;
-  height: 40px;
+  width: 48px;
+  height: 48px;
   border: none;
   background-color: #ffffff00;
   backdrop-filter: brightness(200%);
@@ -397,4 +397,26 @@
 .clear-button {
   width: 80%;
   background-color: rgba(255, 45, 45, 0.653);
+}
+
+.leaflet-control-geocoder-icon {
+  background-image: url("/magnifyingGlassCropped.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* Mobiilinäkymä: 100vw leveys */
+@media (max-width: 800px) {
+  .pika-painike {
+    width: 43px;
+    height: 43px;
+  }
+}
+
+@media (max-width: 500px) {
+  .pika-painike {
+    width: 40px;
+    height: 40px;
+  }
 }

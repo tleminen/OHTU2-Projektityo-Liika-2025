@@ -222,6 +222,7 @@ const ShortcutButtons = ({ toggleCategory, fetchEvents }) => {
     <div className="containerforshortcutbuttons" ref={panelRef}>
       {" "}
       {/*Alapalkin kontaineri, sisältää paneelien avausnapit*/}
+      {/*
       <button
         className="shortcut-button"
         style={{
@@ -229,11 +230,13 @@ const ShortcutButtons = ({ toggleCategory, fetchEvents }) => {
         }}
         onClick={toggleMorePanel}
       />
+      
       <div className={`more-panel ${moreIsOpen ? "open" : ""}`}>
         {" "}
-        {/*... paneeli*/}
+        {/*... paneeli
         <div>...</div>
       </div>
+      */}
       <button
         className="shortcut-button"
         style={{ backgroundImage: "url(/gategory.png)" }}
