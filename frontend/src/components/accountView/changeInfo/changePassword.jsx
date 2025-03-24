@@ -19,12 +19,17 @@ const ChangePassword = () => {
   const handleChangePassword = async () => {
     if (storedToken) {
       try {
-        console.log("Tallenna salasana" + newPassword)
         const result = await userService.updateUserPassword(storedToken, {
           UserID: userID,
           newPassword: newPassword,
         })
-        // TODO: Notifikaatio
+        console.log(result)
+        setNewPassword("")
+        setNewPasswordAgain("")
+        if (result) {
+          // TODO: Notifikaatio onnistui
+          console.log("Onnistui!")
+        }
       } catch (error) {
         console.error(error)
         // TODO: Notifikaatio
