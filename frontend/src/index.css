@@ -60,7 +60,7 @@ button:focus-visible {
 }
 
 .leaflet-shadow-pane {
-  opacity: 0.1 !important;
+  opacity: 0.5 !important;
 }
 
 .header-back-btn:hover {
@@ -616,10 +616,20 @@ h6 {
     min-width: 200px;
     max-width: 90%;
   }
+  .register-frontpage-btn {
+    padding: 10px 35px;
+    border-radius: 10px;
+    font-size: 1.5rem;
+  }
 }
 
 @media (max-width: 400px) {
   h1 {
     font-size: x-large;
+  }
+  .register-frontpage-btn {
+    padding: 4px 10px;
+    border-radius: 10px;
+    font-size: 1.2rem;
   }
 }
