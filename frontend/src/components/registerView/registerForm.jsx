@@ -93,7 +93,10 @@ const RegisterForm = () => {
     }
     setLoader(true)
     try {
-      const response = await registerService.sendOtp(email)
+      const response = await registerService.sendOtp({
+        email: email,
+        language: language,
+      })
       console.log(response.data)
       dispatch(addNotification(EmailSentSuccess(t.email_sent))) // Lähetä onnistumisilmoitus
 
