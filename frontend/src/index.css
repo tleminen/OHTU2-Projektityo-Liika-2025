@@ -60,7 +60,7 @@ button:focus-visible {
 }
 
 .leaflet-shadow-pane {
-  opacity: 0.1 !important;
+  opacity: 0.5 !important;
 }
 
 .header-back-btn:hover {

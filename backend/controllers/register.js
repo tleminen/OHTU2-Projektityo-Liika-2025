@@ -171,14 +171,15 @@ registerRouter.post("/sendOtp", async (req, res) => {
   try {
     const verificationCode = generateVerificationCode()
 
+    let success = null
     if (language === "FI") {
-      const success = await sendEmail(
+      success = await sendEmail(
         email,
         "Sähköpostin vahvistus",
         `Vahvistuskoodisi on: ${verificationCode}`
       )
     } else {
-      const success = await sendEmail(
+      success = await sendEmail(
         email,
         "Email validation",
         `OTP code: ${verificationCode}`
