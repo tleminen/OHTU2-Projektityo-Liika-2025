@@ -118,25 +118,29 @@ const CreateEventForm = ({ club }) => {
     const categoryID = activity.value
     event.preventDefault()
 
-    try {
-      eventService.createEventUnSigned({
-        // TODO: Tee varmennus, että kyselyn tekijä on sama joka varmensi emailin
-        title,
-        categoryID,
-        dates,
-        startTime,
-        endTime,
-        event_location,
-        participantsMin,
-        participantsMax,
-        description,
-        email,
-        clubID,
-      })
-    } catch (error) {
-      console.error("Erron while creating event (unsigned): " + error)
+    if (!isOtpVerified) {
+      //TODO NOTIFIKAATIO!
+    } else {
+      try {
+        eventService.createEventUnSigned({
+          // TODO: Tee varmennus, että kyselyn tekijä on sama joka varmensi emailin
+          title,
+          categoryID,
+          dates,
+          startTime,
+          endTime,
+          event_location,
+          participantsMin,
+          participantsMax,
+          description,
+          email,
+          clubID,
+        })
+      } catch (error) {
+        console.error("Erron while creating event (unsigned): " + error)
+      }
+      navigate(`/map`)
     }
-    navigate(`/map`)
   }
 
   if (!userID) {
