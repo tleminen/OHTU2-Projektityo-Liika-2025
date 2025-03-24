@@ -9,6 +9,7 @@
   color: rgba(0, 0, 0, 0.87);
   background-color: #ffffff;
 
+  max-height: 100dvh;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -320,8 +321,8 @@ button:focus-visible {
 /* Perustyylit käyttäjän muokattavalle tekstikentälle */
 .input-field {
   width: 100%;
-  min-width: 180px;
-  max-width: 400px;
+  min-width: 400px;
+  max-width: 500px;
   padding: 10px;
   font-size: 1em;
   font-family: inherit;
@@ -401,13 +402,28 @@ h4 {
   color: #1a1a1a;
 }
 
+/*pääotsikko pääsivulla*/
 h5 {
-  font-size: x-large;
+  font-family: "Copperplate", "Fantasy", sans-serif;
+  font-size: xx-large;
   line-height: 1;
-  color: #00247d;
   text-align: center;
   padding: 20px 50px;
   display: inline-block;
+  text-shadow: 2px 2px 5px rgba(26, 26, 26, 0.5);
+}
+
+/*Liika.eu teksti pääsivulla*/
+h6 {
+  color: rgb(48, 104, 202);
+  font-family: "Copperplate", "Fantasy", sans-serif;
+  font-size: xx-large;
+  line-height: 1;
+  text-align: center;
+  display: inline-block;
+  font-size: inherit; /* Perii <h5>:n fonttikoon */
+  line-height: inherit; /* Säilyttää saman rivivälin */
+  display: inline;
   text-shadow: 2px 2px 5px rgba(26, 26, 26, 0.5);
 }
 
@@ -415,7 +431,7 @@ h5 {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  min-height: 100vh; /* Koko näkymän korkeus */
+  min-height: 100dvh; /* Koko näkymän korkeus */
 }
 
 * {
@@ -436,22 +452,29 @@ h5 {
   position: sticky;
   top: 0;
   z-index: 2000;
+  cursor: pointer;
 }
 
-#overlay {
+.overlay-container {
   position: absolute;
-  top: 2%;
   left: 50%;
   transform: translateX(-50%);
-  backdrop-filter: hue-rotate(5deg);
+  z-index: 400;
+}
+
+/*Kartan logon containeri*/
+.overlay {
+  display: flex;
+  justify-content: center;
+  backdrop-filter: hue-rotate(50deg);
   border-radius: 12%;
   padding-top: 6px;
   padding-left: 10px;
   padding-right: 10px;
-  z-index: 1001;
+  z-index: 100;
 }
 
-#overlay:hover {
+.overlay:hover {
   cursor: pointer;
 }
 
@@ -484,8 +507,6 @@ h5 {
   left: -50vw;
   width: 100vw;
   height: 100vh;
-  backdrop-filter: brightness(80%) invert(90%) contrast(190%) hue-rotate(180deg);
-  background: rgba(0, 0, 0, 0.114);
   pointer-events: none;
 }
 
@@ -499,12 +520,6 @@ h5 {
   width: 80vw;
   margin: auto;
   z-index: 1000;
-}
-/* Mobiilinäkymä: 100vw leveys */
-@media (max-width: 800px) {
-  .map {
-    width: 100vw;
-  }
 }
 
 .map-location-setter {
@@ -586,4 +601,24 @@ h5 {
   border-top: 1px solid black; /* Viivan tyyli ja väri */
   line-height: 1; /* Yhden rivin korkeus */
   margin: 10px 0; /* Viivan ylä- ja alapuolen marginaali */
+}
+
+/* Mobiilinäkymä: 100vw leveys */
+@media (max-width: 800px) {
+  .map {
+    width: 100vw;
+  }
+  .h1-resizeable {
+    font-size: 120%;
+  }
+  .input-field {
+    min-width: 200px;
+    max-width: 90%;
+  }
+}
+
+@media (max-width: 400px) {
+  h1 {
+    font-size: x-large;
+  }
 }

@@ -188,13 +188,20 @@ const EventView = () => {
       : baseClass
   }
 
-  const showUsername = (username) => {
-    if (username.includes("@")) {
+  const showUsername = ({ user, club }) => {
+    if (club) {
+      return (
+        <h1 style={{ textAlign: "center" }}>
+          {club} {t.organizesEvent}:
+        </h1>
+      )
+    }
+    if (user.includes("@") || user.includes("-")) {
       return ""
     } else {
       return (
         <h1>
-          {username} {t.organizesEvent}:
+          {user} {t.organizesEvent}:
         </h1>
       )
     }
@@ -287,16 +294,17 @@ const EventView = () => {
           <h2>{t.location}</h2>
           <StaticMap mapCenter={event.Event_Location.coordinates} />
 
-          <h2>Osallistujamäärä</h2>
+          <h2>{t.participantCount}</h2>
           <p>
             {event.ParticipantMin} - {event.ParticipantMax}
           </p>
-          <h2>Liittyneitä</h2>
+          <h2>{t.joined}</h2>
           <p>{selectedTime && selectedTime.JoinedCount}</p>
-          <h2>Kuvaus:</h2>
-          <p>{event.Description}</p>
-
-          <h3>Syötä sähköposti, jotta voit liittyä tapahtumaan</h3>
+          <h2>{t.description}</h2>
+          <div style={{ maxWidth: "600px", marginBottom: "10px" }}>
+            {event.Description}
+          </div>
+          <h3>{t.enterEmailToJoinEvent}</h3>
           <input
             type="text"
             value={email}
@@ -318,15 +326,13 @@ const EventView = () => {
               className="join-btn"
               onClick={() => handleJoinUnSigned(email, id)}
             >
-              Ilmoittaudu
+              {t.join}
             </button>
           )}
           {selectedTime && unSignedJoined && (
-            <h3>Olet ilmoittautunut tapahtumaan</h3>
+            <h3>{t.youHaveJoinedForTheEvent}</h3>
           )}
-          <p style={{ fontWeight: "lighter" }}>
-            Tapahtumaa viimeksi päivitetty:
-          </p>
+          <p style={{ fontWeight: "lighter" }}>{t.eventLastUpdated}</p>
           <p style={{ fontWeight: "lighter" }}>
             {parseTimeAndDate(event.updatedAt)[1]}{" "}
             {parseTimeAndDate(event.updatedAt)[0]}
@@ -355,7 +361,7 @@ const EventView = () => {
       <Header />
       <div className="event-view">
         <span className="spacer-line"></span>
-        {showUsername(event.Username)}
+        {showUsername({ user: event.Username, club: event.ClubName })}
         <img
           src={`/lajit/${selectCategoryName([event.CategoryID])}.png`}
           alt="Logo"
@@ -390,25 +396,27 @@ const EventView = () => {
         <h2>{t.location}</h2>
         <StaticMap mapCenter={event.Event_Location.coordinates} />
 
-        <h2>Osallistujamäärä</h2>
+        <h2>{t.participants}</h2>
         <p>
           {event.ParticipantMin} - {event.ParticipantMax}
         </p>
-        <h2>Liittyneitä</h2>
+        <h2>{t.joined}</h2>
         <p>{selectedTime && selectedTime.JoinedCount}</p>
-        <h2>Kuvaus:</h2>
-        <p>{event.Description}</p>
+        <h2>{t.description}</h2>
+        <div style={{ maxWidth: "600px", marginBottom: "10px" }}>
+          {event.Description}
+        </div>
         {selectedTime && !isJoined(selectedTime) && (
           <button className="join-btn" onClick={() => handleJoin(userID, id)}>
-            Ilmoittaudu
+            {t.join}
           </button>
         )}
         {selectedTime && isJoined(selectedTime) && (
           <button className="leave-btn" onClick={() => handleLeave(userID, id)}>
-            Peru ilmoittautuminen
+            {t.leaveEvent}
           </button>
         )}
-        <p style={{ fontWeight: "lighter" }}>Tapahtumaa viimeksi päivitetty:</p>
+        <p style={{ fontWeight: "lighter" }}>{t.eventLastUpdated}</p>
         <p style={{ fontWeight: "lighter" }}>
           {parseTimeAndDate(event.updatedAt)[1]}{" "}
           {parseTimeAndDate(event.updatedAt)[0]}

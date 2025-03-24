@@ -4,6 +4,7 @@ const { Router } = require("express")
 const User = require("../models/users")
 const { sendEmail } = require("../services/email") // Tuo sendEmail-funktio
 const { getUserClubs } = require("../services/getUserClubs")
+const { Op } = require("sequelize")
 
 const loginRouter = Router()
 
@@ -15,7 +16,7 @@ loginRouter.post("/", async (req, res) => {
   try {
     const user = await User.findOne({
       where: {
-        Username: username,
+        [Op.or]: [{ Username: username }, { Email: username }],
       },
     })
     const passwordCorrect =
@@ -37,6 +38,25 @@ loginRouter.post("/", async (req, res) => {
 
     const clubs = await getUserClubs(user.UserID)
     console.log(clubs)
+    console.log("Yhteistyökumppanit")
+    let mapPreferences
+    if (user.MapPreferences) {
+      const olio = JSON.parse(user.MapPreferences)
+      mapPreferences = {
+        a: olio.a,
+        b: olio.b,
+        brightness: olio.br,
+        contrast: olio.co,
+        g: olio.g,
+        hue: olio.hu,
+        invert: olio.in,
+        r: olio.r,
+        saturate: olio.sa,
+        sepia: olio.se,
+      }
+    } else {
+      mapPreferences = null
+    }
 
     res.status(200).send({
       token,
@@ -46,7 +66,7 @@ loginRouter.post("/", async (req, res) => {
       email: user.Email,
       language: user.LanguageID,
       mapZoom: user.MapZoom,
-      mapPreferences: user.MapPreferences,
+      mapPreferences: mapPreferences,
       role: user.Role,
       clubs: clubs,
     })

@@ -29,23 +29,21 @@ const connectDB = async () => {
     console.log(`PosgreSQL-tietokantayhteys luotu!`)
 
     try {
+      console.error("Kysy Ollilta tietokannan päivittämisestä!")
+      // Nollaa tietokannasta clubit, lisää sähköpostiosoitteen mukaan clubiin jäsenen. Kysy ennenkuin ajat
+      /*
       await sequelize.query(`
-  ALTER TABLE "Events"
-  ADD COLUMN "ClubID" INTEGER NULL,
-  ADD CONSTRAINT "FK_Events_Clubs"
-    FOREIGN KEY ("ClubID")
-    REFERENCES "Clubs"("ClubID")
-    ON DELETE SET NULL;
-`)
-    } catch (e) {
-      console.warn(e)
-    }
-    try {
-      await sequelize.query(`
-  ALTER TABLE "Users"
-  ADD COLUMN "MapZoom" INTEGER NULL,
-  ADD COLUMN "MapPreferences" VARCHAR(40) NULL;
-`)
+  ALTER TABLE "Users" ALTER COLUMN "MapPreferences" TYPE VARCHAR(160);
+  DELETE FROM "ClubMembers";
+DELETE FROM "Clubs";
+  INSERT INTO "Clubs" ("Name", "Email", "createdAt", "updatedAt")
+VALUES ('Liika', 'liikaservice@gmail.com', NOW(), NOW());
+INSERT INTO "ClubMembers" ("ClubID", "UserID")
+SELECT 
+    (SELECT "ClubID" FROM "Clubs" WHERE "Name" = 'Liika' LIMIT 1), 
+    (SELECT "UserID" FROM "Users" WHERE "Email" = 'h.illo@hotmail.com' LIMIT 1);
+`) 
+*/
     } catch (e) {
       console.warn(e)
     }

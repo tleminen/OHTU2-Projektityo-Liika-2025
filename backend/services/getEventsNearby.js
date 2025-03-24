@@ -43,11 +43,13 @@ const getEventsNearby = async (
         t."StartTime",
         t."EndTime",
         u."Username",
+        c."Name" AS "ClubName",
         COUNT(j."UserID") AS "JoinedCount"
       FROM "Events" e
       LEFT JOIN NextOrOngoingTime t ON t."EventID" = e."EventID"
       LEFT JOIN "Joins" j ON j."TimeID" = t."TimeID"
       LEFT JOIN "Users" u ON e."UserID" = u."UserID"
+      LEFT JOIN "Clubs" c ON e."ClubID" = c."ClubID"
       WHERE ST_DWithin(
               e."Event_Location",
               ST_SetSRID(ST_MakePoint(:longitude, :latitude), 4326)::geography,
@@ -71,7 +73,8 @@ const getEventsNearby = async (
         t."TimeID",
         t."StartTime",
         t."EndTime",
-        u."Username"
+        u."Username",
+        c."Name"
       ORDER BY t."StartTime" ASC;
     `
 
@@ -134,11 +137,13 @@ const getEventsNearbyQuick = async (
         t."StartTime",
         t."EndTime",
         u."Username",
+        c."Name" AS "ClubName",
         COUNT(j."UserID") AS "JoinedCount"
       FROM "Events" e
       LEFT JOIN NextOrOngoingTime t ON t."EventID" = e."EventID"
       LEFT JOIN "Joins" j ON j."TimeID" = t."TimeID"
       LEFT JOIN "Users" u ON e."UserID" = u."UserID"
+      LEFT JOIN "Clubs" c ON e."ClubID" = c."ClubID"
       WHERE ST_DWithin(
               e."Event_Location",
               ST_SetSRID(ST_MakePoint(:longitude, :latitude), 4326)::geography,
@@ -164,7 +169,8 @@ const getEventsNearbyQuick = async (
         t."TimeID",
         t."StartTime",
         t."EndTime",
-        u."Username"
+        u."Username",
+        c."Name"
       ORDER BY t."StartTime" ASC;
     `
 

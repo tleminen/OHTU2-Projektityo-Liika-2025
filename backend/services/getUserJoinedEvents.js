@@ -50,4 +50,37 @@ const getUserCreatedEvents = async (UserID) => {
   }
 }
 
-module.exports = { getUserJoinedEvents, getUserCreatedEvents }
+const getClubCreatedEvents = async (userClubs) => {
+  try {
+    if (!userClubs || userClubs.length === 0) {
+      return []
+    }
+    const clubIds = userClubs.map((club) => club.ClubID)
+
+    const joinedEvents = await sequelize.query(
+      `
+      SELECT e.*, t."TimeID", t."StartTime", t."EndTime", COUNT(j."UserID") AS "JoinedCount"
+      FROM "Events" e
+      LEFT JOIN "Times" t ON e."EventID" = t."EventID"
+      LEFT JOIN "Joins" j ON t."TimeID" = j."TimeID"
+      WHERE e."ClubID" IN (:clubIds)
+      GROUP BY e."EventID", t."TimeID"
+      ORDER BY t."StartTime" ASC;
+      `,
+      {
+        replacements: { clubIds },
+        type: sequelize.QueryTypes.SELECT,
+      }
+    )
+
+    return joinedEvents
+  } catch (error) {
+    console.error("Virhe haettaessa käyttäjän liittymiä tapahtumia: " + error)
+    throw new Error("Internal server error")
+  }
+}
+module.exports = {
+  getUserJoinedEvents,
+  getUserCreatedEvents,
+  getClubCreatedEvents,
+}

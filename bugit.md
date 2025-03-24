@@ -1,10 +1,13 @@
 Bugit
 
+TODO: Jos ei tarvittavia tietoja lataamiseen (redux) niin navigate("/") ja localstorage.clear()
+
 MapView:
-Search jää logon alle
 
 -Kirjautumaton:
--css-poikkeamia
+
+- css-poikkeamia
+- Notifikaatio kirjautumattoman tapahtumaluonnille jos jo rekisteröity! (error)
 
 Yksittäisen tapahtuman näkymä:
 
@@ -19,14 +22,13 @@ Login:
 
 CreateEvent:
 Tapahtuman kesto pitäisi olla yli 0min?
-kirjautumattoman näkymässä padding yms välit kuntoon
+Validate tehtävä. Nyt voi luoda tapahtumia miten sattuu
 
 EventView: 
 Kun rämppää osallistu/poistu näppäintä jää näkymään, että olisi tapahtumassa vaikka sieltä on poistunut. 
 Notifikaatiot eivät lataudu kunnolla, koodi valmis muuten Chatti(enkä mä) ymmärrä mistä ongelma kiikastaa. 
 
 Backend:
-! Nearby-haku hakee käyttäjätunnuksen vaikka se olisi sähköpostiosoitemuotoinen (sis. @). Frontti filtteröi sen, mutta pitää poistaa backendissä!
 
 Liika ei toimi FireFoxissa
 Chatin vastaus:
@@ -43,3 +45,6 @@ Chatin vastaus:
 
 Kysymyksiä ja muita huomioita:
 Järjestäjän nimi, mihin kaikkialle näkyviin?
+
+Yhteistyökumppanien tapahtumat:
+Nyt muokkausoikeus vain tapahtuman luoneella. Varmaan jää niin? Hieman monimutkainen toteuttaa muuten.

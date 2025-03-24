@@ -27,7 +27,7 @@ const Frontpage = () => {
     <div
       className="fullpage"
       style={{
-        backgroundImage: "url('/background-logandreg.png')",
+        backgroundImage: "url('/alternativebackgroundpicture.png')",
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
@@ -56,7 +56,15 @@ const Frontpage = () => {
           </div>
           <div className="button-container">{singedOrNot(user)}</div>
           <div className="text-background">
-            <h5 className="frontpage-descriptive-text">{t.welcomeText}</h5>
+            <h5 className="frontpage-descriptive-text">
+              <style className={"text-h6"}>Liika.eu</style> {t.welcomeText}
+            </h5>
+          </div>
+          <div className="text-background3">
+            {" "}
+            <div className="frontpage-smaller-descriptive-text">
+              {t.welcomeText2}
+            </div>
           </div>
         </div>
       </div>

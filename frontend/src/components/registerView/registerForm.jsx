@@ -19,6 +19,7 @@ import {
   OtpVerified,
   OtpNotVerified,
 } from "../notification/notificationTemplates.js"
+import { Link } from "react-router-dom"
 
 const RegisterForm = () => {
   const language = useSelector((state) => state.language.language)
@@ -38,6 +39,7 @@ const RegisterForm = () => {
   const [isOtpVerified, setIsOtpVerified] = useState(false) // Tila OTP:n vahvistuksen seuraamiseksi
   const [loader, setLoader] = useState(false)
   const [blockRegister, setBlockRegister] = useState(true)
+  const [termsAccepted, setTermsAccepted] = useState(false)
 
   const schema = registerValidation()
   const schemaOtp = otpValidation()
@@ -108,6 +110,11 @@ const RegisterForm = () => {
   }
 
   const verifyOtp = async () => {
+    if (!termsAccepted) {
+      setErrors({ ...errors, terms: t.terms_of_service_accept })
+      return
+    }
+
     await schemaOtp.validate({ otp }, { abortEarly: false })
     try {
       // Lähetä OTP backendille vahvistusta varten
@@ -289,7 +296,7 @@ const RegisterForm = () => {
               {[...Array(6)].map((_, index) => (
                 <input
                   key={index}
-                  type="text"
+                  type="number"
                   maxLength="1"
                   className={`otp-input ${errors.otp ? "error" : ""}`}
                   value={otp[index] || ""}
@@ -329,6 +336,21 @@ const RegisterForm = () => {
         </div>
       )}
       {errors.otp && <div className="error-forms">{errors.otp}</div>}
+
+      {/* Lisätään käyttöehtojen checkbox */}
+      <div className="terms-container">
+        <Link to="/termsOfService" target="_blank">
+          {t.terms_of_service_accept}
+        </Link>
+        <input
+          type="checkbox"
+          id="terms"
+          checked={termsAccepted}
+          onChange={(e) => setTermsAccepted(e.target.checked)}
+        />
+      </div>
+      {errors.terms && <div className="error-forms">{errors.terms}</div>}
+
       <button
         className={`forms-btn`}
         disabled={blockRegister}

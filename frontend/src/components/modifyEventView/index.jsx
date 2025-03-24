@@ -371,7 +371,7 @@ const ModifyEvent = () => {
                     {time.JoinedCount}/{event.ParticipantMax}
                   </span>
                 </div>
-                <button onClick={() => handleCancelEvent(time)}>
+                <button className="btn" onClick={() => handleCancelEvent(time)}>
                   {t.deleteDate}
                 </button>
               </div>

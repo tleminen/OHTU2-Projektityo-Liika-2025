@@ -3,7 +3,7 @@ const { sequelize } = require("../utils/database") // Varmista, että sequelize 
 const getUserClubs = async (userId) => {
   try {
     // Raaka SQL-kysely
-    const [results, metadata] = await sequelize.query(
+    const results = await sequelize.query(
       `
       SELECT c."ClubID", c."Name"
       FROM "Clubs" c

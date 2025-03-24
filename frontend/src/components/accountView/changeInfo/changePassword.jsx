@@ -15,9 +15,10 @@ const ChangePassword = () => {
   const [newPasswordAgain, setNewPasswordAgain] = useState("")
   const storedToken = useSelector((state) => state.user?.user?.token ?? null)
 
-  const handleSubmit = () => {
+  const handleChangePassword = () => {
     if (storedToken) {
       console.log("Create event attempt: UNDER CONSTRUCTION")
+      console.log(password)
     } else {
       console.error("No token provided")
     }
@@ -57,7 +58,7 @@ const ChangePassword = () => {
             placeholder={t.newPasswordAgain}
             required={true}
           />
-          <button className="save-btn" onClick={() => handleSubmit}>
+          <button className="save-btn" onClick={() => handleChangePassword}>
             {t.save}
           </button>
         </div>

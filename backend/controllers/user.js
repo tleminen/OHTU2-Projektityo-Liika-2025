@@ -141,9 +141,23 @@ userRouter.post(
   "/update/map_preferences",
   userExtractor,
   async (request, response) => {
-    const { UserID, location } = request.body
+    const { UserID, location, mapPreferences } = request.body
+    // Eli userExtractorin tokenista ekstraktoima userID
     if (UserID === request.user.dataValues.UserID) {
-      // Eli userExtractorin tokenista ekstraktoima userID
+      // Lyhennetään tietokantaa varten
+      const shortPref = {
+        a: mapPreferences.a,
+        b: mapPreferences.b,
+        br: mapPreferences.brightness,
+        co: mapPreferences.contrast,
+        g: mapPreferences.g,
+        hu: mapPreferences.hue,
+        in: mapPreferences.invert,
+        r: mapPreferences.r,
+        sa: mapPreferences.saturate,
+        se: mapPreferences.sepia,
+      }
+      const mapPreferencesString = JSON.stringify(shortPref)
       try {
         const user = await Users.update(
           {
@@ -152,12 +166,12 @@ userRouter.post(
               Sequelize.fn("ST_MakePoint", location.lng, location.lat),
               4326
             ),
-            MapPreferences: location.preferences,
+            MapPreferences: mapPreferencesString,
             MapZoom: location.zoom,
           },
           { where: { UserID: UserID } }
         )
-        console.log(user)
+        //console.log(user)
         if (!user) {
           response.status(500).json({ error: "Internal server error" })
         }

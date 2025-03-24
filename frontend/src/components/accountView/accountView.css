@@ -5,8 +5,7 @@
   gap: 20px;
   margin: auto;
   width: fit-content;
-  align-items: center;
-  max-width: 80vw;
+  max-width: 80dvw;
   margin-top: 20px;
   margin-bottom: 10px;
   background-color: rgba(
@@ -30,22 +29,16 @@
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
-  align-items: baseline;
-  gap: 10px;
+  align-items: center;
+  gap: 23px;
   justify-content: space-between;
-}
-
-/* Mobiilinäkymä */
-@media (max-width: 500px) {
-  .information-row {
-    flex-direction: column;
-  }
 }
 
 .information {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: baseline;
+  justify-content: center;
   gap: 10px;
 }
 
@@ -59,11 +52,11 @@
   font-family: inherit;
   font-weight: 500;
   text-transform: uppercase;
-  padding: 8px;
+  padding: 6px 10px;
   width: 120px;
   transition: all 0.2s;
   cursor: pointer;
-  margin-left: 20px;
+
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.5);
 }
 
@@ -175,4 +168,20 @@
   background: rgba(255, 244, 202, 0);
   z-index: 3000;
   pointer-events: none;
+}
+
+/* Mobiilinäkymä */
+@media (max-width: 350px) {
+  .information-row {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 500px) {
+  .link-btn {
+    width: 75px;
+  }
+  .delete-account-btn {
+    width: 120px;
+  }
 }

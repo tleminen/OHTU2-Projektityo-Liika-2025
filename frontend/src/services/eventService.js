@@ -162,6 +162,19 @@ const getUserCreatedEvents = async (storedToken, UserID) => {
   return response.data
 }
 
+const getClubCreatedEvents = async (storedToken, parameters) => {
+  setToken(storedToken)
+  const headers = {
+    headers: { Authorization: token }, // Asetetaan token headeriin
+  }
+  const response = await axios.post(
+    baseUrl + "/events/club_created_events",
+    parameters,
+    headers
+  )
+  return response.data
+}
+
 // Poistaa tapahtuman yhden ajan
 const deleteEventTime = async (storedToken, parameters) => {
   setToken(storedToken)
@@ -204,6 +217,7 @@ const modifyEvent = async (storedToken, parameters) => {
 
 export default {
   getCategories,
+  getClubCreatedEvents,
   getEvents,
   createEvent,
   createEventUnSigned,

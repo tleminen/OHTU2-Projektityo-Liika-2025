@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { useSelector } from "react-redux"
 import { useState } from "react"
 import translations from "../../assets/translation.js"
@@ -16,7 +17,7 @@ import {
   } from "../notification/notificationTemplates.js"
 
 
-const CreateEventForm = () => {
+const CreateEventForm = ({ club }) => {
   const language = useSelector((state) => state.language.language)
   const t = translations[language]
   const navigate = useNavigate()
@@ -31,18 +32,56 @@ const CreateEventForm = () => {
   const [description, setDescription] = useState("")
   const [email, setEmail] = useState("")
   const [isOtpVerified, setIsOtpVerified] = useState(false)
+  const [blockRegister, setBlockCreate] = useState(true)
+  const [selectedClub, setSelectedClub] = useState(null)
   const userID = useSelector((state) => state.user?.user?.userID ?? null)
   const storedToken = useSelector((state) => state.user?.user?.token ?? null)
+  const clubs = useSelector((state) => state.user?.user?.clubs ?? null)
   const yesterday = new Date()
   yesterday.setDate(yesterday.getDate() - 1)
+  let clubID = null // Tallennettava yhteistyökumppani ID. Oletus on null
+
+  const handleClubSelect = (clubId) => {
+    setSelectedClub(clubId)
+  }
+
+  const clubEventView = () => {
+    console.log(club)
+    if (club && clubs[0]) {
+      return (
+        <div className="form-item">
+          <div className="club-selection-container">
+            <h2>{t.choose_organiser}:</h2>
+            {clubs.map((club) => (
+              <label key={club.ClubID} className="club-radio-item">
+                <input
+                  type="radio"
+                  name="club"
+                  value={club.ClubID}
+                  checked={selectedClub === club.ClubID}
+                  onChange={() => handleClubSelect(club.ClubID)}
+                />
+                {club.Name}
+              </label>
+            ))}
+          </div>
+        </div>
+      )
+    } else return null
+  }
+
   const handleSubmit = (event) => {
-    const categoryID = activity.value
     event.preventDefault()
+    const categoryID = activity.value
 
     if (!isOtpVerified) {
       alert(t.opt_robot_check)
     }
 
+    if (club) {
+      console.log("clubitapahtuma")
+      clubID = selectedClub
+    }
     try {
       eventService.createEvent(storedToken, {
         title,
@@ -55,6 +94,7 @@ const CreateEventForm = () => {
         participantsMin,
         participantsMax,
         description,
+        clubID,
       })
     } catch (error) {
       console.error(t.event_creation_failure + error)
@@ -102,6 +142,7 @@ const CreateEventForm = () => {
         participantsMax,
         description,
         email,
+        clubID,
       })
     } catch (error) {
       console.error("Erron while creating event (unsigned): " + error)
@@ -114,141 +155,145 @@ const CreateEventForm = () => {
     // Ei-kirjautuneen käyttäjän näkymä
     return (
       <div className="create-event-form">
-        <form onSubmit={handleSubmitUnSigned}>
-          <div className="form-item">
-            <h3>{t.title}</h3>
-            <input
-              type="text"
-              value={title}
-              className="input-field"
-              onChange={(e) => setTitle(e.target.value)}
-              required={true}
-            />
-          </div>
-          <div className="form-item">
-            <h3>{t.activity}</h3>
-            <Select
-              className="input-field"
-              placeholder={t.activity}
-              value={activity}
-              onChange={handleChange}
-              options={options()}
-              isSearchable={true}
-              required={true}
-            />
-          </div>
-          <div className="form-item">
-            <h3>{t.date}</h3>
-            <DatePicker
-              value={dates}
-              sort
-              onChange={setDates}
-              multiple
-              style={{ textAlign: "center" }}
-              minDate={Date.now()}
-              zIndex={1005}
-              displayWeekNumbers={true}
-              render={(value, openCalendar) => (
-                <div className="custom-date-display" onClick={openCalendar}>
-                  {Array.isArray(value) ? (
-                    value.map((date, index) => <div key={index}>{date}</div>)
-                  ) : (
-                    <span>{value || "Choose dates"}</span>
-                  )}
-                </div>
-              )}
-              format="DD.MM.YYYY"
-              weekStartDayIndex={1}
-            />
-          </div>
-          <div className="form-item">
-            <h3>{t.startTime}</h3>
-            <input
-              type="time"
-              value={startTime}
-              name="startTime"
-              className="input-field"
-              onChange={(e) => setStartTime(e.target.value)}
-              placeholder={t.dateAndTime}
-              required={true}
-            />
-          </div>
-          <div className="form-item">
-            <h3>{t.endTime}</h3>
-            <input
-              type="time"
-              value={endTime}
-              name="endTime"
-              className="input-field"
-              onChange={(e) => setEndTime(e.target.value)}
-              placeholder={t.dateAndTime}
-              required={true}
-            />
-          </div>
-          <div className="form-item">
-            <br />
-            <h3>{t.setEventLocationInfo}</h3>
-            <LocationMap onLocationChange={handleLocationChange} />
-          </div>
-          <div className="form-item">
-            <h3>{t.minParticipants}</h3>
-            <input
-              type="number"
-              value={participantsMin}
-              name="minParticipants"
-              className="input-field"
-              onChange={(e) => setParticipantsMin(e.target.value)}
-              placeholder={t.minParticipants}
-              required={true}
-            />
-          </div>
-          <div className="form-item">
-            <h3>{t.maxParticipants}</h3>
-            <input
-              type="number"
-              value={participantsMax}
-              name="maxParticipants"
-              className="input-field"
-              onChange={(e) => setParticipantsMax(e.target.value)}
-              placeholder={t.maxParticipants}
-              required={true}
-            />
-          </div>
-          <div className="form-item">
-            <h3>{t.description}</h3>
-            <textarea
-              type="description"
-              value={description}
-              name="description"
-              className="input-field"
-              onChange={(e) => setDescription(e.target.value)}
-              placeholder={t.description}
-            />
-          </div>
-          <div className="form-item">
-            <h3>{t.email}</h3>
-            <input
-              type="text"
-              value={email}
-              name="email"
-              className="input-field"
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder={t.email}
-              required={true}
-            />
-          </div>
+        <div className="form-item">
+          <h3>{t.title}</h3>
+          <input
+            type="text"
+            value={title}
+            placeholder={t.title}
+            className="input-field"
+            onChange={(e) => setTitle(e.target.value)}
+            required={true}
+          />
+        </div>
+        <div className="form-item">
+          <h3>{t.activity}</h3>
+          <Select
+            className="input-field"
+            placeholder={t.activity}
+            value={activity}
+            onChange={handleChange}
+            options={options()}
+            isSearchable={true}
+            required={true}
+          />
+        </div>
+        <div className="form-item">
+          <h3>{t.date}</h3>
+          <DatePicker
+            value={dates}
+            sort
+            onChange={setDates}
+            multiple
+            style={{ textAlign: "center" }}
+            minDate={Date.now()}
+            zIndex={1005}
+            displayWeekNumbers={true}
+            render={(value, openCalendar) => (
+              <div className="custom-date-display" onClick={openCalendar}>
+                {Array.isArray(value) ? (
+                  value.map((date, index) => <div key={index}>{date}</div>)
+                ) : (
+                  <span>{value || "Choose dates"}</span>
+                )}
+              </div>
+            )}
+            format="DD.MM.YYYY"
+            weekStartDayIndex={1}
+          />
+        </div>
+        <div className="form-item">
+          <h3>{t.startTime}</h3>
+          <input
+            type="time"
+            value={startTime}
+            name="startTime"
+            className="input-field"
+            onChange={(e) => setStartTime(e.target.value)}
+            placeholder={t.dateAndTime}
+            required={true}
+          />
+        </div>
+        <div className="form-item">
+          <h3>{t.endTime}</h3>
+          <input
+            type="time"
+            value={endTime}
+            name="endTime"
+            className="input-field"
+            onChange={(e) => setEndTime(e.target.value)}
+            placeholder={t.dateAndTime}
+            required={true}
+          />
+        </div>
+        <div className="form-item">
+          <br />
+          <h3>{t.setEventLocationInfo}</h3>
+          <LocationMap onLocationChange={handleLocationChange} />
+        </div>
+        <div className="form-item">
+          <h3>{t.minParticipants}</h3>
+          <input
+            type="number"
+            value={participantsMin}
+            name="minParticipants"
+            className="input-field"
+            onChange={(e) => setParticipantsMin(e.target.value)}
+            placeholder={t.minParticipants}
+            required={true}
+          />
+        </div>
+        <div className="form-item">
+          <h3>{t.maxParticipants}</h3>
+          <input
+            type="number"
+            value={participantsMax}
+            name="maxParticipants"
+            className="input-field"
+            onChange={(e) => setParticipantsMax(e.target.value)}
+            placeholder={t.maxParticipants}
+            required={true}
+          />
+        </div>
+        <div className="form-item">
+          <h3>{t.description}</h3>
+          <textarea
+            type="description"
+            value={description}
+            name="description"
+            className="input-field"
+            onChange={(e) => setDescription(e.target.value)}
+            placeholder={t.description}
+          />
+        </div>
+        <div className="form-item">
+          <h3>{t.email}</h3>
+          <input
+            type="text"
+            value={email}
+            name="email"
+            className="input-field"
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder={t.email}
+            required={true}
+          />
+        </div>
 
-          <div>
-            <SendEmail
-              setIsOtpVerifiedFromParent={setIsOtpVerified}
-              email={email}
-            />
-          </div>
+        <div>
+          <SendEmail
+            setIsOtpVerifiedFromParent={setIsOtpVerified}
+            email={email}
+            setDisableButton={setBlockCreate}
+          />
+        </div>
 
-          <button className="btn" type="submit" style={{ margin: "auto" }}>
-            {t.createEvent}
-          </button>
-        </form>
+        <button
+          className={`forms-btn`}
+          disabled={blockRegister}
+          onClick={handleSubmitUnSigned}
+        >
+          <span>{t.createEvent}</span>
+        </button>
       </div>
     )
   }
@@ -257,11 +302,13 @@ const CreateEventForm = () => {
     // Kirjautuneen käyttäjän näkymä
     <div className="create-event-form">
       <form onSubmit={handleSubmit}>
+        {clubEventView()}
         <div className="form-item">
           <h3>{t.title}</h3>
           <input
             type="text"
             value={title}
+            placeholder={t.title}
             className="input-field"
             onChange={(e) => setTitle(e.target.value)}
             required={true}
@@ -366,8 +413,8 @@ const CreateEventForm = () => {
             placeholder={t.description}
           />
         </div>
-        <button className="btn" type="submit" style={{ margin: "auto" }}>
-          {t.createEvent}
+        <button className={`forms-btn`} onClick={handleSubmit}>
+          <span>{t.createEvent}</span>
         </button>
       </form>
     </div>

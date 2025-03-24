@@ -107,6 +107,15 @@
   filter: brightness(0.5) sepia(1) hue-rotate(90deg) saturate(500%);
 }
 
+.club-selection-container {
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px 14px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
 /* Avattava paneeli */
 /* Paneelin kontti */
 .category-panel {
@@ -348,19 +357,6 @@
   100% {
     transform: scale(1);
   }
-}
-
-/* search bar leaflet */
-.leaflet-control-geocoder-form input {
-  color: black; /* Vaihda haluamasi tekstin väri */
-  background-color: white; /* Vaihda haluamasi taustaväri */
-}
-
-.leaflet-control-geocoder-icon {
-  background-image: url("/magnifyingGlassCropped.png"); /* Vaihda uuden kuvakkeen tiedostopolku */
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
 }
 
 .quick-time-select-container {

@@ -6,14 +6,25 @@ const {
 const {
   getSingleEventWithTimes,
 } = require("../services/getSingleEventWithTimes")
-const { Categories, Events, Times, Joins, sequelize } = require("../models")
+const {
+  Categories,
+  Events,
+  Times,
+  Joins,
+  sequelize,
+  ClubMembers,
+} = require("../models")
 const { Sequelize } = require("sequelize")
 const Users = require("../models/users")
 const { sendEmail } = require("../services/email")
-const { createUserUnSigned } = require("../services/createUserUnSigned")
+const {
+  createUserUnSigned,
+  generateUserId,
+} = require("../services/createUserUnSigned")
 const {
   getUserJoinedEvents,
   getUserCreatedEvents,
+  getClubCreatedEvents,
 } = require("../services/getUserJoinedEvents")
 const { userExtractor } = require("../utils/middleware")
 
@@ -112,8 +123,28 @@ eventRouter.post("/create_event", userExtractor, async (req, res) => {
     dates,
     startTime,
     endTime,
+    clubID,
   } = req.body
+
   if (userID === req.user?.dataValues?.UserID ?? "NAN") {
+    if (clubID) {
+      // Tarkastetaan onko oikeus luoda yhteistyökumppanille tapahtumia (eli ei ole feikattu postpyyntö tavallisella käyttäjällä)
+      try {
+        const result = await ClubMembers.findOne({
+          where: {
+            UserID: userID,
+            ClubID: clubID,
+          },
+        })
+        if (!result) {
+          res.status(403).json({ error: "Not part of the club at request" })
+        }
+      } catch (e) {
+        console.error(e)
+        res.status(500).send()
+      }
+    }
+
     const transaction = await sequelize.transaction()
 
     try {
@@ -136,6 +167,7 @@ eventRouter.post("/create_event", userExtractor, async (req, res) => {
           ParticipantMax: participantsMax,
           ParticipantMin: participantsMin,
           Description: description,
+          ClubID: clubID,
         },
         { transaction }
       )
@@ -144,9 +176,6 @@ eventRouter.post("/create_event", userExtractor, async (req, res) => {
       await Promise.all(
         dates.map(async (timestamp) => {
           const date = new Date(timestamp).toISOString().split("T")[0] // YYYY-MM-DD
-          console.log(date)
-          console.log(startTime)
-          console.log(endTime)
 
           await Times.create(
             {
@@ -215,9 +244,10 @@ eventRouter.post("/create_event_unsigned", async (req, res) => {
     })
     if (!user) {
       // Jos uusi käyttäjä
+      const UUID = generateUserId()
       user = await Users.create(
         {
-          Username: email,
+          Username: UUID,
           Password: password,
           Role: 2,
           Email: email,
@@ -409,6 +439,7 @@ eventRouter.post("/userJoinedEvents", userExtractor, async (req, res) => {
   }
 })
 
+// Käyttäjän luomat tapahtumat
 eventRouter.post("/userCreatedEvents", userExtractor, async (req, res) => {
   const { UserID } = req.body
   if (UserID === req.user?.dataValues?.UserID ?? "NAN") {
@@ -417,6 +448,26 @@ eventRouter.post("/userCreatedEvents", userExtractor, async (req, res) => {
       res.json(events)
     } catch (error) {
       console.error("Problems with retreving joined events with full data")
+      res.status(500).json({ error: "Internal Server Error" })
+    }
+  } else {
+    console.error("Invalid token")
+    res.status(401).json({ error: "Unauthorized" })
+  }
+})
+
+// Yhteistyökumppanin tapahtumien haku
+eventRouter.post("/club_created_events", userExtractor, async (req, res) => {
+  const { UserID, Clubs } = req.body
+  if (UserID === req.user?.dataValues?.UserID ?? "NAN") {
+    try {
+      // Haetaan tapahtumat, joiden ClubID on mukana listassa
+      const events = await getClubCreatedEvents(Clubs)
+
+      console.log(events)
+      res.json(events)
+    } catch (error) {
+      console.error("Virhe haettaessa yhteistyökumppanin tapahtumia:", error)
       res.status(500).json({ error: "Internal Server Error" })
     }
   } else {
@@ -593,8 +644,6 @@ eventRouter.post("/verifyOtp", async (req, res) => {
 
   try {
     const storedCode = verificationCodes.get(email) //Hae tallennettu koodi
-
-    console.log("storeCode: " + storedCode)
 
     if (!storedCode) {
       return res.status(400).json({ message: "Vahvistuskoodi ei löytynyt." })

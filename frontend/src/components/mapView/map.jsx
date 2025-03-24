@@ -12,14 +12,10 @@ import logo from "../../assets/liika_logo169.png"
 import { useNavigate } from "react-router-dom"
 import eventService from "../../services/eventService"
 import { createRoot } from "react-dom/client"
-import { selectIcon } from "../../assets/icons"
+import { selectClubIcon, selectIcon } from "../../assets/icons"
 import { categories } from "./utils"
 import ShortcutButtons from "./shortcutButtons"
-import {
-  DarkOverlay,
-  LiikaOverlay as LiikaOverlay,
-  UserOverlay,
-} from "./layers/overlayLayers"
+import { DarkOverlay, LiikaOverlay, UserOverlay } from "./layers/overlayLayers"
 import { parseTimeAndDate } from "../../utils/helper"
 import translations from "../../assets/translation"
 
@@ -35,6 +31,10 @@ const Map = ({ startingLocation }) => {
   const timestampRef = useRef(null)
   const markerClusterGroup = L.markerClusterGroup()
   const user = useSelector((state) => state.user?.user?.username ?? null)
+  const clubs = useSelector((state) => state.user?.user?.clubs ?? null)
+  const mapPreferences = useSelector(
+    (state) => state.user?.user?.mapPreferences ?? null
+  )
   var first = true
 
   useEffect(() => {
@@ -72,6 +72,14 @@ const Map = ({ startingLocation }) => {
     }
   }
 
+  // Jos kuvaus on pitkä niin rajataan se 250merkkiin
+  const handleDescription = (description) => {
+    if (description.length > 200) {
+      return description.slice(0, 200) + "..."
+    }
+    return description
+  }
+
   // Kategorian näkyvyyden käsittely
   const toggleCategory = (selectedCategories) => {
     let catSelected = []
@@ -82,7 +90,6 @@ const Map = ({ startingLocation }) => {
       // isSelected on Boolean-arvo (true tai false)
       if (isSelected) {
         // Käsitellään vain valittuja kategorioita
-        console.log(`Kategoria ${categoryId} on valittu!`)
         catSelected.push(Number(categoryId))
       }
     })
@@ -115,11 +122,14 @@ const Map = ({ startingLocation }) => {
     })
   }
 
-  const showUsername = (username) => {
-    if (username.includes("@")) {
+  const showUsername = ({ user, club }) => {
+    if (club) {
+      return club
+    }
+    if (user.includes("@") || user.includes("-")) {
       return ""
     } else {
-      return username
+      return user
     }
   }
 
@@ -174,7 +184,6 @@ const Map = ({ startingLocation }) => {
               if (ends === "") {
                 ends = "23:59"
               }
-              console.log("refreshMarkers: " + JSON.stringify(time))
               eventList = await eventService.getEvents({
                 latitude: center.lat,
                 longitude: center.lng,
@@ -256,30 +265,46 @@ const Map = ({ startingLocation }) => {
         const lat = coordinates[1]
         const lng = coordinates[0]
         const marker = L.marker([lat, lng]).bindPopup(() => {
-          const container = document.createElement("div")
+          // Asetetaan markkeri oikeisiin koordinaatteihin ja liitetään siihen popUp
+          const container = document.createElement("div") // Popupin containeri, seuraavana sisältö:
           container.innerHTML = `
     <h1>${tapahtuma.Title}</h1>
-    <em>${parseTimeAndDate(tapahtuma.StartTime)[0]} - ${
+    <em>📅${parseTimeAndDate(tapahtuma.StartTime)[1]}
+          <em> 
+    <em>🕒${parseTimeAndDate(tapahtuma.StartTime)[0]} - ${
             parseTimeAndDate(tapahtuma.EndTime)[0]
           }<em><br/>
-    ${tapahtuma.Description || ""}<br/>
+    ${handleDescription(tapahtuma.Description)}<br/>
     <p style="text-transform: lowercase; padding: 4px 0px; margin:0;">${
       t.participants
     }: ${tapahtuma.JoinedCount} / ${tapahtuma.ParticipantMax || "-"}</p>
-    <em>${showUsername(tapahtuma.Username)}</em> <br/>
+    <em>${showUsername({
+      user: tapahtuma.Username,
+      club: tapahtuma.ClubName,
+    })}</em> <br/>
     <a href="/events/${
       tapahtuma.EventID
     }" style="color: blue; text-decoration: underline;">
-      Siirry tapahtumaan
+      ${t.show_event_info}
     </a>
   `
           return container
         })
         const categoryID = tapahtuma.CategoryID
-
-        marker.setIcon(selectIcon(categoryID))
+        if (tapahtuma.ClubName) {
+          // Mikäli tapahtuma on yhteistyötapahtuma laitetaan yhteistyökumppanin ikoni
+          marker.setIcon(
+            selectClubIcon({
+              clubName: tapahtuma.ClubName,
+              categoryID: tapahtuma.CategoryID,
+            })
+          )
+        } else {
+          marker.setIcon(selectIcon(categoryID))
+        }
         // Lisää marker oikeaan kategoriaan
         if (categories[categoryID]) {
+          // Muuten laitetaan kategoriaikoni
           categories[categoryID].markers.push(marker)
           // Lisää markerClusterGroupiin vain, jos kategoria on asetettu näkyväksi
           if (categories[categoryID].visible) {
@@ -300,6 +325,10 @@ const Map = ({ startingLocation }) => {
     navigate("/create_event")
   }
 
+  const onClickCreateClubEvent = () => {
+    navigate("/create_club_event")
+  }
+
   const onClickListJoinedEvents = () => {
     navigate("/joined_events")
   }
@@ -313,13 +342,14 @@ const Map = ({ startingLocation }) => {
   }
 
   useEffect(() => {
+    /*Overlayt haetaan käyttöön tässä*/
     const liikaLayer = new LiikaOverlay()
     const darkLayer = new DarkOverlay()
-    const userLayer = new UserOverlay()
+    const userLayer = new UserOverlay(mapPreferences)
     // Luo karttaelementti kun komponentti mounttaa
+
     // Tarkastetaan ensin, että kartalla on aloitussijainti:
     if (!startingLocation.o_lat) {
-      console.log("Ei aloituskordinaatteja..\nAsetetaan defaultit")
       ;(startingLocation.o_lat = 62.6013), (startingLocation.o_lng = 29.7639)
       startingLocation.zoom = 12
     }
@@ -341,7 +371,8 @@ const Map = ({ startingLocation }) => {
 
     //Search bar
     L.Control.geocoder().addTo(map)
-    // Lisää overlay-valikkoon
+
+    // Lisää uuden layerit täällä
     const overlays = {
       Liika: liikaLayer,
       Dark: darkLayer,
@@ -362,6 +393,13 @@ const Map = ({ startingLocation }) => {
       }
     }
 
+    const customDiv = L.DomUtil.create("div", "overlay-container")
+    customDiv.innerHTML = `<img src=${logo} alt="Logo" width=${120} height=${100} />`
+    customDiv.addEventListener("click", () => {
+      navigate("/")
+    })
+    map.getContainer().appendChild(customDiv)
+
     const pikapainikkeet = L.control({ position: "topleft" })
 
     pikapainikkeet.onAdd = () => {
@@ -377,6 +415,15 @@ const Map = ({ startingLocation }) => {
               backgroundImage: "url(/addeventCropped.png)", // Suora polku publicista
             }}
           ></button>
+          {user && clubs[0] && (
+            <button
+              className="pika-painike"
+              onClick={() => onClickCreateClubEvent()}
+              style={{
+                backgroundImage: "url(/addeventCropped.png)", // Suora polku publicista
+              }}
+            ></button>
+          )}
           {user && (
             <button
               className="pika-painike"
@@ -491,15 +538,6 @@ const Map = ({ startingLocation }) => {
   return (
     <div className="map">
       <div id="map" className="map"></div>
-      <div id="overlay">
-        <img
-          src={logo}
-          alt="Logo"
-          width={120}
-          height={100}
-          onClick={() => navigate("/")}
-        />
-      </div>
     </div>
   )
 }

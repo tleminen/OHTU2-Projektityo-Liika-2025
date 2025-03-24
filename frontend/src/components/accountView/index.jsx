@@ -102,6 +102,7 @@ const AccountView = () => {
       <Header />
       <div className="account-view">
         <h1>{t.accountInformation}</h1>
+        <div className="spacer-line" />
         <div className="information-row">
           <div className="information">
             <h3>{t.email} </h3>
@@ -173,6 +174,7 @@ const AccountView = () => {
               poista käyttäjätili
             </button>
           </div>
+          <div className="spacer-line" />
         </div>
       </div>
       <Link to={"/map"} className="back-btn" style={{ alignSelf: "center" }}>

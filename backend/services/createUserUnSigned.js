@@ -1,5 +1,6 @@
 const Users = require("../models/users")
 const { Sequelize } = require("sequelize")
+const { v4: uuidv4 } = require("uuid")
 
 const randomString = (pituus) => {
   const merkit =
@@ -10,11 +11,15 @@ const randomString = (pituus) => {
   ).join("")
 }
 
+const generateUserId = () => {
+  return uuidv4() // Luo uuden uniikin tunnisteen
+}
+
 const createUserUnSigned = async (email) => {
-  console.log("Email parametri:", email)
+  const UUID = generateUserId()
   const password = randomString(12)
   const user = await Users.create({
-    Username: email,
+    Username: UUID,
     Password: password,
     Role: 2,
     Email: email,
@@ -24,4 +29,4 @@ const createUserUnSigned = async (email) => {
   return user
 }
 
-module.exports = { createUserUnSigned }
+module.exports = { createUserUnSigned, generateUserId }
