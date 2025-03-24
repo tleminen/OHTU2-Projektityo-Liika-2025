@@ -65,6 +65,8 @@ const translations = {
     mapSettings: "Map settings",
     maxParticipants: "Maximum participants",
     minParticipants: "Minimum participants",
+    modify_event_later:
+      "Modify event later by registrating with the same email-address provided while creating the event",
     newDescription: "New description",
     newEmail: "New email",
     newEmailAgain: "Insert new email again",
@@ -208,6 +210,8 @@ const translations = {
     mapSettings: "Kartan asetukset",
     maxParticipants: "Osanottajat enintään",
     minParticipants: "Osanottajat vähintään",
+    modify_event_later:
+      "Voit muokata tapahtumaa rekisteröitymällä samalla sähköpostiosoitteella, jolla olet luonut tapahtuman",
     newDescription: "Uusi kuvaus",
     newEmail: "Uusi sähköposti",
     newEmailAgain: "Syötä sähköposti uudelleen",
