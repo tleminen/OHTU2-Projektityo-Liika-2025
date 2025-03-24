@@ -166,16 +166,24 @@ const generateVerificationCode = () => {
 
 //Vahvistuskoodin lähetys sähköpostiin
 registerRouter.post("/sendOtp", async (req, res) => {
-  const { email } = req.body
+  const { email, language } = req.body
 
   try {
     const verificationCode = generateVerificationCode()
 
-    const success = await sendEmail(
-      email,
-      "Sähköpostin vahvistus",
-      `Vahvistuskoodisi on: ${verificationCode}`
-    )
+    if (language === "FI") {
+      const success = await sendEmail(
+        email,
+        "Sähköpostin vahvistus",
+        `Vahvistuskoodisi on: ${verificationCode}`
+      )
+    } else {
+      const success = await sendEmail(
+        email,
+        "Email validation",
+        `OTP code: ${verificationCode}`
+      )
+    }
 
     if (success) {
       res.status(200).json({ message: "Sähköposti lähetetty!" })
