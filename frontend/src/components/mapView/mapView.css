@@ -398,3 +398,10 @@
   width: 80%;
   background-color: rgba(255, 45, 45, 0.653);
 }
+
+.leaflet-control-geocoder-icon {
+  background-image: url("/magnifyingGlassCropped.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
