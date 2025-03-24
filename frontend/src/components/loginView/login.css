@@ -124,3 +124,20 @@
     transform: scale(1) rotate(1turn);
   }
 }
+
+/* Mobiilinäkymä: 100vw leveys */
+@media (max-width: 800px) {
+  .forms-btn {
+    border-radius: 5px;
+    padding: 1em 3em;
+    font-size: small;
+  }
+}
+
+@media (max-width: 400px) {
+  .forms-btn {
+    border-radius: 5px;
+    padding: 0.7em 2em;
+    font-size: small;
+  }
+}
