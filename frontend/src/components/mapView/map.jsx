@@ -31,7 +31,7 @@ const Map = ({ startingLocation }) => {
   const timestampRef = useRef(null)
   const markerClusterGroup = L.markerClusterGroup()
   const user = useSelector((state) => state.user?.user?.username ?? null)
-  const clubs = useSelector((state) => state.user?.user?.clubs ?? null)
+  const clubs = useSelector((state) => state.user?.user?.clubs ?? {})
   const mapPreferences = useSelector(
     (state) => state.user?.user?.mapPreferences ?? null
   )
