@@ -141,6 +141,7 @@ const ShortcutButtons = ({ toggleCategory, fetchEvents }) => {
   /**
    * Avaa ja sulkee ... paneelia
    */
+  /*
   const toggleMorePanel = () => {
     setCatIsOpen(false)
     setTimeIsOpen(false)
@@ -152,6 +153,7 @@ const ShortcutButtons = ({ toggleCategory, fetchEvents }) => {
       setTimeout(() => setMoreIsOpen(true), 300)
     }
   }
+    */
 
   /**
    * Avaa ja sulkee aikafiltteröintipaneelia
