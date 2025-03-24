@@ -54,7 +54,7 @@ const Login = () => {
       }}
     >
       <Header />
-      <NotificationContainer />
+      <NotificationContainer/>
       <div className="login">
         <h1>{t.login2}</h1>
         <LoginForm />

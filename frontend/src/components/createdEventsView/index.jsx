@@ -4,6 +4,7 @@ import Footer from "../footer"
 import { Link } from "react-router-dom"
 import { useSelector } from "react-redux"
 import translations from "../../assets/translation"
+import NotificationContainer from "../notification/notificationContainer"
 
 const CreatedEvents = () => {
   const language = useSelector((state) => state.language.language)
@@ -20,6 +21,7 @@ const CreatedEvents = () => {
       }}
     >
       <Header />
+      <NotificationContainer/>
       <EventList listType="created" />
       <Link
         to={"/map"}

@@ -18,6 +18,7 @@ import {
   EventJoinFailure,
   EventLeaveSuccess
   } from "../notification/notificationTemplates.js"
+import NotificationContainer from "../notification/notificationContainer.jsx"
 
 
 
@@ -220,6 +221,7 @@ const EventView = () => {
         }}
       >
         <Header />
+        <NotificationContainer />
         <div className="event-view">
           <p>{t.loading_event}</p>
         </div>
@@ -263,6 +265,7 @@ const EventView = () => {
         }}
       >
         <Header />
+        <NotificationContainer />
         <div className="event-view">
           <img
             src={`/lajit/${selectCategoryName([event.CategoryID])}.png`}
@@ -359,6 +362,7 @@ const EventView = () => {
       }}
     >
       <Header />
+      <NotificationContainer/>
       <div className="event-view">
         <span className="spacer-line"></span>
         {showUsername({ user: event.Username, club: event.ClubName })}

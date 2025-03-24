@@ -18,6 +18,7 @@ import { EventNotFound,
         EventJoinFailure, 
         EventDeletionFailure, 
         EventLeaveSuccess} from "../notification/notificationTemplates.js"
+import NotificationContainer from "../notification/notificationContainer.jsx"
 
 
 const ModifyEvent = () => {
@@ -305,6 +306,7 @@ const ModifyEvent = () => {
       }}
     >
       <Header />
+      <NotificationContainer/>
       <div className="modify-event-view">
         <div className="own-event-item">
           <h1>{t.event_editing}</h1>
