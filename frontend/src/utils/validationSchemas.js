@@ -48,6 +48,25 @@ const registerValidation = () => {
   })
 }
 
+const createEventUnSignedValidation = () => {
+  const t = translations[useSelector((state) => state.language.language)]
+  
+  return Yup.object().shape({
+    title: Yup.string().min(2, t.validation_min_title).max(25, t.validation_max_title).required(t.validation),
+    category: Yup.string().required(t.validation_category),
+    date: Yup.date().required(t.validation_date),
+    startTime: Yup.string().required(t.validation_startTime),
+    endTime: Yup.string().required(t.validation_endTime),
+    participantsMin: 
+    email: Yup.string().matches(/[0-9]/, t.validation_psw_number)
+      .email(t.validation_email_at_sign)
+      .min(5, t.validation_min_email)
+      .max(40, t.validation_max_email)
+      .required(t.validation_email),
+
+  })
+}
+
 const otpValidation = () => {
   const t = translations[useSelector((state) => state.language.language)]
 
