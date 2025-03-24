@@ -428,6 +428,14 @@ h6 {
   text-shadow: 2px 2px 5px rgba(26, 26, 26, 0.5);
 }
 
+ul {
+  margin-left: 30px;
+}
+
+ol {
+  margin-left: 30px;
+}
+
 .fullpage {
   display: flex;
   flex-direction: column;
@@ -602,6 +610,10 @@ h6 {
   border-top: 1px solid black; /* Viivan tyyli ja väri */
   line-height: 1; /* Yhden rivin korkeus */
   margin: 10px 0; /* Viivan ylä- ja alapuolen marginaali */
+}
+
+.smooth-navigate-link {
+  color: #0097b2;
 }
 
 /* Mobiilinäkymä: 100vw leveys */
