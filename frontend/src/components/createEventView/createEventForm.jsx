@@ -286,6 +286,9 @@ const CreateEventForm = ({ club }) => {
         >
           <span>{t.createEvent}</span>
         </button>
+        <div style={{ marginTop: "20px" }}>
+          <em>{t.modify_event_later}.</em>
+        </div>
       </div>
     )
   }
