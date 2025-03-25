@@ -21,7 +21,6 @@ const EventView = () => {
   const t = translations[language]
   const userID = useSelector((state) => state.user?.user?.userID ?? null)
   const userEvents = useSelector((state) => state.event.events || [])
-  const [selectedTime, setSelectedTime] = useState(null)
   const [email, setEmail] = useState("")
   const [isOtpVerified, setIsOtpVerified] = useState(false)
   const dispatch = useDispatch()
@@ -45,15 +44,10 @@ const EventView = () => {
     fetchEventInfo()
   }, [id])
 
-  // Kun times latautuu, asetetaan ensimmäinen aika selectedTime:ksi, jos sitä ei vielä ole
-  useEffect(() => {
-    if (times.length > 0 && !selectedTime) {
-      setSelectedTime(times[0])
-    }
-  }, [times, selectedTime])
+
 
   // Tapahtumaan liittymisen painikkeen handleri
-  const handleJoin = async (userID, id) => {
+  const handleJoin = async (selectedTime, userID, id) => {
     console.log(selectedTime.id)
     try {
       const response = await eventService.joinEvent(storedToken, {
@@ -82,6 +76,7 @@ const EventView = () => {
     }
   }
 
+  /*
   const handleJoinUnSigned = async (email, id) => {
     console.log(email)
     console.log(selectedTime.id)
@@ -106,9 +101,10 @@ const EventView = () => {
       setUnSignedJoined(false)
     }
   }
+    */
 
   // Tapahtumasta eroamisen painikkeen handleri
-  const handleLeave = async (userID, id) => {
+  const handleLeave = async (selectedTime, userID, id) => {
     try {
       const response = await eventService.leaveEvent(storedToken, {
         UserID: userID,
@@ -128,9 +124,9 @@ const EventView = () => {
         prevTimes.map((time) =>
           time.TimeID === selectedTime.TimeID
             ? {
-                ...time,
-                JoinedCount: Math.max((Number(time.JoinedCount) || 0) - 1, 0),
-              }
+              ...time,
+              JoinedCount: Math.max((Number(time.JoinedCount) || 0) - 1, 0),
+            }
             : time
         )
       )
@@ -140,8 +136,12 @@ const EventView = () => {
   }
 
   // Päivämäärän valinnan handleri
-  const handleTimeClick = (time) => {
-    setSelectedTime(time)
+  const handleTimeClick = (time, userID, id) => {
+    if (!isJoined(time)) {
+      handleJoin(time, userID, id)
+    } else {
+      handleLeave(time, userID, id)
+    }
   }
 
   // Tarkistaa onko käyttäjä liittynyt tiettyyn aikaan
@@ -154,12 +154,7 @@ const EventView = () => {
   }
 
   const getTimeButtonClass = (time) => {
-    let baseClass = isJoined(time) ? "joined-time-btn" : "not-joined-time-btn"
-    return selectedTime && selectedTime.TimeID === time.TimeID
-      ? `${baseClass} ${
-          isJoined(time) ? "selected-not-joined" : "selected-joined"
-        }`
-      : baseClass
+    return isJoined(time) ? "not-joined-time-btn" : "joined-time-btn"
   }
 
   const showUsername = ({ user, club }) => {
@@ -224,103 +219,103 @@ const EventView = () => {
   }
 
   //Kirjautumaton tarvittavat tiedot löydetty
-
-  if (!userID) {
-    return (
-      <div
-        className="fullpage"
-        style={{
-          backgroundImage: "url('/backgroundpicture.jpg')",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-        }}
-      >
-        <Header />
-        <div className="event-view">
-          <img
-            src={`/lajit/${selectCategoryName([event.CategoryID])}.png`}
-            alt="Logo"
-            width={100}
-            height={100}
-            className="event-view-icon" // Ei taida toimia tää className??
-          />
-          <h1>{event.Title}</h1>
-          <h2>{t.chooseDate}</h2>
-          <div className="time-parent">
-            {times.map((time, index) => (
-              <div key={index} className="time-child">
-                <button
-                  onClick={() => handleTimeClick(time)}
-                  className={getTimeButtonClass(time)}
-                >
-                  {parseTimeAndDate(time.StartTime)[1]}
-                </button>
-                <p>{time.JoinedCount}</p>
-              </div>
-            ))}
-          </div>
-          <h2>{t.time}</h2>
-          <p style={{ fontWeight: "bold" }}>
-            {parseTimeAndDate(times[0].StartTime)[0]} -{" "}
-            {parseTimeAndDate(times[0].EndTime)[0]}
-          </p>
-          <h2>{t.location}</h2>
-          <StaticMap mapCenter={event.Event_Location.coordinates} />
-
-          <h2>{t.participantCount}</h2>
-          <p>
-            {event.ParticipantMin} - {event.ParticipantMax}
-          </p>
-          <h2>{t.joined}</h2>
-          <p>{selectedTime && selectedTime.JoinedCount}</p>
-          <h2>{t.description}</h2>
-          <div style={{ maxWidth: "600px", marginBottom: "10px" }}>
-            {event.Description}
-          </div>
-          <h3>{t.enterEmailToJoinEvent}</h3>
-          <input
-            type="text"
-            value={email}
-            name="email"
-            className="input-field"
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder={t.email}
-            required={true}
-          />
-
-          <div>
-            <SendEmail
-              setIsOtpVerifiedFromParent={setIsOtpVerified}
-              email={email}
+  /*
+    if (!userID) {
+      return (
+        <div
+          className="fullpage"
+          style={{
+            backgroundImage: "url('/backgroundpicture.jpg')",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            backgroundRepeat: "no-repeat",
+          }}
+        >
+          <Header />
+          <div className="event-view">
+            <img
+              src={`/lajit/${selectCategoryName([event.CategoryID])}.png`}
+              alt="Logo"
+              width={100}
+              height={100}
+              className="event-view-icon" // Ei taida toimia tää className??
             />
+            <h1>{event.Title}</h1>
+            <h2>{t.chooseDate}</h2>
+            <div className="time-parent">
+              {times.map((time, index) => (
+                <div key={index} className="time-child">
+                  <button
+                    onClick={() => handleTimeClick(time)}
+                    className={getTimeButtonClass(time)}
+                  >
+                    {parseTimeAndDate(time.StartTime)[1]}
+                  </button>
+                  <p>{time.JoinedCount}</p>
+                </div>
+              ))}
+            </div>
+            <h2>{t.time}</h2>
+            <p style={{ fontWeight: "bold" }}>
+              {parseTimeAndDate(times[0].StartTime)[0]} -{" "}
+              {parseTimeAndDate(times[0].EndTime)[0]}
+            </p>
+            <h2>{t.location}</h2>
+            <StaticMap mapCenter={event.Event_Location.coordinates} />
+  
+            <h2>{t.participantCount}</h2>
+            <p>
+              {event.ParticipantMin} - {event.ParticipantMax}
+            </p>
+            <h2>{t.joined}</h2>
+            <p>{selectedTime && selectedTime.JoinedCount}</p>
+            <h2>{t.description}</h2>
+            <div style={{ maxWidth: "600px", marginBottom: "10px" }}>
+              {event.Description}
+            </div>
+            <h3>{t.enterEmailToJoinEvent}</h3>
+            <input
+              type="text"
+              value={email}
+              name="email"
+              className="input-field"
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder={t.email}
+              required={true}
+            />
+  
+            <div>
+              <SendEmail
+                setIsOtpVerifiedFromParent={setIsOtpVerified}
+                email={email}
+              />
+            </div>
+            {selectedTime && isOtpVerified && !unSignedJoined && (
+              <button
+                className="join-btn"
+                onClick={() => handleJoinUnSigned(email, id)}
+              >
+                {t.join}
+              </button>
+            )}
+            {selectedTime && unSignedJoined && (
+              <h3>{t.youHaveJoinedForTheEvent}</h3>
+            )}
+            <p style={{ fontWeight: "lighter" }}>{t.eventLastUpdated}</p>
+            <p style={{ fontWeight: "lighter" }}>
+              {parseTimeAndDate(event.updatedAt)[1]}{" "}
+              {parseTimeAndDate(event.updatedAt)[0]}
+            </p>
+            <Link to={"/map"} className="back-btn">
+              <span>{t.back}</span>
+            </Link>
           </div>
-          {selectedTime && isOtpVerified && !unSignedJoined && (
-            <button
-              className="join-btn"
-              onClick={() => handleJoinUnSigned(email, id)}
-            >
-              {t.join}
-            </button>
-          )}
-          {selectedTime && unSignedJoined && (
-            <h3>{t.youHaveJoinedForTheEvent}</h3>
-          )}
-          <p style={{ fontWeight: "lighter" }}>{t.eventLastUpdated}</p>
-          <p style={{ fontWeight: "lighter" }}>
-            {parseTimeAndDate(event.updatedAt)[1]}{" "}
-            {parseTimeAndDate(event.updatedAt)[0]}
-          </p>
-          <Link to={"/map"} className="back-btn">
-            <span>{t.back}</span>
-          </Link>
+  
+          <Footer />
         </div>
-
-        <Footer />
-      </div>
-    )
-  }
-
+      )
+    }
+  */
   // Kaikki tarvittavat tiedont löydetty. Näytetään...
   return (
     <div
@@ -344,21 +339,12 @@ const EventView = () => {
           className="event-view-icon" // Ei taida toimia tää className??
         />
         <h1>{event.Title}</h1>
-        <h2>{t.chooseDate}</h2>
+        <h2>{"Tulevat tapahtumapäivät"}</h2>
         <div className="time-parent">
           {times.map((time, index) => (
             <div key={index} className="time-child">
-              <button
-                onClick={() => handleTimeClick(time)}
-                className={getTimeButtonClass(time)}
-              >
-                {parseTimeAndDate(time.StartTime)[1]}
-              </button>
-              <div className="counter-icon">
-                <span>
-                  {time.JoinedCount}/{event.ParticipantMax}
-                </span>
-              </div>
+              {parseTimeAndDate(time.StartTime)[1]}
+
             </div>
           ))}
         </div>
@@ -374,22 +360,29 @@ const EventView = () => {
         <p>
           {event.ParticipantMin} - {event.ParticipantMax}
         </p>
-        <h2>{t.joined}</h2>
-        <p>{selectedTime && selectedTime.JoinedCount}</p>
         <h2>{t.description}</h2>
         <div style={{ maxWidth: "600px", marginBottom: "10px" }}>
           {event.Description}
         </div>
-        {selectedTime && !isJoined(selectedTime) && (
-          <button className="join-btn" onClick={() => handleJoin(userID, id)}>
-            {t.join}
-          </button>
-        )}
-        {selectedTime && isJoined(selectedTime) && (
-          <button className="leave-btn" onClick={() => handleLeave(userID, id)}>
-            {t.leaveEvent}
-          </button>
-        )}
+        <h2>{t.join}</h2>
+        <div className="time-parent">
+          {times.map((time, index) => (
+            <div key={index} className="time-child">
+              {parseTimeAndDate(time.StartTime)[1]}
+              <div className="counter-icon">
+                <span>
+                  {time.JoinedCount}/{event.ParticipantMax}
+                </span>
+              </div>
+              <button
+                onClick={() => handleTimeClick(time, userID, id)}
+                className={getTimeButtonClass(time)}
+              >{!isJoined(time) && t.join}{isJoined(time) && t.leave_event}</button>
+
+            </div>
+          ))}
+        </div>
+
         <p style={{ fontWeight: "lighter" }}>{t.eventLastUpdated}</p>
         <p style={{ fontWeight: "lighter" }}>
           {parseTimeAndDate(event.updatedAt)[1]}{" "}
