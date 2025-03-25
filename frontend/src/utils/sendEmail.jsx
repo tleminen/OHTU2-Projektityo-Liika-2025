@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useSelector } from "react-redux"
 import { useEffect, useRef, useState } from "react"
 import translations from "../assets/translation.js"
@@ -34,9 +35,7 @@ const SendEmail = ({ setIsOtpVerifiedFromParent, email, setDisableButton }) => {
   const sendOtp = async () => {
     setLoader(true)
     try {
-      console.log("email: " + email)
       const response = await eventService.createEventEmailSend(email)
-      console.log(response.data)
       alert(t.email_sent)
 
       // Jos OTP lähetettiin onnistuneesti, päivitä tila
@@ -56,7 +55,6 @@ const SendEmail = ({ setIsOtpVerifiedFromParent, email, setDisableButton }) => {
     try {
       // Lähetä OTP backendille vahvistusta varten
       const response = await eventService.createEventVerifyOtp({ email, otp }) //TODO: backendiin otp vahvistus
-      console.log(response.data)
       alert(t.email_confirmation)
       // Jos OTP on oikein, päivitä tila
       setIsOtpVerified(true)

@@ -24,7 +24,7 @@ const EventView = () => {
   const [email, setEmail] = useState("")
   const [isOtpVerified, setIsOtpVerified] = useState(false)
   const dispatch = useDispatch()
-  const [unSignedJoined, setUnSignedJoined] = useState(false)
+  const [disableButton, setDisableButton] = useState(false)
   const storedToken = useSelector((state) => state.user?.user?.token ?? null)
 
   useEffect(() => {
@@ -93,13 +93,17 @@ const EventView = () => {
             : onetime
         )
       )
-      setUnSignedJoined(true)
+      dispatch(
+        addEvent({
+          UserID: null,
+          EventID: Number(id),
+          TimeID: Number(time.TimeID),
+        })
+      )
     } catch (error) {
       console.error("Virhe liityttäessä tapahtumaan" + error)
-      setUnSignedJoined(false)
     }
   }
-
 
   // Tapahtumasta eroamisen painikkeen handleri
   const handleLeave = async (selectedTime, userID, id) => {
@@ -286,6 +290,7 @@ const EventView = () => {
             <SendEmail
               setIsOtpVerifiedFromParent={setIsOtpVerified}
               email={email}
+              setDisableButton={setDisableButton}
             />
           </div>
           {isOtpVerified && <div>
@@ -301,16 +306,13 @@ const EventView = () => {
                   <button
                     onClick={() => handleTimeClickUnsigned(time, email)}
                     className={getTimeButtonClass(time)}
-                  >{!isJoined(time) && t.join}{isJoined(time) && t.leave_event}</button>
+                  >{!isJoined(time) && t.join}{isJoined(time) && t.youHaveJoinedForTheEvent}</button>
 
                 </div>
               ))}
             </div>
           </div>
           }
-          {unSignedJoined && (
-            <h3>{t.youHaveJoinedForTheEvent}</h3>
-          )}
           <p style={{ fontWeight: "lighter" }}>{t.eventLastUpdated}</p>
           <p style={{ fontWeight: "lighter" }}>
             {parseTimeAndDate(event.updatedAt)[1]}{" "}
