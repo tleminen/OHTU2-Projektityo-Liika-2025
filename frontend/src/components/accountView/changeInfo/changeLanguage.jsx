@@ -7,14 +7,17 @@ import "../accountView.css"
 import { Link } from "react-router-dom"
 import FlagSelection from "../../flagSelection.jsx"
 import userService from "../../../services/userService.js"
+import { useState } from 'react'
 
 const ChangeLanguage = () => {
   const language = useSelector((state) => state.language.language)
   const t = translations[language]
+  const [disabled, setDisabled] = useState(false)
   const userID = useSelector((state) => state.user.user.userID)
   const storedToken = useSelector((state) => state.user?.user?.token ?? null)
 
   const saveHandler = async () => {
+    setDisabled(true)
     console.log("Change language attempt:", {
       language,
     })
@@ -27,9 +30,11 @@ const ChangeLanguage = () => {
         console.log("Vaihdettu" + response) //TODO lisää notifikaatio kun vaihdettu
       } catch (error) {
         console.error("virhe käyttäjätunnuksen vaihdossa" + error)
+        setDisabled(false)
       }
     } else {
       console.error("No token provided")
+      setDisabled(false)
     }
   }
 
@@ -47,7 +52,7 @@ const ChangeLanguage = () => {
       <div className="account-view">
         <h1>{t.ChangeLanguage}</h1>
         <FlagSelection menuPlacement="bottom" />
-        <button className="save-btn" onClick={saveHandler}>
+        <button className="save-btn" onClick={saveHandler} disabled={disabled}>
           {t.save}
         </button>
       </div>

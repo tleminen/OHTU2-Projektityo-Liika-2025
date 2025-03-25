@@ -479,25 +479,28 @@ const Map = ({ startingLocation }) => {
       const root = createRoot(container)
 
       const handleClick = () => {
-        const button = container.querySelector(".pika-painike")
-        button.classList.add("rotate-animation")
-
-        // Poista animaatioluokka, jotta se voidaan toistaa uudelleen
-        setTimeout(() => {
-          button.classList.remove("rotate-animation")
-        }, 1000) // Sama kuin animaation kesto
         onClickRefresh(map, null)
+
+        // Käynnistetään pyörimisefekti
+        const image = container.querySelector(".refresh-image")
+        image.classList.add("rotate-animation")
+
+        // Poistetaan animaatio 1 sekunnin kuluttua
+        setTimeout(() => {
+          image.classList.remove("rotate-animation")
+        }, 1000)
       }
 
       root.render(
         <div className="refresh-events">
           <button
-            className="pika-painike"
-            onClick={handleClick}
-            style={{
-              backgroundImage: "url(/refreshCropped.png)", // Suora polku publicista
-            }}
-          ></button>
+            className="pika-painike-refresh"
+            onClick={handleClick}>
+            <div className="refresh-image"
+              style={{
+                backgroundImage: "url(/refreshCropped.png)", // Suora polku publicista
+              }}
+            /></button>
         </div>
       )
       return container
