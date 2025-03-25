@@ -48,7 +48,6 @@ const EventView = () => {
 
   // Tapahtumaan liittymisen painikkeen handleri
   const handleJoin = async (selectedTime, userID, id) => {
-    console.log(selectedTime.id)
     try {
       const response = await eventService.joinEvent(storedToken, {
         UserID: userID,
@@ -76,23 +75,22 @@ const EventView = () => {
     }
   }
 
-  /*
-  const handleJoinUnSigned = async (email, id) => {
-    console.log(email)
-    console.log(selectedTime.id)
+
+  const handleJoinUnSigned = async (time, email) => {
+    console.log(time)
     try {
       const response = await eventService.joinEventUnSigned({
         Email: email,
-        EventID: id,
-        TimeID: Number(selectedTime.TimeID),
+        EventID: event.EventID,
+        TimeID: Number(time.TimeID),
       })
       console.log(response) // TODO: Lisää notifikaatio?
       // Päivitä frontendin Times-tila
       setTimes((prevTimes) =>
-        prevTimes.map((time) =>
-          time.TimeID === selectedTime.TimeID
-            ? { ...time, JoinedCount: (Number(time.JoinedCount) || 0) + 1 }
-            : time
+        prevTimes.map((onetime) =>
+          onetime.TimeID === time.TimeID
+            ? { ...onetime, JoinedCount: (Number(onetime.JoinedCount) || 0) + 1 }
+            : onetime
         )
       )
       setUnSignedJoined(true)
@@ -101,7 +99,7 @@ const EventView = () => {
       setUnSignedJoined(false)
     }
   }
-    */
+
 
   // Tapahtumasta eroamisen painikkeen handleri
   const handleLeave = async (selectedTime, userID, id) => {
@@ -141,6 +139,13 @@ const EventView = () => {
       handleJoin(time, userID, id)
     } else {
       handleLeave(time, userID, id)
+    }
+  }
+
+  // Päivämäärän valinnan handleri
+  const handleTimeClickUnsigned = (time) => {
+    if (!isJoined(time)) {
+      handleJoinUnSigned(time, email)
     }
   }
 
@@ -219,103 +224,108 @@ const EventView = () => {
   }
 
   //Kirjautumaton tarvittavat tiedot löydetty
-  /*
-    if (!userID) {
-      return (
-        <div
-          className="fullpage"
-          style={{
-            backgroundImage: "url('/backgroundpicture.jpg')",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            backgroundRepeat: "no-repeat",
-          }}
-        >
-          <Header />
-          <div className="event-view">
-            <img
-              src={`/lajit/${selectCategoryName([event.CategoryID])}.png`}
-              alt="Logo"
-              width={100}
-              height={100}
-              className="event-view-icon" // Ei taida toimia tää className??
+
+  if (!userID) {
+    return (
+      <div
+        className="fullpage"
+        style={{
+          backgroundImage: "url('/backgroundpicture.jpg')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+        }}
+      >
+        <Header />
+        <div className="event-view">
+          <img
+            src={`/lajit/${selectCategoryName([event.CategoryID])}.png`}
+            alt="Logo"
+            width={100}
+            height={100}
+            className="event-view-icon" // Ei taida toimia tää className??
+          />
+          <h1>{event.Title}</h1>
+          <h2>{"Tulevat tapahtumapäivät"}</h2>
+          <div className="time-parent">
+            {times.map((time, index) => (
+              <div key={index} className="time-child">
+                {parseTimeAndDate(time.StartTime)[1]}
+
+              </div>
+            ))}
+          </div>
+          <h2>{t.time}</h2>
+          <p style={{ fontWeight: "bold" }}>
+            {parseTimeAndDate(times[0].StartTime)[0]} -{" "}
+            {parseTimeAndDate(times[0].EndTime)[0]}
+          </p>
+          <h2>{t.location}</h2>
+          <StaticMap mapCenter={event.Event_Location.coordinates} />
+
+          <h2>{t.participantCount}</h2>
+          <p>
+            {event.ParticipantMin} - {event.ParticipantMax}
+          </p>
+          <h2>{t.description}</h2>
+          <div style={{ maxWidth: "600px", marginBottom: "10px" }}>
+            {event.Description}
+          </div>
+          <h3>{t.enterEmailToJoinEvent}</h3>
+          <input
+            type="text"
+            value={email}
+            name="email"
+            className="input-field"
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder={t.email}
+            required={true}
+          />
+
+          <div>
+            <SendEmail
+              setIsOtpVerifiedFromParent={setIsOtpVerified}
+              email={email}
             />
-            <h1>{event.Title}</h1>
-            <h2>{t.chooseDate}</h2>
+          </div>
+          {isOtpVerified && <div>
             <div className="time-parent">
               {times.map((time, index) => (
                 <div key={index} className="time-child">
+                  {parseTimeAndDate(time.StartTime)[1]}
+                  <div className="counter-icon">
+                    <span>
+                      {time.JoinedCount}/{event.ParticipantMax}
+                    </span>
+                  </div>
                   <button
-                    onClick={() => handleTimeClick(time)}
+                    onClick={() => handleTimeClickUnsigned(time, email)}
                     className={getTimeButtonClass(time)}
-                  >
-                    {parseTimeAndDate(time.StartTime)[1]}
-                  </button>
-                  <p>{time.JoinedCount}</p>
+                  >{!isJoined(time) && t.join}{isJoined(time) && t.leave_event}</button>
+
                 </div>
               ))}
             </div>
-            <h2>{t.time}</h2>
-            <p style={{ fontWeight: "bold" }}>
-              {parseTimeAndDate(times[0].StartTime)[0]} -{" "}
-              {parseTimeAndDate(times[0].EndTime)[0]}
-            </p>
-            <h2>{t.location}</h2>
-            <StaticMap mapCenter={event.Event_Location.coordinates} />
-  
-            <h2>{t.participantCount}</h2>
-            <p>
-              {event.ParticipantMin} - {event.ParticipantMax}
-            </p>
-            <h2>{t.joined}</h2>
-            <p>{selectedTime && selectedTime.JoinedCount}</p>
-            <h2>{t.description}</h2>
-            <div style={{ maxWidth: "600px", marginBottom: "10px" }}>
-              {event.Description}
-            </div>
-            <h3>{t.enterEmailToJoinEvent}</h3>
-            <input
-              type="text"
-              value={email}
-              name="email"
-              className="input-field"
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder={t.email}
-              required={true}
-            />
-  
-            <div>
-              <SendEmail
-                setIsOtpVerifiedFromParent={setIsOtpVerified}
-                email={email}
-              />
-            </div>
-            {selectedTime && isOtpVerified && !unSignedJoined && (
-              <button
-                className="join-btn"
-                onClick={() => handleJoinUnSigned(email, id)}
-              >
-                {t.join}
-              </button>
-            )}
-            {selectedTime && unSignedJoined && (
-              <h3>{t.youHaveJoinedForTheEvent}</h3>
-            )}
-            <p style={{ fontWeight: "lighter" }}>{t.eventLastUpdated}</p>
-            <p style={{ fontWeight: "lighter" }}>
-              {parseTimeAndDate(event.updatedAt)[1]}{" "}
-              {parseTimeAndDate(event.updatedAt)[0]}
-            </p>
-            <Link to={"/map"} className="back-btn">
-              <span>{t.back}</span>
-            </Link>
           </div>
-  
-          <Footer />
+          }
+          {unSignedJoined && (
+            <h3>{t.youHaveJoinedForTheEvent}</h3>
+          )}
+          <p style={{ fontWeight: "lighter" }}>{t.eventLastUpdated}</p>
+          <p style={{ fontWeight: "lighter" }}>
+            {parseTimeAndDate(event.updatedAt)[1]}{" "}
+            {parseTimeAndDate(event.updatedAt)[0]}
+          </p>
+          <Link to={"/map"} className="back-btn">
+            <span>{t.back}</span>
+          </Link>
         </div>
-      )
-    }
-  */
+
+        <Footer />
+      </div>
+    )
+  }
+
   // Kaikki tarvittavat tiedont löydetty. Näytetään...
   return (
     <div
