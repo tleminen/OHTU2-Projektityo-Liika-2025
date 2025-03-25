@@ -7,6 +7,14 @@ import "../accountView.css"
 import { Link } from "react-router-dom"
 import FlagSelection from "../../flagSelection.jsx"
 import userService from "../../../services/userService.js"
+import {
+  DetailUpdated,
+  LanguageUpdateFailure,
+  TokenNotFound
+  } from "../../notification/notificationTemplates.js"
+import { addNotification } from "../../../store/notificationSlice.js"
+import NotificationContainer from "../../notification/notificationContainer.jsx"
+
 
 const ChangeLanguage = () => {
   const language = useSelector((state) => state.language.language)
@@ -25,11 +33,15 @@ const ChangeLanguage = () => {
           LanguageID: language,
         })
         console.log("Vaihdettu" + response) //TODO lisää notifikaatio kun vaihdettu
+        dispatch(addNotification(DetailUpdated(t.detail_changed)))
       } catch (error) {
-        console.error("virhe käyttäjätunnuksen vaihdossa" + error)
+        console.error(t.language_update_failure + error)
+        dispatch(addNotification(LanguageUpdateFailure(t.language_update_failure)))
+
       }
     } else {
-      console.error("No token provided")
+      console.error(t.tokenNotFound)
+      dispatch(addNotification(TokenNotFound(t.tokenNotFound)))
     }
   }
 
@@ -44,6 +56,7 @@ const ChangeLanguage = () => {
       }}
     >
       <Header />
+      <NotificationContainer />
       <div className="account-view">
         <h1>{t.ChangeLanguage}</h1>
         <FlagSelection menuPlacement="bottom" />

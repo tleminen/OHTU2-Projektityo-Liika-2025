@@ -10,6 +10,13 @@ import LocationMap from "../../locationMap.jsx"
 import { useEffect, useState } from "react"
 import { changeLocation } from "../../../store/locationSlice.js"
 import { changeUser } from "../../../store/userSlice.js"
+import NotificationContainer from "../../notification/notificationContainer.jsx"
+import { addNotification } from "../../../store/notificationSlice.js"
+import {
+  DetailUpdated,
+  TokenNotFound,
+  MapUpdateError
+} from "../../notification/notificationTemplates.js"
 
 const ChangeMap = () => {
   const language = useSelector((state) => state.language.language)
@@ -93,6 +100,7 @@ const ChangeMap = () => {
           mapPreferences: mapPreferences,
         })
         console.log("Vaihdettu" + response) //TODO lisää notifikaatio kun vaihdettu
+        dispatch(addNotification(DetailUpdated(t.detail_changed)))
         dispatch(
           changeLocation({
             o_lat: location.lat,
@@ -104,10 +112,12 @@ const ChangeMap = () => {
         )
         dispatch(changeUser({ mapPreferences: mapPreferences }))
       } catch (error) {
-        console.error("virhe kartan asetusten vaihdossa" + error)
+        console.error(t.error_updating_map + error)
+        dispatch(addNotification(MapUpdateError(t.error_updating_map)))
       }
     } else {
-      console.error("No token provided")
+      console.error(t.token_not_found)
+      dispatch(addNotification(TokenNotFound(t.token_not_found)))
     }
   }
 
@@ -182,6 +192,7 @@ const ChangeMap = () => {
       }}
     >
       <Header />
+      <NotificationContainer />
       <div className="account-view">
         <h1>{t.mapSettings}</h1>
 

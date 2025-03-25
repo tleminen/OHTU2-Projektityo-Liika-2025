@@ -83,6 +83,7 @@ const AccountView = () => {
         }}
       >
         <Header />
+        <NotificationContainer/>
         <div className="account-view">
           <p>Lataa...</p>
         </div>

@@ -6,6 +6,14 @@ import { useSelector } from "react-redux"
 import "../../../index.css"
 import "../accountView.css"
 import { Link } from "react-router-dom"
+import { addNotification } from "../../../store/notificationSlice.js"
+import NotificationContainer from "../../notification/notificationContainer.jsx"
+import {
+  DetailUpdated,
+  EmailUpdateFailure,
+  TokenNotFound
+  } from "../../notification/notificationTemplates.js"
+
 
 const ChangePassword = () => {
   const language = useSelector((state) => state.language.language)
@@ -21,6 +29,7 @@ const ChangePassword = () => {
       console.log(password)
     } else {
       console.error("No token provided")
+      dispatchEvent(addNotification(TokenNotFound("No token provided")))
     }
   }
 
@@ -35,6 +44,7 @@ const ChangePassword = () => {
       }}
     >
       <Header />
+      <NotificationContainer />
       <div className="account-view">
         <div className="account-view-form">
           <h1>{t.ChangePassword}</h1>

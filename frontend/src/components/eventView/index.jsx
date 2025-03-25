@@ -78,7 +78,6 @@ const EventView = () => {
         throw new Error(t.event_join_failure)
       }
       if (response && response.status >= 200 && response.status < 300) {
-        console.log("Dispatchataan notificaatio", EventJoinSuccess(t.event_joined))
         dispatch(addNotification(EventJoinSuccess(t.event_joined)))
         dispatch(
           addEvent({

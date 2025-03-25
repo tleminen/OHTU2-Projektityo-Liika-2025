@@ -8,6 +8,14 @@ import "../accountView.css"
 import { Link } from "react-router-dom"
 import userService from "../../../services/userService.js"
 import { changeUser } from "../../../store/userSlice.js"
+import {
+  DetailUpdated,
+  EmailUpdateFailure,
+  TokenNotFound
+  } from "../../notification/notificationTemplates.js"
+import { addNotification } from "../../../store/notificationSlice.js"
+import NotificationContainer from "../../notification/notificationContainer.jsx"
+
 
 const ChangeEmail = () => {
   const language = useSelector((state) => state.language.language)
@@ -31,11 +39,16 @@ const ChangeEmail = () => {
         console.log("Vaihdettu" + response)
         setOldEmail(newEmail)
         dispatch(changeUser({ email: newEmail })) //TODO lisää notifikaatio kun vaihdettu
+        dispatch(addNotification(DetailUpdated(t.detail_changed)))
       } catch (error) {
-        console.error("virhe sähköpostin vaihdossa" + error)
+        console.error(t.email_update_error + error)
+        dispatch(addNotification(EmailUpdateFailure(t.email_update_error)))
+        
+        
       }
     } else {
-      console.error("No token provided")
+      console.error(t.tokenNotFound)
+      dispatch(addNotification(TokenNotFound(t.tokenNotFound)))
     }
   }
 
@@ -50,6 +63,7 @@ const ChangeEmail = () => {
       }}
     >
       <Header />
+      <NotificationContainer />
       <div className="account-view">
         <h1>{t.changeEmail}</h1>
         <div className="account-view-form">

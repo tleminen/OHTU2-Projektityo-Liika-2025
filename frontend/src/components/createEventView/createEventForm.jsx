@@ -11,6 +11,7 @@ import DatePicker from "react-multi-date-picker"
 import SendEmail from "../../utils/sendEmail.jsx"
 import { selectCategoryName } from "../../assets/icons.js"
 import { addNotification } from "../../store/notificationSlice.js"
+import NotificationContainer from "../notification/notificationContainer.jsx"
 import {
   EventCreated,
   EventCreationFailure,
@@ -73,10 +74,6 @@ const CreateEventForm = ({ club }) => {
   const handleSubmit = (event) => {
     event.preventDefault()
     const categoryID = activity.value
-
-    if (!isOtpVerified) {
-      alert(t.opt_robot_check)
-    }
 
     if (club) {
       console.log("clubitapahtuma")

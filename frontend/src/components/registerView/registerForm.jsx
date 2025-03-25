@@ -18,6 +18,7 @@ import {
   OtpRobotCheck,
   OtpVerified,
   OtpNotVerified,
+  EmailAlreadyRegistered,
 } from "../notification/notificationTemplates.js"
 import { Link } from "react-router-dom"
 
@@ -102,8 +103,8 @@ const RegisterForm = () => {
       setLoader(false)
       setBlockRegister(false)
     } catch (error) {
-      console.error("Virhe sähköpostin lähetyksessä:", error)
-      //alert(t.email_send_error)
+      console.error(t.email_send_error, error)
+    
       dispatch(addNotification(EmailSentFailure(t.email_send_error))) // Lähetä virheilmoitus
       setLoader(false)
     }
@@ -149,14 +150,16 @@ const RegisterForm = () => {
       // Jos OTP on oikein, päivitä tila
       handleReadyState()
     } catch (error) {
-      if (error.message === "otp check failed") {
-        dispatch(addNotification(OtpRobotCheck(t.opt_robot_check))) // Lähetä virheilmoitus
-      } else {
-        // Käsittele virhe (esim. näytä virheilmoitus)
-        console.error("Virhe OTP:n vahvistuksessa:", error)
+      if (error.response){
+        if (error.response.status == 400){
+          dispatch(addNotification(EmailAlreadyRegistered(t.email_already_registered))) // Lähetä virheilmoitus
+         
+        } else {
+        console.error(t.otp_not_verified, error)
         dispatch(addNotification(OtpNotVerified(t.otp_send_error))) // Lähetä virheilmoitus
-      }
-    }
+        }
+     }
+   }
   }
 
   const togglePasswordVisibility = () => {

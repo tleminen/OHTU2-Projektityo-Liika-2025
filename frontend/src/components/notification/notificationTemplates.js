@@ -94,7 +94,64 @@
     type:"error"
   })
 
+  const DetailUpdated = (t) => ({
+    id: Date.now(),
+    message: t,
+    type: "success",
+  })
   
+  const EmailUpdateFailure = (t) => ({
+    id: Date.now(),
+    message: t,
+    type: "error",
+  })
+
+  const TokenNotFound = (t) => ({
+    id: Date.now(),
+    message: t,
+    type: "error",
+  })
+
+  const LanguageUpdateFailure = (t) => ({
+    id: Date.now(),
+    message: t,
+    type: "error",
+  })
+
+  const MapUpdateError = (t) => ({
+    id: Date.now(),
+    message: t,
+    type: "error",
+  })
+  
+  const EmailAlreadyRegistered = (t) => ({
+    id: Date.now(),
+    message: t,
+    type: "error",
+  })
 
 
-export {EmailSentSuccess, EmailSentFailure, OtpRobotCheck, OtpVerified, OtpNotVerified, UserFailure, EventNotFound, EventCreated, EventJoinSuccess, EventJoinFailure, EventDeletionWarning, EventDeletionFailure, EventLeaveSuccess, EventLeaveFailure, EventCreationFailure}
+export {
+  EmailSentSuccess, 
+  EmailSentFailure, 
+  OtpRobotCheck, 
+  OtpVerified, 
+  OtpNotVerified, 
+  UserFailure, 
+  EventNotFound, 
+  EventCreated, 
+  EventJoinSuccess, 
+  EventJoinFailure, 
+  EventDeletionWarning, 
+  EventDeletionFailure, 
+  EventLeaveSuccess, 
+  EventDeletion,
+  EventLeaveFailure, 
+  EventCreationFailure, 
+  DetailUpdated, 
+  EmailUpdateFailure,
+  TokenNotFound,
+  LanguageUpdateFailure,
+  MapUpdateError,
+  EmailAlreadyRegistered
+}
