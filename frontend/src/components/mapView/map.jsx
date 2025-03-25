@@ -420,7 +420,7 @@ const Map = ({ startingLocation }) => {
               className="pika-painike"
               onClick={() => onClickCreateClubEvent()}
               style={{
-                backgroundImage: "url(/create_event_partner_cropped.png)", // Suora polku publicista
+                backgroundImage: "url(/create_event_partner_Cropped.png)", // Suora polku publicista
               }}
             ></button>
           )}
