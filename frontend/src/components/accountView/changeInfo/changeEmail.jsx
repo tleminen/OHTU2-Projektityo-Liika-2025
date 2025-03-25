@@ -18,24 +18,30 @@ const ChangeEmail = () => {
   const [oldEmail, setOldEmail] = useState(
     useSelector((state) => state.user.user.email)
   )
+  const [disabled, setDisabled] = useState(false)
   const storedToken = useSelector((state) => state.user?.user?.token ?? null)
   const dispatch = useDispatch()
 
   const handleSubmit = async () => {
+    setDisabled(true)
     if (storedToken) {
       try {
         const response = await userService.updateUserEmail(storedToken, {
           UserID: userID,
           Email: newEmail,
         })
-        console.log("Vaihdettu" + response)
-        setOldEmail(newEmail)
-        dispatch(changeUser({ email: newEmail })) //TODO lisää notifikaatio kun vaihdettu
+        if (response[0] === 1) {
+          console.log("vaihdettu")
+          setOldEmail(newEmail)
+          dispatch(changeUser({ email: newEmail })) //TODO lisää notifikaatio kun vaihdettu
+        }
       } catch (error) {
         console.error("virhe sähköpostin vaihdossa" + error)
+        setDisabled(false)
       }
     } else {
       console.error("No token provided")
+      setDisabled(false)
     }
   }
 
@@ -76,7 +82,7 @@ const ChangeEmail = () => {
             placeholder={t.newEmailAgain}
             required={true}
           />
-          <button className="save-btn" onClick={handleSubmit}>
+          <button className="save-btn" onClick={handleSubmit} disabled={disabled}>
             {t.save}
           </button>
         </div>
