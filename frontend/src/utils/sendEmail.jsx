@@ -42,7 +42,6 @@ const SendEmail = ({ setIsOtpVerifiedFromParent, email, setDisableButton }) => {
       // Jos OTP lähetettiin onnistuneesti, päivitä tila
       setOtpSent(true)
       setLoader(false)
-      setDisableButton(false)
     } catch (error) {
       console.error("Virhe axios-pyynnössä:", error)
       if (error.response) {
@@ -62,6 +61,7 @@ const SendEmail = ({ setIsOtpVerifiedFromParent, email, setDisableButton }) => {
       // Jos OTP on oikein, päivitä tila
       setIsOtpVerified(true)
       setIsOtpVerifiedFromParent(true)
+      setDisableButton(false)
     } catch (error) {
       // Käsittele virhe (esim. näytä virheilmoitus)
       console.error("Virhe OTP:n vahvistuksessa:", error)

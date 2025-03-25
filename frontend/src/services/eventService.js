@@ -44,7 +44,7 @@ const createEvent = async (storedToken, parameters) => {
     parameters,
     headers
   )
-  return response.data
+  return response.status
 }
 
 // Luo tapahtuman kirjautumattomalle käyttäjälle
@@ -54,7 +54,7 @@ const createEventUnSigned = async (parameters) => {
     baseUrl + "/events/create_event_unsigned",
     parameters
   )
-  return response.data
+  return response.status
 }
 
 // Sähköpostivahvistus tapahtuman luonnissa kirjautumattomalle käyttäjälle
