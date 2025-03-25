@@ -21,6 +21,7 @@ const LoginForm = () => {
   const [password, setPassword] = useState("")
   const [showPassword, setShowPassword] = useState(false)
   const [errors, setErrors] = useState({})
+  const [disabled, setDisabled] = useState(false);
 
   // Tallennetaan muuttujaan return arvo
   const schema = loginValidation()
@@ -32,6 +33,7 @@ const LoginForm = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault()
+    setDisabled(true)
 
     try {
       await schema.validate({ username, password }, { abortEarly: false })
@@ -73,6 +75,7 @@ const LoginForm = () => {
       } catch (error) {
         dispatch(addNotification(UserFailure(t.alert_incorrect)))
         console.log(error)
+        setDisabled(false)
       }
     } catch (err) {
       if (err.inner) {
@@ -83,6 +86,7 @@ const LoginForm = () => {
         setErrors(errorMap)
         console.log("Validation errors:", errorMap)
       }
+      setDisabled(false)
     }
   }
 
@@ -135,7 +139,7 @@ const LoginForm = () => {
         {errors.password && (
           <div className="error-forms">{errors.password}</div>
         )}
-        <button type="submit" className="forms-btn">
+        <button type="submit" className="forms-btn" disabled={disabled}>
           <span>{t.login}</span>
         </button>
       </form>

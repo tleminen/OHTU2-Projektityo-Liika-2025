@@ -113,8 +113,10 @@ const RegisterForm = () => {
   }
 
   const verifyOtp = async () => {
+    setBlockRegister(true)
     if (!termsAccepted) {
       setErrors({ ...errors, terms: t.terms_of_service_accept })
+      setBlockRegister(false)
       return
     }
 
@@ -159,6 +161,7 @@ const RegisterForm = () => {
         console.error("Virhe OTP:n vahvistuksessa:", error)
         dispatch(addNotification(OtpNotVerified(t.otp_send_error))) // Lähetä virheilmoitus
       }
+      setBlockRegister(false)
     }
   }
 
