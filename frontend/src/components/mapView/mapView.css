@@ -379,8 +379,15 @@
   animation: bounce 0.2s ease-in-out;
 }
 
+.leaflet-container {
+  background-color: transparent;
+  backdrop-filter: brightness(200%);
+}
+
 .leaflet-control-zoom-in {
   border-radius: 3px;
+  background-color: transparent;
+  backdrop-filter: brightness(200%);
 }
 
 .leaflet-control-zoom-out {
@@ -390,6 +397,12 @@
 .leaflet-touch .leaflet-control-layers,
 .leaflet-touch .leaflet-bar {
   border: none;
+  background-color: transparent;
+  backdrop-filter: brightness(200%);
+}
+
+.leaflet-control-layers-expanded {
+  background-color: rgba(255, 255, 255, 0.806) !important;
 }
 
 @keyframes bounce {
@@ -448,11 +461,32 @@
   background-color: rgba(255, 45, 45, 0.653);
 }
 
+.leaflet-control-zoom {
+  background-color: transparent !important;
+  backdrop-filter: brightness(200%) !important;
+}
+
+.leaflet-control-zoom-in {
+  background-color: transparent !important;
+  backdrop-filter: brightness(200%) !important;
+}
+
+.leaflet-control-zoom-out {
+  background-color: transparent !important;
+  backdrop-filter: brightness(200%) !important;
+}
+
 .leaflet-control-geocoder-icon {
+  background-color: transparent;
+  backdrop-filter: brightness(200%);
   background-image: url("/magnifyingGlassCropped.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+}
+
+.leaflet-control-geocoder-expanded {
+  background-color: rgba(255, 255, 255, 0.873) !important;
 }
 
 /* Mobiilinäkymä: 100vw leveys */
