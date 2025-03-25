@@ -1,4 +1,4 @@
-import { useDispatch, useSelector } from "react-redux"
+import { useSelector } from "react-redux"
 import { useEffect, useRef, useState } from "react"
 import translations from "../assets/translation.js"
 import "../components/registerView/register.css"

@@ -1,41 +1,41 @@
 /* eslint-disable react/prop-types */
-import { useEffect, useRef, useState } from "react";
-import L from "leaflet";
-import "leaflet.markercluster";
-import "leaflet/dist/leaflet.css";
-import "leaflet-control-geocoder/dist/Control.Geocoder.css";
-import "leaflet-control-geocoder";
-import "../../index.css";
-import { useDispatch, useSelector } from "react-redux";
-import { changeLocation } from "../../store/locationSlice";
-import logo from "../../assets/liika_logo169.png";
-import { useNavigate } from "react-router-dom";
-import eventService from "../../services/eventService";
-import { createRoot } from "react-dom/client";
-import { selectClubIcon, selectIcon } from "../../assets/icons";
-import { categories } from "./utils";
-import ShortcutButtons from "./shortcutButtons";
-import { DarkOverlay, LiikaOverlay, UserOverlay } from "./layers/overlayLayers";
-import { parseTimeAndDate } from "../../utils/helper";
-import translations from "../../assets/translation";
+import { useEffect, useRef, useState } from "react"
+import L from "leaflet"
+import "leaflet.markercluster"
+import "leaflet/dist/leaflet.css"
+import "leaflet-control-geocoder/dist/Control.Geocoder.css"
+import "leaflet-control-geocoder"
+import "../../index.css"
+import { useDispatch, useSelector } from "react-redux"
+import { changeLocation } from "../../store/locationSlice"
+import logo from "../../assets/liika_logo169.png"
+import { useNavigate } from "react-router-dom"
+import eventService from "../../services/eventService"
+import { createRoot } from "react-dom/client"
+import { selectClubIcon, selectIcon } from "../../assets/icons"
+import { categories } from "./utils"
+import ShortcutButtons from "./shortcutButtons"
+import { DarkOverlay, LiikaOverlay, UserOverlay } from "./layers/overlayLayers"
+import { parseTimeAndDate } from "../../utils/helper"
+import translations from "../../assets/translation"
 
-const DEFAULT_DAYS = 31;
+const DEFAULT_DAYS = 31
 
 const Map = ({ startingLocation }) => {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const language = useSelector((state) => state.language.language);
-  const t = translations[language];
-  const [timeStamp, setTimeStamp] = useState(""); // Aikaleima, milloin päivitetty
-  const [isCategoryPanelOpen, setCategoryPanelOpen] = useState(false);
-  const timestampRef = useRef(null);
-  const markerClusterGroup = L.markerClusterGroup();
-  const user = useSelector((state) => state.user?.user?.username ?? null);
-  const clubs = useSelector((state) => state.user?.user?.clubs ?? {});
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const language = useSelector((state) => state.language.language)
+  const t = translations[language]
+  const [timeStamp, setTimeStamp] = useState("") // Aikaleima, milloin päivitetty
+  const [isCategoryPanelOpen, setCategoryPanelOpen] = useState(false)
+  const timestampRef = useRef(null)
+  const markerClusterGroup = L.markerClusterGroup()
+  const user = useSelector((state) => state.user?.user?.username ?? null)
+  const clubs = useSelector((state) => state.user?.user?.clubs ?? {})
   const mapPreferences = useSelector(
     (state) => state.user?.user?.mapPreferences ?? null
-  );
-  var first = true;
+  )
+  var first = true
 
   useEffect(() => {
     if (timestampRef.current) {
@@ -43,46 +43,46 @@ const Map = ({ startingLocation }) => {
         <div className="refresh-stamp">
           <p>{timeStamp}</p>
         </div>
-      );
+      )
     }
-  }, [timeStamp]);
+  }, [timeStamp])
 
   // Käsittele paneelin näkyvyys
   const toggleCategoryPanel = () => {
-    setCategoryPanelOpen(!isCategoryPanelOpen);
-  };
+    setCategoryPanelOpen(!isCategoryPanelOpen)
+  }
 
   // Kategorioiden suodatus (poisto)
   const removeCategoryMarkers = (categoryId) => {
-    const category = categories[categoryId];
+    const category = categories[categoryId]
     if (category && category.markers.length > 0) {
       category.markers.forEach((marker) => {
-        markerClusterGroup.removeLayer(marker);
-      });
+        markerClusterGroup.removeLayer(marker)
+      })
     }
-  };
+  }
 
   // Kategorioiden suodatus (lisäys)
   const addCategoryMarkers = (categoryId) => {
-    const category = categories[categoryId];
+    const category = categories[categoryId]
     if (category && category.markers.length > 0) {
       category.markers.forEach((marker) => {
-        markerClusterGroup.addLayer(marker);
-      });
+        markerClusterGroup.addLayer(marker)
+      })
     }
-  };
+  }
 
   // Jos kuvaus on pitkä niin rajataan se 250merkkiin
   const handleDescription = (description) => {
     if (description.length > 200) {
-      return description.slice(0, 200) + "...";
+      return description.slice(0, 200) + "..."
     }
-    return description;
-  };
+    return description
+  }
 
   // Kategorian näkyvyyden käsittely
   const toggleCategory = (selectedCategories) => {
-    let catSelected = [];
+    let catSelected = []
 
     Object.entries(selectedCategories).forEach(([categoryId, isSelected]) => {
       // Käydään läpi paneelin valinnat
@@ -90,65 +90,65 @@ const Map = ({ startingLocation }) => {
       // isSelected on Boolean-arvo (true tai false)
       if (isSelected) {
         // Käsitellään vain valittuja kategorioita
-        catSelected.push(Number(categoryId));
+        catSelected.push(Number(categoryId))
       }
-    });
+    })
 
     if (catSelected.length === 0) {
-      showAllCategories(true);
+      showAllCategories(true)
     } else {
-      showAllCategories(false);
-      showCategories(catSelected);
+      showAllCategories(false)
+      showCategories(catSelected)
     }
-  };
+  }
 
   // Tämä funktio näyttää tai piilottaa kaikki kategoriat ja lisää tai poistaa niiden markkerit parametrin show mukaan
   const showAllCategories = (show) => {
     Object.keys(categories).forEach((categoryId) => {
-      categories[categoryId].visible = show;
+      categories[categoryId].visible = show
       if (show) {
-        addCategoryMarkers(categoryId); // Lisätään markkerit, jos show === true
+        addCategoryMarkers(categoryId) // Lisätään markkerit, jos show === true
       } else {
-        removeCategoryMarkers(categoryId); // Poistetaan markkerit, jos show === false
+        removeCategoryMarkers(categoryId) // Poistetaan markkerit, jos show === false
       }
-    });
-  };
+    })
+  }
 
   // Tämä funktio näyttää vain valitut kategoriat ja lisää niiden markkerit
   const showCategories = (selectedCategories) => {
     selectedCategories.forEach((categoryId) => {
-      categories[categoryId].visible = true;
-      addCategoryMarkers(categoryId); // Lisätään markkerit valituille kategorioille
-    });
-  };
+      categories[categoryId].visible = true
+      addCategoryMarkers(categoryId) // Lisätään markkerit valituille kategorioille
+    })
+  }
 
   const showUsername = ({ user, club }) => {
     if (club) {
-      return club;
+      return club
     }
     if (user.includes("@") || user.includes("-")) {
-      return "";
+      return ""
     } else {
-      return user;
+      return user
     }
-  };
+  }
 
   // Funktio, joka hakee tapahtumat ja lisää markerit layerGroupeihin kategorioittain
   const refreshMarkers = async (map, time) => {
-    const center = map.getCenter();
-    setTimeStamp(new Date().toLocaleTimeString().replaceAll(".", ":")); // Asetetaan milloin haettu viimeksi
-    const bounds = map.getBounds(); // Haetaan radiuksen laskemista varten rajat
-    const northWest = bounds.getNorthWest();
-    const southEast = bounds.getSouthEast();
-    const width = northWest.distanceTo([northWest.lat, southEast.lng]);
-    const height = northWest.distanceTo([southEast.lat, northWest.lng]);
+    const center = map.getCenter()
+    setTimeStamp(new Date().toLocaleTimeString().replaceAll(".", ":")) // Asetetaan milloin haettu viimeksi
+    const bounds = map.getBounds() // Haetaan radiuksen laskemista varten rajat
+    const northWest = bounds.getNorthWest()
+    const southEast = bounds.getSouthEast()
+    const width = northWest.distanceTo([northWest.lat, southEast.lng])
+    const height = northWest.distanceTo([southEast.lat, northWest.lng])
     try {
-      let startDay = new Date();
-      let today = startDay.toISOString().split("T")[0]; // Tämä himmeli tuottaa päivämäärän muotoa: YYYY-MM-DD
-      let endDay = new Date(startDay);
-      endDay.setDate(endDay.getDate() + DEFAULT_DAYS); // Asetettu komponentin alussa
-      let endDate = endDay.toISOString().split("T")[0];
-      let eventList;
+      let startDay = new Date()
+      let today = startDay.toISOString().split("T")[0] // Tämä himmeli tuottaa päivämäärän muotoa: YYYY-MM-DD
+      let endDay = new Date(startDay)
+      endDay.setDate(endDay.getDate() + DEFAULT_DAYS) // Asetettu komponentin alussa
+      let endDate = endDay.toISOString().split("T")[0]
+      let eventList
       if (!time || time.quickTime === -1) {
         // Haetaan normaali haku, refresh-nappulasta esimerkiksi. //TODO: Tallenna filtteri Reduksiin
         eventList = await eventService.getEvents({
@@ -159,30 +159,30 @@ const Map = ({ startingLocation }) => {
           endTime: "23:59",
           startDate: today,
           endDate: endDate,
-        });
+        })
       } else {
         switch (
-          time.quickTime // Haetaan ajan mukaan filtteröidyt tapahtumat
+        time.quickTime // Haetaan ajan mukaan filtteröidyt tapahtumat
         ) {
           case 1:
             {
               if (time.dates[1]) {
                 // Päivämääräväli
-                startDay = new Date(time.dates[0]).toISOString().split("T")[0]; // Tämä himmeli tuottaa päivämäärän muotoa: YYYY-MM-DD
-                endDay = new Date(time.dates[1]).toISOString().split("T")[0];
+                startDay = new Date(time.dates[0]).toISOString().split("T")[0] // Tämä himmeli tuottaa päivämäärän muotoa: YYYY-MM-DD
+                endDay = new Date(time.dates[1]).toISOString().split("T")[0]
               } else if (time.dates[0]) {
                 // Yksi päivä
-                startDay = new Date(time.dates[0]).toISOString().split("T")[0];
-                endDay = new Date(time.dates[0]).toISOString().split("T")[0];
+                startDay = new Date(time.dates[0]).toISOString().split("T")[0]
+                endDay = new Date(time.dates[0]).toISOString().split("T")[0]
               }
-              let starts = time.startTime;
-              let ends = time.endTime;
+              let starts = time.startTime
+              let ends = time.endTime
               if (starts === "") {
                 // Asetellaan tapahtumalle kellonaikaväli
-                starts = "00:00";
+                starts = "00:00"
               }
               if (ends === "") {
-                ends = "23:59";
+                ends = "23:59"
               }
               eventList = await eventService.getEvents({
                 latitude: center.lat,
@@ -192,14 +192,14 @@ const Map = ({ startingLocation }) => {
                 endTime: ends,
                 startDate: startDay,
                 endDate: endDay,
-              });
+              })
             }
-            break;
+            break
 
           case 2:
             {
-              endDay = new Date(startDay);
-              endDay.setHours(endDay.getHours() + 3); // Haetaan nyt -> +3 h
+              endDay = new Date(startDay)
+              endDay.setHours(endDay.getHours() + 3) // Haetaan nyt -> +3 h
 
               eventList = await eventService.getEventsQuick({
                 latitude: center.lat,
@@ -207,13 +207,13 @@ const Map = ({ startingLocation }) => {
                 radius: Math.max(Math.max(width, height) / 2, 10000), // Haetaan kartallinen tapahtumia, kuitenkin vähintään 10km
                 startTimeDate: startDay,
                 endTimeDate: endDay,
-              });
+              })
             }
-            break;
+            break
           case 3:
             {
-              endDay = new Date(startDay);
-              endDay.setHours(endDay.getHours() + 24); // Haetaan nyt -> +24 h
+              endDay = new Date(startDay)
+              endDay.setHours(endDay.getHours() + 24) // Haetaan nyt -> +24 h
 
               eventList = await eventService.getEventsQuick({
                 latitude: center.lat,
@@ -221,76 +221,73 @@ const Map = ({ startingLocation }) => {
                 radius: Math.max(Math.max(width, height) / 2, 10000), // Haetaan kartallinen tapahtumia, kuitenkin vähintään 10km
                 startTimeDate: startDay,
                 endTimeDate: endDay,
-              });
+              })
             }
-            break;
+            break
           case 4:
             {
-              endDay = new Date(startDay);
-              endDay.setDate(endDay.getDate() + 7); // Haetaan nyt -> +7 päivää
+              endDay = new Date(startDay)
+              endDay.setDate(endDay.getDate() + 7) // Haetaan nyt -> +7 päivää
               eventList = await eventService.getEventsQuick({
                 latitude: center.lat,
                 longitude: center.lng,
                 radius: Math.max(Math.max(width, height) / 2, 10000), // Haetaan kartallinen tapahtumia, kuitenkin vähintään 10km
                 startTimeDate: startDay,
                 endTimeDate: endDay,
-              });
+              })
             }
-            break;
+            break
           case 5:
             {
-              endDay = new Date(startDay);
-              endDay.setDate(endDay.getDate() + 31); // Haetaan nyt -> +31 päivää
+              endDay = new Date(startDay)
+              endDay.setDate(endDay.getDate() + 31) // Haetaan nyt -> +31 päivää
               eventList = await eventService.getEventsQuick({
                 latitude: center.lat,
                 longitude: center.lng,
                 radius: Math.max(Math.max(width, height) / 2, 10000), // Haetaan kartallinen tapahtumia, kuitenkin vähintään 10km
                 startTimeDate: startDay,
                 endTimeDate: endDay,
-              });
+              })
             }
-            break;
+            break
         }
       }
 
       // Tyhjentää kaikki categoryGroupit ja poistaa ne kartalta
-      markerClusterGroup.clearLayers();
+      markerClusterGroup.clearLayers()
       // Poistetaan ne myös categoriesLayereistä
       Object.keys(categories).forEach((categoryId) => {
-        categories[categoryId].markers = [];
-      });
+        categories[categoryId].markers = []
+      })
       // Lisätään markerit uudelleen
       eventList.forEach((tapahtuma) => {
-        const { coordinates } = tapahtuma.Event_Location;
-        const lat = coordinates[1];
-        const lng = coordinates[0];
+        const { coordinates } = tapahtuma.Event_Location
+        const lat = coordinates[1]
+        const lng = coordinates[0]
         const marker = L.marker([lat, lng]).bindPopup(() => {
           // Asetetaan markkeri oikeisiin koordinaatteihin ja liitetään siihen popUp
-          const container = document.createElement("div"); // Popupin containeri, seuraavana sisältö:
+          const container = document.createElement("div") // Popupin containeri, seuraavana sisältö:
           container.innerHTML = `
     <h1>${tapahtuma.Title}</h1>
     <em>📅${parseTimeAndDate(tapahtuma.StartTime)[1]}
           <em> 
-    <em>🕒${parseTimeAndDate(tapahtuma.StartTime)[0]} - ${
-            parseTimeAndDate(tapahtuma.EndTime)[0]
-          }<em><br/>
+    <em>🕒${parseTimeAndDate(tapahtuma.StartTime)[0]} - ${parseTimeAndDate(tapahtuma.EndTime)[0]
+            }<em><br/>
     ${handleDescription(tapahtuma.Description)}<br/>
-    <p style="text-transform: lowercase; padding: 4px 0px; margin:0;">${
-      t.participants
-    }: ${tapahtuma.JoinedCount} / ${tapahtuma.ParticipantMax || "-"}</p>
+    <p style="text-transform: lowercase; padding: 4px 0px; margin:0;">${t.participants
+            }: ${tapahtuma.JoinedCount} / ${tapahtuma.ParticipantMax || "-"}</p>
     <em>${showUsername({
-      user: tapahtuma.Username,
-      club: tapahtuma.ClubName,
-    })}</em> <br/>
-    <a href="/events/${
-      tapahtuma.EventID
-    }" style="color: blue; text-decoration: underline;">
+              user: tapahtuma.Username,
+              club: tapahtuma.ClubName,
+            })}</em> <br/>
+    <a href="/events/${tapahtuma.EventID
+            }" style="color: blue; text-decoration: underline;">
       ${t.show_event_info}
     </a>
-  `;
-          return container;
-        });
-        const categoryID = tapahtuma.CategoryID;
+  `
+          return container
+        })
+        const categoryID = tapahtuma.CategoryID
         if (tapahtuma.ClubName) {
           // Mikäli tapahtuma on yhteistyötapahtuma laitetaan yhteistyökumppanin ikoni
           marker.setIcon(
@@ -298,60 +295,60 @@ const Map = ({ startingLocation }) => {
               clubName: tapahtuma.ClubName,
               categoryID: tapahtuma.CategoryID,
             })
-          );
+          )
         } else {
-          marker.setIcon(selectIcon(categoryID));
+          marker.setIcon(selectIcon(categoryID))
         }
         // Lisää marker oikeaan kategoriaan
         if (categories[categoryID]) {
           // Muuten laitetaan kategoriaikoni
-          categories[categoryID].markers.push(marker);
+          categories[categoryID].markers.push(marker)
           // Lisää markerClusterGroupiin vain, jos kategoria on asetettu näkyväksi
           if (categories[categoryID].visible) {
-            markerClusterGroup.addLayer(marker);
+            markerClusterGroup.addLayer(marker)
           }
         }
-      });
+      })
     } catch (error) {
-      console.error(error);
+      console.error(error)
     }
-  };
+  }
 
   const onClickRefresh = async (map, time) => {
-    await refreshMarkers(map, time);
-  };
+    await refreshMarkers(map, time)
+  }
 
   const onClickCreateEvent = () => {
-    navigate("/create_event");
-  };
+    navigate("/create_event")
+  }
 
   const onClickCreateClubEvent = () => {
-    navigate("/create_club_event");
-  };
+    navigate("/create_club_event")
+  }
 
   const onClickListJoinedEvents = () => {
-    navigate("/joined_events");
-  };
+    navigate("/joined_events")
+  }
 
   const onClickOwnInfo = () => {
-    navigate("/own_info");
-  };
+    navigate("/own_info")
+  }
 
   const onClickCreatedEvents = () => {
-    navigate("/created_events");
-  };
+    navigate("/created_events")
+  }
 
   useEffect(() => {
     /*Overlayt haetaan käyttöön tässä*/
-    const liikaLayer = new LiikaOverlay();
-    const darkLayer = new DarkOverlay();
-    const userLayer = new UserOverlay(mapPreferences);
+    const liikaLayer = new LiikaOverlay()
+    const darkLayer = new DarkOverlay()
+    const userLayer = new UserOverlay(mapPreferences)
     // Luo karttaelementti kun komponentti mounttaa
 
     // Tarkastetaan ensin, että kartalla on aloitussijainti:
     if (!startingLocation.o_lat) {
-      (startingLocation.o_lat = 62.6013), (startingLocation.o_lng = 29.7639);
-      startingLocation.zoom = 12;
+      (startingLocation.o_lat = 62.6013), (startingLocation.o_lng = 29.7639)
+      startingLocation.zoom = 12
     }
 
     // Lisää karttalaatta OpenStreetMapista
@@ -361,51 +358,51 @@ const Map = ({ startingLocation }) => {
         attribution:
           '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
       }
-    );
+    )
 
     const map = L.map("map", {
       center: [startingLocation.o_lat, startingLocation.o_lng],
       zoom: startingLocation.zoom,
       layers: [osm, liikaLayer],
-    });
+    })
 
     //Search bar
-    L.Control.geocoder().addTo(map);
+    L.Control.geocoder().addTo(map)
 
     // Lisää uuden layerit täällä
     const overlays = {
       Liika: liikaLayer,
       Dark: darkLayer,
       User: userLayer,
-    };
+    }
 
-    L.control.layers(overlays).addTo(map);
+    L.control.layers(overlays).addTo(map)
 
     const fetchEvents = (time) => {
       if (!time) {
-        console.log("Virhe!");
+        console.log("Virhe!")
       } else {
         if (time.quickTime) {
-          onClickRefresh(map, time);
+          onClickRefresh(map, time)
         } else {
-          console.log("Virhe!" + JSON.stringify(time));
+          console.log("Virhe!" + JSON.stringify(time))
         }
       }
-    };
+    }
 
-    const customDiv = L.DomUtil.create("div", "overlay-container");
-    customDiv.innerHTML = `<img src=${logo} alt="Logo" width=${120} height=${100} />`;
+    const customDiv = L.DomUtil.create("div", "overlay-container")
+    customDiv.innerHTML = `<img src=${logo} alt="Logo" width=${120} height=${100} />`
     customDiv.addEventListener("click", () => {
-      navigate("/");
-    });
-    map.getContainer().appendChild(customDiv);
+      navigate("/")
+    })
+    map.getContainer().appendChild(customDiv)
 
-    const pikapainikkeet = L.control({ position: "topleft" });
+    const pikapainikkeet = L.control({ position: "topleft" })
 
     pikapainikkeet.onAdd = () => {
-      const container = L.DomUtil.create("div");
-      L.DomEvent.disableClickPropagation(container);
-      const root = createRoot(container);
+      const container = L.DomUtil.create("div")
+      L.DomEvent.disableClickPropagation(container)
+      const root = createRoot(container)
       root.render(
         <div className="pikapainikkeet">
           <button
@@ -452,16 +449,16 @@ const Map = ({ startingLocation }) => {
             ></button>
           )}
         </div>
-      );
-      return container;
-    };
-    pikapainikkeet.addTo(map);
+      )
+      return container
+    }
+    pikapainikkeet.addTo(map)
 
-    const shortcutbuttons = L.control({ position: "topleft" });
+    const shortcutbuttons = L.control({ position: "topleft" })
     shortcutbuttons.onAdd = () => {
-      const container = L.DomUtil.create("div");
-      L.DomEvent.disableClickPropagation(container);
-      const root = createRoot(container);
+      const container = L.DomUtil.create("div")
+      L.DomEvent.disableClickPropagation(container)
+      const root = createRoot(container)
       root.render(
         <ShortcutButtons
           isOpen={isCategoryPanelOpen}
@@ -470,48 +467,60 @@ const Map = ({ startingLocation }) => {
           fetchEvents={fetchEvents}
           onClose={() => setCategoryPanelOpen(false)}
         />
-      );
-      return container;
-    };
-    shortcutbuttons.addTo(map);
+      )
+      return container
+    }
+    shortcutbuttons.addTo(map)
 
-    const refreshEvents = L.control({ position: "topright" });
+    const refreshEvents = L.control({ position: "topright" })
     refreshEvents.onAdd = () => {
-      const container = L.DomUtil.create("div");
-      L.DomEvent.disableClickPropagation(container);
-      const root = createRoot(container);
+      const container = L.DomUtil.create("div")
+      L.DomEvent.disableClickPropagation(container)
+      const root = createRoot(container)
+
+      const handleClick = () => {
+        const button = container.querySelector(".pika-painike")
+        button.classList.add("rotate-animation")
+
+        // Poista animaatioluokka, jotta se voidaan toistaa uudelleen
+        setTimeout(() => {
+          button.classList.remove("rotate-animation")
+        }, 1000) // Sama kuin animaation kesto
+        onClickRefresh(map, null)
+      }
+
       root.render(
         <div className="refresh-events">
           <button
             className="pika-painike"
-            onClick={() => onClickRefresh(map, null)}
+            onClick={handleClick}
             style={{
               backgroundImage: "url(/refreshCropped.png)", // Suora polku publicista
             }}
           ></button>
         </div>
-      );
-      return container;
-    };
-    refreshEvents.addTo(map);
+      )
+      return container
+    }
+    refreshEvents.addTo(map)
 
-    const refreshStamp = L.control({ position: "topright" });
+    const refreshStamp = L.control({ position: "topright" })
     refreshStamp.onAdd = () => {
-      const container = L.DomUtil.create("div");
-      timestampRef.current = createRoot(container);
+      const container = L.DomUtil.create("div")
+      timestampRef.current = createRoot(container)
       timestampRef.current.render(
         <div className="refresh-events">
           <p>{timeStamp}</p>
         </div>
-      );
-      return container;
-    };
-    refreshStamp.addTo(map);
+      )
+      return container
+    }
+    refreshStamp.addTo(map)
 
     map.on("moveend", () => {
       // Tallennetaan kartan nykyinen keskikohta reduxin storeen
-      const newCenter = map.getCenter(); // Kartan keskikohta
-      const zoomLevel = map.getZoom(); // Kartan zoom-level
+      const newCenter = map.getCenter() // Kartan keskikohta
+      const zoomLevel = map.getZoom() // Kartan zoom-level
       dispatch(
         changeLocation({
           o_lat: startingLocation.o_lat,
@@ -520,26 +529,26 @@ const Map = ({ startingLocation }) => {
           lng: newCenter.lng,
           zoom: zoomLevel,
         })
-      );
-    });
+      )
+    })
 
-    map.addLayer(markerClusterGroup);
+    map.addLayer(markerClusterGroup)
     if (first) {
-      onClickRefresh(map);
-      first = false;
+      onClickRefresh(map)
+      first = false
     }
 
     return () => {
       // Tuhoaa karttaelementin kun komponentti unmounttaa
-      map.remove();
-    };
-  }, []);
+      map.remove()
+    }
+  }, [])
 
   return (
     <div className="map">
       <div id="map" className="map"></div>
     </div>
-  );
-};
+  )
+}
 
-export default Map;
+export default Map

@@ -1,11 +1,14 @@
 .containerforshortcutbuttons {
   position: fixed;
-  bottom: 20px; /* Sijoitetaan alareunaan */
+  bottom: 20px;
+  /* Sijoitetaan alareunaan */
   left: 50%;
-  transform: translateX(-50%); /* Keskittää vaakasuunnassa */
+  transform: translateX(-50%);
+  /* Keskittää vaakasuunnassa */
   background-color: #0097b28d;
   padding: 10px 20px;
-  border-radius: 20px; /* Pyöristetyt kulmat */
+  border-radius: 20px;
+  /* Pyöristetyt kulmat */
   display: flex;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   gap: 8px;
@@ -49,6 +52,21 @@
   backdrop-filter: brightness(200%);
   cursor: pointer;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+
+.rotate-animation {
+  animation: spin 0.7s linear;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .pika-painike:active {
@@ -126,6 +144,7 @@
   width: 50vw;
   max-width: 600px;
   max-height: 0;
+  padding-bottom: 0px;
   overflow: hidden;
   opacity: 0.7;
   transition: max-height 0.5s ease;
@@ -134,10 +153,12 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   z-index: 1050;
 }
+
 /* Paneelin avoin tila */
 .category-panel.open {
   max-height: 70vh;
   opacity: 1;
+  padding-bottom: 30px;
 }
 
 /* Kategorian nappilista */
@@ -184,6 +205,7 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   z-index: 1050;
 }
+
 /* Paneelin avoin tila */
 .time-panel.open {
   max-height: 70vh;
@@ -230,6 +252,7 @@
   z-index: 1050;
   overflow: hidden;
 }
+
 /* Paneelin avoin tila */
 .time-select-panel.open {
   max-height: 70vh;
@@ -347,13 +370,16 @@
 .leaflet-touch .leaflet-bar {
   border: none;
 }
+
 @keyframes bounce {
   0% {
     transform: scale(1);
   }
+
   50% {
     transform: scale(1.2);
   }
+
   100% {
     transform: scale(1);
   }
@@ -385,13 +411,15 @@
 }
 
 .quick-time-select.selected {
-  background-color: #4caf50; /* Valittu painike saa vihreän värin */
+  background-color: #4caf50;
+  /* Valittu painike saa vihreän värin */
   color: white;
 }
 
 .clear-button:hover,
 .quick-time-select:hover {
-  background-color: #ddd; /* Hover-efekti */
+  background-color: #ddd;
+  /* Hover-efekti */
 }
 
 .clear-button {
