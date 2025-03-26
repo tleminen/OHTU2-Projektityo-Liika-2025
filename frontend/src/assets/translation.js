@@ -2,8 +2,8 @@ import termsOfServiceText from "./termsOfServiceText"
 import infoText from "./infoText"
 const translations = {
   EN: {
-    about_us_text:"Our mission is to provide a free and an easy way for people to do activities together.",
-    about_us_text_2:"Liika-page was developed as a part of the Software Production 2 course at the University of Eastern Finland.",
+    about_us_text: "Our mission is to provide a free and an easy way for people to do activities together.",
+    about_us_text_2: "Liika-page was developed as a part of the Software Engineering II course at the University of Eastern Finland.",
     activity: "Activity",
     accountInformation: "Account information",
     alert_incorrect: "Incorrect username or password",
@@ -156,8 +156,8 @@ const translations = {
     uinti: "Swimming",
   },
   FI: {
-    about_us_text:"Tavoitteenamme on tarjota ilmainen ja helppo tapa kohdata ihmisiä liikunnan äärellä.",
-    about_us_text_2:"Liika-sivusto on toteutettu Itä-Suomen Yliopiston Ohjelmistotuotanto 2 -kurssilla.",
+    about_us_text: "Tavoitteenamme on tarjota ilmainen ja helppo tapa kohdata ihmisiä liikunnan äärellä.",
+    about_us_text_2: "Liika-sivusto on toteutettu osana Itä-Suomen Yliopiston Ohjelmistotuotanto II -kurssia.",
     activity: "Laji",
     alert_incorrect: "Väärä käyttäjätunnus tai salasana",
     back: "Takaisin",
@@ -184,7 +184,7 @@ const translations = {
     deleteDate: "Poista päivämäärä",
     editEventDetailsView: "Muokkaa tapahtuman tietoja tässä näkymässä",
     email: "Sähköposti",
-    email_already_registered:"Sähköposti tai käyttäjätunnus on jo rekisteröity",
+    email_already_registered: "Sähköposti tai käyttäjätunnus on jo rekisteröity",
     email_confirmation: "Sähköposti vahvistettu",
     email_not_found: "Sähköpostia ei löytynyt",
     email_send_error: "Virhe lähettäessä sähköpostia",
