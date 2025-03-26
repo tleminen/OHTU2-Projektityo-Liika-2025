@@ -558,8 +558,8 @@ ol {
   position: absolute;
   background-color: lightgray;
   /* Väliaikainen taustaväri */
-  height: 100vh;
-  max-height: 100vh;
+  height: 100dvh;
+  max-height: 100dvh;
   width: 80vw;
   margin: auto;
   z-index: 1000;
