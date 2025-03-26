@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { useState } from "react"
 import translations from "../../assets/translation.js"
 import LocationMap from "../locationMap.jsx"
@@ -47,6 +47,7 @@ const CreateEventForm = ({ club }) => {
   const yesterday = new Date()
   yesterday.setDate(yesterday.getDate() - 1)
   let clubID = null // Tallennettava yhteistyökumppani ID. Oletus on null
+  const dispatch = useDispatch()
 
   const handleClubSelect = (clubId) => {
     setSelectedClub(clubId)
@@ -129,7 +130,8 @@ const CreateEventForm = ({ club }) => {
         }
       } catch (error) {
         console.error(t.event_creation_failure + error)
-        dispatch(addNotification(EventCreationFailure(t.eventCreationFailure)))
+        dispatch(addNotification(EventCreationFailure(t.event_creation_failure)))
+        setDisabled(false)
       }
     } catch (err) {
       if (err.inner) {
@@ -211,7 +213,7 @@ const CreateEventForm = ({ club }) => {
         } catch (error) {
           console.error("Erron while creating event (unsigned): " + error) //TODO: notifikaatio
           dispatch(
-            addNotification(EventCreationFailure(t.eventCreationFailure))
+            addNotification(EventCreationFailure(t.event_creation_failure))
           )
           setBlockCreate(false)
         }

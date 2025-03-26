@@ -27,7 +27,7 @@ const AboutView = () => {
             {t.about_us_text}<br />
             {t.about_us_text_2}
           </p>
-          <h1 style={{ marginTop: "20px" }}>Yhteystiedot</h1>
+          <h1 style={{ marginTop: "20px" }}>{t.contact_info}</h1>
           <ul style={{ listStyle: "none", padding: 0, marginTop: "20px" }} >
             <li>Olli Hilke - h.illo@hotmail.com</li>
             <li>Tomi Leminen - tomppa600@gmail.com</li>

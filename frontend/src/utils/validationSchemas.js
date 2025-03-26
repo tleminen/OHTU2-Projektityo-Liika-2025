@@ -58,7 +58,7 @@ const createEventUnSignedValidation = () => {
       .max(25, t.validation_max_title)
       .required(t.validation_title),
     categoryID: Yup.string().required(t.validation_category),
-    dates: Yup.date().required(t.validation_date),
+    dates: Yup.number().required(t.validation_date),
     startTime: Yup.string().required(t.validation_startTime),
     endTime: Yup.string().required(t.validation_endTime),
     participantsMin: Yup.number().required(t.validation_part_min),
@@ -84,7 +84,7 @@ const createEventValidation = () => {
       .max(25, t.validation_max_title)
       .required(t.validation),
     categoryID: Yup.string().required(t.validation_category),
-    dates: Yup.date().required(t.validation_date),
+    dates: Yup.number().required(t.validation_date),
     startTime: Yup.string().required(t.validation_startTime),
     endTime: Yup.string().required(t.validation_endTime),
     participantsMin: Yup.number().required(t.validation_part_min),

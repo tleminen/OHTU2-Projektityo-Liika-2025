@@ -25,7 +25,7 @@ const Footer = () => {
             i
           </button>
         </div>
-        <p style={{ fontWeight: "lighter" }}>Liika v. 1.1.0</p>
+        <p style={{ fontWeight: "lighter" }}>Liika v. 1.2.0</p>
         <p style={{ fontWeight: "lighter" }}>
           <Link to={`/us`}>{t.contactUs}</Link>
         </p>

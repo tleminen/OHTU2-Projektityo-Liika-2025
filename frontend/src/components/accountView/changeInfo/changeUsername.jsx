@@ -2,7 +2,7 @@ import { useState } from "react"
 import Footer from "../../footer"
 import Header from "../../header"
 import translations from "../../../assets/translation.js"
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import "../../../index.css"
 import "../accountView.css"
 import { Link } from "react-router-dom"
@@ -13,7 +13,7 @@ import {
   DetailUpdated,
   EmailUpdateFailure,
   TokenNotFound
-  } from "../../notification/notificationTemplates.js"
+} from "../../notification/notificationTemplates.js"
 
 
 const ChangeUsername = () => {
@@ -27,6 +27,7 @@ const ChangeUsername = () => {
   const userID = useSelector((state) => state.user.user.userID)
   const [newUserNameAgain, setNewUserNameAgain] = useState("")
   const [disabled, setDisabled] = useState(false)
+  const dispatch = useDispatch()
   const storedToken = useSelector((state) => state.user?.user?.token ?? null)
 
   const handleSubmit = async () => {
@@ -37,12 +38,12 @@ const ChangeUsername = () => {
           UserID: userID,
           Username: newUsername,
         })
-        console.log(t.detail_changed + response) 
+        console.log(t.detail_changed + response)
         dispatch(addNotification(DetailUpdated(t.detail_changed)))
         setOldUsername(newUsername)
       } catch (error) {
         console.error("virhe käyttäjätunnuksen vaihdossa" + error)
-        dispatch(addNotification(EmailUpdateFailure(t.email_update_error)))
+        dispatch(addNotification(EmailUpdateFailure(t.username_update_error)))
       }
     } else {
       console.error(t.tokenNotFound)
