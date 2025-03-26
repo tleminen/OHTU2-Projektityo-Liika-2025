@@ -21,6 +21,7 @@ a {
   color: #646cff;
   text-decoration: inherit;
 }
+
 a:hover {
   color: #535bf2;
 }
@@ -119,6 +120,7 @@ button:focus-visible {
   align-items: center;
   justify-content: center;
 }
+
 .back-btn:hover {
   background-color: #ffffff;
   color: #0097b2;
@@ -136,7 +138,8 @@ button:focus-visible {
 }
 
 .icon-button img {
-  width: 40px; /* Voit muuttaa kokoa tarpeen mukaan */
+  width: 40px;
+  /* Voit muuttaa kokoa tarpeen mukaan */
   height: 40px;
   display: block;
 }
@@ -163,6 +166,7 @@ button:focus-visible {
   cursor: pointer;
   transition: outline-offset 200ms ease;
 }
+
 .register-frontpage-btn:hover {
   color: #194480;
   background: #ffffff;
@@ -170,6 +174,7 @@ button:focus-visible {
   border: 2px solid #194480;
   outline: 2px solid #194480;
 }
+
 .register-frontpage-btn:active {
   transform: scale(0.95);
 }
@@ -188,6 +193,7 @@ button:focus-visible {
   cursor: pointer;
   transition: outline-offset 200ms ease;
 }
+
 .login-frontpage-btn:hover {
   color: #ffffff;
   background: #0097b2;
@@ -195,6 +201,7 @@ button:focus-visible {
   border: 2px solid #194480;
   outline: 2px solid #194480;
 }
+
 .login-frontpage-btn:active {
   transform: scale(0.95);
 }
@@ -215,7 +222,8 @@ button:focus-visible {
   border: none;
   cursor: pointer;
   transition: background-color 0.3s, box-shadow 0.3s;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2); /*varjo efekti*/
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+  /*varjo efekti*/
 }
 
 .info-btn:hover {
@@ -245,6 +253,7 @@ button:focus-visible {
   box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.3);
   transition: all 0.25s cubic-bezier(0.31, -0.105, 0.43, 1.4);
 }
+
 .delete-btn span,
 .delete-btn .icon {
   display: block;
@@ -253,6 +262,7 @@ button:focus-visible {
   position: absolute;
   top: 0;
 }
+
 .delete-btn span {
   width: 72%;
   line-height: inherit;
@@ -261,6 +271,7 @@ button:focus-visible {
   left: 0;
   transition: all 0.25s cubic-bezier(0.31, -0.105, 0.43, 1.4);
 }
+
 .delete-btn span:after {
   content: "";
   background-color: #a53125;
@@ -270,51 +281,64 @@ button:focus-visible {
   top: 15%;
   right: -1px;
 }
+
 .delete-btn .icon {
   width: 28%;
   right: 0;
   transition: all 0.25s cubic-bezier(0.31, -0.105, 0.43, 1.4);
 }
+
 .delete-btn .icon .fa {
   font-size: 30px;
   vertical-align: middle;
   transition: all 0.25s cubic-bezier(0.31, -0.105, 0.43, 1.4), height 0.25s ease;
 }
+
 .delete-btn .icon .fa-remove {
   height: 36px;
 }
+
 .delete-btn .icon .fa-check {
   display: none;
 }
+
 .delete-btn.success,
 .delete-btn:hover {
   opacity: 0.9;
 }
+
 .delete-btn.success span,
 .delete-btn:hover span {
   left: -72%;
   opacity: 0;
 }
+
 .delete-btn.success .icon,
 .delete-btn:hover .icon {
   width: 100%;
 }
+
 .delete-btn.success .icon .fa,
 .delete-btn:hover .icon .fa {
   font-size: 45px;
 }
+
 .delete-btn.success {
   background-color: #27ae60;
 }
+
 .delete-btn.success .icon .fa-remove {
   display: none;
 }
+
 .delete-btn.success .icon .fa-check {
   display: inline-block;
 }
+
 .delete-btn:hover .icon .fa-remove {
   height: 46px;
 }
+
 .delete-btn:active {
   opacity: 1;
 }
@@ -341,13 +365,16 @@ button:focus-visible {
   margin-top: 15px;
   margin-bottom: 20px;
 }
+
 .input-field:hover {
   border-color: #0097b2;
 }
+
 .input-field:focus {
   border-color: #0097b2;
   box-shadow: 0 0 8px #0097b2;
 }
+
 .input-field::placeholder {
   color: rgb(150, 150, 150);
   text-transform: lowercase;
@@ -378,9 +405,11 @@ button:focus-visible {
 /*pääotsikko*/
 h1 {
   font-family: "Poppins", sans-serif;
-  font-weight: 900; /* Vahva mutta ei liian raskas */
+  font-weight: 900;
+  /* Vahva mutta ei liian raskas */
   font-size: 170%;
-  letter-spacing: 1px; /* Pieni väli parantaa luettavuutta */
+  letter-spacing: 1px;
+  /* Pieni väli parantaa luettavuutta */
   line-height: 1.2;
   color: #1a1a1a;
 }
@@ -422,8 +451,10 @@ h6 {
   line-height: 1;
   text-align: center;
   display: inline-block;
-  font-size: inherit; /* Perii <h5>:n fonttikoon */
-  line-height: inherit; /* Säilyttää saman rivivälin */
+  font-size: inherit;
+  /* Perii <h5>:n fonttikoon */
+  line-height: inherit;
+  /* Säilyttää saman rivivälin */
   display: inline;
   text-shadow: 2px 2px 5px rgba(26, 26, 26, 0.5);
 }
@@ -440,7 +471,8 @@ ol {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  min-height: 100dvh; /* Koko näkymän korkeus */
+  min-height: 100dvh;
+  /* Koko näkymän korkeus */
 }
 
 * {
@@ -451,9 +483,11 @@ ol {
 /*yläpaneelille tyyli*/
 .header {
   width: 100%;
-  height: 80px; /* Muuta halutun kokoiseksi */
+  height: 80px;
+  /* Muuta halutun kokoiseksi */
   background: rgba(240, 240, 240, 0.75);
-  backdrop-filter: blur(10px); /* Lasimainen sumennus */
+  backdrop-filter: blur(10px);
+  /* Lasimainen sumennus */
   color: #1a1a1a;
   display: flex;
   justify-content: space-around;
@@ -493,8 +527,7 @@ ol {
   left: -50vw;
   width: 100vw;
   height: 100vh;
-  backdrop-filter: saturate(150%) brightness(82%) contrast(165%)
-    hue-rotate(30deg);
+  backdrop-filter: saturate(150%) brightness(82%) contrast(165%) hue-rotate(30deg);
   background: rgba(255, 244, 202, 0);
   pointer-events: none;
 }
@@ -523,7 +556,8 @@ ol {
 .map {
   display: flex;
   position: absolute;
-  background-color: lightgray; /* Väliaikainen taustaväri */
+  background-color: lightgray;
+  /* Väliaikainen taustaväri */
   height: 100vh;
   max-height: 100vh;
   width: 80vw;
@@ -534,8 +568,10 @@ ol {
 .map-location-setter {
   display: flex;
   position: relative;
-  flex: 1; /* Täyttää kaiken käytettävissä olevan tilan */
-  background-color: lightgray; /* Väliaikainen taustaväri */
+  flex: 1;
+  /* Täyttää kaiken käytettävissä olevan tilan */
+  background-color: lightgray;
+  /* Väliaikainen taustaväri */
   height: 50vh;
   width: 80vw;
   max-width: 100%;
@@ -544,10 +580,12 @@ ol {
 /*ala paneelille tyyli*/
 .footer {
   width: 100%;
-  height: fit-content; /* Muuta halutun kokoiseksi */
+  height: fit-content;
+  /* Muuta halutun kokoiseksi */
   padding: 12px 0px;
   background: rgba(240, 240, 240, 0.75);
-  backdrop-filter: blur(10px); /* Lasimainen sumennus */
+  backdrop-filter: blur(10px);
+  /* Lasimainen sumennus */
   color: #1a1a1a;
   display: flex;
   justify-content: center;
@@ -564,7 +602,8 @@ ol {
   justify-content: center;
   flex-wrap: wrap;
   align-items: center;
-  gap: 20px; /* Lisää väliä elementtien välille */
+  gap: 20px;
+  /* Lisää väliä elementtien välille */
 }
 
 .flag-selection {
@@ -587,13 +626,17 @@ ol {
 }
 
 .password-input-container {
-  position: relative; /* Jotta ikoni voidaan sijoittaa oikein */
-  display: flex; /* Asettaa elementit vierekkäin */
-  align-items: center; /* Keskitää elementit pystysuunnassa */
+  position: relative;
+  /* Jotta ikoni voidaan sijoittaa oikein */
+  display: flex;
+  /* Asettaa elementit vierekkäin */
+  align-items: center;
+  /* Keskitää elementit pystysuunnassa */
 }
 
 .password-toggle-button {
-  position: absolute; /* Sijoittaa napin salasanakentän päälle */
+  position: absolute;
+  /* Sijoittaa napin salasanakentän päälle */
   right: 10px;
   cursor: pointer;
   padding: 0;
@@ -606,10 +649,14 @@ ol {
 
 .spacer-line {
   display: block;
-  width: 100%; /* Viivan leveys */
-  border-top: 1px solid black; /* Viivan tyyli ja väri */
-  line-height: 1; /* Yhden rivin korkeus */
-  margin: 10px 0; /* Viivan ylä- ja alapuolen marginaali */
+  width: 100%;
+  /* Viivan leveys */
+  border-top: 1px solid black;
+  /* Viivan tyyli ja väri */
+  line-height: 1;
+  /* Yhden rivin korkeus */
+  margin: 10px 0;
+  /* Viivan ylä- ja alapuolen marginaali */
 }
 
 .smooth-navigate-link {
@@ -621,13 +668,16 @@ ol {
   .map {
     width: 100vw;
   }
+
   .h1-resizeable {
     font-size: 120%;
   }
+
   .input-field {
     min-width: 200px;
     max-width: 90%;
   }
+
   .register-frontpage-btn {
     padding: 10px 35px;
     border-radius: 10px;
@@ -655,6 +705,7 @@ ol {
   h1 {
     font-size: x-large;
   }
+
   .register-frontpage-btn {
     padding: 4px 10px;
     border-radius: 10px;

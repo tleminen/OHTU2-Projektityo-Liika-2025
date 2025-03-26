@@ -69,9 +69,9 @@ const Info = () => {
           <h3>{t.map}</h3>
           <ul>
             <li>{t.browseEvents}</li>
-            <li>{t.evenrRegistrationNoLogin}</li>
+            <li>{t.eventRegistrationNoLogin}</li>
             <li>
-              {t.evenDetailsIcon}
+              {t.eventDetailsIcon}
             </li>
             <li>
               {t.eventDetailsButton}
@@ -86,14 +86,14 @@ const Info = () => {
           <li>{t.loginButton}</li>
         </ol>
 
-        <h3 id="info_register">{t.login}</h3>
+        <h3 id="info_register">{t.register}</h3>
         <ol>
           <li>
             {t.registerPrompt}
           </li>
           <li>{t.confirmPassword}</li>
           <li>{t.selectStartLocation}</li>
-          <li>{t.senConfirmationCode}</li>
+          <li>{t.sendConfirmationCode}</li>
           <li>{t.enterConfirmationCode}</li>
           <li>{t.completeRegistration}</li>
         </ol>

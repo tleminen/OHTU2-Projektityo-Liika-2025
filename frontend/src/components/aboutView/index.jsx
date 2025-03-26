@@ -28,14 +28,14 @@ const AboutView = () => {
             {t.about_us_text_2}
           </p>
           <h1 style={{ marginTop: "20px" }}>{t.contact_info}</h1>
-          <ul style={{ listStyle: "none", padding: 0, marginTop: "20px" }} >
-            <li>Olli Hilke - h.illo@hotmail.com</li>
-            <li>Tomi Leminen - tomppa600@gmail.com</li>
-            <li>Elmeri Saurus - elmerisaurus25@gmail.com</li>
-            <li>Annakaisa Turunen - turunenannakaisa@gmail.com</li>
-            <li>Annukka Mäkinen - annuma@uef.fi</li>
-            <li>Paulus Ollikainen - paulus.ollikainen@gmail.com</li>
-          </ul>
+          <div style={{ marginTop: "20px" }} >
+            <p style={{ marginBottom: "4px" }}>Olli Hilke - h.illo@hotmail.com</p>
+            <p style={{ marginBottom: "4px" }}>Tomi Leminen - tomppa600@gmail.com</p>
+            <p style={{ marginBottom: "4px" }}>Elmeri Saurus - elmerisaurus25@gmail.com</p>
+            <p style={{ marginBottom: "4px" }}>Annakaisa Turunen - turunenannakaisa@gmail.com</p>
+            <p style={{ marginBottom: "4px" }}>Annukka Mäkinen - annuma@uef.fi</p>
+            <p style={{ marginBottom: "4px" }}>Paulus Ollikainen - paulus.ollikainen@gmail.com</p>
+          </div>
         </div>
       </div>
       <Link to={'/'} className="back-btn" style={{ alignSelf: "center" }}>

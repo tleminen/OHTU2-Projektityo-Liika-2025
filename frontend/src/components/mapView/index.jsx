@@ -67,6 +67,7 @@ const MapView = () => {
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
+        maxHeight: "100%"
       }}
     >
       <div className="event-map-container">
