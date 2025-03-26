@@ -10,11 +10,15 @@ import { useNavigate } from "react-router-dom"
 import DatePicker from "react-multi-date-picker"
 import SendEmail from "../../utils/sendEmail.jsx"
 import { selectCategoryName } from "../../assets/icons.js"
+import { createEventUnSignedValidation } from "../../utils/validationSchemas.js"
+import { createEventValidation } from "../../utils/validationSchemas.js"
 
 const CreateEventForm = ({ club }) => {
   const language = useSelector((state) => state.language.language)
   const t = translations[language]
   const navigate = useNavigate()
+
+  const [errors, setErrors] = useState({})
   const [activity, setActivity] = useState({})
   const [dates, setDates] = useState([])
   const [startTime, setStartTime] = useState("")
@@ -38,6 +42,9 @@ const CreateEventForm = ({ club }) => {
   const handleClubSelect = (clubId) => {
     setSelectedClub(clubId)
   }
+
+  // Tallennetaan muuttujaan return arvo
+  const schema = createEventValidation()
 
   const clubEventView = () => {
     console.log(club)
