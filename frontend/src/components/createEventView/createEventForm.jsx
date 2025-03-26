@@ -242,9 +242,7 @@ const CreateEventForm = ({ club }) => {
             onChange={(e) => setTitle(e.target.value)}
           />
         </div>
-        {errors.title && (
-          <div className="error-forms">{errors.title}</div>
-        )}
+        {errors.title && <div className="error-forms">{errors.title}</div>}
         <div className="form-item">
           <h3>{t.activity}</h3>
           <Select
@@ -256,11 +254,13 @@ const CreateEventForm = ({ club }) => {
             isSearchable={true}
           />
         </div>
+        {errors.categoryID && (
+          <div className="error-forms">{errors.categoryID}</div>
+        )}
         <div className="form-item">
           <h3>{t.date}</h3>
           <DatePicker
             value={dates}
-            className={`input-field ${errors.dates ? "error" : ""}`}
             sort
             onChange={setDates}
             multiple
@@ -281,6 +281,7 @@ const CreateEventForm = ({ club }) => {
             weekStartDayIndex={1}
           />
         </div>
+        {errors.dates && <div className="error-forms">{errors.dates}</div>}
         <div className="form-item">
           <h3>{t.startTime}</h3>
           <input
@@ -292,6 +293,9 @@ const CreateEventForm = ({ club }) => {
             placeholder={t.dateAndTime}
           />
         </div>
+        {errors.startTime && (
+          <div className="error-forms">{errors.startTime}</div>
+        )}
         <div className="form-item">
           <h3>{t.endTime}</h3>
           <input
@@ -303,6 +307,7 @@ const CreateEventForm = ({ club }) => {
             placeholder={t.dateAndTime}
           />
         </div>
+        {errors.endTime && <div className="error-forms">{errors.endTime}</div>}
         <div className="form-item">
           <br />
           <h3>{t.setEventLocationInfo}</h3>
@@ -319,6 +324,9 @@ const CreateEventForm = ({ club }) => {
             placeholder={t.minParticipants}
           />
         </div>
+        {errors.participantsMin && (
+          <div className="error-forms">{errors.participantsMin}</div>
+        )}
         <div className="form-item">
           <h3>{t.maxParticipants}</h3>
           <input
@@ -330,6 +338,9 @@ const CreateEventForm = ({ club }) => {
             placeholder={t.maxParticipants}
           />
         </div>
+        {errors.participantsMax && (
+          <div className="error-forms">{errors.participantsMax}</div>
+        )}
         <div className="form-item">
           <h3>{t.description}</h3>
           <textarea
@@ -341,6 +352,9 @@ const CreateEventForm = ({ club }) => {
             placeholder={t.description}
           />
         </div>
+        {errors.description && (
+          <div className="error-forms">{errors.description}</div>
+        )}
         <div className="form-item">
           <h3>{t.email}</h3>
           <input
@@ -352,6 +366,7 @@ const CreateEventForm = ({ club }) => {
             placeholder={t.email}
           />
         </div>
+        {errors.email && <div className="error-forms">{errors.email}</div>}
 
         <div>
           <SendEmail
@@ -390,9 +405,7 @@ const CreateEventForm = ({ club }) => {
             onChange={(e) => setTitle(e.target.value)}
           />
         </div>
-        {errors.title && (
-          <div className="error-forms">{errors.title}</div>
-        )}
+        {errors.title && <div className="error-forms">{errors.title}</div>}
         <div className="form-item">
           <h3>{t.activity}</h3>
           <Select
@@ -404,13 +417,15 @@ const CreateEventForm = ({ club }) => {
             isSearchable={true}
           />
         </div>
+        {errors.categoryID && (
+          <div className="error-forms">{errors.categoryID}</div>
+        )}
         <div className="form-item">
           <h3>{t.date}</h3>
           <DatePicker
             value={dates}
             sort
             onChange={setDates}
-            className={`input-field ${errors.dates ? "error" : ""}`}
             multiple
             style={{ textAlign: "center" }}
             minDate={yesterday}
@@ -429,6 +444,7 @@ const CreateEventForm = ({ club }) => {
             weekStartDayIndex={1}
           />
         </div>
+        {errors.dates && <div className="error-forms">{errors.dates}</div>}
         <div className="form-item">
           <h3>{t.startTime}</h3>
           <input
@@ -440,6 +456,9 @@ const CreateEventForm = ({ club }) => {
             placeholder={t.dateAndTime}
           />
         </div>
+        {errors.startTime && (
+          <div className="error-forms">{errors.startTime}</div>
+        )}
         <div className="form-item">
           <h3>{t.endTime}</h3>
           <input
@@ -451,6 +470,7 @@ const CreateEventForm = ({ club }) => {
             placeholder={t.dateAndTime}
           />
         </div>
+        {errors.endTime && <div className="error-forms">{errors.endTime}</div>}
         <div className="form-item">
           <h3>{t.setEventLocationInfo}</h3>
           <LocationMap onLocationChange={handleLocationChange} />
@@ -466,6 +486,9 @@ const CreateEventForm = ({ club }) => {
             placeholder={t.minParticipants}
           />
         </div>
+        {errors.participantsMin && (
+          <div className="error-forms">{errors.participantsMin}</div>
+        )}
         <div className="form-item">
           <h3>{t.maxParticipants}</h3>
           <input
@@ -478,6 +501,9 @@ const CreateEventForm = ({ club }) => {
             required={true}
           />
         </div>
+        {errors.participantsMax && (
+          <div className="error-forms">{errors.participantsMax}</div>
+        )}
         <div className="form-item">
           <h3>{t.description}</h3>
           <textarea
@@ -489,6 +515,9 @@ const CreateEventForm = ({ club }) => {
             placeholder={t.description}
           />
         </div>
+        {errors.description && (
+          <div className="error-forms">{errors.description}</div>
+        )}
         <button
           className={`forms-btn`}
           onClick={handleSubmit}
