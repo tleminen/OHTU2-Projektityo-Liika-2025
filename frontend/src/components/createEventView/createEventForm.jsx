@@ -242,6 +242,9 @@ const CreateEventForm = ({ club }) => {
             onChange={(e) => setTitle(e.target.value)}
           />
         </div>
+        {errors.title && (
+          <div className="error-forms">{errors.title}</div>
+        )}
         <div className="form-item">
           <h3>{t.activity}</h3>
           <Select
@@ -387,6 +390,9 @@ const CreateEventForm = ({ club }) => {
             onChange={(e) => setTitle(e.target.value)}
           />
         </div>
+        {errors.title && (
+          <div className="error-forms">{errors.title}</div>
+        )}
         <div className="form-item">
           <h3>{t.activity}</h3>
           <Select
