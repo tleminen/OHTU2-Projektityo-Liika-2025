@@ -1,13 +1,12 @@
-import { Link } from "react-router-dom";
-import Header from "../header";
-import Info from "./info";
-import Footer from "../footer";
-import { useSelector } from "react-redux";
-import translations from "../../assets/translation";
+import { Link } from "react-router-dom"
+import Header from "../header"
+import Footer from "../footer"
+import { useSelector } from "react-redux"
+import translations from "../../assets/translation"
 
-const aboutView = () => {
-  const language = useSelector((state) => state.language.language);
-  const t = translations[language];
+const AboutView = () => {
+  const language = useSelector((state) => state.language.language)
+  const t = translations[language]
 
   return (
     <div
@@ -20,13 +19,12 @@ const aboutView = () => {
       }}
     >
       <Header />
-      <Info />
       <Link to={"/"} className="back-btn" style={{ alignSelf: "center" }}>
         <span>{t.back}</span>
       </Link>
       <Footer />
     </div>
-  );
-};
+  )
+}
 
-export default aboutView;
+export default AboutView
