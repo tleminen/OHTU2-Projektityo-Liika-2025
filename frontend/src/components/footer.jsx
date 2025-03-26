@@ -27,7 +27,7 @@ const Footer = () => {
         </div>
         <p style={{ fontWeight: "lighter" }}>Liika v. 1.1.0</p>
         <p style={{ fontWeight: "lighter" }}>
-          {t.contactUs}: liikaservice@gmail.com
+          <Link to={`/us`}>{t.contactUs}</Link>
         </p>
       </div>
     </footer>
