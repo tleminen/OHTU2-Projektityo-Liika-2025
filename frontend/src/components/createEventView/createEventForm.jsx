@@ -15,6 +15,7 @@ import NotificationContainer from "../notification/notificationContainer.jsx"
 import {
   EventCreated,
   EventCreationFailure,
+  OtpNotVerified,
 } from "../notification/notificationTemplates.js"
 
 import { createEventUnSignedValidation } from "../../utils/validationSchemas.js"
@@ -171,7 +172,7 @@ const CreateEventForm = ({ club }) => {
     setDisabled(true)
 
     if (!isOtpVerified) {
-      //TODO NOTIFIKAATIO!
+      console.error(t.otp_send_error)
     } else {
       try {
         await schemaUnSigned.validate(
