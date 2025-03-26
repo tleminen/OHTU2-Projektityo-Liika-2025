@@ -30,21 +30,9 @@ const connectDB = async () => {
 
     try {
       // Nollaa tietokannasta clubit, lisää sähköpostiosoitteen mukaan clubiin jäsenen. Kysy ennenkuin ajat
-      /*
       await sequelize.query(`
-  DELETE FROM "ClubMembers";
-DELETE FROM "Clubs";
-  INSERT INTO "Clubs" ("Name", "Email", "createdAt", "updatedAt")
-VALUES ('Liika', 'liikaservice@gmail.com', NOW(), NOW());
-INSERT INTO "ClubMembers" ("ClubID", "UserID")
-SELECT 
-    (SELECT "ClubID" FROM "Clubs" WHERE "Name" = 'Liika' LIMIT 1), 
-    (SELECT "UserID" FROM "Users" WHERE "Email" = 'h.illo@hotmail.com' LIMIT 1);
-`) 
-*/
-
-
-
+  ALTER TABLE "Users" ALTER COLUMN "MapPreferences" TYPE VARCHAR(160);
+`)
     } catch (e) {
       console.warn(e)
     }
