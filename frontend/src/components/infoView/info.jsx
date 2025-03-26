@@ -22,7 +22,7 @@ const Info = () => {
           onClick={() => scrollToSection("info_map", 100)}
           className="smooth-navigate-link"
         >
-          Kartta
+          {t.map}
         </button>
       </div>
       <div>
@@ -30,7 +30,7 @@ const Info = () => {
           onClick={() => scrollToSection("info_login", 100)}
           className="smooth-navigate-link"
         >
-          Sisäänkirjautuminen
+          {t.login}
         </button>
       </div>
       <div>
@@ -38,7 +38,7 @@ const Info = () => {
           onClick={() => scrollToSection("info_register", 100)}
           className="smooth-navigate-link"
         >
-          Rekisteröityminen
+          {t.register}
         </button>
       </div>
       <div>
@@ -46,7 +46,7 @@ const Info = () => {
           onClick={() => scrollToSection("info_map_usage", 100)}
           className="smooth-navigate-link"
         >
-          Kartan käyttö
+          {t.mapUsage}
         </button>
       </div>
       <div>
@@ -54,90 +54,85 @@ const Info = () => {
           onClick={() => scrollToSection("info_filter", 100)}
           className="smooth-navigate-link"
         >
-          Tapahtumien suodatus
+          {t.eventFiltering}
         </button>
       </div>
       <br />
       <div>
-        <h2>Yleiskatsaus</h2>
+        <h2>{t.overview}</h2>
         <p>
-          Liika.eu on palvelu, joka tuo tapahtumat lähellesi ja antaa
-          mahdollisuuden luoda omia tapahtumia. Sivustolla voit kirjautua
-          sisään, rekisteröityä uudeksi käyttäjäksi ja selata tapahtumia
-          kartalta.
+          {t.liikaDescription}
         </p>
         <br />
-        <h2>Päätoiminnot</h2>
+        <h2>{t.mainFunctions}</h2>
         <div id="info_map">
-          <h3>Kartta</h3>
+          <h3>{t.map}</h3>
           <ul>
-            <li>Voit selata tulevia tapahtumia Joensuun alueella.</li>
-            <li>Tapahtumiin voi ilmoittautua ilman kirjautumista.</li>
+            <li>{t.browseEvents}</li>
+            <li>{t.evenrRegistrationNoLogin}</li>
             <li>
-              Tapahtuman lisätiedot näkyvät kartalla olevan laji-ikonin kautta.
+              {t.evenDetailsIcon}
             </li>
             <li>
-              Voit siirtyä tapahtuman tietoihin painamalle "Siirry tapahtumaan"
-              -painiketta.
+              {t.eventDetailsButton}
             </li>
           </ul>
         </div>
-        <h3 id="info_login">Kirjautuminen</h3>
+        <h3 id="info_login">{t.login}</h3>
         <ol>
           <li>
-            Syötä käyttäjätunnuksesi tai sähköpostiosoitteesi sekä salasana.
+            {t.loginPrompt}
           </li>
-          <li>Paina "Kirjaudu" ja sinut siirretään etusivulle.</li>
+          <li>{t.loginButton}</li>
         </ol>
 
-        <h3 id="info_register">Rekisteröityminen</h3>
+        <h3 id="info_register">{t.login}</h3>
         <ol>
           <li>
-            Syötä sähköpostiosoitteesi, haluamasi käyttäjätunnus ja salasana.
+            {t.registerPrompt}
           </li>
-          <li>Vahvista salasana kirjoittamalla se uudelleen.</li>
-          <li>Valitse tapahtumakartan aloitussijainti.</li>
-          <li>Paina "Lähetä" saadaksesi vahvistuskoodin sähköpostiisi.</li>
-          <li>Syötä saamasi vahvistuskoodi ja hyväksy käyttöehdot.</li>
-          <li>Paina "Rekisteröidy" viimeistelläksesi rekisteröitymisen.</li>
+          <li>{t.confirmPassword}</li>
+          <li>{t.selectStartLocation}</li>
+          <li>{t.senConfirmationCode}</li>
+          <li>{t.enterConfirmationCode}</li>
+          <li>{t.completeRegistration}</li>
         </ol>
         <br />
-        <h2>Etusivu</h2>
+        <h2>{t.homepage}</h2>
         <ul>
-          <li>Etusivulta löydät kirjautumisen ja rekisteröitymisen</li>
+          <li>{t.homepageDescription}</li>
           <li>
-            Voit siirtyä karttanäkymään painamalla etusivulla näkyvää
-            karttakuvaa
+            {t.goToMapView}
           </li>
         </ul>
         <br />
-        <h2 id="info_map_usage">Kartan käyttö</h2>
-        <p>Löydät karttanäkymästä painikkeita kartan reunoilta</p>
+        <h2 id="info_map_usage">{t.mapUsage}</h2>
+        <p>{t.mapButtons}</p>
         <p>
-          Näkymä vaihtelee hieman sen mukaan oletko kirjautunut sisään vai et
+          {t.viewVariation}
         </p>
-        <p>Myös yhteistyökumppanin näkymä näyttää hieman erilaiselta</p>
+        <p>{t.partnerViewVariation}</p>
         <br />
-        <h4>Sisäänkirjautuneen karttanäkymä</h4>
-        <h3>Vasen reuna:</h3>
+        <h4>{t.loggedInMapView}</h4>
+        <h3>{t.leftEdge}</h3>
         <ul>
-          <li>Luo uusia tapahtumia.</li>
-          <li>Näe tapahtumat, joihin olet ilmoittautunut.</li>
-          <li>Näe itse luomasi tapahtumat.</li>
-          <li>Muokkaa omia tietojasi.</li>
+          <li>{t.createEvents}</li>
+          <li>{t.registeredEvents}</li>
+          <li>{t.createdEvents}</li>
+          <li>{t.editProfile}</li>
         </ul>
 
-        <h3>Oikea reuna:</h3>
+        <h3>{t.rightEdge}</h3>
         <ul>
-          <li>Hae sijaintia kartalta.</li>
+          <li>{t.searchLocation}</li>
           <li>
-            Vaihda kartan ulkoasua.
+            {t.changeMapAppearance}
             <p>
-              <em>Voit muokata omaa kartan ulkoasuasi omista tiedoistasi</em>
+              <em>{t.editMapAppearance}</em>
             </p>
           </li>
           <li>
-            Päivitä kartan tapahtumat.{" "}
+            {t.updateMapEvents}{" "}
             <p>
               <em>
                 Hakee kartalla näkyvän alueen tapahtumat, kuitenkin vähintään
