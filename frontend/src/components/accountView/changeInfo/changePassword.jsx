@@ -19,14 +19,30 @@ const ChangePassword = () => {
   const language = useSelector((state) => state.language.language)
   const t = translations[language]
   const [newPassword, setNewPassword] = useState("")
-  const password = useSelector((state) => state.user.user.username)
   const [newPasswordAgain, setNewPasswordAgain] = useState("")
+  const [disabled, setDisabled] = useState(false)
   const storedToken = useSelector((state) => state.user?.user?.token ?? null)
+  const userID = useSelector((state) => state.user?.user?.userID ?? null)
 
-  const handleChangePassword = () => {
+  const handleChangePassword = async () => {
+    setDisabled(true)
     if (storedToken) {
-      console.log("Create event attempt: UNDER CONSTRUCTION")
-      console.log(password)
+      try {
+        const result = await userService.updateUserPassword(storedToken, {
+          UserID: userID,
+          newPassword: newPassword,
+        })
+        if (result) {
+          setNewPassword("")
+          setNewPasswordAgain("")
+          console.log("Onnistui!")
+          // TODO: Notifikaatio onnistui
+        }
+      } catch (error) {
+        console.error(error)
+        // TODO: Notifikaatio
+        setDisabled(false)
+      }
     } else {
       console.error("No token provided")
       dispatchEvent(addNotification(TokenNotFound("No token provided")))
@@ -53,22 +69,24 @@ const ChangePassword = () => {
             className="input-field"
             type="text"
             value={newPassword}
-            name="newPassword"
+            name="new-password"
             onChange={(e) => setNewPassword(e.target.value)}
             placeholder={t.newPassword}
             required={true}
+            autoComplete="new-password"
           />
           <h3>{t.newPasswordAgain}</h3>
           <input
             className="input-field"
             type="text"
             value={newPasswordAgain}
-            name="newPasswordAgain"
+            name="new-password-again"
             onChange={(e) => setNewPasswordAgain(e.target.value)}
             placeholder={t.newPasswordAgain}
             required={true}
+            autoComplete="new-password"
           />
-          <button className="save-btn" onClick={() => handleChangePassword}>
+          <button className="save-btn" onClick={handleChangePassword} disabled={disabled}>
             {t.save}
           </button>
         </div>

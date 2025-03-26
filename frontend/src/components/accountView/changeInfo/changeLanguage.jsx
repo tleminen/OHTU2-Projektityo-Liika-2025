@@ -19,10 +19,12 @@ import NotificationContainer from "../../notification/notificationContainer.jsx"
 const ChangeLanguage = () => {
   const language = useSelector((state) => state.language.language)
   const t = translations[language]
+  const [disabled, setDisabled] = useState(false)
   const userID = useSelector((state) => state.user.user.userID)
   const storedToken = useSelector((state) => state.user?.user?.token ?? null)
 
   const saveHandler = async () => {
+    setDisabled(true)
     console.log("Change language attempt:", {
       language,
     })
@@ -60,7 +62,7 @@ const ChangeLanguage = () => {
       <div className="account-view">
         <h1>{t.ChangeLanguage}</h1>
         <FlagSelection menuPlacement="bottom" />
-        <button className="save-btn" onClick={saveHandler}>
+        <button className="save-btn" onClick={saveHandler} disabled={disabled}>
           {t.save}
         </button>
       </div>

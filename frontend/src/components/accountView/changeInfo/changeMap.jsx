@@ -40,6 +40,7 @@ const ChangeMap = () => {
   const [b, setB] = useState(122)
   const [a, setA] = useState(0)
   const [currentSetting, setCurrentSetting] = useState("brightness") // Asetus, jota säädetään (kirkkaus, äänenvoimakkuus, lämpötila)
+  const [disabled, setDisabled] = useState(false)
   const oldPreferences = useSelector(
     (state) => state.user?.user?.mapPreferences ?? null
   )
@@ -75,10 +76,7 @@ const ChangeMap = () => {
   }
 
   const saveHandler = async () => {
-    console.warn(
-      "Ominaisuuden toiminnallisuus puuttuu. Odottele muutama päivä tai viikko! :)"
-    )
-    console.log("Tallenna kartan sijainti ja kartan filtteri:") // TODO KESKEN
+    setDisabled(true)
     const mapPreferences = {
       brightness: brightness,
       saturate: saturate,
@@ -111,6 +109,7 @@ const ChangeMap = () => {
           })
         )
         dispatch(changeUser({ mapPreferences: mapPreferences }))
+        setDisabled(false)
       } catch (error) {
         console.error(t.error_updating_map + error)
         dispatch(addNotification(MapUpdateError(t.error_updating_map)))
@@ -221,22 +220,22 @@ const ChangeMap = () => {
                   currentSetting === "brightness"
                     ? brightness
                     : currentSetting === "saturate"
-                    ? saturate
-                    : currentSetting === "contrast"
-                    ? contrast
-                    : currentSetting === "invert"
-                    ? invert
-                    : currentSetting === "a"
-                    ? a
-                    : currentSetting === "r"
-                    ? r
-                    : currentSetting === "g"
-                    ? g
-                    : currentSetting === "b"
-                    ? b
-                    : currentSetting === "sepia"
-                    ? sepia
-                    : hue
+                      ? saturate
+                      : currentSetting === "contrast"
+                        ? contrast
+                        : currentSetting === "invert"
+                          ? invert
+                          : currentSetting === "a"
+                            ? a
+                            : currentSetting === "r"
+                              ? r
+                              : currentSetting === "g"
+                                ? g
+                                : currentSetting === "b"
+                                  ? b
+                                  : currentSetting === "sepia"
+                                    ? sepia
+                                    : hue
                 }
                 onChange={handleSliderChange}
                 className={`slider-input ${currentSetting}`}
@@ -298,88 +297,78 @@ const ChangeMap = () => {
           <div className="slider-container">
             {/* Buttons to toggle settings */}
             <div
-              className={`slider-toggle ${
-                currentSetting === "brightness" ? "active" : ""
-              }`}
+              className={`slider-toggle ${currentSetting === "brightness" ? "active" : ""
+                }`}
               onClick={() => toggleSlider("brightness")}
             >
               <span>Kirkkaus</span>
             </div>
             <div
-              className={`slider-toggle ${
-                currentSetting === "saturate" ? "active" : ""
-              }`}
+              className={`slider-toggle ${currentSetting === "saturate" ? "active" : ""
+                }`}
               onClick={() => toggleSlider("saturate")}
             >
               <span>Saturaatio</span>
             </div>
             <div
-              className={`slider-toggle ${
-                currentSetting === "contrast" ? "active" : ""
-              }`}
+              className={`slider-toggle ${currentSetting === "contrast" ? "active" : ""
+                }`}
               onClick={() => toggleSlider("contrast")}
             >
               <span>Kontrasti</span>
             </div>
             <div
-              className={`slider-toggle ${
-                currentSetting === "hue" ? "active" : ""
-              }`}
+              className={`slider-toggle ${currentSetting === "hue" ? "active" : ""
+                }`}
               onClick={() => toggleSlider("hue")}
             >
               <span>Sävy</span>
             </div>
             <div
-              className={`slider-toggle ${
-                currentSetting === "sepia" ? "active" : ""
-              }`}
+              className={`slider-toggle ${currentSetting === "sepia" ? "active" : ""
+                }`}
               onClick={() => toggleSlider("sepia")}
             >
               <span>Seepia</span>
             </div>
             <div
-              className={`slider-toggle ${
-                currentSetting === "r" ? "active" : ""
-              }`}
+              className={`slider-toggle ${currentSetting === "r" ? "active" : ""
+                }`}
               onClick={() => toggleSlider("r")}
             >
               <span>R</span>
             </div>
             <div
-              className={`slider-toggle ${
-                currentSetting === "g" ? "active" : ""
-              }`}
+              className={`slider-toggle ${currentSetting === "g" ? "active" : ""
+                }`}
               onClick={() => toggleSlider("g")}
             >
               <span>G</span>
             </div>
             <div
-              className={`slider-toggle ${
-                currentSetting === "b" ? "active" : ""
-              }`}
+              className={`slider-toggle ${currentSetting === "b" ? "active" : ""
+                }`}
               onClick={() => toggleSlider("b")}
             >
               <span>B</span>
             </div>
             <div
-              className={`slider-toggle ${
-                currentSetting === "a" ? "active" : ""
-              }`}
+              className={`slider-toggle ${currentSetting === "a" ? "active" : ""
+                }`}
               onClick={() => toggleSlider("a")}
             >
               <span>Alpha</span>
             </div>
             <div
-              className={`slider-toggle ${
-                currentSetting === "invert" ? "active" : ""
-              }`}
+              className={`slider-toggle ${currentSetting === "invert" ? "active" : ""
+                }`}
               onClick={() => toggleSlider("invert")}
             >
               <span>Invertoi</span>
             </div>
           </div>
         </div>
-        <button className="save-btn" onClick={saveHandler}>
+        <button className="save-btn" onClick={saveHandler} disabled={disabled}>
           {t.save}
         </button>
       </div>

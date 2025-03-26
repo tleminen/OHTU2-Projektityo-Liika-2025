@@ -34,6 +34,7 @@ const CreateEventForm = ({ club }) => {
   const [email, setEmail] = useState("")
   const [isOtpVerified, setIsOtpVerified] = useState(false)
   const [blockRegister, setBlockCreate] = useState(true)
+  const [disable, setDisabled] = useState(false)
   const [selectedClub, setSelectedClub] = useState(null)
   const userID = useSelector((state) => state.user?.user?.userID ?? null)
   const storedToken = useSelector((state) => state.user?.user?.token ?? null)
@@ -71,8 +72,9 @@ const CreateEventForm = ({ club }) => {
     } else return null
   }
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault()
+    setDisabled(true)
     const categoryID = activity.value
 
     if (club) {
@@ -80,7 +82,7 @@ const CreateEventForm = ({ club }) => {
       clubID = selectedClub
     }
     try {
-      eventService.createEvent(storedToken, {
+      const response = await eventService.createEvent(storedToken, {
         title,
         userID,
         categoryID,
@@ -93,12 +95,14 @@ const CreateEventForm = ({ club }) => {
         description,
         clubID,
       })
+      console.log(response)
+      if (response === 201) { // uusi event luotu
+        navigate(`/map`)
+      }
     } catch (error) {
       console.error(t.event_creation_failure + error)
       dispatch(addNotification(EventCreationFailure(t.eventCreationFailure)))
     }
-
-    navigate(`/map`)
   }
 
   const handleLocationChange = (newLocation) => {
@@ -122,30 +126,38 @@ const CreateEventForm = ({ club }) => {
     setActivity(selectedOption)
   }
 
-  const handleSubmitUnSigned = (event) => {
+  const handleSubmitUnSigned = async (event) => {
     const categoryID = activity.value
     event.preventDefault()
+    setBlockCreate(true)
 
-    try {
-      eventService.createEventUnSigned({
-        // TODO: Tee varmennus, että kyselyn tekijä on sama joka varmensi emailin
-        title,
-        categoryID,
-        dates,
-        startTime,
-        endTime,
-        event_location,
-        participantsMin,
-        participantsMax,
-        description,
-        email,
-        clubID,
-      })
-    } catch (error) {
-      console.error("Erron while creating event (unsigned): " + error)
-      dispatch(addNotification(EventCreationFailure(t.eventCreationFailure)))
+    if (!isOtpVerified) {
+      //TODO NOTIFIKAATIO!
+    } else {
+      try {
+        const response = await eventService.createEventUnSigned({
+          // TODO: Tee varmennus, että kyselyn tekijä on sama joka varmensi emailin
+          title,
+          categoryID,
+          dates,
+          startTime,
+          endTime,
+          event_location,
+          participantsMin,
+          participantsMax,
+          description,
+          email,
+          clubID,
+        })
+        if (response === 201) {
+          navigate(`/map`)
+        }
+      } catch (error) {
+        console.error("Erron while creating event (unsigned): " + error) //TODO: notifikaatio
+        dispatch(addNotification(EventCreationFailure(t.eventCreationFailure)))
+        setBlockCreate(false)
+      }
     }
-    navigate(`/map`)
   }
 
   if (!userID) {
@@ -183,7 +195,7 @@ const CreateEventForm = ({ club }) => {
             onChange={setDates}
             multiple
             style={{ textAlign: "center" }}
-            minDate={Date.now()}
+            minDate={yesterday}
             zIndex={1005}
             displayWeekNumbers={true}
             render={(value, openCalendar) => (
@@ -413,7 +425,7 @@ const CreateEventForm = ({ club }) => {
             placeholder={t.description}
           />
         </div>
-        <button className={`forms-btn`} onClick={handleSubmit}>
+        <button className={`forms-btn`} onClick={handleSubmit} disabled={disable}>
           <span>{t.createEvent}</span>
         </button>
       </form>

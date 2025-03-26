@@ -26,10 +26,11 @@ const ChangeUsername = () => {
   )
   const userID = useSelector((state) => state.user.user.userID)
   const [newUserNameAgain, setNewUserNameAgain] = useState("")
+  const [disabled, setDisabled] = useState(false)
   const storedToken = useSelector((state) => state.user?.user?.token ?? null)
 
   const handleSubmit = async () => {
-    console.log("Change Username attempt:" + newUsername)
+    setDisabled(true)
     if (storedToken) {
       try {
         const response = await userService.updateUserUsername(storedToken, {
@@ -87,7 +88,7 @@ const ChangeUsername = () => {
             placeholder={t.newUsernameAgain}
             required={true}
           />
-          <button className="save-btn" onClick={handleSubmit}>
+          <button className="save-btn" onClick={handleSubmit} disabled={disabled}>
             {t.save}
           </button>
         </div>

@@ -1,11 +1,14 @@
 .containerforshortcutbuttons {
   position: fixed;
-  bottom: 20px; /* Sijoitetaan alareunaan */
+  bottom: 20px;
+  /* Sijoitetaan alareunaan */
   left: 50%;
-  transform: translateX(-50%); /* Keskittää vaakasuunnassa */
+  transform: translateX(-50%);
+  /* Keskittää vaakasuunnassa */
   background-color: #0097b28d;
   padding: 10px 20px;
-  border-radius: 20px; /* Pyöristetyt kulmat */
+  border-radius: 20px;
+  /* Pyöristetyt kulmat */
   display: flex;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   gap: 8px;
@@ -42,13 +45,49 @@
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
-  width: 40px;
-  height: 40px;
+  width: 48px;
+  height: 48px;
   border: none;
   background-color: #ffffff00;
   backdrop-filter: brightness(200%);
   cursor: pointer;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.pika-painike-refresh {
+  width: 48px;
+  height: 48px;
+  border: none;
+  backdrop-filter: brightness(200%);
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Itse kuva erillisenä divinä */
+.refresh-image {
+  width: 100%;
+  height: 100%;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+/* Pyörimisefekti */
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.rotate-animation {
+  animation: rotate 0.7s linear;
 }
 
 .pika-painike:active {
@@ -126,6 +165,7 @@
   width: 50vw;
   max-width: 600px;
   max-height: 0;
+  padding-bottom: 0px;
   overflow: hidden;
   opacity: 0.7;
   transition: max-height 0.5s ease;
@@ -134,10 +174,12 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   z-index: 1050;
 }
+
 /* Paneelin avoin tila */
 .category-panel.open {
   max-height: 70vh;
   opacity: 1;
+  padding-bottom: 30px;
 }
 
 /* Kategorian nappilista */
@@ -184,6 +226,7 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   z-index: 1050;
 }
+
 /* Paneelin avoin tila */
 .time-panel.open {
   max-height: 70vh;
@@ -230,6 +273,7 @@
   z-index: 1050;
   overflow: hidden;
 }
+
 /* Paneelin avoin tila */
 .time-select-panel.open {
   max-height: 70vh;
@@ -335,8 +379,15 @@
   animation: bounce 0.2s ease-in-out;
 }
 
+.leaflet-container {
+  background-color: transparent;
+  backdrop-filter: brightness(200%);
+}
+
 .leaflet-control-zoom-in {
   border-radius: 3px;
+  background-color: transparent;
+  backdrop-filter: brightness(200%);
 }
 
 .leaflet-control-zoom-out {
@@ -346,14 +397,23 @@
 .leaflet-touch .leaflet-control-layers,
 .leaflet-touch .leaflet-bar {
   border: none;
+  background-color: transparent;
+  backdrop-filter: brightness(200%);
 }
+
+.leaflet-control-layers-expanded {
+  background-color: rgba(255, 255, 255, 0.806) !important;
+}
+
 @keyframes bounce {
   0% {
     transform: scale(1);
   }
+
   50% {
     transform: scale(1.2);
   }
+
   100% {
     transform: scale(1);
   }
@@ -385,16 +445,61 @@
 }
 
 .quick-time-select.selected {
-  background-color: #4caf50; /* Valittu painike saa vihreän värin */
+  background-color: #4caf50;
+  /* Valittu painike saa vihreän värin */
   color: white;
 }
 
 .clear-button:hover,
 .quick-time-select:hover {
-  background-color: #ddd; /* Hover-efekti */
+  background-color: #ddd;
+  /* Hover-efekti */
 }
 
 .clear-button {
   width: 80%;
   background-color: rgba(255, 45, 45, 0.653);
+}
+
+.leaflet-control-zoom {
+  background-color: transparent !important;
+  backdrop-filter: brightness(200%) !important;
+}
+
+.leaflet-control-zoom-in {
+  background-color: transparent !important;
+  backdrop-filter: brightness(200%) !important;
+}
+
+.leaflet-control-zoom-out {
+  background-color: transparent !important;
+  backdrop-filter: brightness(200%) !important;
+}
+
+.leaflet-control-geocoder-icon {
+  background-color: transparent;
+  backdrop-filter: brightness(200%);
+  background-image: url("/magnifyingGlassCropped.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.leaflet-control-geocoder-expanded {
+  background-color: rgba(255, 255, 255, 0.873) !important;
+}
+
+/* Mobiilinäkymä: 100vw leveys */
+@media (max-width: 800px) {
+  .pika-painike {
+    width: 43px;
+    height: 43px;
+  }
+}
+
+@media (max-width: 500px) {
+  .pika-painike {
+    width: 40px;
+    height: 40px;
+  }
 }

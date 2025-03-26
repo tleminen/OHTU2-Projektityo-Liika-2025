@@ -26,10 +26,12 @@ const ChangeEmail = () => {
   const [oldEmail, setOldEmail] = useState(
     useSelector((state) => state.user.user.email)
   )
+  const [disabled, setDisabled] = useState(false)
   const storedToken = useSelector((state) => state.user?.user?.token ?? null)
   const dispatch = useDispatch()
 
   const handleSubmit = async () => {
+    setDisabled(true)
     if (storedToken) {
       try {
         const response = await userService.updateUserEmail(storedToken, {
@@ -90,7 +92,7 @@ const ChangeEmail = () => {
             placeholder={t.newEmailAgain}
             required={true}
           />
-          <button className="save-btn" onClick={handleSubmit}>
+          <button className="save-btn" onClick={handleSubmit} disabled={disabled}>
             {t.save}
           </button>
         </div>

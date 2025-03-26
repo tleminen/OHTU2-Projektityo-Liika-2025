@@ -24,10 +24,9 @@ const unregister = async (storedToken, UserID) => {
   return response.status
 }
 
-const sendOtp = async (email) => {
-  console.log("SendEmail funktion email " + email)
+const sendOtp = async (parameters) => {
   try {
-    const response = await axios.post(baseUrl + "/register/sendOtp", { email })
+    const response = await axios.post(baseUrl + "/register/sendOtp", parameters)
     return response.data
   } catch (error) {
     console.error("Virhe sähköpostin lähetyksessä:", error)

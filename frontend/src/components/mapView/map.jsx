@@ -162,7 +162,7 @@ const Map = ({ startingLocation }) => {
         })
       } else {
         switch (
-          time.quickTime // Haetaan ajan mukaan filtteröidyt tapahtumat
+        time.quickTime // Haetaan ajan mukaan filtteröidyt tapahtumat
         ) {
           case 1:
             {
@@ -271,20 +271,17 @@ const Map = ({ startingLocation }) => {
     <h1>${tapahtuma.Title}</h1>
     <em>📅${parseTimeAndDate(tapahtuma.StartTime)[1]}
           <em> 
-    <em>🕒${parseTimeAndDate(tapahtuma.StartTime)[0]} - ${
-            parseTimeAndDate(tapahtuma.EndTime)[0]
-          }<em><br/>
+    <em>🕒${parseTimeAndDate(tapahtuma.StartTime)[0]} - ${parseTimeAndDate(tapahtuma.EndTime)[0]
+            }<em><br/>
     ${handleDescription(tapahtuma.Description)}<br/>
-    <p style="text-transform: lowercase; padding: 4px 0px; margin:0;">${
-      t.participants
-    }: ${tapahtuma.JoinedCount} / ${tapahtuma.ParticipantMax || "-"}</p>
+    <p style="text-transform: lowercase; padding: 4px 0px; margin:0;">${t.participants
+            }: ${tapahtuma.JoinedCount} / ${tapahtuma.ParticipantMax || "-"}</p>
     <em>${showUsername({
-      user: tapahtuma.Username,
-      club: tapahtuma.ClubName,
-    })}</em> <br/>
-    <a href="/events/${
-      tapahtuma.EventID
-    }" style="color: blue; text-decoration: underline;">
+              user: tapahtuma.Username,
+              club: tapahtuma.ClubName,
+            })}</em> <br/>
+    <a href="/events/${tapahtuma.EventID
+            }" style="color: blue; text-decoration: underline;">
       ${t.show_event_info}
     </a>
   `
@@ -350,7 +347,7 @@ const Map = ({ startingLocation }) => {
 
     // Tarkastetaan ensin, että kartalla on aloitussijainti:
     if (!startingLocation.o_lat) {
-      ;(startingLocation.o_lat = 62.6013), (startingLocation.o_lng = 29.7639)
+      (startingLocation.o_lat = 62.6013), (startingLocation.o_lng = 29.7639)
       startingLocation.zoom = 12
     }
 
@@ -420,7 +417,7 @@ const Map = ({ startingLocation }) => {
               className="pika-painike"
               onClick={() => onClickCreateClubEvent()}
               style={{
-                backgroundImage: "url(/addeventCropped.png)", // Suora polku publicista
+                backgroundImage: "url(/create_event_partner_Cropped.png)", // Suora polku publicista
               }}
             ></button>
           )}
@@ -480,15 +477,30 @@ const Map = ({ startingLocation }) => {
       const container = L.DomUtil.create("div")
       L.DomEvent.disableClickPropagation(container)
       const root = createRoot(container)
+
+      const handleClick = () => {
+        onClickRefresh(map, null)
+
+        // Käynnistetään pyörimisefekti
+        const image = container.querySelector(".refresh-image")
+        image.classList.add("rotate-animation")
+
+        // Poistetaan animaatio 1 sekunnin kuluttua
+        setTimeout(() => {
+          image.classList.remove("rotate-animation")
+        }, 1000)
+      }
+
       root.render(
         <div className="refresh-events">
           <button
-            className="pika-painike"
-            onClick={() => onClickRefresh(map, null)}
-            style={{
-              backgroundImage: "url(/refreshCropped.png)", // Suora polku publicista
-            }}
-          ></button>
+            className="pika-painike-refresh"
+            onClick={handleClick}>
+            <div className="refresh-image"
+              style={{
+                backgroundImage: "url(/refreshCropped.png)", // Suora polku publicista
+              }}
+            /></button>
         </div>
       )
       return container
