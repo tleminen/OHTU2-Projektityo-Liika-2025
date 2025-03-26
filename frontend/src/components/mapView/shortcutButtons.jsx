@@ -141,6 +141,7 @@ const ShortcutButtons = ({ toggleCategory, fetchEvents }) => {
   /**
    * Avaa ja sulkee ... paneelia
    */
+  /*
   const toggleMorePanel = () => {
     setCatIsOpen(false)
     setTimeIsOpen(false)
@@ -152,6 +153,7 @@ const ShortcutButtons = ({ toggleCategory, fetchEvents }) => {
       setTimeout(() => setMoreIsOpen(true), 300)
     }
   }
+    */
 
   /**
    * Avaa ja sulkee aikafiltteröintipaneelia
@@ -222,6 +224,7 @@ const ShortcutButtons = ({ toggleCategory, fetchEvents }) => {
     <div className="containerforshortcutbuttons" ref={panelRef}>
       {" "}
       {/*Alapalkin kontaineri, sisältää paneelien avausnapit*/}
+      {/*
       <button
         className="shortcut-button"
         style={{
@@ -229,11 +232,13 @@ const ShortcutButtons = ({ toggleCategory, fetchEvents }) => {
         }}
         onClick={toggleMorePanel}
       />
+      
       <div className={`more-panel ${moreIsOpen ? "open" : ""}`}>
         {" "}
-        {/*... paneeli*/}
+        {/*... paneeli
         <div>...</div>
       </div>
+      */}
       <button
         className="shortcut-button"
         style={{ backgroundImage: "url(/gategory.png)" }}

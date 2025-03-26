@@ -9,6 +9,7 @@ import { Link } from "react-router-dom"
 import "../../index.css"
 import translations from "../../assets/translation"
 import registerService from "../../services/registerService"
+import NotificationContainer from "../notification/notificationContainer"
 
 const AccountView = () => {
   const [user, setUser] = useState(null)
@@ -82,6 +83,7 @@ const AccountView = () => {
         }}
       >
         <Header />
+        <NotificationContainer/>
         <div className="account-view">
           <p>Lataa...</p>
         </div>
@@ -100,6 +102,7 @@ const AccountView = () => {
       }}
     >
       <Header />
+      <NotificationContainer/>
       <div className="account-view">
         <h1>{t.accountInformation}</h1>
         <div className="spacer-line" />

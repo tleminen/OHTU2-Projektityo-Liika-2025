@@ -6,6 +6,7 @@ import { useSelector } from "react-redux"
 import SignedOut from "./singedOut"
 import SignedIn from "./signedIn"
 import translations from "../../assets/translation"
+import NotificationContainer from "../notification/notificationContainer"
 const Frontpage = () => {
   const navigate = useNavigate()
   const navigateTo = (path) => {
@@ -34,6 +35,7 @@ const Frontpage = () => {
       }}
     >
       <Header backButton={true} />
+      <NotificationContainer/>
       <div className="frontpage">
         <div className="map-container">
           <div className="text-background2">

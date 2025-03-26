@@ -7,18 +7,21 @@ import { useState } from "react"
 import loginService from "../../services/loginService.js" // Tuo loginService
 import "./login.css"
 import NotificationContainer from "../notification/notificationContainer"
-import {
-  EmailSentSuccess,
-  EmailSentFailure,
-} from "../notification/notificationTemplates.js"
 import { addNotification } from "../../store/notificationSlice.js"
+import { 
+  EmailSentSuccess, 
+  EmailSentFailure, 
+  OtpRobotCheck, 
+  OtpVerified, 
+  OtpNotVerified, 
+  UserFailure} from "../notification/notificationTemplates.js"
+
 
 const Login = () => {
   const [emailForm, setEmailForm] = useState(false)
   const [email, setEmail] = useState("")
   const [resetMessage, setResetMessage] = useState("")
   const [loader, setLoader] = useState(false)
-  const dispatch = useDispatch()
 
   const handleEmailSubmit = async (e) => {
     e.preventDefault()
@@ -26,19 +29,20 @@ const Login = () => {
     setLoader(true)
 
     try {
+      console.log("Sähköposti: " + email)
       const response = await loginService.sendEmail(email)
+      console.log("SendEmail response " + response)
       setLoader(false)
       if (response.message === "Sähköposti lähetetty!") {
-        dispatch(addNotification(EmailSentSuccess(t.email_sent)))
+        dispatch(addNotification(EmailSentSuccess(t.email_sent)));
         setResetMessage(t.email_sent)
         setEmail("") // Tyhjennä sähköposti-kenttä
       } else {
-        dispatch(addNotification(EmailSentFailure(t.email_not_found)))
+        dispatch(addNotification(EmailSentFailure(t.email_not_found)));
         setResetMessage(response.message || t.email_not_found)
       }
-      // eslint-disable-next-line no-unused-vars
     } catch (error) {
-      dispatch(addNotification(EmailSentFailure(t.email_not_found)))
+      dispatch(addNotification(EmailSentFailure(t.email_not_found)));
       setResetMessage("")
       setLoader(false)
     }
@@ -57,7 +61,7 @@ const Login = () => {
       }}
     >
       <Header />
-      <NotificationContainer />
+      <NotificationContainer/>
       <div className="login">
         <h1>{t.login2}</h1>
         <LoginForm />

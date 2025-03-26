@@ -8,15 +8,17 @@
   max-width: 80dvw;
   margin-top: 20px;
   margin-bottom: 10px;
-  background-color: rgba(
-    255,
-    255,
-    255,
-    0.421
-  ); /* Lisätty läpinäkyvä taustaväri */
-  padding: 20px; /* Lisätty sisäistä tilaa */
-  border-radius: 10px; /* Lisätty pyöristetyt reunat */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Lisätty varjo */
+  background-color: rgba(255,
+      255,
+      255,
+      0.421);
+  /* Lisätty läpinäkyvä taustaväri */
+  padding: 20px;
+  /* Lisätty sisäistä tilaa */
+  border-radius: 10px;
+  /* Lisätty pyöristetyt reunat */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  /* Lisätty varjo */
 }
 
 .account-view-form {
@@ -69,12 +71,20 @@
   border: 2px solid #198065;
   width: 200px;
 }
+
 .save-btn:hover {
   color: #ffffff;
   background: #00b24a;
   outline-offset: 3px;
   border: 2px solid #198065;
   outline: 2px solid #198072;
+}
+
+.save-btn:disabled {
+  background-color: rgba(159, 159, 159, 0.507);
+  cursor: default;
+  border: 2px solid rgba(159, 159, 159, 0.507);
+  outline: 2px solid rgba(159, 159, 159, 0.507);
 }
 
 .delete-account-btn {
@@ -84,6 +94,7 @@
   background-color: rgb(255, 61, 61);
   width: 200px;
 }
+
 .delete-account-btn:hover {
   color: rgb(0, 0, 0);
 }
@@ -142,10 +153,13 @@
   border-radius: 5px;
   outline: none;
   transition: background 0.3s;
-  pointer-events: auto; /* Ensure slider works when active */
+  pointer-events: auto;
+  /* Ensure slider works when active */
 }
+
 .slider-input.inactive {
-  pointer-events: none; /* Disable pointer events when slider is inactive */
+  pointer-events: none;
+  /* Disable pointer events when slider is inactive */
 }
 
 .slider-input:hover {
@@ -163,8 +177,7 @@
   height: 40vh;
   width: 80vw;
   overflow: hidden;
-  backdrop-filter: saturate(150%) brightness(82%) contrast(165%)
-    hue-rotate(30deg);
+  backdrop-filter: saturate(150%) brightness(82%) contrast(165%) hue-rotate(30deg);
   background: rgba(255, 244, 202, 0);
   z-index: 3000;
   pointer-events: none;
@@ -181,6 +194,7 @@
   .link-btn {
     width: 75px;
   }
+
   .delete-account-btn {
     width: 120px;
   }

@@ -7,6 +7,14 @@ import "../../../index.css"
 import "../accountView.css"
 import { Link } from "react-router-dom"
 import userService from "../../../services/userService.js"
+import { addNotification } from "../../../store/notificationSlice.js"
+import NotificationContainer from "../../notification/notificationContainer.jsx"
+import {
+  DetailUpdated,
+  EmailUpdateFailure,
+  TokenNotFound
+  } from "../../notification/notificationTemplates.js"
+
 
 const ChangeUsername = () => {
   const language = useSelector((state) => state.language.language)
@@ -18,23 +26,27 @@ const ChangeUsername = () => {
   )
   const userID = useSelector((state) => state.user.user.userID)
   const [newUserNameAgain, setNewUserNameAgain] = useState("")
+  const [disabled, setDisabled] = useState(false)
   const storedToken = useSelector((state) => state.user?.user?.token ?? null)
 
   const handleSubmit = async () => {
-    console.log("Change Username attempt:" + newUsername)
+    setDisabled(true)
     if (storedToken) {
       try {
         const response = await userService.updateUserUsername(storedToken, {
           UserID: userID,
           Username: newUsername,
         })
-        console.log("Vaihdettu" + response) //TODO lisää notifikaatio kun vaihdettu
+        console.log(t.detail_changed + response) 
+        dispatch(addNotification(DetailUpdated(t.detail_changed)))
         setOldUsername(newUsername)
       } catch (error) {
         console.error("virhe käyttäjätunnuksen vaihdossa" + error)
+        dispatch(addNotification(EmailUpdateFailure(t.email_update_error)))
       }
     } else {
-      console.error("No token provided")
+      console.error(t.tokenNotFound)
+      dispatch(addNotification(TokenNotFound(t.tokenNotFound)))
     }
   }
 
@@ -49,6 +61,7 @@ const ChangeUsername = () => {
       }}
     >
       <Header />
+      <NotificationContainer />
       <div className="account-view">
         <div className="account-view-form">
           <h1>{t.changeUsername}</h1>
@@ -75,7 +88,7 @@ const ChangeUsername = () => {
             placeholder={t.newUsernameAgain}
             required={true}
           />
-          <button className="save-btn" onClick={handleSubmit}>
+          <button className="save-btn" onClick={handleSubmit} disabled={disabled}>
             {t.save}
           </button>
         </div>

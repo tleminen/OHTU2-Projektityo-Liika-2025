@@ -9,15 +9,17 @@
   max-width: 90vw;
   margin-top: 2%;
   margin-bottom: 2%;
-  background-color: rgba(
-    255,
-    255,
-    255,
-    0.421
-  ); /* Lisätty läpinäkyvä taustaväri */
-  padding: 20px; /* Lisätty sisäistä tilaa */
-  border-radius: 10px; /* Lisätty pyöristetyt reunat */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Lisätty varjo */
+  background-color: rgba(255,
+      255,
+      255,
+      0.421);
+  /* Lisätty läpinäkyvä taustaväri */
+  padding: 20px;
+  /* Lisätty sisäistä tilaa */
+  border-radius: 10px;
+  /* Lisätty pyöristetyt reunat */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  /* Lisätty varjo */
 }
 
 /* Liity tapahtumaan -painike */
@@ -33,6 +35,7 @@
   cursor: pointer;
   transition: outline-offset 200ms ease;
 }
+
 .join-btn:hover {
   color: #194480;
   background: #ffffff;
@@ -40,6 +43,7 @@
   border: 2px solid #194480;
   outline: 2px solid #194480;
 }
+
 .join-btn:active {
   transform: scale(0.95);
 }
@@ -59,6 +63,7 @@
   cursor: pointer;
   transition: outline-offset 200ms ease;
 }
+
 .leave-btn:hover {
   opacity: 0.9;
 }
@@ -68,11 +73,11 @@
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: center;
+  gap: 8px;
 }
 
 .time-child {
   box-sizing: border-box;
-  margin: 8px;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -82,17 +87,19 @@
   margin: auto;
   width: fit-content;
   max-width: 100%;
-  margin-top: 2%;
-  margin-bottom: 2%;
-  background-color: rgba(
-    255,
-    255,
-    255,
-    0.421
-  ); /* Lisätty läpinäkyvä taustaväri */
-  padding: 20px; /* Lisätty sisäistä tilaa */
-  border-radius: 10px; /* Lisätty pyöristetyt reunat */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Lisätty varjo */
+  margin-top: 6px;
+  margin-bottom: 6px;
+  background-color: rgba(255,
+      255,
+      255,
+      0.421);
+  /* Lisätty läpinäkyvä taustaväri */
+  padding: 2px 14px;
+  /* Lisätty sisäistä tilaa */
+  border-radius: 10px;
+  /* Lisätty pyöristetyt reunat */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  /* Lisätty varjo */
   text-align: center;
 }
 
@@ -106,18 +113,20 @@
 /* Liitytty päivämäärä */
 .joined-time-btn {
   position: relative;
-  padding: 10px 30px;
-  background: #2af068;
+  padding: 8px 24px;
+  background: #05bd40;
   border-radius: 10px;
   font-size: 1rem;
   color: #ffffff;
   cursor: pointer;
   transition: outline-offset 200ms ease;
 }
+
 .joined-time-btn:hover {
   color: #194480;
   background: #ffffff;
 }
+
 .joined-time-btn:active {
   transform: scale(0.95);
 }
@@ -125,18 +134,20 @@
 /* Ei-liitytty päivämäärä */
 .not-joined-time-btn {
   position: relative;
-  padding: 10px 30px;
-  background: #194480;
+  padding: 8px 24px;
+  background: #c72626;
   border-radius: 10px;
   font-size: 1rem;
   color: #ffffff;
   cursor: pointer;
   transition: outline-offset 200ms ease;
 }
+
 .not-joined-time-btn:hover {
   color: #194480;
   background: #ffffff;
 }
+
 .not-joined-time-btn:active {
   transform: scale(0.95);
   color: #194480;
@@ -152,17 +163,21 @@
 }
 
 .counter-icon {
-  background-color: #194480;
+  background-color: #ffffff15;
   border-radius: 10px;
   height: 35px;
   width: fit-content;
   padding: 0px 10px;
-  color: #ffffff;
+  color: #000000;
   display: flex;
-  align-items: center; /* Pystysuuntainen keskitys */
-  justify-content: center; /* Vaakasuuntainen keskitys */
+  align-items: center;
+  /* Pystysuuntainen keskitys */
+  justify-content: center;
+  /* Vaakasuuntainen keskitys */
   text-align: center;
-  margin: 8px; /* Lisää tilaa ympärille */
+  /* Lisää tilaa ympärille */
   align-self: center;
+  margin-top: 4px;
+  margin-bottom: 4px;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
 }

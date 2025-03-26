@@ -24,6 +24,10 @@ CreateEvent:
 Tapahtuman kesto pitäisi olla yli 0min?
 Validate tehtävä. Nyt voi luoda tapahtumia miten sattuu
 
+EventView: 
+Kun rämppää osallistu/poistu näppäintä jää näkymään, että olisi tapahtumassa vaikka sieltä on poistunut. 
+Notifikaatiot eivät lataudu kunnolla, koodi valmis muuten Chatti(enkä mä) ymmärrä mistä ongelma kiikastaa. 
+
 Backend:
 
 Liika ei toimi FireFoxissa

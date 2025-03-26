@@ -4,6 +4,7 @@ import CreateEventForm from "./createEventForm"
 import "./createEvent.css"
 import { useSelector } from "react-redux"
 import translations from "../../assets/translation"
+import NotificationContainer from "../notification/notificationContainer"
 
 // eslint-disable-next-line react/prop-types
 const CreateEventView = ({ club }) => {
@@ -21,6 +22,7 @@ const CreateEventView = ({ club }) => {
       }}
     >
       <Header />
+      <NotificationContainer/>
       <div className="create-event">
         <h1>{t.createEvent}</h1>
         <CreateEventForm club={club} />
