@@ -7,7 +7,14 @@ import { useState } from "react"
 import loginService from "../../services/loginService.js" // Tuo loginService
 import "./login.css"
 import NotificationContainer from "../notification/notificationContainer"
-import { EmailSentSuccess, EmailSentFailure, OtpRobotCheck, OtpVerified, OtpNotVerified, UserFailure} from "../notification/notificationTemplates.js"
+import { addNotification } from "../../store/notificationSlice.js"
+import { 
+  EmailSentSuccess, 
+  EmailSentFailure, 
+  OtpRobotCheck, 
+  OtpVerified, 
+  OtpNotVerified, 
+  UserFailure} from "../notification/notificationTemplates.js"
 
 
 const Login = () => {
