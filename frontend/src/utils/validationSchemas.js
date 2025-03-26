@@ -28,6 +28,7 @@ const registerValidation = () => {
     username: Yup.string()
       .min(3, t.validation_min_username)
       .max(40, t.validation_max_username)
+      .matches(/^[a-zA-Z0-9!?_]+$/)
       .required(t.validation_username),
     email: Yup.string()
       .email(t.validation_email_at_sign)
@@ -103,4 +104,4 @@ const otpValidation = () => {
   })
 }
 
-export { loginValidation, registerValidation, otpValidation,createEventUnSignedValidation ,createEventValidation }
+export { loginValidation, registerValidation, otpValidation, createEventUnSignedValidation, createEventValidation }
