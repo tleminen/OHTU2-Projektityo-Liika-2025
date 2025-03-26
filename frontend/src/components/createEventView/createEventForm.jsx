@@ -226,274 +226,273 @@ const CreateEventForm = ({ club }) => {
         setDisabled(false)
       }
     }
+  }
 
-    if (!userID) {
-      // Ei-kirjautuneen käyttäjän näkymä
-      return (
-        <div className="create-event-form">
-          <div className="form-item">
-            <h3>{t.title}</h3>
-            <input
-              type="text"
-              value={title}
-              placeholder={t.title}
-              className={`input-field ${errors.title ? "error" : ""}`}
-              onChange={(e) => setTitle(e.target.value)}
-            />
-          </div>
-          <div className="form-item">
-            <h3>{t.activity}</h3>
-            <Select
-              className={`input-field ${errors.categoryID ? "error" : ""}`}
-              placeholder={t.activity}
-              value={activity}
-              onChange={handleChange}
-              options={options()}
-              isSearchable={true}
-            />
-          </div>
-          <div className="form-item">
-            <h3>{t.date}</h3>
-            <DatePicker
-              value={dates}
-              className={`input-field ${errors.dates ? "error" : ""}`}
-              sort
-              onChange={setDates}
-              multiple
-              style={{ textAlign: "center" }}
-              minDate={yesterday}
-              zIndex={1005}
-              displayWeekNumbers={true}
-              render={(value, openCalendar) => (
-                <div className="custom-date-display" onClick={openCalendar}>
-                  {Array.isArray(value) ? (
-                    value.map((date, index) => <div key={index}>{date}</div>)
-                  ) : (
-                    <span>{value || "Choose dates"}</span>
-                  )}
-                </div>
-              )}
-              format="DD.MM.YYYY"
-              weekStartDayIndex={1}
-            />
-          </div>
-          <div className="form-item">
-            <h3>{t.startTime}</h3>
-            <input
-              type="time"
-              value={startTime}
-              name="startTime"
-              className={`input-field ${errors.startTime ? "error" : ""}`}
-              onChange={(e) => setStartTime(e.target.value)}
-              placeholder={t.dateAndTime}
-            />
-          </div>
-          <div className="form-item">
-            <h3>{t.endTime}</h3>
-            <input
-              type="time"
-              value={endTime}
-              name="endTime"
-              className={`input-field ${errors.endTime ? "error" : ""}`}
-              onChange={(e) => setEndTime(e.target.value)}
-              placeholder={t.dateAndTime}
-            />
-          </div>
-          <div className="form-item">
-            <br />
-            <h3>{t.setEventLocationInfo}</h3>
-            <LocationMap onLocationChange={handleLocationChange} />
-          </div>
-          <div className="form-item">
-            <h3>{t.minParticipants}</h3>
-            <input
-              type="number"
-              value={participantsMin}
-              name="minParticipants"
-              className={`input-field ${errors.participantsMin ? "error" : ""}`}
-              onChange={(e) => setParticipantsMin(e.target.value)}
-              placeholder={t.minParticipants}
-            />
-          </div>
-          <div className="form-item">
-            <h3>{t.maxParticipants}</h3>
-            <input
-              type="number"
-              value={participantsMax}
-              name="maxParticipants"
-              className={`input-field ${errors.participantsMax ? "error" : ""}`}
-              onChange={(e) => setParticipantsMax(e.target.value)}
-              placeholder={t.maxParticipants}
-            />
-          </div>
-          <div className="form-item">
-            <h3>{t.description}</h3>
-            <textarea
-              type="description"
-              value={description}
-              name="description"
-              className={`input-field ${errors.description ? "error" : ""}`}
-              onChange={(e) => setDescription(e.target.value)}
-              placeholder={t.description}
-            />
-          </div>
-          <div className="form-item">
-            <h3>{t.email}</h3>
-            <input
-              type="text"
-              value={email}
-              name="email"
-              className={`input-field ${errors.email ? "error" : ""}`}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder={t.email}
-            />
-          </div>
-
-          <div>
-            <SendEmail
-              setIsOtpVerifiedFromParent={setIsOtpVerified}
-              email={email}
-              setDisableButton={setBlockCreate}
-            />
-          </div>
-
-          <button
-            className={`forms-btn`}
-            disabled={blockRegister}
-            onClick={handleSubmitUnSigned}
-          >
-            <span>{t.createEvent}</span>
-          </button>
-          <div style={{ marginTop: "20px" }}>
-            <em>{t.modify_event_later}.</em>
-          </div>
-        </div>
-      )
-    }
-
+  if (!userID) {
+    // Ei-kirjautuneen käyttäjän näkymä
     return (
-      // Kirjautuneen käyttäjän näkymä
       <div className="create-event-form">
-        <form onSubmit={handleSubmit}>
-          {clubEventView()}
-          <div className="form-item">
-            <h3>{t.title}</h3>
-            <input
-              type="text"
-              value={title}
-              placeholder={t.title}
-              className={`input-field ${errors.title ? "error" : ""}`}
-              onChange={(e) => setTitle(e.target.value)}
-            />
-          </div>
-          <div className="form-item">
-            <h3>{t.activity}</h3>
-            <Select
-              className={`input-field ${errors.categoryID ? "error" : ""}`}
-              placeholder={t.activity}
-              value={activity}
-              onChange={handleChange}
-              options={options()}
-              isSearchable={true}
-              
-            />
-          </div>
-          <div className="form-item">
-            <h3>{t.date}</h3>
-            <DatePicker
-              value={dates}
-              sort
-              onChange={setDates}
-              className={`input-field ${errors.dates ? "error" : ""}`}
-              multiple
-              style={{ textAlign: "center" }}
-              minDate={yesterday}
-              zIndex={1005}
-              displayWeekNumbers={true}
-              render={(value, openCalendar) => (
-                <div className="custom-date-display" onClick={openCalendar}>
-                  {Array.isArray(value) ? (
-                    value.map((date, index) => <div key={index}>{date}</div>)
-                  ) : (
-                    <span>{value || "Choose dates"}</span>
-                  )}
-                </div>
-              )}
-              format="DD.MM.YYYY"
-              weekStartDayIndex={1}
-            />
-          </div>
-          <div className="form-item">
-            <h3>{t.startTime}</h3>
-            <input
-              type="time"
-              value={startTime}
-              name="startTime"
-              className={`input-field ${errors.startTime ? "error" : ""}`}
-              onChange={(e) => setStartTime(e.target.value)}
-              placeholder={t.dateAndTime}
-            />
-          </div>
-          <div className="form-item">
-            <h3>{t.endTime}</h3>
-            <input
-              type="time"
-              value={endTime}
-              name="endTime"
-              className={`input-field ${errors.endTime ? "error" : ""}`}
-              onChange={(e) => setEndTime(e.target.value)}
-              placeholder={t.dateAndTime}
-            />
-          </div>
-          <div className="form-item">
-            <h3>{t.setEventLocationInfo}</h3>
-            <LocationMap onLocationChange={handleLocationChange} />
-          </div>
-          <div className="form-item">
-            <h3>{t.minParticipants}</h3>
-            <input
-              type="number"
-              value={participantsMin}
-              name="minParticipants"
-              className={`input-field ${errors.participantsMin ? "error" : ""}`}
-              onChange={(e) => setParticipantsMin(e.target.value)}
-              placeholder={t.minParticipants}
-            />
-          </div>
-          <div className="form-item">
-            <h3>{t.maxParticipants}</h3>
-            <input
-              type="number"
-              value={participantsMax}
-              name="maxParticipants"
-              className={`input-field ${errors.participantsMax ? "error" : ""}`}
-              onChange={(e) => setParticipantsMax(e.target.value)}
-              placeholder={t.maxParticipants}
-              required={true}
-            />
-          </div>
-          <div className="form-item">
-            <h3>{t.description}</h3>
-            <textarea
-              type="description"
-              value={description}
-              name="description"
-              className={`input-field ${errors.description ? "error" : ""}`}
-              onChange={(e) => setDescription(e.target.value)}
-              placeholder={t.description}
-            />
-          </div>
-          <button
-            className={`forms-btn`}
-            onClick={handleSubmit}
-            disabled={disable}
-          >
-            <span>{t.createEvent}</span>
-          </button>
-        </form>
+        <div className="form-item">
+          <h3>{t.title}</h3>
+          <input
+            type="text"
+            value={title}
+            placeholder={t.title}
+            className={`input-field ${errors.title ? "error" : ""}`}
+            onChange={(e) => setTitle(e.target.value)}
+          />
+        </div>
+        <div className="form-item">
+          <h3>{t.activity}</h3>
+          <Select
+            className={`input-field ${errors.categoryID ? "error" : ""}`}
+            placeholder={t.activity}
+            value={activity}
+            onChange={handleChange}
+            options={options()}
+            isSearchable={true}
+          />
+        </div>
+        <div className="form-item">
+          <h3>{t.date}</h3>
+          <DatePicker
+            value={dates}
+            className={`input-field ${errors.dates ? "error" : ""}`}
+            sort
+            onChange={setDates}
+            multiple
+            style={{ textAlign: "center" }}
+            minDate={yesterday}
+            zIndex={1005}
+            displayWeekNumbers={true}
+            render={(value, openCalendar) => (
+              <div className="custom-date-display" onClick={openCalendar}>
+                {Array.isArray(value) ? (
+                  value.map((date, index) => <div key={index}>{date}</div>)
+                ) : (
+                  <span>{value || "Choose dates"}</span>
+                )}
+              </div>
+            )}
+            format="DD.MM.YYYY"
+            weekStartDayIndex={1}
+          />
+        </div>
+        <div className="form-item">
+          <h3>{t.startTime}</h3>
+          <input
+            type="time"
+            value={startTime}
+            name="startTime"
+            className={`input-field ${errors.startTime ? "error" : ""}`}
+            onChange={(e) => setStartTime(e.target.value)}
+            placeholder={t.dateAndTime}
+          />
+        </div>
+        <div className="form-item">
+          <h3>{t.endTime}</h3>
+          <input
+            type="time"
+            value={endTime}
+            name="endTime"
+            className={`input-field ${errors.endTime ? "error" : ""}`}
+            onChange={(e) => setEndTime(e.target.value)}
+            placeholder={t.dateAndTime}
+          />
+        </div>
+        <div className="form-item">
+          <br />
+          <h3>{t.setEventLocationInfo}</h3>
+          <LocationMap onLocationChange={handleLocationChange} />
+        </div>
+        <div className="form-item">
+          <h3>{t.minParticipants}</h3>
+          <input
+            type="number"
+            value={participantsMin}
+            name="minParticipants"
+            className={`input-field ${errors.participantsMin ? "error" : ""}`}
+            onChange={(e) => setParticipantsMin(e.target.value)}
+            placeholder={t.minParticipants}
+          />
+        </div>
+        <div className="form-item">
+          <h3>{t.maxParticipants}</h3>
+          <input
+            type="number"
+            value={participantsMax}
+            name="maxParticipants"
+            className={`input-field ${errors.participantsMax ? "error" : ""}`}
+            onChange={(e) => setParticipantsMax(e.target.value)}
+            placeholder={t.maxParticipants}
+          />
+        </div>
+        <div className="form-item">
+          <h3>{t.description}</h3>
+          <textarea
+            type="description"
+            value={description}
+            name="description"
+            className={`input-field ${errors.description ? "error" : ""}`}
+            onChange={(e) => setDescription(e.target.value)}
+            placeholder={t.description}
+          />
+        </div>
+        <div className="form-item">
+          <h3>{t.email}</h3>
+          <input
+            type="text"
+            value={email}
+            name="email"
+            className={`input-field ${errors.email ? "error" : ""}`}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder={t.email}
+          />
+        </div>
+
+        <div>
+          <SendEmail
+            setIsOtpVerifiedFromParent={setIsOtpVerified}
+            email={email}
+            setDisableButton={setBlockCreate}
+          />
+        </div>
+
+        <button
+          className={`forms-btn`}
+          disabled={blockRegister}
+          onClick={handleSubmitUnSigned}
+        >
+          <span>{t.createEvent}</span>
+        </button>
+        <div style={{ marginTop: "20px" }}>
+          <em>{t.modify_event_later}.</em>
+        </div>
       </div>
     )
   }
+
+  return (
+    // Kirjautuneen käyttäjän näkymä
+    <div className="create-event-form">
+      <form onSubmit={handleSubmit}>
+        {clubEventView()}
+        <div className="form-item">
+          <h3>{t.title}</h3>
+          <input
+            type="text"
+            value={title}
+            placeholder={t.title}
+            className={`input-field ${errors.title ? "error" : ""}`}
+            onChange={(e) => setTitle(e.target.value)}
+          />
+        </div>
+        <div className="form-item">
+          <h3>{t.activity}</h3>
+          <Select
+            className={`input-field ${errors.categoryID ? "error" : ""}`}
+            placeholder={t.activity}
+            value={activity}
+            onChange={handleChange}
+            options={options()}
+            isSearchable={true}
+          />
+        </div>
+        <div className="form-item">
+          <h3>{t.date}</h3>
+          <DatePicker
+            value={dates}
+            sort
+            onChange={setDates}
+            className={`input-field ${errors.dates ? "error" : ""}`}
+            multiple
+            style={{ textAlign: "center" }}
+            minDate={yesterday}
+            zIndex={1005}
+            displayWeekNumbers={true}
+            render={(value, openCalendar) => (
+              <div className="custom-date-display" onClick={openCalendar}>
+                {Array.isArray(value) ? (
+                  value.map((date, index) => <div key={index}>{date}</div>)
+                ) : (
+                  <span>{value || "Choose dates"}</span>
+                )}
+              </div>
+            )}
+            format="DD.MM.YYYY"
+            weekStartDayIndex={1}
+          />
+        </div>
+        <div className="form-item">
+          <h3>{t.startTime}</h3>
+          <input
+            type="time"
+            value={startTime}
+            name="startTime"
+            className={`input-field ${errors.startTime ? "error" : ""}`}
+            onChange={(e) => setStartTime(e.target.value)}
+            placeholder={t.dateAndTime}
+          />
+        </div>
+        <div className="form-item">
+          <h3>{t.endTime}</h3>
+          <input
+            type="time"
+            value={endTime}
+            name="endTime"
+            className={`input-field ${errors.endTime ? "error" : ""}`}
+            onChange={(e) => setEndTime(e.target.value)}
+            placeholder={t.dateAndTime}
+          />
+        </div>
+        <div className="form-item">
+          <h3>{t.setEventLocationInfo}</h3>
+          <LocationMap onLocationChange={handleLocationChange} />
+        </div>
+        <div className="form-item">
+          <h3>{t.minParticipants}</h3>
+          <input
+            type="number"
+            value={participantsMin}
+            name="minParticipants"
+            className={`input-field ${errors.participantsMin ? "error" : ""}`}
+            onChange={(e) => setParticipantsMin(e.target.value)}
+            placeholder={t.minParticipants}
+          />
+        </div>
+        <div className="form-item">
+          <h3>{t.maxParticipants}</h3>
+          <input
+            type="number"
+            value={participantsMax}
+            name="maxParticipants"
+            className={`input-field ${errors.participantsMax ? "error" : ""}`}
+            onChange={(e) => setParticipantsMax(e.target.value)}
+            placeholder={t.maxParticipants}
+            required={true}
+          />
+        </div>
+        <div className="form-item">
+          <h3>{t.description}</h3>
+          <textarea
+            type="description"
+            value={description}
+            name="description"
+            className={`input-field ${errors.description ? "error" : ""}`}
+            onChange={(e) => setDescription(e.target.value)}
+            placeholder={t.description}
+          />
+        </div>
+        <button
+          className={`forms-btn`}
+          onClick={handleSubmit}
+          disabled={disable}
+        >
+          <span>{t.createEvent}</span>
+        </button>
+      </form>
+    </div>
+  )
 }
 
 export default CreateEventForm

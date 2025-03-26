@@ -180,7 +180,8 @@ const translations = {
     deleteDate: "Poista päivämäärä",
     editEventDetailsView: "Muokkaa tapahtuman tietoja tässä näkymässä",
     email: "Sähköposti",
-    email_already_registered:"Sähköposti tai käyttäjätunnus on jo rekisteröity",
+    email_already_registered:
+      "Sähköposti tai käyttäjätunnus on jo rekisteröity",
     email_confirmation: "Sähköposti vahvistettu",
     email_not_found: "Sähköpostia ei löytynyt",
     email_send_error: "Virhe lähettäessä sähköpostia",
@@ -280,6 +281,19 @@ const translations = {
     validation_psw_number: "Salasanassa on oltava numero",
     validation_psw_all: "Salasana saa sisältää vain kirjaimia ja numeroita",
     validation_otp: "Sähköpostiosoitteen vahvistuskoodi vaaditaan",
+
+    validation_min_title: "Otsikko tulee olla vähintään 2 merkkiä",
+    validation_max_title: "Otsikko tulee olla enintään 25 merkkiä",
+    validation_title: "Otsikko vaaditaan",
+    validation_category: "Kategoria vaaditaan",
+    validation_date: "Päivämäärä vaaditaan",
+    validation_startTime: "Aloitusaika vaaditaan",
+    validation_endTime: "Lopetusaika vaaditaan",
+    validation_part_min: "Vähimmäis osallistujamäärä vaaditaan",
+    validation_part_max: "Enimmäis osallistujamäärä vaaditaan",
+    validation_desc: "Kuvaus vaaditaan",
+    validation_min_desc: "Kuvauksen on oltava vähintään 2 merkkiä",
+    validation_max_desc: "Kuvauksen on oltava enintään 1700 merkkiä",
 
     welcomeText1: "Tervetuloa liikkumaan ja kokemaan yhdessä!",
     welcomeText:
