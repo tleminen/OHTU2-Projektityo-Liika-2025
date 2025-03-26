@@ -48,6 +48,53 @@ const registerValidation = () => {
   })
 }
 
+const createEventUnSignedValidation = () => {
+  const t = translations[useSelector((state) => state.language.language)]
+
+  return Yup.object().shape({
+    title: Yup.string()
+      .min(2, t.validation_min_title)
+      .max(25, t.validation_max_title)
+      .required(t.validation_title),
+    categoryID: Yup.string().required(t.validation_category),
+    dates: Yup.date().required(t.validation_date),
+    startTime: Yup.string().required(t.validation_startTime),
+    endTime: Yup.string().required(t.validation_endTime),
+    participantsMin: Yup.number().required(t.validation_part_min),
+    participantsMax: Yup.number().required(t.validation_part_max),
+    description: Yup.string()
+      .required(t.validation_desc)
+      .min(2, t.validation_min_desc)
+      .max(1700, t.validation_max_desc),
+    email: Yup.string()
+      .email(t.validation_email_at_sign)
+      .min(5, t.validation_min_email)
+      .max(40, t.validation_max_email)
+      .required(t.validation_email),
+  })
+}
+
+const createEventValidation = () => {
+  const t = translations[useSelector((state) => state.language.language)]
+
+  return Yup.object().shape({
+    title: Yup.string()
+      .min(2, t.validation_min_title)
+      .max(25, t.validation_max_title)
+      .required(t.validation),
+    categoryID: Yup.string().required(t.validation_category),
+    dates: Yup.date().required(t.validation_date),
+    startTime: Yup.string().required(t.validation_startTime),
+    endTime: Yup.string().required(t.validation_endTime),
+    participantsMin: Yup.number().required(t.validation_part_min),
+    participantsMax: Yup.number().required(t.validation_part_max),
+    description: Yup.string()
+      .required(t.validation_desc)
+      .min(2, t.validation_min_desc)
+      .max(1700, t.validation_max_desc),
+  })
+}
+
 const otpValidation = () => {
   const t = translations[useSelector((state) => state.language.language)]
 
@@ -56,4 +103,4 @@ const otpValidation = () => {
   })
 }
 
-export { loginValidation, registerValidation, otpValidation }
+export { loginValidation, registerValidation, otpValidation,createEventUnSignedValidation ,createEventValidation }

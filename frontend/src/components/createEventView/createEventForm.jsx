@@ -15,13 +15,17 @@ import NotificationContainer from "../notification/notificationContainer.jsx"
 import {
   EventCreated,
   EventCreationFailure,
-  } from "../notification/notificationTemplates.js"
+} from "../notification/notificationTemplates.js"
 
+import { createEventUnSignedValidation } from "../../utils/validationSchemas.js"
+import { createEventValidation } from "../../utils/validationSchemas.js"
 
 const CreateEventForm = ({ club }) => {
   const language = useSelector((state) => state.language.language)
   const t = translations[language]
   const navigate = useNavigate()
+
+  const [errors, setErrors] = useState({})
   const [activity, setActivity] = useState({})
   const [dates, setDates] = useState([])
   const [startTime, setStartTime] = useState("")
@@ -46,6 +50,11 @@ const CreateEventForm = ({ club }) => {
   const handleClubSelect = (clubId) => {
     setSelectedClub(clubId)
   }
+
+  // Tallennetaan muuttujaan return arvo
+  const schema = createEventValidation()
+
+  const schemaUnSigned = createEventUnSignedValidation()
 
   const clubEventView = () => {
     console.log(club)
@@ -81,27 +90,56 @@ const CreateEventForm = ({ club }) => {
       console.log("clubitapahtuma")
       clubID = selectedClub
     }
+
     try {
-      const response = await eventService.createEvent(storedToken, {
-        title,
-        userID,
-        categoryID,
-        dates,
-        startTime,
-        endTime,
-        event_location,
-        participantsMin,
-        participantsMax,
-        description,
-        clubID,
-      })
-      console.log(response)
-      if (response === 201) { // uusi event luotu
-        navigate(`/map`)
+      await schema.validate(
+        {
+          title,
+          categoryID,
+          dates,
+          startTime,
+          endTime,
+          participantsMin,
+          participantsMax,
+          description,
+        },
+        { abortEarly: false }
+      )
+      setErrors({})
+
+      try {
+        const response = await eventService.createEvent(storedToken, {
+          title,
+          userID,
+          categoryID,
+          dates,
+          startTime,
+          endTime,
+          event_location,
+          participantsMin,
+          participantsMax,
+          description,
+          clubID,
+        })
+        console.log(response)
+        if (response === 201) {
+          // uusi event luotu
+          navigate(`/map`)
+        }
+      } catch (error) {
+        console.error(t.event_creation_failure + error)
+        dispatch(addNotification(EventCreationFailure(t.eventCreationFailure)))
       }
-    } catch (error) {
-      console.error(t.event_creation_failure + error)
-      dispatch(addNotification(EventCreationFailure(t.eventCreationFailure)))
+    } catch (err) {
+      if (err.inner) {
+        const errorMap = {}
+        err.inner.forEach((error) => {
+          errorMap[error.path] = error.message
+        })
+        setErrors(errorMap)
+        console.log("Validation errors:", errorMap)
+      }
+      setDisabled(false)
     }
   }
 
@@ -130,32 +168,62 @@ const CreateEventForm = ({ club }) => {
     const categoryID = activity.value
     event.preventDefault()
     setBlockCreate(true)
+    setDisabled(true)
 
     if (!isOtpVerified) {
       //TODO NOTIFIKAATIO!
     } else {
       try {
-        const response = await eventService.createEventUnSigned({
-          // TODO: Tee varmennus, että kyselyn tekijä on sama joka varmensi emailin
-          title,
-          categoryID,
-          dates,
-          startTime,
-          endTime,
-          event_location,
-          participantsMin,
-          participantsMax,
-          description,
-          email,
-          clubID,
-        })
-        if (response === 201) {
-          navigate(`/map`)
+        await schemaUnSigned.validate(
+          {
+            title,
+            categoryID,
+            dates,
+            startTime,
+            endTime,
+            participantsMin,
+            participantsMax,
+            description,
+            email,
+          },
+          { abortEarly: false }
+        )
+        setErrors({})
+        try {
+          const response = await eventService.createEventUnSigned({
+            // TODO: Tee varmennus, että kyselyn tekijä on sama joka varmensi emailin
+            title,
+            categoryID,
+            dates,
+            startTime,
+            endTime,
+            event_location,
+            participantsMin,
+            participantsMax,
+            description,
+            email,
+            clubID,
+          })
+          if (response === 201) {
+            navigate(`/map`)
+          }
+        } catch (error) {
+          console.error("Erron while creating event (unsigned): " + error) //TODO: notifikaatio
+          dispatch(
+            addNotification(EventCreationFailure(t.eventCreationFailure))
+          )
+          setBlockCreate(false)
         }
-      } catch (error) {
-        console.error("Erron while creating event (unsigned): " + error) //TODO: notifikaatio
-        dispatch(addNotification(EventCreationFailure(t.eventCreationFailure)))
-        setBlockCreate(false)
+      } catch (err) {
+        if (err.inner) {
+          const errorMap = {}
+          err.inner.forEach((error) => {
+            errorMap[error.path] = error.message
+          })
+          setErrors(errorMap)
+          console.log("Validation errors:", errorMap)
+        }
+        setDisabled(false)
       }
     }
   }
@@ -170,27 +238,29 @@ const CreateEventForm = ({ club }) => {
             type="text"
             value={title}
             placeholder={t.title}
-            className="input-field"
+            className={`input-field ${errors.title ? "error" : ""}`}
             onChange={(e) => setTitle(e.target.value)}
-            required={true}
           />
         </div>
+        {errors.title && (
+          <div className="error-forms">{errors.title}</div>
+        )}
         <div className="form-item">
           <h3>{t.activity}</h3>
           <Select
-            className="input-field"
+            className={`input-field ${errors.categoryID ? "error" : ""}`}
             placeholder={t.activity}
             value={activity}
             onChange={handleChange}
             options={options()}
             isSearchable={true}
-            required={true}
           />
         </div>
         <div className="form-item">
           <h3>{t.date}</h3>
           <DatePicker
             value={dates}
+            className={`input-field ${errors.dates ? "error" : ""}`}
             sort
             onChange={setDates}
             multiple
@@ -217,10 +287,9 @@ const CreateEventForm = ({ club }) => {
             type="time"
             value={startTime}
             name="startTime"
-            className="input-field"
+            className={`input-field ${errors.startTime ? "error" : ""}`}
             onChange={(e) => setStartTime(e.target.value)}
             placeholder={t.dateAndTime}
-            required={true}
           />
         </div>
         <div className="form-item">
@@ -229,10 +298,9 @@ const CreateEventForm = ({ club }) => {
             type="time"
             value={endTime}
             name="endTime"
-            className="input-field"
+            className={`input-field ${errors.endTime ? "error" : ""}`}
             onChange={(e) => setEndTime(e.target.value)}
             placeholder={t.dateAndTime}
-            required={true}
           />
         </div>
         <div className="form-item">
@@ -246,10 +314,9 @@ const CreateEventForm = ({ club }) => {
             type="number"
             value={participantsMin}
             name="minParticipants"
-            className="input-field"
+            className={`input-field ${errors.participantsMin ? "error" : ""}`}
             onChange={(e) => setParticipantsMin(e.target.value)}
             placeholder={t.minParticipants}
-            required={true}
           />
         </div>
         <div className="form-item">
@@ -258,10 +325,9 @@ const CreateEventForm = ({ club }) => {
             type="number"
             value={participantsMax}
             name="maxParticipants"
-            className="input-field"
+            className={`input-field ${errors.participantsMax ? "error" : ""}`}
             onChange={(e) => setParticipantsMax(e.target.value)}
             placeholder={t.maxParticipants}
-            required={true}
           />
         </div>
         <div className="form-item">
@@ -270,7 +336,7 @@ const CreateEventForm = ({ club }) => {
             type="description"
             value={description}
             name="description"
-            className="input-field"
+            className={`input-field ${errors.description ? "error" : ""}`}
             onChange={(e) => setDescription(e.target.value)}
             placeholder={t.description}
           />
@@ -281,10 +347,9 @@ const CreateEventForm = ({ club }) => {
             type="text"
             value={email}
             name="email"
-            className="input-field"
+            className={`input-field ${errors.email ? "error" : ""}`}
             onChange={(e) => setEmail(e.target.value)}
             placeholder={t.email}
-            required={true}
           />
         </div>
 
@@ -321,21 +386,22 @@ const CreateEventForm = ({ club }) => {
             type="text"
             value={title}
             placeholder={t.title}
-            className="input-field"
+            className={`input-field ${errors.title ? "error" : ""}`}
             onChange={(e) => setTitle(e.target.value)}
-            required={true}
           />
         </div>
+        {errors.title && (
+          <div className="error-forms">{errors.title}</div>
+        )}
         <div className="form-item">
           <h3>{t.activity}</h3>
           <Select
-            className="input-field"
+            className={`input-field ${errors.categoryID ? "error" : ""}`}
             placeholder={t.activity}
             value={activity}
             onChange={handleChange}
             options={options()}
             isSearchable={true}
-            required={true}
           />
         </div>
         <div className="form-item">
@@ -344,6 +410,7 @@ const CreateEventForm = ({ club }) => {
             value={dates}
             sort
             onChange={setDates}
+            className={`input-field ${errors.dates ? "error" : ""}`}
             multiple
             style={{ textAlign: "center" }}
             minDate={yesterday}
@@ -368,10 +435,9 @@ const CreateEventForm = ({ club }) => {
             type="time"
             value={startTime}
             name="startTime"
-            className="input-field"
+            className={`input-field ${errors.startTime ? "error" : ""}`}
             onChange={(e) => setStartTime(e.target.value)}
             placeholder={t.dateAndTime}
-            required={true}
           />
         </div>
         <div className="form-item">
@@ -380,10 +446,9 @@ const CreateEventForm = ({ club }) => {
             type="time"
             value={endTime}
             name="endTime"
-            className="input-field"
+            className={`input-field ${errors.endTime ? "error" : ""}`}
             onChange={(e) => setEndTime(e.target.value)}
             placeholder={t.dateAndTime}
-            required={true}
           />
         </div>
         <div className="form-item">
@@ -396,10 +461,9 @@ const CreateEventForm = ({ club }) => {
             type="number"
             value={participantsMin}
             name="minParticipants"
-            className="input-field"
+            className={`input-field ${errors.participantsMin ? "error" : ""}`}
             onChange={(e) => setParticipantsMin(e.target.value)}
             placeholder={t.minParticipants}
-            required={true}
           />
         </div>
         <div className="form-item">
@@ -408,7 +472,7 @@ const CreateEventForm = ({ club }) => {
             type="number"
             value={participantsMax}
             name="maxParticipants"
-            className="input-field"
+            className={`input-field ${errors.participantsMax ? "error" : ""}`}
             onChange={(e) => setParticipantsMax(e.target.value)}
             placeholder={t.maxParticipants}
             required={true}
@@ -420,12 +484,16 @@ const CreateEventForm = ({ club }) => {
             type="description"
             value={description}
             name="description"
-            className="input-field"
+            className={`input-field ${errors.description ? "error" : ""}`}
             onChange={(e) => setDescription(e.target.value)}
             placeholder={t.description}
           />
         </div>
-        <button className={`forms-btn`} onClick={handleSubmit} disabled={disable}>
+        <button
+          className={`forms-btn`}
+          onClick={handleSubmit}
+          disabled={disable}
+        >
           <span>{t.createEvent}</span>
         </button>
       </form>
