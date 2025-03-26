@@ -2,6 +2,8 @@ import termsOfServiceText from "./termsOfServiceText"
 import infoText from "./infoText"
 const translations = {
   EN: {
+    about_us_text:"Our mission is to provide a free and an easy way for people to do activities together.",
+    about_us_text_2:"Liika-page was developed as a part of the Software Production 2 course at the University of Eastern Finland.",
     activity: "Activity",
     accountInformation: "Account information",
     alert_incorrect: "Incorrect username or password",
@@ -154,6 +156,8 @@ const translations = {
     uinti: "Swimming",
   },
   FI: {
+    about_us_text:"Tavoitteenamme on tarjota ilmainen ja helppo tapa kohdata ihmisiä liikunnan äärellä.",
+    about_us_text_2:"Liika-sivusto on toteutettu Itä-Suomen Yliopiston Ohjelmistotuotanto 2 -kurssilla.",
     activity: "Laji",
     alert_incorrect: "Väärä käyttäjätunnus tai salasana",
     back: "Takaisin",
