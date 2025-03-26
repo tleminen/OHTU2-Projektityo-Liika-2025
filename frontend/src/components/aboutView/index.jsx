@@ -19,11 +19,10 @@ const AboutView = () => {
       }}
     >
       <Header />
-      <Info />
       <div className="about-details" style={{ textAlign: "center", margin: "20px" }}>
         <p>
-          {t.about_us_text}
-          {t.about_us_text2}
+          {t.about_us_text}<br/>
+          {t.about_us_text_2}
         </p>
         <h3>Yhteystiedot</h3>
         <ul style={{ listStyle: "none", padding: 0 }}>
