@@ -16,6 +16,7 @@ import CreatedEvents from "./components/createdEventsView"
 import ModifyEvent from "./components/modifyEventView"
 import ChangeLanguage from "./components/accountView/changeInfo/changeLanguage"
 import ChangeMap from "./components/accountView/changeInfo/changeMap"
+import AboutView from './components/aboutView'
 
 const App = () => {
   return (
@@ -41,6 +42,7 @@ const App = () => {
         path="/create_club_event"
         element={<CreateEventView club={true} />}
       />
+      <Route path='/us' element={<AboutView />} />
     </Routes>
   )
 }

@@ -2,6 +2,8 @@ import termsOfServiceText from "./termsOfServiceText"
 import infoText from "./infoText"
 const translations = {
   EN: {
+    about_us_text: "Our mission is to provide a free and an easy way for people to do activities together.",
+    about_us_text_2: "Liika-page was developed as a part of the Software Engineering II course at the University of Eastern Finland.",
     activity: "Activity",
     accountInformation: "Account information",
     alert_incorrect: "Incorrect username or password",
@@ -106,7 +108,8 @@ const translations = {
     startLocation: "Start location",
     startTime: "Starts at",
     terms_of_service: "Terms of service",
-    terms_of_service_accept: "Accept terms of service",
+    terms_of_service_accept: "Accept",
+    terms_of_service_accept_terms: "terms of service",
     terms_of_service_txt: termsOfServiceText.getText("en"),
     time: "Scheduled at",
     title: "Title",
@@ -154,6 +157,8 @@ const translations = {
     uinti: "Swimming",
   },
   FI: {
+    about_us_text: "Tavoitteenamme on tarjota ilmainen ja helppo tapa kohdata ihmisiä liikunnan äärellä.",
+    about_us_text_2: "Liika-sivusto on toteutettu osana Itä-Suomen Yliopiston Ohjelmistotuotanto II -kurssia.",
     activity: "Laji",
     alert_incorrect: "Väärä käyttäjätunnus tai salasana",
     back: "Takaisin",
@@ -258,7 +263,8 @@ const translations = {
     startLocation: "Oletussijainti",
     startTime: "Aloitusaika",
     terms_of_service: "Käyttöehdot",
-    terms_of_service_accept: "Hyväksy käyttöehdot",
+    terms_of_service_accept: "Hyväksy",
+    terms_of_service_accept_terms: "käyttöehdot",
     terms_of_service_txt: termsOfServiceText.getText("fi"),
     time: "Ajankohta",
     title: "Otsikko",

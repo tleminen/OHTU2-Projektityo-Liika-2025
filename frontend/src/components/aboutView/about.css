@@ -1,17 +1,28 @@
-.text-box {
-    display: inline-block;
-    width: 80vw;
-    max-width: 600px;
-    height: inherit;
-    background-color: #f0f0f0;
-    margin: 50px auto;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3), 10px 10px 20px rgba(0, 0, 0, 0.2),
-      15px 15px 30px rgba(0, 0, 0, 0.1);
-  }
-  
-  .text-box div {
-    white-space: pre-wrap;
-  }
-  
+.about-text-box {
+  display: inline-block;
+  width: 80vw;
+  max-width: 620px;
+  text-align: center;
+  row-gap: 20px;
+  padding: 20px;
+}
+
+.about-container {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin: auto;
+  width: fit-content;
+  max-width: 80dvw;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  background-color: rgba(255,
+      255,
+      255,
+      0.421);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  backdrop-filter: brightness(110%);
+}

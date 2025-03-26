@@ -107,7 +107,7 @@ const RegisterForm = () => {
       setBlockRegister(false)
     } catch (error) {
       console.error(t.email_send_error, error)
-    
+
       dispatch(addNotification(EmailSentFailure(t.email_send_error))) // Lähetä virheilmoitus
       setLoader(false)
     }
@@ -155,17 +155,17 @@ const RegisterForm = () => {
       // Jos OTP on oikein, päivitä tila
       handleReadyState()
     } catch (error) {
-      if (error.response){
-        if (error.response.status == 400){
+      if (error.response) {
+        if (error.response.status == 400) {
           dispatch(addNotification(EmailAlreadyRegistered(t.email_already_registered))) // Lähetä virheilmoitus
-         
+
         } else {
-        console.error(t.otp_not_verified, error)
-        dispatch(addNotification(OtpNotVerified(t.otp_send_error))) // Lähetä virheilmoitus
+          console.error(t.otp_not_verified, error)
+          dispatch(addNotification(OtpNotVerified(t.otp_send_error))) // Lähetä virheilmoitus
         }
-     }
+      }
       setBlockRegister(false)
-   }
+    }
   }
 
   const togglePasswordVisibility = () => {
@@ -347,9 +347,9 @@ const RegisterForm = () => {
       {errors.otp && <div className="error-forms">{errors.otp}</div>}
 
       {/* Lisätään käyttöehtojen checkbox */}
-      <div className="terms-container">
+      <div className="terms-container">{`${t.terms_of_service_accept}`}&nbsp;
         <Link to="/termsOfService" target="_blank">
-          {t.terms_of_service_accept}
+          {t.terms_of_service_accept_terms}
         </Link>
         <input
           type="checkbox"
