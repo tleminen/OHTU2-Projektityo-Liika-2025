@@ -113,7 +113,6 @@ registerRouter.post("/", async (request, response) => {
   const saltRounds = 10
   const passwordhash = await bcrypt.hash(password, saltRounds)
 
-  console.log("nyt lokaatioksi saatu; " + location)
   try {
     const savedUser = await Users.create({
       // Uuden käyttäjän rekisteröinti
@@ -151,7 +150,7 @@ registerRouter.post("/", async (request, response) => {
     })
   } catch (error) {
     console.log("PostgreSQL Error:", error)
-    response.status(400).send({ error: `Error occured during user creation` })
+    response.status(400).json({ error: `Error occured during user creation` })
   }
 }) // Rekisteröinti päättyy
 
