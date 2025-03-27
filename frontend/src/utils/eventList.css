@@ -7,16 +7,19 @@
   margin: auto;
   margin-top: 2%;
   margin-bottom: 2%;
+  min-width: 400px;
   width: fit-content;
-  background-color: rgba(
-    255,
-    255,
-    255,
-    0.421
-  ); /* Lisätty läpinäkyvä taustaväri */
-  padding: 20px 30px; /* Lisätty sisäistä tilaa */
-  border-radius: 10px; /* Lisätty pyöristetyt reunat */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Lisätty varjo */
+  background-color: rgba(255,
+      255,
+      255,
+      0.421);
+  /* Lisätty läpinäkyvä taustaväri */
+  padding: 20px 30px;
+  /* Lisätty sisäistä tilaa */
+  border-radius: 10px;
+  /* Lisätty pyöristetyt reunat */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  /* Lisätty varjo */
 }
 
 /* Muokkaa tätä!*/
@@ -46,18 +49,28 @@
   flex-direction: row;
   padding: 10px;
   color: black;
-  background-color: rgba(
-    255,
-    255,
-    255,
-    0.421
-  ); /* Lisätty läpinäkyvä taustaväri */
-  padding: 20px; /* Lisätty sisäistä tilaa */
-  border-radius: 10px; /* Lisätty pyöristetyt reunat */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Lisätty varjo */
+  background-color: rgba(255,
+      255,
+      255,
+      0.421);
+  /* Lisätty läpinäkyvä taustaväri */
+  padding: 20px;
+  /* Lisätty sisäistä tilaa */
+  border-radius: 10px;
+  /* Lisätty pyöristetyt reunat */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  /* Lisätty varjo */
   margin-bottom: 10px;
   margin-top: 10px;
   text-align: center;
   gap: 8px;
   backdrop-filter: blur(10px);
+}
+
+
+@media (max-width: 800px) {
+  .joined-view {
+    min-width: 30px;
+    width: fit-content;
+  }
 }

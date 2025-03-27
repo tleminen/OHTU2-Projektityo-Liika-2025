@@ -13,11 +13,14 @@ import LocationMap from "../locationMap"
 import "./modifyEventView.css"
 import DatePicker from "react-multi-date-picker"
 import { addNotification } from "../../store/notificationSlice.js"
-import { EventNotFound, 
-        EventJoinSuccess, 
-        EventJoinFailure, 
-        EventDeletionFailure, 
-        EventLeaveSuccess} from "../notification/notificationTemplates.js"
+import {
+  EventNotFound,
+  EventJoinSuccess,
+  EventJoinFailure,
+  EventDeletionFailure,
+  EventLeaveSuccess,
+  EventLeaveFailure
+} from "../notification/notificationTemplates.js"
 import NotificationContainer from "../notification/notificationContainer.jsx"
 
 
@@ -31,7 +34,6 @@ const ModifyEvent = () => {
   const t = translations[language]
   const userID = useSelector((state) => state.user.user.userID)
   const userEvents = useSelector((state) => state.event.events || [])
-  const [selectedTime, setSelectedTime] = useState(null)
   // Uudet tiedot:
   const [event_location, setEventLocation] = useState(null)
   const [title, setTitle] = useState("")
@@ -59,7 +61,7 @@ const ModifyEvent = () => {
           label: t[selectCategoryName([eventData.CategoryID])],
         })
       } catch (error) {
-        dispatch(addNotification(EventNotFound(t.event_not_found)));
+        dispatch(addNotification(EventNotFound(t.event_not_found)))
         console.error(t.event_not_found + error)
       } finally {
         setLoading(false)
@@ -68,33 +70,25 @@ const ModifyEvent = () => {
     fetchEventInfo()
   }, [id, t])
 
-  // Kun times latautuu, asetetaan ensimmäinen aika selectedTime:ksi, jos sitä ei vielä ole
-  useEffect(() => {
-    if (times.length > 0 && !selectedTime) {
-      setSelectedTime(times[0])
-    }
-  }, [times, selectedTime])
-
   // Tapahtumaan liittymisen painikkeen handleri
-  const handleJoin = async (userID, id) => {
-    console.log(selectedTime.id)
+  const handleJoin = async (selectedTime, userID, id) => {
     try {
       const response = await eventService.joinEvent(storedToken, {
         UserID: userID,
         EventID: id,
         TimeID: Number(selectedTime.TimeID),
       })
-      console.log(response) 
-      dispatch(addNotification(EventJoinSuccess(t.event_join_success)));
+      console.log(response)
+      dispatch(addNotification(EventJoinSuccess(t.event_joined)))
       dispatch(
         addEvent({
           UserID: userID,
           EventID: Number(id),
           TimeID: Number(selectedTime.TimeID),
         })
-        
-      );
-      
+
+      )
+
       // Päivitä frontendin Times-tila
       setTimes((prevTimes) =>
         prevTimes.map((time) =>
@@ -104,8 +98,8 @@ const ModifyEvent = () => {
         )
       )
     } catch (error) {
-      console.error(t.event_join_error + error) //TODO NOTIYFY
-      dispatch(addNotification(EventJoinFailure(t.event_join_error)));
+      console.error(t.event_join_failure + error)
+      dispatch(addNotification(EventJoinFailure(t.event_join_failure)))
     }
   }
 
@@ -150,7 +144,7 @@ const ModifyEvent = () => {
           UserID: userID,
           EventID: event.EventID,
           TimeID: time.TimeID,
-          
+
         })
         navigate("/created_events")
       } else {
@@ -162,16 +156,11 @@ const ModifyEvent = () => {
         setTimes((prevTimes) =>
           prevTimes.filter((t) => t.TimeID !== time.TimeID)
         )
-
-        // Jos poistettiin valittu aika, asetetaan ensimmäinen jäljelle jäänyt valituksi
-        if (selectedTime?.TimeID === time.TimeID) {
-          setSelectedTime(times.find((t) => t.TimeID !== time.TimeID) || null)
-        }
       }
       console.log(response)
     } catch (error) {
       console.error("Virhe poistettaessa tapahtumaa" + error) //TODO NOTIYFY
-      dispatch(addNotification(EventDeletionFailure(t.event_deletion_failure)));
+      dispatch(addNotification(EventDeletionFailure(t.event_deletion_failure)))
     }
   }
 
@@ -179,8 +168,16 @@ const ModifyEvent = () => {
     setEventLocation(newLocation)
   }
 
+  const handleTimeClick = (time, userID, id) => {
+    if (!isJoined(time)) {
+      handleJoin(time, userID, id)
+    } else {
+      handleLeave(time, userID, id)
+    }
+  }
+
   // Tapahtumasta eroamisen painikkeen handleri
-  const handleLeave = async (userID, id) => {
+  const handleLeave = async (selectedTime, userID, id) => {
     try {
       const response = await eventService.leaveEvent(storedToken, {
         UserID: userID,
@@ -188,7 +185,7 @@ const ModifyEvent = () => {
         TimeID: Number(selectedTime.TimeID),
       })
       console.log(response)
-      dispatch(addNotification(EventLeaveSuccess(t.event_leave_success))); // TODO: Lisää notifikaatio?
+      dispatch(addNotification(EventLeaveSuccess(t.event_left))) // TODO: Lisää notifikaatio?
       dispatch(
         removeEvent({
           EventID: Number(id),
@@ -196,22 +193,22 @@ const ModifyEvent = () => {
           TimeID: selectedTime.TimeID,
         })
       )
-      
+
       // Päivitä frontendin Times-tila
       setTimes((prevTimes) =>
         prevTimes.map((time) =>
           time.TimeID === selectedTime.TimeID
             ? {
-                ...time,
-                JoinedCount: Math.max((Number(time.JoinedCount) || 0) - 1, 0),
-              }
+              ...time,
+              JoinedCount: Math.max((Number(time.JoinedCount) || 0) - 1, 0),
+            }
             : time
         )
       )
     } catch (error) {
       console.error("Virhe poistuessa tapahumasta" + error)
-      dispatch(addNotification(EventLeaveFailure(t.event_leave_failure)));
-      
+      dispatch(addNotification(EventLeaveFailure(t.event_leave_failure)))
+
     }
   }
   const handleChange = (selectedOption) => {
@@ -231,11 +228,6 @@ const ModifyEvent = () => {
     }
   }
 
-  // Päivämäärän valinnan handleri
-  const handleTimeClick = (time) => {
-    setSelectedTime(time)
-  }
-
   // Tarkistaa onko käyttäjä liittynyt tiettyyn aikaan
   const isJoined = (time) => {
     return userEvents.some(
@@ -246,10 +238,7 @@ const ModifyEvent = () => {
   }
 
   const getTimeButtonClass = (time) => {
-    let baseClass = isJoined(time) ? "joined-time-btn" : "not-joined-time-btn"
-    return selectedTime && selectedTime.TimeID === time.TimeID
-      ? `${baseClass} selected-time`
-      : baseClass
+    return isJoined(time) ? "not-joined-time-btn" : "joined-time-btn"
   }
 
   if (loading) {
@@ -306,7 +295,7 @@ const ModifyEvent = () => {
       }}
     >
       <Header />
-      <NotificationContainer/>
+      <NotificationContainer />
       <div className="modify-event-view">
         <div className="own-event-item">
           <h1>{t.event_editing}</h1>
@@ -362,36 +351,23 @@ const ModifyEvent = () => {
           <div className="time-parent">
             {times.map((time, index) => (
               <div key={index} className="time-child">
-                <button
-                  onClick={() => handleTimeClick(time)}
-                  className={getTimeButtonClass(time)}
-                >
-                  {parseTimeAndDate(time.StartTime)[1]}
-                </button>
+                {parseTimeAndDate(time.StartTime)[1]}
                 <div className="counter-icon">
                   <span>
                     {time.JoinedCount}/{event.ParticipantMax}
                   </span>
                 </div>
+                <button
+                  onClick={() => handleTimeClick(time, userID, id)}
+                  className={getTimeButtonClass(time)}
+                >{!isJoined(time) && t.join}{isJoined(time) && t.leave_event}</button>
+
                 <button className="btn" onClick={() => handleCancelEvent(time)}>
                   {t.deleteDate}
                 </button>
               </div>
             ))}
           </div>
-          {selectedTime && !isJoined(selectedTime) && (
-            <button className="join-btn" onClick={() => handleJoin(userID, id)}>
-              {t.join}
-            </button>
-          )}
-          {selectedTime && isJoined(selectedTime) && (
-            <button
-              className="leave-btn"
-              onClick={() => handleLeave(userID, id)}
-            >
-              {t.leaveEvent}
-            </button>
-          )}
           <span className="spacer-line"></span>
           <h2>{t.scheduleMoreDates}</h2>
           <DatePicker

@@ -82,7 +82,7 @@
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 8px;
+  gap: 12px;
   align-items: center;
   margin: auto;
   width: fit-content;
@@ -94,7 +94,7 @@
       255,
       0.421);
   /* Lisätty läpinäkyvä taustaväri */
-  padding: 2px 14px;
+  padding: 6px 14px;
   /* Lisätty sisäistä tilaa */
   border-radius: 10px;
   /* Lisätty pyöristetyt reunat */

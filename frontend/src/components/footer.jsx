@@ -20,6 +20,7 @@ const Footer = () => {
         <div className="footer-text">
           <Link to={`/termsOfService`}>{t.terms_of_service}</Link>
         </div>
+        <div className='footer-text'><Link to={'/privacy'}>{t.privacy}</Link></div>
         <div>
           <button className="info-btn" onClick={() => navigateTo("info")}>
             i
