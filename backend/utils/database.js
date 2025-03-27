@@ -29,10 +29,11 @@ const connectDB = async () => {
     console.log(`PosgreSQL-tietokantayhteys luotu!`)
 
     try {
-      // Nollaa tietokannasta clubit, lisää sähköpostiosoitteen mukaan clubiin jäsenen. Kysy ennenkuin ajat
-      await sequelize.query(`
-  ALTER TABLE "Users" ALTER COLUMN "MapPreferences" TYPE VARCHAR(160);
-`)
+      /*      
+            await sequelize.query(`
+        
+      `)
+      */
     } catch (e) {
       console.warn(e)
     }
