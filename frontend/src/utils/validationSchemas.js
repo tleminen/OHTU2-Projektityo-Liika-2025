@@ -1,9 +1,9 @@
-import * as Yup from "yup"
-import translations from "../assets/translation"
-import { useSelector } from "react-redux"
+import * as Yup from "yup";
+import translations from "../assets/translation";
+import { useSelector } from "react-redux";
 
 const loginValidation = () => {
-  const t = translations[useSelector((state) => state.language.language)]
+  const t = translations[useSelector((state) => state.language.language)];
 
   return Yup.object().shape({
     username: Yup.string()
@@ -18,11 +18,11 @@ const loginValidation = () => {
       .matches(/[0-9]/, t.validation_psw_number)
       .matches(/^[a-zA-Z0-9]+$/, `${t.validation_psw_all}`)
       .required(t.validation_psw),
-  })
-}
+  });
+};
 
 const registerValidation = () => {
-  const t = translations[useSelector((state) => state.language.language)]
+  const t = translations[useSelector((state) => state.language.language)];
 
   return Yup.object().shape({
     username: Yup.string()
@@ -46,11 +46,11 @@ const registerValidation = () => {
     passwordAgain: Yup.string()
       .oneOf([Yup.ref("password"), null], t.validation_psw_match)
       .required(t.validation_psw_again),
-  })
-}
+  });
+};
 
 const createEventUnSignedValidation = () => {
-  const t = translations[useSelector((state) => state.language.language)]
+  const t = translations[useSelector((state) => state.language.language)];
 
   return Yup.object().shape({
     title: Yup.string()
@@ -72,11 +72,11 @@ const createEventUnSignedValidation = () => {
       .min(5, t.validation_min_email)
       .max(40, t.validation_max_email)
       .required(t.validation_email),
-  })
-}
+  });
+};
 
 const createEventValidation = () => {
-  const t = translations[useSelector((state) => state.language.language)]
+  const t = translations[useSelector((state) => state.language.language)];
 
   return Yup.object().shape({
     title: Yup.string()
@@ -93,15 +93,21 @@ const createEventValidation = () => {
       .required(t.validation_desc)
       .min(2, t.validation_min_desc)
       .max(1700, t.validation_max_desc),
-  })
-}
+  });
+};
 
 const otpValidation = () => {
-  const t = translations[useSelector((state) => state.language.language)]
+  const t = translations[useSelector((state) => state.language.language)];
 
   return Yup.object().shape({
     otp: Yup.string().required(t.validation_otp),
-  })
-}
+  });
+};
 
-export { loginValidation, registerValidation, otpValidation, createEventUnSignedValidation, createEventValidation }
+export {
+  loginValidation,
+  registerValidation,
+  otpValidation,
+  createEventUnSignedValidation,
+  createEventValidation,
+};
