@@ -1,12 +1,15 @@
-import termsOfServiceText from "./termsOfServiceText"
-import infoText from "./infoText"
+import termsOfServiceText from "./termsOfServiceText";
+import infoText from "./infoText";
 const translations = {
   EN: {
-    about_us_text: "Our mission is to provide a free and an easy way for people to do activities together.",
-    about_us_text_2: "Liika-page was developed as a part of the Software Engineering II course at the University of Eastern Finland.",
+    about_us_text:
+      "Our mission is to provide a free and an easy way for people to do activities together.",
+    about_us_text_2:
+      "Liika-page was developed as a part of the Software Engineering II course at the University of Eastern Finland.",
     activity: "Activity",
     accountInformation: "Account information",
     alert_incorrect: "Incorrect username or password",
+    anAgreementText: "An agreement, in which the person registered is a party",
     back: "Back",
     browseEvents: "You can browse upcoming events in chosen area",
     change: "Change",
@@ -24,21 +27,28 @@ const translations = {
     createdEvents: "Created events",
     contactUs: "Contact us",
     contact_info: "Contact us",
+    consentOfThePersonText:
+      "Consent of the person (documented, voluntary, individualized, informed and unambigious)",
     currentActivity: "Current activity",
     currentDescription: "Current description",
     currentEmail: "Current email",
     currentTime: "Current time",
     currentTitle: "Current title",
     currentUsername: "Current username",
+    dataIsNotText: "Data is not regularly handed over to other parties.",
+    dataContentText: "Data content of the register",
     dateAndTime: "Date and time",
+    dataProtectionOfficer: "Data Protection Officer",
     detail_changed: "Detail has been updated",
     description: "Description",
     date: "Date",
     deleteDate: "Delete date",
     editEventDetailsView: "Edit event details in this view",
-    editMapAppearance: "You can edit your map's appearance from your profile settings.",
+    editMapAppearance:
+      "You can edit your map's appearance from your profile settings.",
     editProfile: "Edit your personal information",
     email: "Email",
+    emailAddress: "e-mail address",
     email_already_registered: "Email or username already registered",
     email_confirmation: "Email confirmed",
     email_not_found: "Email not found",
@@ -46,12 +56,17 @@ const translations = {
     email_sent: "Email sent",
     email_update_error: "Error with updating email",
     endTime: "Ends at",
-    enterConfirmationCode: "Enter the confirmation code you received and accept the terms of service.",
+    enterConfirmationCode:
+      "Enter the confirmation code you received and accept the terms of service.",
     enterEmailToJoinEvent: "Enter your email to join the event",
     enterNewInfoEditable: "Enter new information only in the editable fields",
     error_updating_map: "Error with updating map settings",
-    eventDetailsButton: "You can navigate to the event details by pressing the 'Go to event' button.",
-    eventDetailsIcon: "Event details can be accessed through the activity icon on the map.",
+    euGeneralDataText:
+      "According to the EU’s General Data Protection Regulation, the legal basis for processing personal data is:",
+    eventDetailsButton:
+      "You can navigate to the event details by pressing the 'Go to event' button.",
+    eventDetailsIcon:
+      "Event details can be accessed through the activity icon on the map.",
     event_editing: "Event editing",
     eventFiltering: "Event filtering",
     event_deletion_warning: "Selecting ok will delete event",
@@ -63,13 +78,23 @@ const translations = {
     event_created: "Event created successfully",
     eventRegistrationNoLogin: "You can register for events without logging in.",
     exitWithoutSave: "You can exit without saving changes by pressing back",
+    everyPersonText:
+      "Every person in the register has the right to check the data stored in the register and demand the correction of any incorrect information or the completion of incomplete information. If a person wants to check the data stored about them or demand correction the request must be sent in writing to the register holder. If necessary, the register holder can ask the requester to provide their identification. The register holder responds to the correction or inspection request within the time set in the EU Data Protection Regulation (usually within a month)",
     forgot_pw: "Forgot password?",
-    goToMapView: "You can navigate to the map view by pressing the map image on the homepage.",
+    goToMapView:
+      "You can navigate to the map view by pressing the map image on the homepage.",
     homepage: "Homepage",
-    homepageDescription: "On the homepage, you will find login and registration options.",
+    homepageDescription:
+      "On the homepage, you will find login and registration options.",
+    handledCarefullyText:
+      "The register is handled carefully and the data processed with the help of information systems are properly protected. When registry data is stored on servers, the physical and digital security of the hardware is taken care of appropriately. The register holder ensures that correct measurements are taken to ensure that stored data, server access rights and other are handled confidentially and only by employees who deal with the data.",
     joined: "Joined",
     info: "Info",
     info_txt: infoText.getText("en"),
+    informationStoredText: "The information stored in the register includes:",
+    ipAddressText: "the IP address of the network connection",
+    ipAddTextFull:
+      "IP addresses of website visitors and cookies necessary for the functioning of the service are processed based on legitimate interest, e.g. to take care of information security and for the collection of statistical data of website visitors in those cases when they can be considered as personal data. If necessary, consent is requested separately for third-party cookies.",
     join: "Join",
     joinedEvents: "Joined events",
     language: "Default language",
@@ -77,10 +102,14 @@ const translations = {
     lastUpdated: "Event last updated",
     leave_event: "Leave event",
     leftEdge: "Left edge:",
-    liikaDescription: "Liika.eu is a service that brings events close to you and gives you the opportunity to create your own events. On the site, you can log in, register as a new user, and browse events on the mnap.",
+    legalBasisText: "Legal basis and the purpose of processing personal data",
+    liikaDescription:
+      "Liika.eu is a service that brings events close to you and gives you the opportunity to create your own events. On the site, you can log in, register as a new user, and browse events on the mnap.",
     liika_text: "Liika.eu",
+    liikaRegister: "Liika-register",
     loading_event: "Loading event info...",
     location: "Location",
+    locationText: "the location of a user's event",
     loggedInMapView: "Logged in map view",
     login: "Log in",
     login2: "Log in",
@@ -96,6 +125,7 @@ const translations = {
     minParticipants: "Minimum participants",
     modify_event_later:
       "Modify event later by registrating with the same email-address provided while creating the event",
+    nameOfTheRegister: "Name of the register",
     newDescription: "New description",
     newEmail: "New email",
     newEmailAgain: "Insert new email again",
@@ -113,6 +143,7 @@ const translations = {
     otp_sent: "Input the code sent to your e-mail",
     otp_insert: "Send a OTP code to your given e-mail",
     overview: "Overview",
+    otherRightsText: "Other rights related to the processing of personal data",
     participants: "Participants",
     participantCount: "Number of participants",
     participantLimits: "Current participant limits",
@@ -122,17 +153,28 @@ const translations = {
     passwordAgain: "Password again",
     privacy: "Privacy",
     privacy_statement: "Privacy and Register Statement",
+    privacyStatementText:
+      "This document is Liika’s registration and data protection statement following the EU General Data Protection Regulation (GDPR). Version 01/2025.",
+    personalDataText: "Personal data is processed for several purposes:",
+    providingText: "Providing and developing our services",
+    personInTheRegisterText:
+      "A person in the register has the right to request the removal of personal data about him/her from the register (“the right to be forgotten”). Requests must be sent in writing to the register holder. If necessary, the register holder can ask the requester to provide their identification. The register holder responds to the correction or inspection request within the time set in the EU Data Protection Regulation (usually within a month)",
     rightEdge: "Right edge:",
     ready_account: "Already have an account?",
     register: "Sign up",
     registeredEvents: "View the events you have registered for",
     registerPrompt: "Enter your email address, desired username, and password.",
+    registrar: "Registrar",
+    registrarContacts: "Registrar contacts",
     reset_pw: "Reset password",
+    regularTransferText:
+      "Regular transfers of data and transfer of data outside the EU or EEA",
     save: "Save",
     saveChanges: "Save changes",
     searchLocation: "Search for a location on the map",
     send: "Send",
-    sendConfirmationCode: "Press 'Send' to receive the confirmation code in your email.",
+    sendConfirmationCode:
+      "Press 'Send' to receive the confirmation code in your email.",
     scheduledDates: "Scheduled dates",
     scheduleMoreDates: "Schedule more dates",
     selectedLanguage: "Language",
@@ -150,9 +192,15 @@ const translations = {
     time: "Scheduled at",
     title: "Title",
     token_not_found: "Token not found",
+    theInformationText:
+      "The information is not used for automated decision-making, profiling or selling.",
+    thePrinciplesText: "The principles of registry protection",
+    theRightText:
+      "The right to inspect and the right to demand correction of information",
     updateMapEvents: "Update the events on the map",
     username: "Username",
     username_update_error: "Failed to change username",
+    userRelationshipText: "User relationship management",
     validation_min_username: "Username must be at least 3 characters",
     validation_max_username: "Username must be no more than 40 characters",
     validation_min_psw: "Password must be at least 8 characters",
@@ -161,19 +209,35 @@ const translations = {
     validation_max_email: "Email address must be no more than 40 characters",
     validation_email_at_sign: "invalid email",
     validation_username: "Username required",
-    validation_username_marks: "Username can only include numbers, letters or !?_",
+    validation_username_marks:
+      "Username can only include numbers, letters or !?_",
     validation_psw: "Password required",
     validation_email: "Email required",
     validation_psw_match: "Passwords don't match",
     validation_psw_again: "Confirm password",
     validation_psw_all: "Password must contain only letters and numbers",
     validation_otp: "Email verification code required",
-    viewVariation: "The view varies slightly depending on whether you are logged in or not.",
+    validation_min_title: "Title must be atleast 2 characters",
+    validation_max_title: "Title must be at most 25 characters",
+    validation_title: "Title is needed",
+    validation_category: "Gategory is needed",
+    validation_date: "Date of event is needed",
+    validation_startTime: "Time for the start of event is needed",
+    validation_endTime: "Time for the end of event is needed",
+    validation_part_min: "Minimum amount of participants",
+    validation_part_max: "Maximum amount of participants",
+    validation_desc: "Description is needed",
+    validation_min_desc: "Description must be atleast 2 characters",
+    validation_max_desc: "Description must be at most 1700 characters",
+    viewVariation:
+      "The view varies slightly depending on whether you are logged in or not.",
     welcomeText1: "Welcome to move and experience together!",
     welcomeText:
       " brings events close to you - and gives you the opportunity to create your own!",
     welcomeText2:
       " Whether you're looking for exciting activities or want to gather a group together, we offer an easy way to sign up for events and organize your own. Turn everyday moments into experiences and connect people in the right place at the right time.",
+    weStoreYourDataText:
+      "We store your data primarily in the European Economic Area.",
     youHaveJoinedForTheEvent: "You have joined for the event",
     // Lajit / Categoriat
     amerikkalainen_jalkapallo: "American Football",
@@ -197,10 +261,13 @@ const translations = {
     uinti: "Swimming",
   },
   FI: {
-    about_us_text: "Tavoitteenamme on tarjota ilmainen ja helppo tapa kohdata ihmisiä liikunnan äärellä.",
-    about_us_text_2: "Liika-sivusto on toteutettu osana Itä-Suomen Yliopiston Ohjelmistotuotanto II -kurssia.",
+    about_us_text:
+      "Tavoitteenamme on tarjota ilmainen ja helppo tapa kohdata ihmisiä liikunnan äärellä.",
+    about_us_text_2:
+      "Liika-sivusto on toteutettu osana Itä-Suomen Yliopiston Ohjelmistotuotanto II -kurssia.",
     activity: "Laji",
     alert_incorrect: "Väärä käyttäjätunnus tai salasana",
+    anAgreementText: "Sopimus, jossa rekisteröity on osapuolena",
     back: "Takaisin",
     browseEvents: "Voit katsella tulevia tapahtumia valitsemallasi alueella",
     change: "Vaihda",
@@ -212,28 +279,37 @@ const translations = {
     choose_organiser: "Valitse järjestäjä",
     createEvent: "Luo tapahtuma",
     createEvents: "Luo uusia tapahtumia",
-    eventCreationFailure: "Tapahtuman luonti epäonnistui, varmista ettet ole jo rekisteröitynyt annetulla sähköpostilla",
+    eventCreationFailure:
+      "Tapahtuman luonti epäonnistui, varmista ettet ole jo rekisteröitynyt annetulla sähköpostilla",
     createdEvents: "Tulevat tapahtumasi",
     confirm: "Vahvista",
     confirmPassword: "Vahvista salasana kirjoittamalla se uudelleen.",
     contactUs: "Ota yhteyttä",
     contact_info: "Yhteystiedot",
-    completeRegistration: "Paina 'Rekisteröidy' viimeistelläksesi rekisteröitymisen.",
+    consentOfThePersonText:
+      "Rekisteröidyn henkilön suostumus (dokumentoitu, vapaaehtoinen, yksilöity, tietoon perustuva ja yksiselitteinen)",
+    completeRegistration:
+      "Paina 'Rekisteröidy' viimeistelläksesi rekisteröitymisen.",
     currentActivity: "Nykyinen laji",
     currentDescription: "Nykyinen kuvaus",
     currentEmail: "Nykyinen sähköposti",
     currentTime: "Nykyinen ajankohta",
     currentTitle: "Nykyinen otsikko",
     currentUsername: "Nykyinen käyttäjätunnus",
+    dataIsNotText: "Tietoja ei luovuteta säännöllisesti muille osapuolille.",
+    dataContentText: "Rekisterin tietosisältö",
     dateAndTime: "Aika",
+    dataProtectionOfficer: "Tietosuoja vastaava",
     detail_changed: "Tieto vaihdettu",
     description: "Kuvaus",
     date: "Päivämäärä",
     deleteDate: "Poista päivämäärä",
     editEventDetailsView: "Muokkaa tapahtuman tietoja tässä näkymässä",
-    editMapAppearance: "Voit muokata omaa kartan ulkoasuasi omista tiedoistasi.",
+    editMapAppearance:
+      "Voit muokata omaa kartan ulkoasuasi omista tiedoistasi.",
     editProfile: "Muokkaa omia tietojasi",
     email: "Sähköposti",
+    emailAddress: "sähköpostiosoite",
     email_already_registered:
       "Sähköposti tai käyttäjätunnus on jo rekisteröity",
     email_confirmation: "Sähköposti vahvistettu",
@@ -242,12 +318,17 @@ const translations = {
     email_sent: "Sähköposti lähetetty",
     email_update_error: "Virhe sähköpostin vaihdossa",
     endTime: "Päättymisaika",
-    enterConfirmationCode: "Syötä saamasi vahvistuskoodi ja hyväksy käyttöehdot.",
+    enterConfirmationCode:
+      "Syötä saamasi vahvistuskoodi ja hyväksy käyttöehdot.",
     enterEmailToJoinEvent: "Syötä sähköposti, jotta voit liittyä tapahtumaan",
     enterNewInfoEditable: "Syötä uusi tieto vain muokattaviin kenttiin",
     error_updating_map: "Virhe kartan asetusten vaihdossa",
-    eventDetailsButton: "Voit siirtyä tapahtuman tietoihin painamalla 'Siirry tapahtumaan' -painiketta.",
-    eventDetailsIcon: "Tapahtuman lisätiedot näkyvät kartalla olevan laji-ikonin kautta.",
+    euGeneralDataText:
+      "Euroopan unionin yleisen tietosuoja-asetuksen (GDPR) mukaisesti henkilötietojen käsittelyn oikeusperuste on:",
+    eventDetailsButton:
+      "Voit siirtyä tapahtuman tietoihin painamalla 'Siirry tapahtumaan' -painiketta.",
+    eventDetailsIcon:
+      "Tapahtuman lisätiedot näkyvät kartalla olevan laji-ikonin kautta.",
     event_editing: "Tapahtuman muokkaus",
     eventFiltering: "Tapahtumien suodatus",
     event_deletion_warning: "Haluatko varmasti poistaa tapahtuman?",
@@ -257,31 +338,47 @@ const translations = {
     event_joined_success: "Liityit tapahtumaan",
     event_creation_failure: "Tapahtuman luonti epäonnistui",
     event_created: "Tapahtuma luotu",
-    eventRegistrationNoLogin: "Tapahtumiin voi ilmoittautua ilman kirjautumista",
+    eventRegistrationNoLogin:
+      "Tapahtumiin voi ilmoittautua ilman kirjautumista",
     exitWithoutSave: "Voit poistua tallentamatta muutoksia painamalla takaisin",
+    everyPersonText:
+      "Jokaisella rekisterissä olevalla henkilöllä on oikeus tarkastaa rekisteriin tallennetut tiedot ja vaatia virheellisten tietojen korjaamista tai puutteellisten tietojen täydentämistä. Jos henkilö haluaa tarkastaa itseään koskevat tiedot tai vaatia tietojen korjaamista, pyyntö tulee lähettää kirjallisesti rekisterinpitäjälle. Tarvittaessa rekisterinpitäjä voi pyytää pyynnön tekijää toimittamaan henkilöllisyytensä todentavan tiedon. Rekisterinpitäjä vastaa korjaus- tai tarkastuspyyntöön EU:n tietosuoja-asetuksessa (yleensä kuukauden sisällä) määrätyssä ajassa.",
     forgot_pw: "Unohtuiko salasana?",
-    goToMapView: "Voit siirtyä karttanäkymään painamalla etusivulla näkyvää karttakuvaa.",
+    goToMapView:
+      "Voit siirtyä karttanäkymään painamalla etusivulla näkyvää karttakuvaa.",
     homepage: "Etusivu",
-    homepageDescription: "Etusivulta löydät kirjautumisen ja rekisteröitymisen.",
+    homepageDescription:
+      "Etusivulta löydät kirjautumisen ja rekisteröitymisen.",
+    handledCarefullyText:
+      "Rekisteriä käsitellään huolellisesti, ja tietojen käsittelyyn käytettävät tietojärjestelmät on suojattu asianmukaisesti. Kun rekisteritiedot tallennetaan palvelimille, laitteiston fyysinen ja digitaalinen turvallisuus huolehditaan asianmukaisesti. Rekisterinpitäjä varmistaa, että tarvittavat toimenpiteet toteutetaan, jotta tallennetut tiedot, palvelimien käyttöoikeudet ja muut vastaavat käsitellään luottamuksellisesti ja vain niiden työntekijöiden toimesta, jotka käsittelevät tietoja.",
     joined: "Liittyneitä",
     leftEdge: "Vasen reuna:",
     info: "Info",
     info_txt: infoText.getText("fi"),
+    informationStoredText: "Rekisteriin tallennetut tiedot sisältävät:",
+    ipAddressText: "verkkoyhteyden IP-osoite",
+    ipAddTextFull:
+      "Verkkosivuston kävijöiden IP-osoitteita ja palvelun toiminnan kannalta välttämättömiä evästeitä käsitellään oikeutettuun etuun perustuen, esimerkiksi tietoturvan varmistamiseksi ja verkkosivuston kävijöiden tilastotietojen keräämiseksi silloin, kun ne voidaan katsoa henkilötiedoiksi. Tarvittaessa pyydetään erillinen suostumus kolmannen osapuolen evästeille.",
     join: "Ilmoittaudu",
     joinedEvents: "Tulevat osallistumisesi",
     language: "Oletuskieli",
     language_update_failure: "Virhe kielenvaihdossa",
     lastUpdated: "Tapahtumaa viimeksi päivitetty",
     leave_event: "Peru ilmoittautuminen",
-    liikaDescription: "Liika.eu on palvelu, joka tuo tapahtumat lähellesi ja antaa mahdollisuuden luoda omia tapahtumia. Sivustolla voit kirjautua sisään, rekisteröityä uudeksi käyttäjäksi ja selata tapahtumia kartalta.",
+    legalBasisText: "Henkilötietojen käsittelyn oikeusperuste ja tarkoitus",
+    liikaDescription:
+      "Liika.eu on palvelu, joka tuo tapahtumat lähellesi ja antaa mahdollisuuden luoda omia tapahtumia. Sivustolla voit kirjautua sisään, rekisteröityä uudeksi käyttäjäksi ja selata tapahtumia kartalta.",
     liika_text: "Liika.eu",
+    liikaRegister: "Liika-rekisteri",
     loading_event: "Lataa tapahtuman tietoja...",
     location: "Sijainti",
+    locationText: "Käyttäjän tapahtuman sijainti",
     loggedInMapView: "Sisäänkirjautuneen karttanäkymä",
     login: "Kirjaudu",
     login2: "Kirjaudu sisään",
     loginButton: "Paina 'Kirjaudu' ja sinut siirretään etusivulle.",
-    loginPrompt: "Syötä käyttäjätunnuksesi tai sähköpostiosoitteesi sekä salasana.",
+    loginPrompt:
+      "Syötä käyttäjätunnuksesi tai sähköpostiosoitteesi sekä salasana.",
     logOut: "Kirjaudu ulos",
     mainFunctions: "Päätoiminnot",
     map: "Kartta",
@@ -292,6 +389,7 @@ const translations = {
     minParticipants: "Osanottajat vähintään",
     modify_event_later:
       "Voit muokata tapahtumaa rekisteröitymällä samalla sähköpostiosoitteella, jolla olet luonut tapahtuman",
+    nameOfTheRegister: "Rekisterin nimi",
     newDescription: "Uusi kuvaus",
     newEmail: "Uusi sähköposti",
     newEmailAgain: "Syötä sähköposti uudelleen",
@@ -309,25 +407,39 @@ const translations = {
     otp_sent: "Syötä koodi saadustasi sähköpostista",
     otp_insert: "Lähetä annettuun sähköpostiin vahvistuskoodi",
     overview: "Yleiskatsaus",
+    otherRightsText: "Muut henkilötietojen käsittelyyn liittyvät oikeudet:",
     participants: "Osallistujat",
     participantCount: "Osallistujamäärä",
     participantLimits: "Nykyinen osallistujamäärä",
-    partnerViewVariation: "Myös yhteistyökumppanin näkymä näyttää hieman erilaiselta.",
+    partnerViewVariation:
+      "Myös yhteistyökumppanin näkymä näyttää hieman erilaiselta.",
     password: "Salasana",
     password_ph: "Salasana",
     passwordAgain: "Salasana uudestaan",
     privacy: "Rekisteriseloste",
     privacy_statement: "Tietosuoja- ja rekisteriseloste",
+    privacyStatementText:
+      "Tämä asiakirja on Liikan rekisteri- ja tietosuojaseloste Euroopan unionin yleisen tietosuoja-asetuksen (GDPR) mukaisesti. Versio 01/2025.",
+    personalDataText: "Henkilötietoja käsitellään useisiin tarkoituksiin:",
+    providingText: "Palveluidemme tarjoaminen ja kehittäminen",
+    personInTheRegisterText:
+      "Rekisterissä olevalla henkilöllä on oikeus pyytää henkilötietojensa poistamista rekisteristä (oikeus tulla unohdetuksi). Pyyntö tulee lähettää kirjallisesti rekisterinpitäjälle. Tarvittaessa rekisterinpitäjä voi pyytää pyynnön tekijää toimittamaan henkilöllisyytensä todentavan tiedon. Rekisterinpitäjä vastaa poistopyyntöön EU:n tietosuoja-asetuksessa määrätyssä ajassa (yleensä kuukauden sisällä).",
     rightEdge: "Oikea reuna:",
     ready_account: "Onko sinulla jo tili?",
     register: "Rekisteröidy",
     registeredEvents: "Näe tapahtumat, joihin olet ilmoittautunut",
-    registerPrompt: "Syötä sähköpostiosoitteesi, haluamasi käyttäjätunnus ja salasana.",
+    registerPrompt:
+      "Syötä sähköpostiosoitteesi, haluamasi käyttäjätunnus ja salasana.",
+    registrar: "Rekisterinpitäjä",
+    registrarContacts: "Rekisterinpitäjän yhteystiedot",
     reset_pw: "Palauta salasana",
+    regularTransferText:
+      "Tietojen säännöllinen siirto ja tietojen siirto EU:n tai EEA:n ulkopuolelle",
     save: "Tallenna",
     searchLocation: "Hae sijaintia kartalta",
     send: "Lähetä",
-    sendConfirmationCode: "Paina 'Lähetä' saadaksesi vahvistuskoodin sähköpostiisi.",
+    sendConfirmationCode:
+      "Paina 'Lähetä' saadaksesi vahvistuskoodin sähköpostiisi.",
     saveChanges: "Tallenna muutokset",
     scheduledDates: "Suunnitellut päivämäärät",
     scheduleMoreDates: "Lisää esiintymiä",
@@ -346,9 +458,16 @@ const translations = {
     time: "Ajankohta",
     title: "Otsikko",
     token_not_found: "Tokenia ei löytynyt",
+    theInformationText:
+      "Tietoja ei käytetä automaattiseen päätöksentekoon, profilointiin tai myyntiin.",
+    thePrinciplesText: "Rekisterin suojaamisen periaatteet",
+    theRightText:
+      "Oikeus tarkastaa tiedot ja oikeus vaatia tietojen korjaamista",
     updateMapEvents: "Päivitä kartan tapahtumat",
     username: "Käyttäjätunnus",
-    username_update_error: "Käyttäjätunnuksen vaihtaminen epäonnistui, käyttäjätunnus saattaa olla varattu",
+    username_update_error:
+      "Käyttäjätunnuksen vaihtaminen epäonnistui, käyttäjätunnus saattaa olla varattu",
+    userRelationshipText: "Käyttäjäsuhteen hallinta",
     validation_min_username: "Käyttäjätunnuksen on oltava vähintään 3 merkkiä",
     validation_max_username: "Käyttäjätunnuksen on oltava enintään 40 merkkiä",
     validation_min_psw: "Salasanan on oltava vähintään 8 merkkiä",
@@ -357,7 +476,8 @@ const translations = {
     validation_max_email: "Sähköpostiosoitteen on oltava enintään 40 merkkiä",
     validation_email_at_sign: "Virheellinen sähköposti",
     validation_username: "Käyttäjätunnus vaaditaan",
-    validation_username_marks: "Käyttäjänimi voi sisältää vain numeroita, kirjaimia ja !?_",
+    validation_username_marks:
+      "Käyttäjänimi voi sisältää vain numeroita, kirjaimia ja !?_",
     validation_psw: "Salasana vaaditaan",
     validation_email: "Sähköposti vaaditaan",
     validation_psw_match: "Salasanat eivät täsmää",
@@ -380,12 +500,15 @@ const translations = {
     validation_desc: "Kuvaus vaaditaan",
     validation_min_desc: "Kuvauksen on oltava vähintään 2 merkkiä",
     validation_max_desc: "Kuvauksen on oltava enintään 1700 merkkiä",
-    viewVariation: "Näkymä vaihtelee hieman sen mukaan oletko kirjautunut sisään vai et.",
+    viewVariation:
+      "Näkymä vaihtelee hieman sen mukaan oletko kirjautunut sisään vai et.",
     welcomeText1: "Tervetuloa liikkumaan ja kokemaan yhdessä!",
     welcomeText:
       " tuo tapahtumat lähellesi - ja antaa sinulle mahdollisuuden luoda omasi!",
     welcomeText2:
       "Etsitpä sitten kiinnostavaa tekemistä tai haluat koota porukan kasaan, meiltä löydät helpon tavan ilmoittautua tapahtumiin ja järjestää omia. Tee arjesta elämyksiä ja yhdistä ihmiset oikeassa paikassa, oikeaan aikaan.",
+    weStoreYourDataText:
+      "Säilytämme tietojasi pääasiassa Euroopan talousalueella (ETA).",
     youHaveJoinedForTheEvent: "Olet ilmoittautunut tapahtumaan",
     // Lajit / Categoriat
     amerikkalainen_jalkapallo: "Amerikkalainen jalkapallo",
@@ -408,6 +531,6 @@ const translations = {
     tennis: "Tennis",
     uinti: "Uinti",
   },
-}
+};
 
-export default translations
+export default translations;
