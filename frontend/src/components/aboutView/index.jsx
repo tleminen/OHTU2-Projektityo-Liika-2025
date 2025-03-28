@@ -9,6 +9,19 @@ const AboutView = () => {
   const language = useSelector((state) => state.language.language)
   const t = translations[language]
 
+  const linkedInLink = (osoite) => {
+    return (
+      <a href={`https://www.linkedin.com/in/${osoite}/`} target="_blank" rel="noopener noreferrer">
+        <img
+          src="InBug-blue.png"
+          alt="LinkedIn"
+          width="23"
+          height="20"
+        />
+      </a>
+    )
+  }
+
   return (
     <div
       className="fullpage"
@@ -27,14 +40,14 @@ const AboutView = () => {
             {t.about_us_text}<br />
             {t.about_us_text_2}
           </p>
-          <h1 style={{ marginTop: "20px" }}>{t.contact_info}</h1>
+          <h1 style={{ marginTop: "30px" }}>{t.contact_info}</h1>
           <div style={{ marginTop: "20px" }} >
-            <p style={{ marginBottom: "4px" }}>Olli Hilke - <a href="mailto:h.illo@hotmail.com">h.illo@hotmail.com</a></p>
-            <p style={{ marginBottom: "4px" }}>Tomi Leminen - <a href="mailto:tomppa600@gmail.com">tomppa600@gmail.com</a></p>
-            <p style={{ marginBottom: "4px" }}>Elmeri Saurus - <a href="mailto:elmerisaurus25@gmail.com">elmerisaurus25@gmail.com</a></p>
-            <p style={{ marginBottom: "4px" }}>Annakaisa Turunen - <a href="mailto:turunenannakaisa@gmail.com">turunenannakaisa@gmail.com</a></p>
-            <p style={{ marginBottom: "4px" }}>Annukka Mäkinen - <a href="mailto:annuma@uef.fi">annuma@uef.fi</a></p>
-            <p style={{ marginBottom: "4px" }}>Paulus Ollikainen - <a href="mailto:paulus.ollikainen@gmail.com">paulus.ollikainen@gmail.com</a></p>
+            <div className='about-item'><p>Olli Hilke {linkedInLink("ollihi")}</p>{emailLink("h.illo@hotmail.com")} </div>
+            <div className='about-item'><p>Tomi Leminen  {linkedInLink("tomi-leminen-8244a0263")}</p>{emailLink("tomppa600@gmail.com")}</div>
+            <div className='about-item'><p>Elmeri Saurus {linkedInLink("elmeri-saurus-458635214")}</p>{emailLink("elmerisaurus25@gmail.com")}</div>
+            <div className='about-item'><p>Annakaisa Turunen {linkedInLink("annakaisa-turunen-024a64348")}</p>{emailLink("turunenannakaisa@gmail.com")}</div>
+            <div className='about-item'><p>Annukka Mäkinen {linkedInLink("annukka-mäkinen-5344422b1")}</p>{emailLink("annuma@uef.fi")}</div>
+            <div className='about-item'><p>Paulus Ollikainen {linkedInLink("paulus-ollikainen-5a0b12351")}</p>{emailLink("paulus.ollikainen@gmail.com")}</div>
           </div>
         </div>
       </div>
@@ -44,6 +57,10 @@ const AboutView = () => {
       <Footer />
     </div>
   )
+
+  function emailLink(osoite) {
+    return <a href={`mailto:${osoite}`}>{osoite}</a>
+  }
 }
 
 export default AboutView
