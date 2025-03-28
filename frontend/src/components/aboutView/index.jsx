@@ -29,12 +29,12 @@ const AboutView = () => {
           </p>
           <h1 style={{ marginTop: "20px" }}>{t.contact_info}</h1>
           <div style={{ marginTop: "20px" }} >
-            <p style={{ marginBottom: "4px" }}>Olli Hilke - h.illo@hotmail.com</p>
-            <p style={{ marginBottom: "4px" }}>Tomi Leminen - tomppa600@gmail.com</p>
-            <p style={{ marginBottom: "4px" }}>Elmeri Saurus - elmerisaurus25@gmail.com</p>
-            <p style={{ marginBottom: "4px" }}>Annakaisa Turunen - turunenannakaisa@gmail.com</p>
-            <p style={{ marginBottom: "4px" }}>Annukka Mäkinen - annuma@uef.fi</p>
-            <p style={{ marginBottom: "4px" }}>Paulus Ollikainen - paulus.ollikainen@gmail.com</p>
+            <p style={{ marginBottom: "4px" }}>Olli Hilke - <a href="mailto:h.illo@hotmail.com">h.illo@hotmail.com</a></p>
+            <p style={{ marginBottom: "4px" }}>Tomi Leminen - <a href="mailto:tomppa600@gmail.com">tomppa600@gmail.com</a></p>
+            <p style={{ marginBottom: "4px" }}>Elmeri Saurus - <a href="mailto:elmerisaurus25@gmail.com">elmerisaurus25@gmail.com</a></p>
+            <p style={{ marginBottom: "4px" }}>Annakaisa Turunen - <a href="mailto:turunenannakaisa@gmail.com">turunenannakaisa@gmail.com</a></p>
+            <p style={{ marginBottom: "4px" }}>Annukka Mäkinen - <a href="mailto:annuma@uef.fi">annuma@uef.fi</a></p>
+            <p style={{ marginBottom: "4px" }}>Paulus Ollikainen - <a href="mailto:paulus.ollikainen@gmail.com">paulus.ollikainen@gmail.com</a></p>
           </div>
         </div>
       </div>
