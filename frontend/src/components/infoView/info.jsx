@@ -114,7 +114,7 @@ const Info = () => {
         <p>{t.partnerViewVariation}</p>
         <br />
         <h4>{t.loggedInMapView}</h4>
-        <h3>{t.leftEdge}</h3>
+        <h3>{t.leftSide}</h3>
         <ul>
           <li>{t.createEvents}</li>
           <li>{t.registeredEvents}</li>
@@ -122,7 +122,7 @@ const Info = () => {
           <li>{t.editProfile}</li>
         </ul>
 
-        <h3>{t.rightEdge}</h3>
+        <h3>{t.rightSide}</h3>
         <ul>
           <li>{t.searchLocation}</li>
           <li>
@@ -135,81 +135,75 @@ const Info = () => {
             {t.updateMapEvents}{" "}
             <p>
               <em>
-                Hakee kartalla näkyvän alueen tapahtumat, kuitenkin vähintään
-                10km etäisyydeltä
+                {t.fetchVisibleAreaEvents}
               </em>
             </p>
           </li>
         </ul>
 
-        <h3>Alareuna:</h3>
+        <h3>{t.bottomMenu}</h3>
         <ul>
           <li id="info_filter">
-            Suodata tapahtumia lajin mukaan.
+            {t.filterBySport}
             <p>
               <em>
-                Valitse näytettävät kategoriat painamalla niitä. Kaikki
-                kategoriat ovat nähtävillä, mikäli yhtään valintaa ei ole tehty
+                {t.selectCategories}
               </em>
             </p>
           </li>
           <li>
-            Suodata tapahtumia ajankohdan mukaan.
+            {t.filterByDate}
             <p>
               <em>
-                • Voit valita painikkeista ehdotettuja hakuja kuten 7 d. Tällöin
-                kartalla näkyvät seuraavan seitsemän päivän tapahtumat
+                {t.selectSearches}
               </em>
             </p>
             <p>
               <em>
-                • Voit kalenterin kuvaa painamalla rajata haun tietylle
-                ajanjaksolle seuraavasti
+                {t.narrowSearch}
               </em>
               <br />
               <em>
-                {"\t"}1. Valitse hakualueen alkupäivä
-                {"\n\t"}2. Valitse hakualueen loppupäivä
-                {"\n\t"}3. Paina "filtteröi"
+                {"\t"}{t.selectStartDate}
+                {"\n\t"}{t.selectEndDate}
+                {"\n\t"}{t.pressFilter}
               </em>
               <br />
               <em>
-                • Voit rajata myös tapahtuman kellonajan mukaan kellopainiketta
-                painamalla{"\n\t"}Muista myös tällöin painaa "filtteröi"
+                {t.narrowSearchClock}{"\n\t"}{t.rememberFilter}
               </em>
               <br />
               <em>
-                • Voit myös yhdistellä hakuasi esimerkiksi seuraavasti:{"\n"}
-                Etsi tapahtumat ajalta 25.6.2025-7.7.2025 jotka järjestetään
-                kello 10 ja 12 välillä
+                {t.combineSearch}{"\n"}
+                {t.searchEvents}
               </em>
             </p>
           </li>
         </ul>
 
-        <h2>Omien tapahtumien luonti</h2>
+        <h2>{t.creatingOwnEvents}</h2>
         <ol>
-          <li>Syötä tapahtuman nimi ja valitse laji.</li>
+          <li>{t.enterEventAndSport}</li>
           <li>
-            Valitse tapahtuman ajankohta (päivämäärä, aloitus- ja lopetusaika).
+            {t.selectEventDateTime}
           </li>
-          <li>Aseta tapahtuman sijainti kartalta.</li>
-          <li>Määritä osallistujamäärä (vähimmäismäärä ja maksimimäärä).</li>
-          <li>Kirjoita kuvaus tapahtumasta.</li>
-          <li>Paina "Luo tapahtuma" lisätäksesi tapahtuman kartalle.</li>
+          <li>{t.locationOnMap}</li>
+          <li>{t.setParticipants}</li>
+          <li>{t.writeDescription}</li>
+          <li>{t.pressToAddEvent}</li>
         </ol>
 
-        <h2>Omat tiedot</h2>
+        <h2>{t.ownInfo}</h2>
         <ul>
-          <li>Voit muokata omia tietojasi ja kartan asetuksia.</li>
-          <li>Voit poistaa käyttäjätilisi "Omat tiedot" -osiosta.</li>
+          <li>{t.editOwnInfo}</li>
+          <li>{t.deleteAccount}</li>
         </ul>
 
-        <h2>Yhteystiedot ja lisäasetukset</h2>
+        <h2>{t.contactInformation}</h2>
         <ul>
-          <li>Ota yhteyttä: liikaservice@gmail.com</li>
-          <li>Käyttöehdot löytyvät alapalkista.</li>
-          <li>Voit vaihtaa kielen vasemman alareunan valikosta.</li>
+          <li>{t.contactUsInfo}</li>
+          <li>{t.termsOfUseFooter}</li>
+          <li>{t.changeLanguage}</li>
         </ul>
         <br />
         {t.info_txt}

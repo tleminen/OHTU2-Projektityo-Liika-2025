@@ -65,7 +65,7 @@ button:focus-visible {
 }
 
 .header-back-btn:hover {
-  background-color: rgba(0, 151, 178, 1);
+  background-color: rgb(255, 255, 255);
   color: #ffffff;
   border: 2px solid #0097b2;
   transition: background-color 0.3s, box-shadow 0.3s;
@@ -527,7 +527,8 @@ ol {
   left: -50vw;
   width: 100vw;
   height: 100vh;
-  backdrop-filter: saturate(150%) brightness(82%) contrast(165%) hue-rotate(30deg);
+  backdrop-filter: saturate(150%) brightness(82%) contrast(165%)
+    hue-rotate(30deg);
   background: rgba(255, 244, 202, 0);
   pointer-events: none;
 }
