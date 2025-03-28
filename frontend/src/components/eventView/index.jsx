@@ -17,7 +17,7 @@ import {
   EventJoinSuccess,
   EventJoinFailure,
   EventLeaveSuccess
-  } from "../notification/notificationTemplates.js"
+} from "../notification/notificationTemplates.js"
 import NotificationContainer from "../notification/notificationContainer.jsx"
 
 
@@ -65,7 +65,7 @@ const EventView = () => {
         EventID: id,
         TimeID: Number(selectedTime.TimeID),
       })
-    
+
       console.log("join API response:", response) // TODO: Lisää notifikaatio?
       if (!response) {
         throw new Error(t.event_join_failure)
@@ -79,15 +79,15 @@ const EventView = () => {
             TimeID: Number(selectedTime.TimeID),
           })
         )
-      
-      // Päivitä frontendin Times-tila
-      setTimes((prevTimes) =>
-        prevTimes.map((time) =>
-          time.TimeID === selectedTime.TimeID
-            ? { ...time, JoinedCount: (Number(time.JoinedCount) || 0) + 1 }
-            : time
+
+        // Päivitä frontendin Times-tila
+        setTimes((prevTimes) =>
+          prevTimes.map((time) =>
+            time.TimeID === selectedTime.TimeID
+              ? { ...time, JoinedCount: (Number(time.JoinedCount) || 0) + 1 }
+              : time
+          )
         )
-      )
       } else {
         throw new Error(t.event_join_failure)
       }
@@ -108,14 +108,14 @@ const EventView = () => {
       })
       console.log(response) // TODO: Lisää notifikaatio?
       dispatch(addNotification(EventJoinSuccess(t.event_joined))),
-      // Päivitä frontendin Times-tila
-      setTimes((prevTimes) =>
-        prevTimes.map((onetime) =>
-          onetime.TimeID === time.TimeID
-            ? { ...onetime, JoinedCount: (Number(onetime.JoinedCount) || 0) + 1 }
-            : onetime
+        // Päivitä frontendin Times-tila
+        setTimes((prevTimes) =>
+          prevTimes.map((onetime) =>
+            onetime.TimeID === time.TimeID
+              ? { ...onetime, JoinedCount: (Number(onetime.JoinedCount) || 0) + 1 }
+              : onetime
+          )
         )
-      )
       dispatch(
         addEvent({
           UserID: null,
@@ -126,9 +126,9 @@ const EventView = () => {
     } catch (error) {
       console.error(t.event_join_failure + error)
       dispatch(addNotification(EventJoinFailure(t.event_join_failure)))
-    
+
+    }
   }
-}
 
   // Tapahtumasta eroamisen painikkeen handleri
   const handleLeave = async (selectedTime, userID, id) => {
@@ -369,7 +369,7 @@ const EventView = () => {
       }}
     >
       <Header />
-      <NotificationContainer/>
+      <NotificationContainer />
       <div className="event-view">
         <span className="spacer-line"></span>
         {showUsername({ user: event.Username, club: event.ClubName })}
