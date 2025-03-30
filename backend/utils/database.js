@@ -49,11 +49,16 @@ const connectDB = async () => {
 }
 
 const initializeDB = async (alustetaan) => {
-  await connectDB().then(() => {
-    if (alustetaan) {
-      sequelize.sync({ alter: true, force: true }).then(() => resetDB())
-    }
-  })
+  try {
+    await connectDB().then(() => {
+      if (alustetaan) {
+        sequelize.sync({ alter: true, force: true }).then(() => resetDB())
+      }
+    })
+  } catch (error) {
+    console.warn("Yhdistäminen päonnistui")
+    console.warn(error)
+  }
 }
 
 module.exports = { sequelize, connectDB, queryInterface, initializeDB }
