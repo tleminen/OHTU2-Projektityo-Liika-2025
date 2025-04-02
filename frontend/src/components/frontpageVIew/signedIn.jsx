@@ -1,22 +1,25 @@
-import { useSelector } from "react-redux"
-import translations from "../../assets/translation"
+import { useSelector } from "react-redux";
+import translations from "../../assets/translation";
+import { useState } from 'react';
 
 const SignedIn = () => {
-  const language = useSelector((state) => state.language.language)
-  const t = translations[language]
+  const language = useSelector((state) => state.language.language);
+  const t = translations[language];
+  const [disabled, setDisabled] = useState(false);
 
   const handler = () => {
-    window.localStorage.clear()
-    window.location.reload()
-  }
+    setDisabled(true)
+    window.localStorage.clear();
+    window.location.reload();
+  };
 
   return (
     <div>
-      <button className="registerandlogin-btn" onClick={() => handler()}>
+      <button className="register-frontpage-btn" onClick={() => handler()} disabled={disabled}>
         {t.logOut}
       </button>
     </div>
-  )
-}
+  );
+};
 
-export default SignedIn
+export default SignedIn;

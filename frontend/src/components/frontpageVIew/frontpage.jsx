@@ -6,6 +6,7 @@ import { useSelector } from "react-redux"
 import SignedOut from "./singedOut"
 import SignedIn from "./signedIn"
 import translations from "../../assets/translation"
+import NotificationContainer from "../notification/notificationContainer"
 const Frontpage = () => {
   const navigate = useNavigate()
   const navigateTo = (path) => {
@@ -27,15 +28,19 @@ const Frontpage = () => {
     <div
       className="fullpage"
       style={{
-        backgroundImage: "url('/backgroundpicture.jpg')",
+        backgroundImage: "url('/alternativebackgroundpicture.png')",
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
       }}
     >
-      <Header />
+      <Header backButton={true} />
+      <NotificationContainer/>
       <div className="frontpage">
         <div className="map-container">
+          <div className="text-background2">
+            <h5 className="welcome-text">{t.welcomeText1}</h5>
+          </div>
           <div className="image-wrapper">
             <span
               href="/map"
@@ -52,6 +57,17 @@ const Frontpage = () => {
             />
           </div>
           <div className="button-container">{singedOrNot(user)}</div>
+          <div className="text-background">
+            <h5 className="frontpage-descriptive-text">
+              <style className={"text-h6"}>Liika.eu</style> {t.welcomeText}
+            </h5>
+          </div>
+          <div className="text-background3">
+            {" "}
+            <div className="frontpage-smaller-descriptive-text">
+              {t.welcomeText2}
+            </div>
+          </div>
         </div>
       </div>
       <Footer />

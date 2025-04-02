@@ -1,6 +1,9 @@
+const { Users } = require("../models")
+const jwt = require("jsonwebtoken")
+
 // Tuntemattoman api-endpointin käsittely
 const unknownEndpoint = (request, response) => {
-  response.status(404).send({ error: "unknown endpoint" })
+  response.status(404).send({ error: "unknown endpoint, try something else" })
 }
 
 // Käyttäjän tunnisteen irroittaja
@@ -18,11 +21,25 @@ const tokenExtractor = (request, response, next) => {
 
 // Käyttäjän tunnistaminen tokenista
 const userExtractor = async (request, response, next) => {
-  const decodedToken = jwt.verify(request.token, process.env.SECRET)
-  if (!decodedToken.id) {
-    return response.status(401).json({ error: "token invalid" })
+  if (request.token) {
+    try {
+      const decodedToken = jwt.verify(request.token, process.env.JWT_SECRET)
+      if (!decodedToken.id) {
+        return response.status(401).json({ error: "token invalid" })
+      }
+      request.user = await Users.findOne({
+        // Etsitään käyttäjä
+        where: {
+          UserID: decodedToken.id,
+        },
+        attributes: ["UserID"],
+      })
+    } catch (error) {
+      console.log(error)
+    }
+  } else {
+    request.user = null
   }
-  request.user = await User.findByPk(decodedToken.id)
   next()
 }
 

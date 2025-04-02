@@ -1,9 +1,10 @@
-import { Link } from "react-router-dom"
 import Header from "../header"
 import EventList from "../../utils/eventList"
 import Footer from "../footer"
+import { Link } from "react-router-dom"
 import { useSelector } from "react-redux"
 import translations from "../../assets/translation"
+import NotificationContainer from "../notification/notificationContainer"
 
 const CreatedEvents = () => {
   const language = useSelector((state) => state.language.language)
@@ -20,8 +21,13 @@ const CreatedEvents = () => {
       }}
     >
       <Header />
+      <NotificationContainer/>
       <EventList listType="created" />
-      <Link to={"/map"} className="back-btn" style={{ alignSelf: "center" }}>
+      <Link
+        to={"/map"}
+        className="back-btn"
+        style={{ margin: "auto", marginBottom: "30px", marginTop: "10px" }}
+      >
         <span>{t.back}</span>
       </Link>
       <Footer />

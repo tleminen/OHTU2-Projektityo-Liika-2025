@@ -20,11 +20,16 @@ const Footer = () => {
         <div className="footer-text">
           <Link to={`/termsOfService`}>{t.terms_of_service}</Link>
         </div>
+        <div className='footer-text'><Link to={'/privacy'}>{t.privacy}</Link></div>
         <div>
           <button className="info-btn" onClick={() => navigateTo("info")}>
             i
           </button>
         </div>
+        <p style={{ fontWeight: "lighter" }}>Liika v. 1.2.31</p>
+        <p style={{ fontWeight: "lighter" }}>
+          <Link to={`/us`}>{t.contactUs}</Link>
+        </p>
       </div>
     </footer>
   )

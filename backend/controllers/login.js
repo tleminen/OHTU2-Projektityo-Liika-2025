@@ -1,9 +1,10 @@
 const jwt = require("jsonwebtoken")
 const bcrypt = require("bcryptjs")
-const crypto = require("crypto")
 const { Router } = require("express")
 const User = require("../models/users")
 const { sendEmail } = require("../services/email") // Tuo sendEmail-funktio
+const { getUserClubs } = require("../services/getUserClubs")
+const { Op } = require("sequelize")
 
 const loginRouter = Router()
 
@@ -15,14 +16,11 @@ loginRouter.post("/", async (req, res) => {
   try {
     const user = await User.findOne({
       where: {
-        Username: username,
+        [Op.or]: [{ Username: username }, { Email: username }],
       },
     })
-    console.log("Tietokannasta user: " + user)
-    console.log("salasana: " + password)
     const passwordCorrect =
       user === null ? false : await bcrypt.compare(password, user.Password)
-    console.log("Salasana on true/false = " + passwordCorrect)
     if (!(user && passwordCorrect)) {
       return res.status(401).json({
         error: "invalid username or password",
@@ -34,13 +32,31 @@ loginRouter.post("/", async (req, res) => {
       id: user.UserID,
     }
 
-    console.log("JSON: " + JSON.stringify(userForToken))
-
-    console.log(user)
-
     const token = jwt.sign(userForToken, process.env.JWT_SECRET, {
       expiresIn: "60d",
     })
+
+    const clubs = await getUserClubs(user.UserID)
+    console.log(clubs)
+    console.log("Yhteistyökumppanit")
+    let mapPreferences
+    if (user.MapPreferences) {
+      const olio = JSON.parse(user.MapPreferences)
+      mapPreferences = {
+        a: olio.a,
+        b: olio.b,
+        brightness: olio.br,
+        contrast: olio.co,
+        g: olio.g,
+        hue: olio.hu,
+        invert: olio.in,
+        r: olio.r,
+        saturate: olio.sa,
+        sepia: olio.se,
+      }
+    } else {
+      mapPreferences = null
+    }
 
     res.status(200).send({
       token,
@@ -48,7 +64,11 @@ loginRouter.post("/", async (req, res) => {
       username: user.Username,
       location: user.Location.coordinates,
       email: user.Email,
-      language: "FI", // Kovakoodattu, laita kyselyyn populate with language jotenkin
+      language: user.LanguageID,
+      mapZoom: user.MapZoom,
+      mapPreferences: mapPreferences,
+      role: user.Role,
+      clubs: clubs,
     })
   } catch (error) {
     console.log(error)

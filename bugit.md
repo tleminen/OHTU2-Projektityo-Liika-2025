@@ -1,32 +1,37 @@
 Bugit
 
-Kartta:
-Leveys ei toimi kunnolla
-Tarpeettomia tietokantakyselyitä categories ja joined
+TODO: Jos ei tarvittavia tietoja lataamiseen (redux) niin navigate("/") ja localstorage.clear()
 
-Tapahtumien luonti:
+MapView:
+
 -Kirjautumaton:
--css-poikkeamia
+
+- css-poikkeamia
+- Notifikaatio kirjautumattoman tapahtumaluonnille jos jo rekisteröity! (error)
 
 Yksittäisen tapahtuman näkymä:
 
+- Poista menneiden tapahtumien haku!
 - // TODO: Jos mennään suoraan linkillä tapahtumaan niin userEvents ei ole haettu vielä reduxiin!
-- "Liittyneitä" alaotsikon numero ei päivity heti liityttyessä/ peruessa. Bugi ei mitenkään vakava
+
+Oman tapahtuman muokkaus:
+
+- Vanhat tapahtumat listana jossa osallistujamäärä, ei voi enää perua tapahtumaa
 
 Login:
 
-Muita huomioita:
-Laita toimimaan kaikki tokenilla
-
 CreateEvent:
-// TODO: kirjautumattoman näkymässä padding yms välit kuntoon
+Tapahtuman kesto pitäisi olla yli 0min?
+Validate tehtävä. Nyt voi luoda tapahtumia miten sattuu
 
-Azure:
-Tomille- Vaihda sprintistä 4 v2 -> v1, sprintistä 5 v3 -> v2 jne..
+EventView: 
+Kun rämppää osallistu/poistu näppäintä jää näkymään, että olisi tapahtumassa vaikka sieltä on poistunut. 
+Notifikaatiot eivät lataudu kunnolla, koodi valmis muuten Chatti(enkä mä) ymmärrä mistä ongelma kiikastaa. 
 
+Backend:
 
 Liika ei toimi FireFoxissa
-Chatin vastaus: 
+Chatin vastaus:
 "Näyttää siltä, että Frontpage-komponentissa on virhe ja että Leaflet-kirjaston resurssit eivät lataudu oikein.
 🔍 Mitä virheilmoitukset kertovat?
 
@@ -38,4 +43,8 @@ Chatin vastaus:
         Leafletin ja sen marker cluster -lisäosan tiedostot eivät lataudu.
         Tämä voi johtua verkko-ongelmista, palvelimen estosta, tai CDN-ongelmista."
 
-Kysymyksiä:
+Kysymyksiä ja muita huomioita:
+Järjestäjän nimi, mihin kaikkialle näkyviin?
+
+Yhteistyökumppanien tapahtumat:
+Nyt muokkausoikeus vain tapahtuman luoneella. Varmaan jää niin? Hieman monimutkainen toteuttaa muuten.

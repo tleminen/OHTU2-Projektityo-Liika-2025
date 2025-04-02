@@ -1,23 +1,40 @@
 .create-event {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  gap: 8px;
   align-items: center;
+  gap: 8px;
   margin: auto;
-  width: 100%;
+  width: fit-content;
+  margin-top: 2%;
+  margin-bottom: 2%;
+  background-color: rgba(
+    255,
+    255,
+    255,
+    0.421
+  ); /* Lisätty läpinäkyvä taustaväri */
+  padding: 20px; /* Lisätty sisäistä tilaa */
+  border-radius: 10px; /* Lisätty pyöristetyt reunat */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Lisätty varjo */
 }
 
 .create-event-form {
   display: flex;
-  gap: 8px;
-  margin: auto;
-  text-align: center;
+  flex-direction: column;
+  align-self: center;
+  align-items: center;
   justify-content: center;
+  text-align: center;
+
   margin-top: 20px;
   margin-bottom: 20px;
-  width: 100%;
-  flex: 1;
+}
+
+.form-item {
+  justify-self: center;
+  justify-content: center;
+  justify-items: center;
+  min-width: 10%;
 }
 
 .custom-date-display {
@@ -38,6 +55,7 @@
   min-height: 40px;
   white-space: pre-wrap; /* Teksti menee riville */
   overflow-y: auto; /* Lisää scrollauksen, jos liian pitkä */
+  z-index: 3000;
 }
 
 .date-input-field {
@@ -90,4 +108,8 @@
   text-align: center;
   outline: none;
   transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.error-forms {
+  color: red;
 }

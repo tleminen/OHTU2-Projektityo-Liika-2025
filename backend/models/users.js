@@ -1,6 +1,7 @@
 const { DataTypes } = require("sequelize")
 const { sequelize } = require("../utils/database")
 const Languages = require("./languages")
+const Clubs = require("./club")
 
 const Users = sequelize.define("Users", {
   UserID: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
@@ -13,6 +14,14 @@ const Users = sequelize.define("Users", {
     type: DataTypes.STRING(3),
     allowNull: true, // Voiko käyttäjällä olla NULL kieli?
     references: { model: Languages, key: "LanguageID" },
+  },
+  MapZoom: {
+    type: DataTypes.INTEGER,
+    allowNull: true, // Saa olla null
+  },
+  MapPreferences: {
+    type: DataTypes.STRING(160),
+    allowNull: true, // Saa olla null
   },
 })
 

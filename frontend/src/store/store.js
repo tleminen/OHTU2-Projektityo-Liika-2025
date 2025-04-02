@@ -16,5 +16,7 @@ export const store = configureStore({
     notifications: notificationReducer,
   },
 })
+//Notifikaatioiden testiin (poista kun löydät)
+window.store = store
 
 export default store

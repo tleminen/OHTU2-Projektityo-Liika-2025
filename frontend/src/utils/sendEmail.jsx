@@ -1,10 +1,12 @@
-import { useDispatch, useSelector } from "react-redux"
+/* eslint-disable no-unused-vars */
+import { useSelector } from "react-redux"
 import { useEffect, useRef, useState } from "react"
 import translations from "../assets/translation.js"
 import "../components/registerView/register.css"
 import eventService from "../services/eventService.js"
 
-const SendEmail = ({ setIsOtpVerifiedFromParent, email }) => {
+// eslint-disable-next-line react/prop-types
+const SendEmail = ({ setIsOtpVerifiedFromParent, email, setDisableButton }) => {
   const language = useSelector((state) => state.language.language)
   const t = translations[language]
   const [errors, setErrors] = useState({})
@@ -33,9 +35,7 @@ const SendEmail = ({ setIsOtpVerifiedFromParent, email }) => {
   const sendOtp = async () => {
     setLoader(true)
     try {
-      console.log("email: " + email)
       const response = await eventService.createEventEmailSend(email)
-      console.log(response.data)
       alert(t.email_sent)
 
       // Jos OTP lähetettiin onnistuneesti, päivitä tila
@@ -55,11 +55,11 @@ const SendEmail = ({ setIsOtpVerifiedFromParent, email }) => {
     try {
       // Lähetä OTP backendille vahvistusta varten
       const response = await eventService.createEventVerifyOtp({ email, otp }) //TODO: backendiin otp vahvistus
-      console.log(response.data)
       alert(t.email_confirmation)
       // Jos OTP on oikein, päivitä tila
       setIsOtpVerified(true)
       setIsOtpVerifiedFromParent(true)
+      setDisableButton(false)
     } catch (error) {
       // Käsittele virhe (esim. näytä virheilmoitus)
       console.error("Virhe OTP:n vahvistuksessa:", error)
@@ -105,7 +105,7 @@ const SendEmail = ({ setIsOtpVerifiedFromParent, email }) => {
               {[...Array(6)].map((_, index) => (
                 <input
                   key={index}
-                  type="text"
+                  type="number"
                   maxLength="1"
                   className={`otp-input ${errors.otp ? "error" : ""}`}
                   value={otp[index] || ""}

@@ -6,12 +6,14 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
-    "dev": "nodemon index.js"
+    "dev": "cross-env NODE_ENV=dev nodemon index.js",
+    "build": "cp -r ../frontend/dist public/"
   },
   "author": "Liika",
   "license": "ISC",
   "devDependencies": {
     "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
     "nodemon": "^3.1.9"
   },
   "dependencies": {
@@ -22,6 +24,7 @@
     "morgan": "^1.10.0",
     "nodemailer": "^6.10.0",
     "pg": "^8.13.1",
-    "sequelize": "^6.37.5"
+    "sequelize": "^6.37.5",
+    "uuid": "^11.1.0"
   }
 }

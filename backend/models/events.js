@@ -11,6 +11,7 @@ const Events = sequelize.define("Events", {
   ParticipantMax: { type: DataTypes.INTEGER, allowNull: true },
   Title: { type: DataTypes.STRING(25), allowNull: false },
   ParticipantMin: { type: DataTypes.INTEGER, allowNull: true },
+  ClubID: { type: DataTypes.INTEGER, allowNull: true },
 })
 
 // Yhteys käyttäjiin ja kategorioihin

@@ -3,15 +3,43 @@ const bcrypt = require("bcryptjs")
 const { Router } = require("express")
 const Users = require("../models/users")
 const { Sequelize, where, Op } = require("sequelize")
+const { Events, Times, Joins, sequelize } = require("../models")
 const { sendEmail } = require("../services/email") // Tuo sendEmail-funktio
+const { userExtractor } = require("../utils/middleware")
 
 const registerRouter = Router()
+
+const VERIFICATION_CODES = new Map()
 
 /**
  * Uuden käyttäjän rekisteröinti
  */
-registerRouter.post("/", async (req, res) => {
-  const { username, password, role, email, location, language } = req.body
+registerRouter.post("/", async (request, response) => {
+  const { username, password, role, email, location, language, otp } =
+    request.body
+
+  // Tarkistetaan ensin one time password
+  try {
+    const storedCode = VERIFICATION_CODES.get(email) //Hae tallennettu koodi
+
+    if (!storedCode) {
+      return response
+        .status(404)
+        .json({ message: "Vahvistuskoodia ei löytynyt." })
+    }
+
+    console.log(otp)
+    console.log(storedCode)
+    if (storedCode === otp) {
+      VERIFICATION_CODES.delete(email) //Poistetaan koodi, kun se on vahvistettu
+    } else {
+      return response
+        .status(401)
+        .json({ message: "Vahvistuskoodi on virheellinen." })
+    }
+  } catch (error) {
+    return response.status(500).json({ message: "otp check failed" })
+  }
 
   const existingUser = await Users.findOne({
     // Tarkastetaan ensin löytyykö jo sama käyttäjänimi tai sähköpostiosoite
@@ -22,17 +50,69 @@ registerRouter.post("/", async (req, res) => {
 
   if (existingUser) {
     if (existingUser.Username === username) {
-      return res.status(400).json({ message: "Käyttäjänimi on jo käytössä" })
+      return response
+        .status(400)
+        .json({ message: "Käyttäjänimi on jo käytössä" })
     }
     if (existingUser.Email === email) {
-      return res.status(400).json({ message: "Sähköposti on jo käytössä" })
+      if (existingUser.Role !== 2) {
+        return response
+          .status(400)
+          .json({ message: "Sähköposti on jo käytössä" })
+      }
+      console.log("päivitetään käyttäjälle tiedot...")
+      try {
+        const saltRounds = 10
+        const passwordhash = await bcrypt.hash(password, saltRounds)
+        const user = await Users.update(
+          {
+            Email: email,
+            Username: username,
+            Role: role,
+            Location: Sequelize.fn(
+              "ST_SetSRID",
+              Sequelize.fn("ST_MakePoint", location.lng, location.lat),
+              4326
+            ),
+            LanguageID: language,
+            Password: passwordhash,
+            MapPreferences: null,
+            MapZoom: 14,
+          },
+          { where: { Email: email } }
+        )
+        console.log(user)
+        if (!user) {
+          response.status(500).json({ error: "Internal server error" })
+        }
+        const userForToken = {
+          // Luodaan tokeni käyttäjänimen ja id:n mukaan
+          username: savedUser.Username,
+          id: savedUser.UserID,
+        }
+
+        console.log(JSON.stringify(userForToken))
+        const token = jwt.sign(userForToken, process.env.JWT_SECRET, {
+          // Luodaan tokeni uudelle käyttäjälle heti
+          expiresIn: "60d",
+        })
+        response.status(200).send({
+          token,
+          username: savedUser.Username,
+          userID: savedUser.UserID,
+          email: savedUser.Email,
+          location: [location.lng, location.lat],
+        })
+      } catch (error) {
+        console.error("Problems with updating email" + error)
+        response.status(500).json({ error: "Internal server error" })
+      }
     }
   }
 
   const saltRounds = 10
   const passwordhash = await bcrypt.hash(password, saltRounds)
 
-  console.log("nyt lokaatioksi saatu; " + location)
   try {
     const savedUser = await Users.create({
       // Uuden käyttäjän rekisteröinti
@@ -46,6 +126,8 @@ registerRouter.post("/", async (req, res) => {
         4326
       ),
       LanguageID: language,
+      MapPreferences: null,
+      MapZoom: 14,
     })
 
     const userForToken = {
@@ -59,7 +141,7 @@ registerRouter.post("/", async (req, res) => {
       // Luodaan tokeni uudelle käyttäjälle heti
       expiresIn: "60d",
     })
-    res.status(200).send({
+    response.status(200).send({
       token,
       username: savedUser.Username,
       userID: savedUser.UserID,
@@ -68,7 +150,7 @@ registerRouter.post("/", async (req, res) => {
     })
   } catch (error) {
     console.log("PostgreSQL Error:", error)
-    res.status(400).send({ error: `Error occured during user creation` })
+    response.status(400).json({ error: `Error occured during user creation` })
   }
 }) // Rekisteröinti päättyy
 
@@ -81,25 +163,32 @@ const generateVerificationCode = () => {
   return code
 }
 
-const verificationCodes = new Map() //----VOIDAAN VAIHTAA TIETOKANTAAN JOS HALUTAAN----
-
 //Vahvistuskoodin lähetys sähköpostiin
 registerRouter.post("/sendOtp", async (req, res) => {
-  const { email } = req.body
+  const { email, language } = req.body
 
   try {
     const verificationCode = generateVerificationCode()
 
-    const success = await sendEmail(
-      email,
-      "Sähköpostin vahvistus",
-      `Vahvistuskoodisi on: ${verificationCode}`
-    )
+    let success = null
+    if (language === "FI") {
+      success = await sendEmail(
+        email,
+        "Sähköpostin vahvistus",
+        `Vahvistuskoodisi on: ${verificationCode}`
+      )
+    } else {
+      success = await sendEmail(
+        email,
+        "Email validation",
+        `OTP code: ${verificationCode}`
+      )
+    }
 
     if (success) {
       res.status(200).json({ message: "Sähköposti lähetetty!" })
 
-      verificationCodes.set(email, verificationCode) // Tallennetaan koodi karttaan sähköpostiosoitteen perusteella
+      VERIFICATION_CODES.set(email, verificationCode) // Tallennetaan koodi karttaan sähköpostiosoitteen perusteella
     } else {
       res.status(500).json({ message: "Sähköpostin lähetys epäonnistui." })
     }
@@ -110,38 +199,47 @@ registerRouter.post("/sendOtp", async (req, res) => {
 })
 //Vahvistuskoodin lähetys sähköpostiin päättyy
 
-//Vahvistuskoodin vertailu
+registerRouter.post("/unregister", userExtractor, async (req, res) => {
+  const { UserID } = req.body
+  if (UserID === req.user.dataValues.UserID) {
+    const transaction = await sequelize.transaction()
+    try {
+      // Poista liittymiset
+      await Joins.destroy({ where: { UserID: UserID }, transaction })
 
-registerRouter.post("/verifyOtp", async (req, res) => {
-  //const testCode = "123456"
+      // Hae käyttäjän tapahtumat
+      const userEvents = await Events.findAll({
+        where: { UserID: UserID },
+        transaction,
+      })
 
-  const { email, otp } = req.body
-  console.log("VerifyOtp rq body : " + req.body)
+      // Poista tapahtumien ajat ja liittymiset
+      for (const event of userEvents) {
+        await Joins.destroy({ where: { EventID: event.EventID }, transaction })
+        await Times.destroy({ where: { EventID: event.EventID }, transaction })
+      }
 
-  //verificationCodes.set(email, testCode);
+      // Poista tapahtumat
+      await Events.destroy({ where: { UserID: UserID }, transaction })
 
-  try {
-    const storedCode = verificationCodes.get(email) //Hae tallennettu koodi
+      // Poista käyttäjä
+      await Users.destroy({ where: { UserID: UserID }, transaction })
 
-    console.log("storeCode: " + storedCode)
-
-    if (!storedCode) {
-      return res.status(400).json({ message: "Vahvistuskoodi ei löytynyt." })
+      // Hyväksy transaktio
+      await transaction.commit()
+      console.log("✅ Käyttäjä ja siihen liittyvät tiedot poistettu.")
+      res
+        .status(200)
+        .json({ message: "User and affiliated data has been removed" })
+    } catch (error) {
+      // Perutaan transaktio, jos virhe tapahtuu
+      await transaction.rollback()
+      console.error("❌ Virhe käyttäjän poistossa:", error)
+      res.status(500).json({
+        error: "Error has occured while removing user from database...",
+      })
     }
-
-    if (storedCode === otp) {
-      verificationCodes.delete(email) //Poistetaan koodi, kun se on vahvistettu
-      res.status(200).json({ message: "Vahvistuskoodi oikein!" })
-    } else {
-      res.status(400).json({ message: "Vahvistuskoodi on virheellinen." })
-    }
-  } catch (error) {
-    console.error("Virhe:", error)
-    res.status(500).json({ message: "Vahvistus epäonnistui." })
   }
 })
-
-//Vahvistuskoodin vertailu päättyy
-//..
 
 module.exports = registerRouter

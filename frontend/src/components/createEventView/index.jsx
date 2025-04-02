@@ -2,13 +2,15 @@ import Footer from "../footer"
 import Header from "../header"
 import CreateEventForm from "./createEventForm"
 import "./createEvent.css"
-import { Link } from "react-router-dom"
 import { useSelector } from "react-redux"
 import translations from "../../assets/translation"
+import NotificationContainer from "../notification/notificationContainer"
 
-const CreateEventView = () => {
+// eslint-disable-next-line react/prop-types
+const CreateEventView = ({ club }) => {
   const language = useSelector((state) => state.language.language)
   const t = translations[language]
+
   return (
     <div
       className="fullpage"
@@ -20,15 +22,12 @@ const CreateEventView = () => {
       }}
     >
       <Header />
+      <NotificationContainer/>
       <div className="create-event">
-        <CreateEventForm />
-        <Link to={"/map"} className="back-btn">
-          <span>{t.back}</span>
-        </Link>
+        <h1>{t.createEvent}</h1>
+        <CreateEventForm club={club} />
       </div>
-      <footer>
-        <Footer />
-      </footer>
+      <Footer />
     </div>
   )
 }
