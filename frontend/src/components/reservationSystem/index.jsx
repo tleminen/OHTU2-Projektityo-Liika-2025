@@ -8,7 +8,7 @@ import { useState } from 'react'
 import { selectCategoryName } from '../../assets/icons'
 import LocationMap from '../locationMap'
 import reservationService from '../../services/reservationService'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 const CreateReservationSystem = () => {
     const language = useSelector((state) => state.language.language)
@@ -26,8 +26,14 @@ const CreateReservationSystem = () => {
     const [popUpText, setPopUpText] = useState("")
     const [rentalAvailable, setRentalAvailable] = useState(false)
     const [disable, setDisabled] = useState(false)
+    const [created, setCreated] = useState(false) // True kun varausjärjestelmä luotu
     const dispatch = useDispatch()
     const navigate = useNavigate()
+    const [reservationSystemID, setReservationSystemID] = useState(null)
+
+    const handleModifyReservationSystem = () => {
+
+    }
 
     const options = () => {
         try {
@@ -107,9 +113,11 @@ const CreateReservationSystem = () => {
                 userID,
             })
             console.log(response)
-            if (response === 201) {
+            if (response.status === 201) {
                 // uusi kenttävarausjärjestelmä luotu
-                navigate(`/map`)
+
+                setReservationSystemID(response.data.SystemID)
+                setCreated(true)
             }
         } catch (error) {
             console.error(error)
@@ -208,6 +216,12 @@ const CreateReservationSystem = () => {
                             <span>{"Luo kenttävarausjärjestelmä"}</span> {/*TODO: Kovakoodaukset*/}
                         </button>
                     </form>
+                    {created &&
+                        <Link
+                            to={`/partner/modify/${reservationSystemID}`}
+                            className={`forms-btn`}
+                        >Siirry lisäämään kenttiä</Link>
+                    }
                 </div>
             </div>
             <Footer />

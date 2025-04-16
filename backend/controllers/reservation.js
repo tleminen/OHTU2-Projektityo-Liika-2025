@@ -53,7 +53,7 @@ reservationRouter.post("/create", userExtractor, async (request, response) => {
                         CategoryID: categoryID
                     })
                     console.log(reservationSystem)
-                    response.status(201).send()
+                    response.status(201).json({ SystemID: reservationSystem.dataValues.SystemID })
                 }
             } catch (e) {
                 console.error(e)
