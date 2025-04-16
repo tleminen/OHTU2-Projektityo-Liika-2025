@@ -5,7 +5,6 @@ import {
   DayPilot,
 } from "@daypilot/daypilot-lite-react"
 import "./calendar.css"
-import { parseTimeAndDate } from "./helper"
 
 const styles = {
   wrap: {
@@ -17,6 +16,12 @@ const styles = {
   main: {
     flexGrow: "1",
   },
+  button: {
+    marginTop: "10px",
+    padding: "8px 12px",
+    cursor: "pointer",
+    color: "black",
+  },
 }
 
 const Calendar = () => {
@@ -24,25 +29,16 @@ const Calendar = () => {
   const [calendar, setCalendar] = useState(null)
   const [startDate, setStartDate] = useState(date)
   const [events, setEvents] = useState([])
+  const [selectedRange, setSelectedRange] = useState(null)
+
   const config = {
     viewType: "Week",
     durationBarVisible: false,
     timeRangeSelectedHandling: "Enabled",
-    onTimeRangeSelected: async (args) => {
-      const modal = await DayPilot.Modal.prompt(
-        "Create a new event:",
-        "Event 1"
-      )
-      calendar.clearSelection()
-      if (!modal.result) {
-        return
-      }
-      calendar.events.add({
-        start: args.start,
-        end: args.end,
-        id: DayPilot.guid(),
-        text: modal.result,
-      })
+    timeFormat: "Clock24Hours",
+
+    onTimeRangeSelected: (args) => {
+      setSelectedRange({ start: args.start, end: args.end })
     },
     onEventClick: async (args) => {
       await editEvent(args.e)
@@ -66,60 +62,17 @@ const Calendar = () => {
         },
       ],
     }),
-    onBeforeEventRender: (args) => {
-      args.data.areas = [
-        {
-          top: 3,
-          right: 3,
-          width: 20,
-          height: 20,
-          symbol: "icons/daypilot.svg#minichevron-down-2",
-          fontColor: "#fff",
-          toolTip: "Show context menu",
-          action: "ContextMenu",
-        },
-        {
-          top: 3,
-          right: 25,
-          width: 20,
-          height: 20,
-          symbol: "icons/daypilot.svg#x-circle",
-          fontColor: "#fff",
-          action: "None",
-          toolTip: "Delete event",
-          onClick: async (args) => {
-            calendar.events.remove(args.source)
-          },
-        },
-      ]
-
-      const participants = args.data.participants
-      if (participants > 0) {
-        // show one icon for each participant
-        for (let i = 0; i < participants; i++) {
-          args.data.areas.push({
-            bottom: 5,
-            right: 5 + i * 30,
-            width: 24,
-            height: 24,
-            action: "None",
-          })
-        }
+    eventRender: (args) => {
+      if (selectedRange && args.data.id === "selected-range") {
+        args.data.backColor = styles.selectedHighlight.backgroundColor
+        args.data.opacity = styles.selectedHighlight.opacity
       }
     },
   }
 
-  const editEvent = async (e) => {
-    const modal = await DayPilot.Modal.prompt("Update event text:", e.text())
-    if (!modal.result) {
-      return
-    }
-    e.data.text = modal.result
-    calendar.events.update(e)
-  }
-
   useEffect(() => {
-    const events = [
+    // Alkuperäiset tapahtumat
+    const initialEvents = [
       {
         id: 1,
         text: "Event 1",
@@ -144,8 +97,62 @@ const Calendar = () => {
         participants: 3,
       },
     ]
-    setEvents(events)
+    setEvents(initialEvents)
   }, [])
+
+  useEffect(() => {
+    // Päivitä korostusvalinta, kun selectedRange muuttuu
+    if (selectedRange && calendar) {
+      const startTime = selectedRange.start.toString("H:mm") // Käytä DayPilotin muotoilua 24 tunnin muodossa
+      const endTime = selectedRange.end.toString("H:mm") // Käytä DayPilotin muotoilua 24 tunnin muodossa
+      const highlightText = `${startTime} - ${endTime}`
+
+      const highlightEvent = {
+        id: "selected-range",
+        start: selectedRange.start,
+        end: selectedRange.end,
+        text: highlightText,
+        cssClass: "selected-highlight", // Voit myös käyttää CSS-luokkaa
+        moveDisabled: true,
+        resizeDisabled: true,
+        clickDisabled: true,
+      }
+      const existingHighlight = calendar.events.find("selected-range")
+      if (existingHighlight) {
+        calendar.events.update(highlightEvent)
+      } else {
+        calendar.events.add(highlightEvent)
+      }
+    } else if (calendar) {
+      calendar.events.remove("selected-range")
+    }
+  }, [selectedRange, calendar])
+
+  const handleVaraaClick = async () => {
+    if (selectedRange) {
+      const modal = await DayPilot.Modal.prompt("Create a new event:", "Event")
+      if (modal.result) {
+        calendar.events.add({
+          start: selectedRange.start,
+          end: selectedRange.end,
+          id: DayPilot.guid(),
+          text: modal.result,
+        })
+      }
+      setSelectedRange(null)
+    } else {
+      alert("Please select a time range first.")
+    }
+  }
+
+  const editEvent = async (e) => {
+    const modal = await DayPilot.Modal.prompt("Update event text:", e.text())
+    if (!modal.result) {
+      return
+    }
+    e.data.text = modal.result
+    calendar.events.update(e)
+  }
 
   return (
     <div style={styles.wrap}>
@@ -167,6 +174,12 @@ const Calendar = () => {
           startDate={startDate}
           controlRef={setCalendar}
         />
+        {selectedRange && (
+          <button style={styles.button} onClick={handleVaraaClick}>
+            Varaa
+          </button>
+        )}
+        {!selectedRange && <p>Valitse ensin aika kalenterista.</p>}
       </div>
     </div>
   )
