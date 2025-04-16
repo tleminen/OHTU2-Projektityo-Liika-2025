@@ -11,7 +11,6 @@ import DatePicker from "react-multi-date-picker"
 import SendEmail from "../../utils/sendEmail.jsx"
 import { selectCategoryName } from "../../assets/icons.js"
 import { addNotification } from "../../store/notificationSlice.js"
-import NotificationContainer from "../notification/notificationContainer.jsx"
 import {
   EventCreated,
   EventCreationFailure,
@@ -59,7 +58,6 @@ const CreateEventForm = ({ club }) => {
   const schemaUnSigned = createEventUnSignedValidation()
 
   const clubEventView = () => {
-    console.log(club)
     if (club && clubs[0]) {
       return (
         <div className="form-item">
