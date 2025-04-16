@@ -22,7 +22,7 @@ const CreateEventView = ({ club }) => {
       }}
     >
       <Header />
-      <NotificationContainer/>
+      <NotificationContainer />
       <div className="create-event">
         <h1>{t.createEvent}</h1>
         <CreateEventForm club={club} />
@@ -31,5 +31,7 @@ const CreateEventView = ({ club }) => {
     </div>
   )
 }
+
+
 
 export default CreateEventView
