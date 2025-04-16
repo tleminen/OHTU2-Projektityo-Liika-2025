@@ -206,6 +206,25 @@ button:focus-visible {
   transform: scale(0.95);
 }
 
+/*Linkkipainikkeen tyyli*/
+.link-btn {
+  border-radius: 10px;
+  background-color: #0097b2;
+  color: #ffffff;
+  text-align: center;
+  font-size: 1em;
+  border: 2px solid transparent;
+  font-family: inherit;
+  font-weight: 500;
+  text-transform: uppercase;
+  padding: 6px 10px;
+  width: 120px;
+  min-width: fit-content;
+  transition: all 0.2s;
+  cursor: pointer;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.5);
+}
+
 /*infopainikkeelle tyyli*/
 .info-btn {
   width: 50px;

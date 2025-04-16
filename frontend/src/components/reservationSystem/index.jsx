@@ -31,10 +31,6 @@ const CreateReservationSystem = () => {
     const navigate = useNavigate()
     const [reservationSystemID, setReservationSystemID] = useState(null)
 
-    const handleModifyReservationSystem = () => {
-
-    }
-
     const options = () => {
         try {
             return categories.map((cat) => ({

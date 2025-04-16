@@ -30,4 +30,17 @@ const getReservationSystem = async (storedToken, parameters) => {
     return response.data
 }
 
-export default { createReservationSystem, getReservationSystem }
+const getReservationSystems = async (storedToken, parameters) => {
+    setToken(storedToken)
+    const headers = {
+        headers: { Authorization: token }, // Asetetaan token headeriin
+    }
+    const response = await axios.post(
+        baseUrl + "/reservation/get_list",
+        parameters,
+        headers
+    )
+    return response.data
+}
+
+export default { createReservationSystem, getReservationSystem, getReservationSystems }

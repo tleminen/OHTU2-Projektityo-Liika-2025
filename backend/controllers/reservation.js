@@ -3,6 +3,7 @@ const ClubMembers = require("../models/clubMember")
 const ReservationSystems = require("../models/reservationSystems")
 const { Sequelize, where, Op } = require("sequelize")
 const { userExtractor } = require("../utils/middleware")
+const { getReservationSystemList } = require('../services/getReservationSystemList')
 
 const reservationRouter = Router()
 
@@ -64,6 +65,28 @@ reservationRouter.post("/create", userExtractor, async (request, response) => {
         console.error("Invalid token")
         response.status(401).json({ error: "Unauthorized" })
     }
-}) // Tietojen haku päättyy
+}) // Kenttävarausjärjestelmän luonti päättyy
+
+reservationRouter.post("/get_list", userExtractor, async (request, response) => {
+    const {
+        clubs,
+        userID
+    } = request.body
+
+    if (userID === request.user.dataValues.UserID) {
+        // Eli userExtractorin tokenista ekstraktoima userID
+        try {
+            const rsList = await getReservationSystemList(clubs)
+            response.status(200).json(rsList)
+        } catch (error) {
+            console.error("Problems with retreving joined evets for user: " + error)
+            response.status(500).json({ error: "Internal Server Error" })
+        }
+    } else {
+        console.error("Invalid token")
+        response.status(401).json({ error: "Unauthorized" })
+    }
+}) // Kenttävarausjärjestelmän luonti päättyy
+
 
 module.exports = reservationRouter

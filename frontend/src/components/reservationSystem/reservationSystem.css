@@ -1,0 +1,16 @@
+.system-item-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+    flex-direction: row;
+    background-color: rgba(186, 255, 250, 0.157);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    margin-bottom: 20px;
+    margin-top: 20px;
+    text-align: center;
+    gap: 8px;
+    backdrop-filter: blur(10px);
+}

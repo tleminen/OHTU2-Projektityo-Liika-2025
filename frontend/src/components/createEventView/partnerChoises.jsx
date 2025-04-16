@@ -6,11 +6,14 @@ const PartnerChoises = () => {
     return (
         <div className='partner-choises-view'>
 
-            <Link to={"/create_club_event"} className="link-btn">
+            <Link to={"/partner/create_club_event"} className="link-btn">
                 {"Luo yhteistyökumppanitapahtuma"}
             </Link>
-            <Link to={"/create_reservation_system"} className="link-btn">
+            <Link to={"/partner/create_reservation_system"} className="link-btn">
                 {"Luo kenttävarausjärjestelmä"}
+            </Link>
+            <Link to={"/partner/list_reservation_systems"} className="link-btn">
+                {"Muokkaa kenttävarausjärjestelmää"}
             </Link>
         </div>
     )

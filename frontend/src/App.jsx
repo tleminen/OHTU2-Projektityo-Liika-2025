@@ -21,6 +21,7 @@ import PrivacyStatementView from './components/privacyStatementView'
 import CreateReservationSystem from './components/reservationSystem'
 import PartnerChoisesView from './components/createEventView/partnerChoisesView'
 import ModifyReservationSystemView from './components/reservationSystem/modifyReservationSystem'
+import ListReservationSystems from './components/reservationSystem/listReservationSystems'
 
 const App = () => {
   return (
@@ -43,14 +44,15 @@ const App = () => {
       <Route path="/own_info/language" element={<ChangeLanguage />} />
       <Route path="/own_info/map" element={<ChangeMap />} />
       <Route
-        path="/create_club_event"
+        path="/partner/create_club_event"
         element={<CreateEventView club={true} />}
       />
       <Route
-        path="/create_reservation_system"
+        path="/partner/create_reservation_system"
         element={<CreateReservationSystem />}
       />
       <Route path="/partner/modify/:id" element={<ModifyReservationSystemView />} />
+      <Route path='/partner/list_reservation_systems' element={<ListReservationSystems />} />
       <Route path='/partner' element={<PartnerChoisesView />} />
       <Route path='/us' element={<AboutView />} />
       <Route path='/privacy' element={<PrivacyStatementView />} />
