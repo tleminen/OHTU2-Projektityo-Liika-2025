@@ -3,6 +3,7 @@ import translations from '../../assets/translation'
 import Header from '../header'
 import NotificationContainer from '../notification/notificationContainer'
 import Footer from '../footer'
+import WeekCalendar from '../../utils/weekCalendar'
 
 const CreateReservationSystem = () => {
     const language = useSelector((state) => state.language.language)
@@ -19,6 +20,7 @@ const CreateReservationSystem = () => {
             }}
         >
             <Header />
+            <WeekCalendar/>
             <NotificationContainer />
             <div className="create-event">
             </div>
