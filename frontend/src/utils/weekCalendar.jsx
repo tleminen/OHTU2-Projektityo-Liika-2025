@@ -152,8 +152,8 @@ const Calendar = () => {
       <div style={styles.left}>
         <DayPilotNavigator
           selectMode={"Week"}
-          showMonths={3}
-          skipMonths={3}
+          showMonths={1}
+          skipMonths={1}
           selectionDay={startDate}
           onTimeRangeSelected={(args) => {
             setStartDate(args.day)
