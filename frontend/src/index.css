@@ -527,8 +527,7 @@ ol {
   left: -50vw;
   width: 100vw;
   height: 100vh;
-  backdrop-filter: saturate(150%) brightness(82%) contrast(165%)
-    hue-rotate(30deg);
+  backdrop-filter: saturate(150%) brightness(82%) contrast(165%) hue-rotate(30deg);
   background: rgba(255, 244, 202, 0);
   pointer-events: none;
 }

@@ -18,6 +18,8 @@ import ChangeLanguage from "./components/accountView/changeInfo/changeLanguage"
 import ChangeMap from "./components/accountView/changeInfo/changeMap"
 import AboutView from './components/aboutView'
 import PrivacyStatementView from './components/privacyStatementView'
+import CreateReservationSystem from './components/reservationSystem'
+import PartnerChoisesView from './components/createEventView/partnerChoisesView'
 
 const App = () => {
   return (
@@ -43,6 +45,11 @@ const App = () => {
         path="/create_club_event"
         element={<CreateEventView club={true} />}
       />
+      <Route
+        path="/create_reservation_system"
+        element={<CreateReservationSystem />}
+      />
+      <Route path='/partner' element={<PartnerChoisesView />} />
       <Route path='/us' element={<AboutView />} />
       <Route path='/privacy' element={<PrivacyStatementView />} />
     </Routes>

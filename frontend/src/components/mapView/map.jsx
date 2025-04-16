@@ -323,7 +323,7 @@ const Map = ({ startingLocation }) => {
   }
 
   const onClickCreateClubEvent = () => {
-    navigate("/create_club_event")
+    navigate("/partner")
   }
 
   const onClickListJoinedEvents = () => {
