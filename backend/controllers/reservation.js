@@ -88,5 +88,39 @@ reservationRouter.post("/get_list", userExtractor, async (request, response) => 
     }
 }) // Kenttävarausjärjestelmän luonti päättyy
 
+reservationRouter.post("/get_single", userExtractor, async (request, response) => {
+    const {
+        SystemID,
+        userID
+    } = request.body
+
+    if (userID === request.user.dataValues.UserID) {
+        // Eli userExtractorin tokenista ekstraktoima userID
+        // Tarkastetaan vielä, että oli oikeus muokata
+        try {
+            const system = await ReservationSystems.findOne({
+                where: {
+                    SystemID: SystemID
+                }
+            })
+            const result = await ClubMembers.findOne({
+                where: {
+                    UserID: userID,
+                    ClubID: system.dataValues.ClubID,
+                },
+            })
+            if (!result) {
+                response.status(403).json({ error: "Not part of the club at request" })
+            }
+            response.status(200).json(system)
+        } catch (error) {
+            console.error("Problems with retreving joined evets for user: " + error)
+            response.status(500).json({ error: "Internal Server Error" })
+        }
+    } else {
+        console.error("Invalid token")
+        response.status(401).json({ error: "Unauthorized" })
+    }
+}) // Kenttävarausjärjestelmän luonti päättyy
 
 module.exports = reservationRouter

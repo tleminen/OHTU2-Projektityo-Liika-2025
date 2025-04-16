@@ -6,6 +6,7 @@ const setToken = (storedToken) => {
     token = `bearer ${storedToken}`
 }
 
+// Luo kenttävarausjärjestelmän
 const createReservationSystem = async (storedToken, parameters) => {
     setToken(storedToken)
     const headers = {
@@ -30,6 +31,7 @@ const getReservationSystem = async (storedToken, parameters) => {
     return response.data
 }
 
+// Hakee kenttävarausjärjestelmät, jotka linkittyvät käyttäjän clubeihin
 const getReservationSystems = async (storedToken, parameters) => {
     setToken(storedToken)
     const headers = {
@@ -43,4 +45,18 @@ const getReservationSystems = async (storedToken, parameters) => {
     return response.data
 }
 
-export default { createReservationSystem, getReservationSystem, getReservationSystems }
+// Kenttävarausjärjestelmän päivittäminen
+const modifyRS = async (storedToken, parameters) => {
+    setToken(storedToken)
+    const headers = {
+        headers: { Authorization: token }, // Asetetaan token headeriin
+    }
+    const response = await axios.post(
+        baseUrl + "/reservation/update_system",
+        parameters,
+        headers
+    )
+    return response.data
+}
+
+export default { createReservationSystem, getReservationSystem, getReservationSystems, modifyRS }

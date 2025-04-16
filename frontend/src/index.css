@@ -367,6 +367,7 @@ button:focus-visible {
   width: 100%;
   min-width: 400px;
   max-width: 500px;
+  max-width: 90%;
   padding: 10px;
   font-size: 1em;
   font-family: inherit;

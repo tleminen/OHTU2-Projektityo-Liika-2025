@@ -1,28 +1,54 @@
 import { Link, useParams } from "react-router-dom"
 import Header from "../header"
 import Footer from "../footer"
+import Select from "react-select"
 import { useSelector } from "react-redux"
 import translations from "../../assets/translation"
 import { useEffect, useState } from 'react'
 import reservationService from '../../services/reservationService'
 import NotificationContainer from '../notification/notificationContainer'
+import { selectCategoryName } from '../../assets/icons'
+import LocationMap from '../locationMap'
 
 const ModifyReservationSystemView = () => {
     const { id } = useParams()
     const language = useSelector((state) => state.language.language)
+    const categories = useSelector((state) => state.categories.categories)
     const storedToken = useSelector((state) => state.user?.user?.token ?? null)
+    const userID = useSelector((state) => state.user?.user?.userID ?? null)
     const t = translations[language]
     const [loading, setLoading] = useState(true)
-    const [reservationSystem, setReservationSystem] = useState(null)
+    const [addNewIsOpen, setAddNewIsOpen] = useState(false)
+    const [system, setSystem] = useState(null)
+    // Varausjärjestelmän muokkaus
+    const [disableSave, setDisableSave] = useState(true)
+    const [description, setDescription] = useState("")
+    const [activity, setActivity] = useState({})
+    const [title, setTitle] = useState("")
+    const [popUpText, setPopUpText] = useState("")
+    const [rentalAvailable, setRentalAvailable] = useState(null)
+    const [establishment_location, setEstablishmentLocation] = useState(null)
+    // Kentän lisäyksen kentät
+    const [disableCreateField, setDisableCreateField] = useState(true)
+    const [fieldTitle, setFieldTitle] = useState("")
+    const [fieldDescription, setFieldDescription] = useState("")
+    const [liikaAvailable, setLiikaAvailable] = useState(true)
+    const [link, setLink] = useState("")
 
     useEffect(() => {
-        const fetchEventInfo = async () => {
+        const fetchSystemData = async () => {
             try {
                 const response = await reservationService.getReservationSystem(storedToken, {
                     SystemID: id,
+                    userID: userID,
                 })
                 console.log(response)
-                setReservationSystem(response.data)
+                setSystem(response)
+                setActivity({
+                    value: response.CategoryID,
+                    label: t[selectCategoryName([response.CategoryID])],
+                })
+                setRentalAvailable(response.Rental)
             } catch (error) {
                 console.error(error)
                 // TODO: dispatch kun ei löydy varausjärjestelmää
@@ -30,8 +56,82 @@ const ModifyReservationSystemView = () => {
                 setLoading(false)
             }
         }
-        fetchEventInfo()
+        fetchSystemData()
     }, [id])
+
+    const handleChange = (selectedOption) => {
+        setActivity(selectedOption)
+        setDisableSave(false)
+    }
+    const options = () => {
+        try {
+            return categories.map((cat) => ({
+                value: cat.CategoryID,
+                label: t[selectCategoryName([cat.CategoryID])],
+            }))
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const handleTitleChange = (value) => {
+        setTitle(value)
+        setDisableSave(false)
+    }
+
+    const handlePopUpChange = (value) => {
+        setPopUpText(value)
+        setDisableSave(false)
+    }
+
+    const handleDescriptionChange = (value) => {
+        setDescription(value)
+        setDisableSave(false)
+    }
+
+    const handleChangeEquipment = (event) => {
+        setRentalAvailable(event.target.checked)
+        setDisableSave(false)
+    }
+
+    const handleChangeLiika = (event) => {
+        setLiikaAvailable(event.target.checked)
+    }
+
+    const handleLocationChange = (newLocation) => {
+        setEstablishmentLocation(newLocation)
+        setDisableSave(false)
+    }
+
+    const toggleAddNew = () => {
+        setAddNewIsOpen((prev) => !prev)
+        setDisableCreateField(false)
+    }
+
+    const handleNewField = () => {
+        console.log("Luodaan uusi kenttä")
+        setDisableCreateField(true)
+    }
+
+    const handleSaveChanges = () => {
+        console.log("Tallennetaan muutokset")
+        setDisableSave(true)
+        const updatedtitle = title || system.Title
+        const updatedDescription = description || system.Description
+        const updatedPopUpText = popUpText || system.PopUpText
+        const updatedCategoryID = activity.value || system.CategoryID // Jos kategoria on tyhjä, käytetään oletusarvoa
+
+        reservationService.modifyRS(storedToken, {
+            UserID: userID,
+            Title: updatedtitle,
+            CategoryID: updatedCategoryID,
+            Establishment_location: establishment_location,
+            Description: updatedDescription,
+            Rental: rentalAvailable,
+            PopUpText: updatedPopUpText,
+            SystemID: id,
+        })
+    }
 
     if (loading) {
         // Tietokantahaku kesken
@@ -39,7 +139,7 @@ const ModifyReservationSystemView = () => {
             <div
                 className="fullpage"
                 style={{
-                    backgroundImage: "url('/backgroundpicture.jpg')",
+                    backgroundImage: "url('/alternativebackgroundpicture.png')",
                     backgroundSize: "cover",
                     backgroundPosition: "center",
                     backgroundRepeat: "no-repeat",
@@ -55,13 +155,13 @@ const ModifyReservationSystemView = () => {
         )
     }
 
-    if (!reservationSystem) {
+    if (!system) {
         // Jos kenttävarausjärjestelmää ei löytynyt tietokantahaulla
         return (
             <div
                 className="fullpage"
                 style={{
-                    backgroundImage: "url('/backgroundpicture.jpg')",
+                    backgroundImage: "url('/alternativebackgroundpicture.png')",
                     backgroundSize: "cover",
                     backgroundPosition: "center",
                     backgroundRepeat: "no-repeat",
@@ -89,7 +189,175 @@ const ModifyReservationSystemView = () => {
             <Header />
             <NotificationContainer />
             <div className='about-container'>
-                tähän tulee kenttävarausjärjestelmän muokkaus
+                <div className="system-modify-item">
+                    <h1>{"Kenttävarausjärjestelmän muokkaus"}</h1>
+                    <p>
+                        {"Muokkaa blaa blaa..."}
+                        <br />
+                        {t.exitWithoutSave}
+                    </p>
+                </div>
+                <span className="spacer-line"></span>
+                <div className='system-modify-item'>
+                    <h2>{t.currentTitle}</h2>
+                    <h1>{system.Title}</h1>
+                    <h2>{t.newTitle}</h2>
+                    <input
+                        type="text"
+                        value={title}
+                        placeholder={`${system.Title}`}
+                        className="input-field"
+                        onChange={(e) => handleTitleChange(e.target.value)}
+                        required={true}
+                    />
+                </div>
+                <span className="spacer-line"></span>
+                <div className='system-modify-item'>
+                    <h2>{"Nykyinen kuvaus"}</h2>
+                    <p>{system.Description}</p>
+                    <h2>{"Uusi kuvaus"}</h2>
+                    <textarea
+                        type="text"
+                        value={description}
+                        placeholder={`anna kuvaus sijainnille`}
+                        className="input-field"
+                        onChange={(e) => handleDescriptionChange(e.target.value)}
+                        required={true}
+                    />
+                </div>
+                <span className="spacer-line"></span>
+                <div className='system-modify-item'>
+                    <h2>{"Nykyinen Pop-up mainosteksti"}</h2>
+                    <h1>{system.PopUpText}</h1>
+                    <h2>{"Uusi Pop-up mainosteksti"}</h2>
+                    <textarea
+                        type="text"
+                        value={popUpText}
+                        placeholder={`${system.PopUpText}`}
+                        className="input-field"
+                        onChange={(e) => handlePopUpChange(e.target.value)}
+                        required={true}
+                    />
+                </div>
+                <span className="spacer-line"></span>
+                <div className='system-modify-item'>
+                    <h2>{t.currentActivity}</h2>
+                    <p className="old-event-value">
+                        {t[selectCategoryName([system.CategoryID])]}
+                    </p>
+                    <img
+                        src={`/lajit/${selectCategoryName([system.CategoryID])}.png`}
+                        alt="Logo"
+                        width={100}
+                        height={100}
+                        className="event-view-icon"
+                    />
+                    <h2>{"Valitse uusi laji"}</h2>
+                    <Select
+                        className="input-field"
+                        placeholder={t.activity}
+                        value={activity}
+                        onChange={handleChange}
+                        options={options()}
+                        isSearchable={true}
+                        required={true}
+                    />
+                    <span className="spacer-line"></span>
+                    <div className='system-modify-item'>
+                        <h2>{"Välinevuokrausta tarjolla"}</h2>
+                        <input
+                            type="checkbox"
+                            checked={rentalAvailable}
+                            placeholder={`${system.PopUpText}`}
+                            className="input-field"
+                            onChange={handleChangeEquipment}
+                        />
+                    </div>
+                    <span className="spacer-line"></span>
+                    <div className='system-modify-item'>
+                        <h2>{t.location}</h2>
+                        <LocationMap
+                            onLocationChange={handleLocationChange}
+                            oldLocation={[
+                                system.Establishment_Location.coordinates[0],
+                                system.Establishment_Location.coordinates[1],
+                            ]}
+                        />
+                    </div>
+                    <span className="spacer-line"></span>
+                    <button className='forms-btn' style={{ marginBottom: "40px" }} onClick={handleSaveChanges} disabled={disableSave}>
+                        Tallenna muutokset
+                    </button>
+                    <span className="spacer-line"></span>
+                    <div className='system-modify-item'>
+                        <h1>{"Kentät"}</h1>
+                        Nykyiset kentät, alla silleen esimerkkinä
+                        <div className='field-btn-container'>
+                            <button className='link-btn'>
+                                Kenttä 1
+                            </button>
+                            <button className='link-btn'>
+                                Kenttä 2
+                            </button>
+                            <button className='link-btn'>
+                                Kenttä 3
+                            </button>
+                        </div>
+                        <span className="spacer-line"></span>
+                        <button className='link-btn' onClick={toggleAddNew}>
+                            {!addNewIsOpen && "Lisää uusi kenttä"}
+                            {addNewIsOpen && "Sulje"}
+                        </button>
+                        <div className={`add-new-panel ${addNewIsOpen ? "open" : ""}`}>
+                            <div className='system-modify-item'>
+                                <h1>Lisää uusi kenttä</h1>
+                                <h2>{"Kentän nimi"}</h2>
+                                <input
+                                    type="text"
+                                    value={fieldTitle}
+                                    placeholder={`kentän nimi`}
+                                    className="input-field"
+                                    onChange={(e) => setFieldTitle(e.target.value)}
+                                    required={true}
+                                />
+                            </div>
+                            <div className='system-modify-item'>
+                                <h2>{"Kentän kuvaus / käyttöehdot"}</h2>
+                                <input
+                                    type="text"
+                                    value={fieldDescription}
+                                    placeholder={`kentän kuvaus`}
+                                    className="input-field"
+                                    onChange={(e) => setFieldDescription(e.target.value)}
+                                    required={true}
+                                />
+                            </div>
+                            <div className='system-modify-item'>
+                                <h2>{"Liikavuoromahdollisuus"}</h2>
+                                <input
+                                    type="checkbox"
+                                    checked={liikaAvailable}
+                                    className="input-field"
+                                    onChange={handleChangeLiika}
+                                />
+                            </div>
+                            <div className='system-modify-item'>
+                                <h2>{"Oman varausjärjestelmän linkki"}</h2>
+                                <input
+                                    type="text"
+                                    value={link}
+                                    placeholder={`https://...`}
+                                    className="input-field"
+                                    onChange={(e) => setLink(e.target.value)}
+                                    required={true}
+                                />
+                            </div>
+                            <button className='forms-btn' style={{ marginBottom: "40px" }} onClick={handleNewField} disabled={disableCreateField}>
+                                Luo kenttä
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
             <Link to={'/'} className="back-btn" style={{ alignSelf: "center" }}>
                 <span>{t.back}</span>
