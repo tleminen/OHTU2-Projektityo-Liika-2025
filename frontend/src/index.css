@@ -669,13 +669,17 @@ ol {
 
 .spacer-line {
   display: block;
-  width: 100%;
+  width: 90%;
+  margin: auto;
+  align-self: center;
+  justify-content: center;
   /* Viivan leveys */
   border-top: 1px solid black;
   /* Viivan tyyli ja väri */
   line-height: 1;
   /* Yhden rivin korkeus */
-  margin: 10px 0;
+  margin-top: 10px;
+  margin-bottom: 10px;
   /* Viivan ylä- ja alapuolen marginaali */
 }
 

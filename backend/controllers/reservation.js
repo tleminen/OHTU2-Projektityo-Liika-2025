@@ -67,6 +67,7 @@ reservationRouter.post("/create", userExtractor, async (request, response) => {
     }
 }) // Kenttävarausjärjestelmän luonti päättyy
 
+// "Omien" kenttävarausjärjestelmien listaus
 reservationRouter.post("/get_list", userExtractor, async (request, response) => {
     const {
         clubs,
@@ -75,6 +76,7 @@ reservationRouter.post("/get_list", userExtractor, async (request, response) => 
 
     if (userID === request.user.dataValues.UserID) {
         // Eli userExtractorin tokenista ekstraktoima userID
+        // TODO: Tee tarkastus saako käyttäjä hakea juuri näitä clubeja!
         try {
             const rsList = await getReservationSystemList(clubs)
             response.status(200).json(rsList)
@@ -86,8 +88,9 @@ reservationRouter.post("/get_list", userExtractor, async (request, response) => 
         console.error("Invalid token")
         response.status(401).json({ error: "Unauthorized" })
     }
-}) // Kenttävarausjärjestelmän luonti päättyy
+}) // Kenttävarausjärjestelmien listaus päättyy
 
+// Yksittäisen kenttävarausjärjestelmän tietojen haku
 reservationRouter.post("/get_single", userExtractor, async (request, response) => {
     const {
         SystemID,
@@ -121,6 +124,63 @@ reservationRouter.post("/get_single", userExtractor, async (request, response) =
         console.error("Invalid token")
         response.status(401).json({ error: "Unauthorized" })
     }
-}) // Kenttävarausjärjestelmän luonti päättyy
+}) // Yksittäisen haku päättyy
+
+reservationRouter.post("/update_system", userExtractor, async (request, response) => {
+    const {
+        UserID,
+        Title,
+        CategoryID,
+        Establishment_Location,
+        Description,
+        Rental,
+        PopUpText,
+        SystemID,
+        ClubID,
+    } = request.body
+
+    if (UserID === request.user?.dataValues?.UserID ?? "NAN") {
+        // Eli userExtractorin tokenista ekstraktoima userID
+        try {
+            const result = await ClubMembers.findOne({
+                where: {
+                    UserID: UserID,
+                    ClubID: ClubID,
+                },
+            })
+            if (!result) {
+                response.status(403).json({ error: "Not part of the club at request" })
+            }
+            const newRS = await ReservationSystems.update(
+                {
+                    Title: Title,
+                    CategoryID: CategoryID,
+                    PopUpText: PopUpText,
+                    Description: Description,
+                    Rental: Rental,
+                    Establishment_Location: Sequelize.fn(
+                        "ST_SetSRID",
+                        Sequelize.fn(
+                            "ST_MakePoint",
+                            Establishment_Location.lng,
+                            Establishment_Location.lat
+                        ),
+                        4326
+                    ),
+                },
+                { where: { SystemID: SystemID } }
+            )
+
+            response.status(200).send({ message: "Reservation system updated succesfully." })
+        } catch (error) {
+            console.error("Error updating reservation system: " + error)
+            response.status(500).json({ error: "Internal Server Error" })
+        }
+    } else {
+        console.error("Invalid token")
+        response.status(401).json({ error: "Unauthorized" })
+    }
+})
+
 
 module.exports = reservationRouter
