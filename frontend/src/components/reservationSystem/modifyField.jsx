@@ -1,14 +1,11 @@
 import { Link, useParams } from "react-router-dom"
 import Header from "../header"
 import Footer from "../footer"
-import Select from "react-select"
 import { useSelector } from "react-redux"
 import translations from "../../assets/translation"
 import { useEffect, useState } from 'react'
 import reservationService from '../../services/reservationService'
 import NotificationContainer from '../notification/notificationContainer'
-import { selectCategoryName } from '../../assets/icons'
-import LocationMap from '../locationMap'
 
 const ModifyFieldView = () => {
     const { id } = useParams()
@@ -283,7 +280,7 @@ const ModifyFieldView = () => {
                             <em>Kentän normaalit aukioloajat. Voit lisätä poikkeuksia lisäämällä &quot;suljettu&quot; tai &quot;avoinna&quot; vuoroja kalenterissa</em>
                         </div>
                         <span className="spacer-line"></span>
-                        <button className='forms-btn' style={{ marginBottom: "40px" }} onClick={handleSaveChanges} disabled={false}>
+                        <button className='forms-btn' style={{ marginBottom: "40px" }} onClick={handleSaveChanges} disabled={disableModifyField}>
                             Tallenna muutokset
                         </button>
                     </div>
