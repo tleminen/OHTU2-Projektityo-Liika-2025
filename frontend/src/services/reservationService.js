@@ -124,4 +124,13 @@ const createSlot = async (storedToken, parameters) => {
     return response.data
 }
 
-export default { createReservationSystem, getReservationSystem, getReservationSystems, modifyRS, createField, getFields, getField, modifyField, createSlot }
+// Kentän hakeminen
+const getSlots = async (parameters) => {
+    const response = await axios.post(
+        baseUrl + "/reservation/get_slots",
+        parameters
+    )
+    return response.data
+}
+
+export default { createReservationSystem, getReservationSystem, getReservationSystems, modifyRS, createField, getFields, getField, modifyField, createSlot, getSlots }

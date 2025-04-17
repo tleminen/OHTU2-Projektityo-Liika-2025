@@ -23,3 +23,20 @@ button.modal_default_ok {
 button.modal_default_cancel {
   background-color: #b0a8a8 !important;
 }
+
+.calendar_default_rowheader_inner,
+.calendar_default_cornerright_inner,
+.calendar_default_corner_inner,
+.calendar_default_colheader_inner,
+.calendar_default_alldayheader_inner {
+  color: rgb(0, 0, 0) !important;
+  background: rgba(150, 248, 255, 0.224) !important;
+}
+
+.calendar_default_cell_inner {
+  position: absolute;
+  inset: 0px;
+  border-right: 1px solid rgb(146, 146, 146) !important;
+  border-bottom: 2px dotted rgba(177, 182, 176, 0.278) !important;
+  background: rgba(255, 255, 255, 0.332) !important;
+}

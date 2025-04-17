@@ -344,9 +344,9 @@ reservationRouter.post("/update_field", userExtractor, async (request, response)
         console.error("Invalid token")
         response.status(401).json({ error: "Unauthorized" })
     }
-}) // Kenttävarausjärjestelmän päivittäminen päättyy
+}) // Kentän päivittäminen päättyy
 
-// Kentän lisääminen
+// Vuoron lisääminen
 reservationRouter.post("/create_slot", userExtractor, async (request, response) => {
     const {
         UserID,
@@ -394,6 +394,26 @@ reservationRouter.post("/create_slot", userExtractor, async (request, response) 
         console.error("Invalid token")
         response.status(401).json({ error: "Unauthorized" })
     }
-}) // Kenttävarausjärjestelmän luonti päättyy
+}) // Vuoron lisääminen päättyy
+
+// Vuorojen haku kentälle (haku ei vaadi kirjautumista)
+reservationRouter.post("/get_slots", async (request, response) => {
+    const { FieldID } = request.body
+    try {
+        const slots = await Slots.findAll({
+            // Etsitään kenttä
+            where: {
+                FieldID: FieldID,
+            },
+            attributes: ["SlotID", "Type", "StartTime", "EndTime", "Text",],
+        })
+        response.status(200).json({
+            slots: slots,
+        })
+    } catch (error) {
+        console.log("PostgreSQL Error:", error)
+        response.status(400).send({ error: `User not found` })
+    }
+}) // Vuorojen haku kentälle päättyy
 
 module.exports = reservationRouter

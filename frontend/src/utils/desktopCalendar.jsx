@@ -27,12 +27,22 @@ const styles = {
   },
 }
 
+const typeColorMap = {
+  Liika: "#0097b2B5",
+  Harjoitus: "#66CCFF",
+  Varattu: "#66FF66",
+  Suljettu: "#69758754"
+  // Lisää tyyppejä ja värejä tarvittaessa
+}
+
 // eslint-disable-next-line react/prop-types
 const DesktopCalendar = ({ field }) => {
   const date = new Date()
+  const weekdays = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun']
   const language = useSelector((state) => state.language.language)
   const storedToken = useSelector((state) => state.user?.user?.token ?? null)
   const userID = useSelector((state) => state.user?.user?.userID ?? null)
+  const [reload, setReload] = useState(false)
   const t = translations[language]
   const [loading, setLoading] = useState(true)
   const [calendar, setCalendar] = useState(null)
@@ -80,31 +90,28 @@ const DesktopCalendar = ({ field }) => {
 
   useEffect(() => {// TODO: Hae tapahtumat
     // Alkuperäiset tapahtumat
+    const fetchSlots = async () => {
+      try {
+        const result = await reservationService.getSlots({
+          FieldID: field.FieldID,
+        })
+        console.log(result)
+        const mappedEvents = result.slots.map(slot => ({
+          id: slot.SlotID,
+          text: slot.Text,
+          start: slot.StartTime,
+          end: slot.EndTime,
+          backColor: typeColorMap[slot.Type] || "#EEEEEE"
+        }))
 
-    const initialEvents = [
-      {
-        id: 1,
-        text: "Event 1",
-        start: "2025-04-16T10:30:00",
-        end: "2025-04-16T13:00:00",
-      },
-      {
-        id: 2,
-        text: "Event 2",
-        start: "2025-04-17T09:30:00",
-        end: "2025-04-17T11:30:00",
-        backColor: "#6aa84f",
-      },
-      {
-        id: 3,
-        text: "Event 3",
-        start: "2025-04-17T12:00:00",
-        end: "2025-04-17T15:00:00",
-        backColor: "#f1c232",
-      },
-    ]
-    setEvents(initialEvents)
-  }, [])
+        const allEvents = [...mappedEvents, ...closedEvents]
+        setEvents(allEvents)
+      } catch (error) {
+        console.error("Event fetch error:", error)
+      }
+    }
+    fetchSlots()
+  }, [reload])
 
   useEffect(() => {
     // Päivitä korostusvalinta, kun selectedRange muuttuu
@@ -133,11 +140,63 @@ const DesktopCalendar = ({ field }) => {
       calendar.events.remove("selected-range")
     }
   }, [selectedRange, calendar])
+  const baseDate = (() => {
+    const now = new Date(startDate)
+    const day = now.getDay() // 0 = Su, 1 = Ma, ..., 6 = La
+    const monday = new Date(now)
+    const diff = (day === 0 ? -6 : 1 - day) // jos sunnuntai, mennään taaksepäin 6 päivää
+    monday.setDate(now.getDate() + diff)
+    monday.setHours(0, 0, 0, 0)
+    return monday
+  })()
+  const closedEvents = Object.entries(field.Opening_Hours).flatMap(([day, { open, close, closed }], index) => {
+    const dayOffset = weekdays.indexOf(day)
+    const currentDate = new Date(baseDate)
+    currentDate.setDate(currentDate.getDate() + dayOffset)
+    const yyyy = currentDate.getFullYear()
+    const mm = String(currentDate.getMonth() + 1).padStart(2, '0')
+    const dd = String(currentDate.getDate()).padStart(2, '0')
 
-  const handleDoSlot = async () => {//TODO: Tallenna varaus tietokantaan
+    const toISO = (h) => `${yyyy}-${mm}-${dd}T${h}:00`
+
+    let result = []
+
+    if (closed) {
+      // koko päivä suljettu
+      result.push({
+        id: `closed-${day}-full`,
+        text: "Suljettu",
+        start: `${yyyy}-${mm}-${dd}T00:00:00`,
+        end: `${yyyy}-${mm}-${dd}T23:59:59`,
+        backColor: typeColorMap["Suljettu"] || "#FFFFFF"
+      })
+    } else {
+      if (open && open !== '00:00') {
+        result.push({
+          id: `closed-${day}-before`,
+          text: "Suljettu",
+          start: `${yyyy}-${mm}-${dd}T00:00:00`,
+          end: toISO(open),
+          backColor: typeColorMap["Suljettu"] || "#FFFFFF"
+        })
+      }
+
+      if (close) {
+        result.push({
+          id: `closed-${day}-after`,
+          text: "Suljettu",
+          start: toISO(close),
+          end: `${yyyy}-${mm}-${dd}T23:59:59`,
+          backColor: typeColorMap["Suljettu"] || "#FFFFFF"
+        })
+      }
+    }
+    return result
+  })
+
+  const handleDoSlot = async () => {
     if (selectedRange) {
       try {
-        //TODO: Tallenna varaus tietokantaan
         const modal = await DayPilot.Modal.prompt("Create a new event..:")
         if (modal.result) {
           console.log(selectedRange)
@@ -188,6 +247,7 @@ const DesktopCalendar = ({ field }) => {
           weekStarts={1}
           onTimeRangeSelected={(args) => {
             setStartDate(args.day)
+            setReload((prev) => !prev)
           }}
         />
       </div>
