@@ -22,6 +22,7 @@ import CreateReservationSystem from './components/reservationSystem'
 import PartnerChoisesView from './components/createEventView/partnerChoisesView'
 import ModifyReservationSystemView from './components/reservationSystem/modifyReservationSystem'
 import ListReservationSystems from './components/reservationSystem/listReservationSystems'
+import ModifyFieldView from './components/reservationSystem/modifyField'
 
 const App = () => {
   return (
@@ -51,7 +52,8 @@ const App = () => {
         path="/partner/create_reservation_system"
         element={<CreateReservationSystem />}
       />
-      <Route path="/partner/modify/:id" element={<ModifyReservationSystemView />} />
+      <Route path="/partner/modify/system/:id" element={<ModifyReservationSystemView />} />
+      <Route path="/partner/modify/field/:id" element={<ModifyFieldView />} />
       <Route path='/partner/list_reservation_systems' element={<ListReservationSystems />} />
       <Route path='/partner' element={<PartnerChoisesView />} />
       <Route path='/us' element={<AboutView />} />

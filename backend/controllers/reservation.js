@@ -1,5 +1,6 @@
-const { Router } = require("express")
+const { Router, request } = require("express")
 const ClubMembers = require("../models/clubMember")
+const Fields = require("../models/fields")
 const ReservationSystems = require("../models/reservationSystems")
 const { Sequelize, where, Op } = require("sequelize")
 const { userExtractor } = require("../utils/middleware")
@@ -126,6 +127,7 @@ reservationRouter.post("/get_single", userExtractor, async (request, response) =
     }
 }) // Yksittäisen haku päättyy
 
+// Kenttävarausjärjestelmän päivittäminen
 reservationRouter.post("/update_system", userExtractor, async (request, response) => {
     const {
         UserID,
@@ -180,7 +182,108 @@ reservationRouter.post("/update_system", userExtractor, async (request, response
         console.error("Invalid token")
         response.status(401).json({ error: "Unauthorized" })
     }
-})
+}) // Kenttävarausjärjestelmän päivittäminen päättyy
 
+// Kentän lisääminen
+reservationRouter.post("/create_field", userExtractor, async (request, response) => {
+    const {
+        userID,
+        Name,
+        Description,
+        Liika,
+        URL,
+        SystemID,
+        ClubID,
+    } = request.body
+
+    if (userID === request.user.dataValues.UserID) {
+        // Eli userExtractorin tokenista ekstraktoima userID
+        // Tarkastetaan onko oikeus luoda yhteistyökumppanille tapahtumia (eli ei ole feikattu postpyyntö tavallisella käyttäjällä)
+        try {
+            const system = await ReservationSystems.findOne({ // Varmistetaan ensin clubin liittyminen Järjestelmään
+                where: {
+                    SystemID: SystemID,
+                    ClubID: ClubID,
+                },
+            })
+            console.log(system)
+            if (!system) {
+                response.status(403).json({ error: "User not part of the System at request" })
+            }
+            const clubMem = await ClubMembers.findOne({ // Ja varmistetaan, että henkilö kuuluu clubiin
+                where: {
+                    ClubID: ClubID,
+                    UserID: userID
+                },
+            })
+            console.log(clubMem)
+            if (!clubMem) {
+                response.status(403).json({ error: "User not part of the System at request" })
+            }
+            const newField = await Fields.create({
+                Description: Description,
+                Name: Name,
+                Liika: Liika,
+                URL: URL,
+                SystemID: SystemID,
+            })
+            console.log(newField)
+            response.status(201).json({ NewField: newField })
+        } catch (e) {
+            console.error(e)
+            response.status(500).send()
+        }
+    } else {
+        console.error("Invalid token")
+        response.status(401).json({ error: "Unauthorized" })
+    }
+}) // Kenttävarausjärjestelmän luonti päättyy
+
+// "Omien" kenttävarausjärjestelmien listaus
+reservationRouter.post("/get_fields", userExtractor, async (request, response) => {
+    const {
+        SystemID,
+        userID
+    } = request.body
+
+    if (userID === request.user.dataValues.UserID) {
+        // Eli userExtractorin tokenista ekstraktoima userID
+        // TODO: Tee tarkastus saako käyttäjä hakea juuri näitä clubeja!
+        try {
+            const fields = await Fields.findAll({
+                where: {
+                    SystemID: SystemID
+                }
+            })
+            response.status(200).json(fields)
+        } catch (error) {
+            console.error("Problems with retreving fields" + error)
+            response.status(500).json({ error: "Internal Server Error" })
+        }
+    } else {
+        console.error("Invalid token")
+        response.status(401).json({ error: "Unauthorized" })
+    }
+}) // Kenttävarausjärjestelmien listaus päättyy
+
+// Yksittäisen kentän tietojen haku (haku ei vaadi kirjautumista)
+reservationRouter.post("/get_field", async (request, response) => {
+    const { FieldID } = request.body
+    try {
+        const field = await Fields.findOne({
+            // Etsitään kenttä
+            where: {
+                FieldID: FieldID,
+            },
+            attributes: ["FieldID", "Name", "Description", "Liika", "URL", "Opening_Hours", "SystemID"],
+        })
+        response.status(200).json({
+            field,
+        })
+    } catch (error) {
+        console.log("PostgreSQL Error:", error)
+        response.status(400).send({ error: `User not found` })
+    }
+})
 
 module.exports = reservationRouter

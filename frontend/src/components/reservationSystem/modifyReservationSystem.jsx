@@ -29,9 +29,11 @@ const ModifyReservationSystemView = () => {
     const [popUpText, setPopUpText] = useState("")
     const [rentalAvailable, setRentalAvailable] = useState(null)
     const [establishment_location, setEstablishmentLocation] = useState(null)
+    // Kentät
+    const [fields, setFields] = useState([])
     // Kentän lisäyksen kentät
     const [disableCreateField, setDisableCreateField] = useState(true)
-    const [fieldTitle, setFieldTitle] = useState("")
+    const [fieldName, setFieldName] = useState("")
     const [fieldDescription, setFieldDescription] = useState("")
     const [liikaAvailable, setLiikaAvailable] = useState(true)
     const [link, setLink] = useState("")
@@ -39,7 +41,8 @@ const ModifyReservationSystemView = () => {
     useEffect(() => {
         const fetchSystemData = async () => {
             try {
-                const response = await reservationService.getReservationSystem(storedToken, {
+                // Haetaan kenttävarausjärjestelmän tiedot
+                const response = await reservationService.getReservationSystem(storedToken, { // Haetaan kenttävarausjärjestelmän tiedot
                     SystemID: id,
                     userID: userID,
                 })
@@ -50,6 +53,13 @@ const ModifyReservationSystemView = () => {
                     label: t[selectCategoryName([response.CategoryID])],
                 })
                 setRentalAvailable(response.Rental)
+                // Haetaan järjestelmään kuuluvat kentät
+                const getFields = await reservationService.getFields(storedToken, {
+                    SystemID: id,
+                    userID: userID,
+                })
+                console.log(getFields)
+                setFields(getFields)
             } catch (error) {
                 console.error(error)
                 // TODO: dispatch kun ei löydy varausjärjestelmää
@@ -114,12 +124,26 @@ const ModifyReservationSystemView = () => {
         setDisableSave(false)
     }
 
-    const handleNewField = () => {
+    const handleNewField = async () => {
         console.log("Luodaan uusi kenttä")
         setDisableCreateField(true)
+        try {
+            const response = await reservationService.createField(storedToken, {
+                userID: userID,
+                Name: fieldName,
+                Description: fieldDescription,
+                Liika: liikaAvailable,
+                URL: link,
+                SystemID: id,
+                ClubID: system.ClubID,
+            })
+            console.log(response)
+        } catch (error) {
+            console.error(error)
+        }
     }
 
-    const handleSaveChanges = () => {
+    const handleSaveChanges = async () => {
         console.log("Tallennetaan muutokset")
         setDisableSave(true)
         const updatedtitle = title || system.Title
@@ -127,17 +151,24 @@ const ModifyReservationSystemView = () => {
         const updatedPopUpText = popUpText || system.PopUpText
         const updatedCategoryID = activity.value || system.CategoryID // Jos kategoria on tyhjä, käytetään oletusarvoa
 
-        reservationService.modifyRS(storedToken, {
-            UserID: userID,
-            Title: updatedtitle,
-            CategoryID: updatedCategoryID,
-            Establishment_Location: establishment_location,
-            Description: updatedDescription,
-            Rental: rentalAvailable,
-            PopUpText: updatedPopUpText,
-            SystemID: id,
-            ClubID: system.ClubID
-        })
+        try {
+            const response = await reservationService.modifyRS(storedToken, {
+                UserID: userID,
+                Title: updatedtitle,
+                CategoryID: updatedCategoryID,
+                Establishment_Location: establishment_location,
+                Description: updatedDescription,
+                Rental: rentalAvailable,
+                PopUpText: updatedPopUpText,
+                SystemID: id,
+                ClubID: system.ClubID
+            })
+            setFieldDescription("")
+            setFieldName("")
+            setLink("")
+        } catch (error) {
+            console.error(error)
+        }
     }
 
     if (loading) {
@@ -308,17 +339,24 @@ const ModifyReservationSystemView = () => {
                 </div>
                 <div className='system-modify-item'>
                     <h1>{"Kentät"}</h1>
-                    Nykyiset kentät, alla silleen esimerkkinä
                     <div className='field-btn-container'>
-                        <button className='link-btn'>
-                            Kenttä 1
-                        </button>
-                        <button className='link-btn'>
-                            Kenttä 2
-                        </button>
-                        <button className='link-btn'>
-                            Kenttä 3
-                        </button>
+                        {fields.length === 0 ? (
+                            <p>{"Ei vielä kenttiä. Lisää uusi kenttä alta"}</p>
+                        ) : (
+                            fields.map((field) => (
+                                <Link
+                                    to={`/partner/modify/field/${field.FieldID}`}
+                                    key={field.FieldID}
+                                    className="system-item-container"
+                                >
+                                    <div className="event-item">
+                                        <div>
+                                            <em>{field.Name}</em>
+                                        </div>
+                                    </div>
+                                </Link>
+                            ))
+                        )}
                     </div>
                     <span className="spacer-line"></span>
                     <h1>Lisää uusi kenttä</h1>
@@ -331,10 +369,10 @@ const ModifyReservationSystemView = () => {
                             <h2>{"Kentän nimi"}</h2>
                             <input
                                 type="text"
-                                value={fieldTitle}
+                                value={fieldName}
                                 placeholder={`kentän nimi`}
                                 className="input-field"
-                                onChange={(e) => setFieldTitle(e.target.value)}
+                                onChange={(e) => setFieldName(e.target.value)}
                                 required={true}
                             />
                         </div>
@@ -379,7 +417,7 @@ const ModifyReservationSystemView = () => {
                     </div>
                 </div>
             </div>
-            <Link to={'/'} className="back-btn" style={{ alignSelf: "center" }}>
+            <Link to={-1} className="back-btn" style={{ alignSelf: "center" }}>
                 <span>{t.back}</span>
             </Link>
             <Footer />

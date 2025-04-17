@@ -118,7 +118,7 @@ const ListReservationSystems = () => {
                             ) : (
                                 club.systems.map((system) => (
                                     <Link
-                                        to={`/partner/modify/${system.SystemID}`}
+                                        to={`/partner/modify/system/${system.SystemID}`}
                                         key={system.SystemID}
                                         className="system-item-container"
                                     >

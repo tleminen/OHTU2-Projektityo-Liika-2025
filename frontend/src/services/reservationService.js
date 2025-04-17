@@ -59,4 +59,42 @@ const modifyRS = async (storedToken, parameters) => {
     return response.data
 }
 
-export default { createReservationSystem, getReservationSystem, getReservationSystems, modifyRS }
+// Kentän luominen
+const createField = async (storedToken, parameters) => {
+    setToken(storedToken)
+    const headers = {
+        headers: { Authorization: token }, // Asetetaan token headeriin
+    }
+    const response = await axios.post(
+        baseUrl + "/reservation/create_field",
+        parameters,
+        headers
+    )
+    return response.data
+}
+
+// Kentän luominen
+const getFields = async (storedToken, parameters) => {
+    setToken(storedToken)
+    const headers = {
+        headers: { Authorization: token }, // Asetetaan token headeriin
+    }
+    const response = await axios.post(
+        baseUrl + "/reservation/get_fields",
+        parameters,
+        headers
+    )
+    return response.data
+}
+
+// Kentän hakeminen
+const getField = async (parameters) => {
+    const response = await axios.post(
+        baseUrl + "/reservation/get_field",
+        parameters
+    )
+    return response.data
+}
+
+
+export default { createReservationSystem, getReservationSystem, getReservationSystems, modifyRS, createField, getFields, getField }
