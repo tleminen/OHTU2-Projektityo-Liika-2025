@@ -17,13 +17,34 @@ const ModifyFieldView = () => {
     const userID = useSelector((state) => state.user?.user?.userID ?? null)
     const t = translations[language]
     const [loading, setLoading] = useState(true)
+    // Perustietojen muokkaus
+    const [modifyIsOpen, setModifyIsOpen] = useState(false)
+    const [disableModifyField, setDisableModifyField] = useState(true)
     // Kentät
     const [field, setField] = useState([])
     const [name, setName] = useState("")
     const [description, setDescription] = useState("")
     const [liikaAvailable, setLiikaAvailable] = useState(true)
     const [link, setLink] = useState("")
-
+    const [hours, setHours] = useState({
+        mon: { open: "", close: "", closed: false },
+        tue: { open: "", close: "", closed: false },
+        wed: { open: "", close: "", closed: false },
+        thu: { open: "", close: "", closed: false },
+        fri: { open: "", close: "", closed: false },
+        sat: { open: "", close: "", closed: false },
+        sun: { open: "", close: "", closed: false }
+    })
+    // Dynaamista renderöintiä varten viikonpäivät. TODO: Tee labeleille kielellistys
+    const weekdays = [
+        { key: "mon", label: "Monday" },
+        { key: "tue", label: "Tuesday" },
+        { key: "wed", label: "Wednesday" },
+        { key: "thu", label: "Thursday" },
+        { key: "fri", label: "Friday" },
+        { key: "sat", label: "Saturday" },
+        { key: "sun", label: "Sunday" }
+    ]
 
     useEffect(() => {
         const fetchFieldData = async () => {
@@ -50,6 +71,7 @@ const ModifyFieldView = () => {
         const updatedDescription = description || field.Description
         const updatedLiikaAvailable = liikaAvailable || field.liikaAvailable
         const updatedLink = link || field.link // Jos kategoria on tyhjä, käytetään oletusarvoa
+        const updatedHours = hours || field.Opening_Hours
 
         /*
         try {
@@ -68,6 +90,11 @@ const ModifyFieldView = () => {
             console.error(error)
         }
             */
+    }
+
+    const toggleAddNew = () => {
+        setModifyIsOpen((prev) => !prev)
+        setDisableModifyField(false)
     }
 
     if (loading) {
@@ -134,10 +161,13 @@ const ModifyFieldView = () => {
                         {t.exitWithoutSave}
                     </p>
                 </div>
-
                 <div className='system-modify-item'>
                     <span className="spacer-line"></span>
-                    <div className={`add-new-panel:open`}>
+                    <button className='link-btn' onClick={toggleAddNew}>
+                        {!modifyIsOpen && "Muokkaa kentän perustietoja"}
+                        {modifyIsOpen && "Sulje"}
+                    </button>
+                    <div className={`add-new-panel ${modifyIsOpen ? "open" : ""}`}>
                         <div className='modify-item'>
                             <h2>{"Kentän nimi"}</h2>
                             <h1>{field.Name}</h1>
@@ -186,10 +216,10 @@ const ModifyFieldView = () => {
                             <h2>{"Uusi varausjärjestelmäsi linkki"}</h2>
                             <textarea
                                 type="text"
-                                value={description}
+                                value={link}
                                 placeholder={`https://...`}
                                 className="input-field"
-                                onChange={(e) => setDescription(e.target.value)}
+                                onChange={(e) => setLink(e.target.value)}
                                 required={true}
                             />
                             <em>Mikäli käytössänne on oma varausjärjestelmä, voit lisätä tähän linkin omaan varausjärjestemäänne.</em><em>Linkistä käyttäjä voi siirtyä tekemään varauksia teidän palveluunne.</em>
@@ -197,17 +227,59 @@ const ModifyFieldView = () => {
                         <span className="spacer-line"></span>
                         <div className='modify-item'>
                             <h2>{"Nykyiset aukioloajat"}</h2>
-                            <p>{field.Opening_Hours || "Kenttä on normaalisti aina auki"}</p>
+                            <p>{field.Opening_Hours || "Kenttä on aina auki"}</p>
                             <h2>{"Uudet aukioloajat"}</h2>
 
-                            <textarea
-                                type="text"
-                                value={description}
-                                placeholder={`...pidetään ympäristö siistinä... ...nelinpelikenttä...`}
-                                className="input-field"
-                                onChange={(e) => setDescription(e.target.value)}
-                                required={true}
-                            />
+                            <div>
+                                {weekdays.map(({ key, label }) => (
+                                    <div key={key} style={{ marginBottom: "1rem" }}>
+                                        <strong>{label}</strong>
+                                        <div className='single-weekday'>
+                                            <label style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                                                <span>Open:</span>
+                                                <input
+                                                    type="time"
+                                                    value={hours[key].open}
+                                                    disabled={hours[key].closed}
+                                                    onChange={(e) =>
+                                                        setHours((prev) => ({
+                                                            ...prev,
+                                                            [key]: { ...prev[key], open: e.target.value }
+                                                        }))
+                                                    }
+                                                />
+                                            </label>
+                                            <label style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                                                <span>Close:</span>
+                                                <input
+                                                    type="time"
+                                                    value={hours[key].close}
+                                                    disabled={hours[key].closed}
+                                                    onChange={(e) =>
+                                                        setHours((prev) => ({
+                                                            ...prev,
+                                                            [key]: { ...prev[key], close: e.target.value }
+                                                        }))
+                                                    }
+                                                />
+                                            </label>
+                                            <label style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                                                <input
+                                                    type="checkbox"
+                                                    checked={hours[key].closed}
+                                                    onChange={(e) =>
+                                                        setHours((prev) => ({
+                                                            ...prev,
+                                                            [key]: { ...prev[key], closed: e.target.checked }
+                                                        }))
+                                                    }
+                                                />
+                                                Closed
+                                            </label>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
                             <em>Kentän normaalit aukioloajat. Voit lisätä poikkeuksia lisäämällä &quot;suljettu&quot; tai &quot;avoinna&quot; vuoroja kalenterissa</em>
                         </div>
                         <span className="spacer-line"></span>
