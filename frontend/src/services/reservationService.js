@@ -96,5 +96,18 @@ const getField = async (parameters) => {
     return response.data
 }
 
+// Kentän muokkaaminen
+const modifyField = async (storedToken, parameters) => {
+    setToken(storedToken)
+    const headers = {
+        headers: { Authorization: token }, // Asetetaan token headeriin
+    }
+    const response = await axios.post(
+        baseUrl + "/reservation/update_field",
+        parameters,
+        headers
+    )
+    return response.data
+}
 
-export default { createReservationSystem, getReservationSystem, getReservationSystems, modifyRS, createField, getFields, getField }
+export default { createReservationSystem, getReservationSystem, getReservationSystems, modifyRS, createField, getFields, getField, modifyField }

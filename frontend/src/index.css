@@ -693,6 +693,10 @@ ol {
     width: 100vw;
   }
 
+  h1 {
+    font-size: large;
+  }
+
   .h1-resizeable {
     font-size: 120%;
   }
@@ -727,7 +731,7 @@ ol {
 
 @media (max-width: 400px) {
   h1 {
-    font-size: x-large;
+    font-size: medium;
   }
 
   .register-frontpage-btn {

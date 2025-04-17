@@ -37,6 +37,7 @@ const ModifyReservationSystemView = () => {
     const [fieldDescription, setFieldDescription] = useState("")
     const [liikaAvailable, setLiikaAvailable] = useState(true)
     const [link, setLink] = useState("")
+    const [reload, setReload] = useState(false)
 
     useEffect(() => {
         const fetchSystemData = async () => {
@@ -60,6 +61,11 @@ const ModifyReservationSystemView = () => {
                 })
                 console.log(getFields)
                 setFields(getFields)
+                setAddNewIsOpen(false)
+                setPopUpText("")
+                setDescription("")
+                setTitle("")
+                // TODO: Tee notifikaatio, että tietojen päivitys onnistui
             } catch (error) {
                 console.error(error)
                 // TODO: dispatch kun ei löydy varausjärjestelmää
@@ -68,7 +74,7 @@ const ModifyReservationSystemView = () => {
             }
         }
         fetchSystemData()
-    }, [id])
+    }, [id, reload, storedToken, t, userID])
 
     const handleChange = (selectedOption) => {
         setActivity(selectedOption)
@@ -136,8 +142,18 @@ const ModifyReservationSystemView = () => {
                 URL: link,
                 SystemID: id,
                 ClubID: system.ClubID,
+                Opening_Hours: {
+                    mon: { open: "", close: "", closed: false },
+                    tue: { open: "", close: "", closed: false },
+                    wed: { open: "", close: "", closed: false },
+                    thu: { open: "", close: "", closed: false },
+                    fri: { open: "", close: "", closed: false },
+                    sat: { open: "", close: "", closed: false },
+                    sun: { open: "", close: "", closed: false }
+                }
             })
             console.log(response)
+            setReload((prev) => !prev)
         } catch (error) {
             console.error(error)
         }
@@ -166,6 +182,7 @@ const ModifyReservationSystemView = () => {
             setFieldDescription("")
             setFieldName("")
             setLink("")
+            setReload((prev) => !prev)
         } catch (error) {
             console.error(error)
         }
@@ -239,7 +256,7 @@ const ModifyReservationSystemView = () => {
                     <span className="spacer-line"></span>
                     <h1>Kenttävarausjärjestelmä</h1> <em>{system.Title}</em>
                     <button className='link-btn' onClick={toggleModify}>
-                        {!modifyRSisOpen && "Muokkaa kenttävarausjärjestelmää"}
+                        {!modifyRSisOpen && "Muokkaa kenttävarausjärjestelmää"} {/*TODO: Paljon kovakoodauksia (kielellistä)*/}
                         {modifyRSisOpen && "Sulje muokkaus"}
                     </button>
                     <div className={`add-new-panel ${modifyRSisOpen ? "open" : ""}`}>
@@ -273,7 +290,7 @@ const ModifyReservationSystemView = () => {
                         <span className="spacer-line"></span>
                         <div className='system-modify-item'>
                             <h2>{"Nykyinen Pop-up mainosteksti"}</h2>
-                            <h1>{system.PopUpText}</h1>
+                            <p>{system.PopUpText}</p>
                             <h2>{"Uusi Pop-up mainosteksti"}</h2>
                             <textarea
                                 type="text"
@@ -306,6 +323,7 @@ const ModifyReservationSystemView = () => {
                                 options={options()}
                                 isSearchable={true}
                                 required={true}
+                                menuPlacement='top'
                             />
                         </div>
                         <span className="spacer-line"></span>

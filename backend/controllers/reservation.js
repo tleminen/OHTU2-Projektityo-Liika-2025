@@ -194,6 +194,7 @@ reservationRouter.post("/create_field", userExtractor, async (request, response)
         URL,
         SystemID,
         ClubID,
+        Opening_Hours,
     } = request.body
 
     if (userID === request.user.dataValues.UserID) {
@@ -225,6 +226,7 @@ reservationRouter.post("/create_field", userExtractor, async (request, response)
                 Name: Name,
                 Liika: Liika,
                 URL: URL,
+                Opening_Hours: Opening_Hours,
                 SystemID: SystemID,
             })
             console.log(newField)
@@ -285,5 +287,62 @@ reservationRouter.post("/get_field", async (request, response) => {
         response.status(400).send({ error: `User not found` })
     }
 })
+
+// Kentän päivittäminen
+reservationRouter.post("/update_field", userExtractor, async (request, response) => {
+    const {
+        UserID,
+        Name,
+        Description,
+        Liika,
+        URL,
+        Opening_Hours,
+        FieldID,
+        SystemID,
+    } = request.body
+
+    if (UserID === request.user?.dataValues?.UserID ?? "NAN") {
+        // Eli userExtractorin tokenista ekstraktoima userID
+        try {
+            const system = await ReservationSystems.findOne({
+                where: {
+                    SystemID: SystemID
+                },
+                attributes: ["ClubID"]
+            })
+            const result = await ClubMembers.findOne({
+                where: {
+                    UserID: UserID,
+                    ClubID: system.ClubID,
+                },
+            })
+            if (!result) {
+                response.status(403).json({ error: "Not part of the club at request" })
+            }
+            const newRS = await Fields.update(
+                {
+                    Name: Name,
+                    Description: Description,
+                    Liika: Liika,
+                    URL: URL,
+                    Opening_Hours: Opening_Hours
+                },
+                {
+                    where: {
+                        SystemID: SystemID,
+                        FieldID: FieldID,
+                    }
+                }
+            )
+            response.status(200).send({ message: "Field updated succesfully." })
+        } catch (error) {
+            console.error("Error updating field: " + error)
+            response.status(500).json({ error: "Internal Server Error" })
+        }
+    } else {
+        console.error("Invalid token")
+        response.status(401).json({ error: "Unauthorized" })
+    }
+}) // Kenttävarausjärjestelmän päivittäminen päättyy
 
 module.exports = reservationRouter

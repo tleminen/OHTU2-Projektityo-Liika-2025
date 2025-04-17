@@ -108,7 +108,6 @@ const CreateReservationSystem = () => {
                 clubID,
                 userID,
             })
-            console.log(response)
             if (response.status === 201) {
                 // uusi kenttävarausjärjestelmä luotu
 
@@ -147,6 +146,7 @@ const CreateReservationSystem = () => {
                                 placeholder={t.title}
                                 className={`input-field ${errors.title ? "error" : ""}`}
                                 onChange={(e) => setTitle(e.target.value)}
+                                disabled={disable}
                             />
                         </div>
                         {errors.title && <div className="error-forms">{errors.title}</div>}
@@ -173,6 +173,7 @@ const CreateReservationSystem = () => {
                                 className={`input-field ${errors.popUpText ? "error" : ""}`}
                                 onChange={(e) => setPopUpText(e.target.value)}
                                 placeholder={"Kartan esikatseluikkunan teksti (max 200 merkkiä)"}
+                                disabled={disable}
                             /> {/*TODO: Kovakoodaukset*/}
                         </div>
                         <div className="form-item">
@@ -187,7 +188,8 @@ const CreateReservationSystem = () => {
                                 name="description"
                                 className={`input-field ${errors.description ? "error" : ""}`}
                                 onChange={(e) => setDescription(e.target.value)}
-                                placeholder={"kuvaus / käyttöehdot kuten siivoa kenttä käytön jälkeen"}
+                                placeholder={"Lyhyt kuvaus vuokraajasta / paikasta"}
+                                disabled={disable}
                             />
                         </div>
                         {errors.description && (
@@ -201,6 +203,7 @@ const CreateReservationSystem = () => {
                                     className={`input-field ${errors.categoryID ? "error" : ""}`}
                                     checked={rentalAvailable}
                                     onChange={handleChangeEquipment}
+                                    disabled={disable}
                                 />
                             </label>
                         </div>
@@ -214,7 +217,7 @@ const CreateReservationSystem = () => {
                     </form>
                     {created &&
                         <Link
-                            to={`/partner/modify/${reservationSystemID}`}
+                            to={`/partner/modify/system/${reservationSystemID}`}
                             className={`forms-btn`}
                         >Siirry lisäämään kenttiä</Link>
                     }

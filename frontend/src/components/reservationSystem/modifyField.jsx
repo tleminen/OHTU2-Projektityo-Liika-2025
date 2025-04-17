@@ -6,6 +6,8 @@ import translations from "../../assets/translation"
 import { useEffect, useState } from 'react'
 import reservationService from '../../services/reservationService'
 import NotificationContainer from '../notification/notificationContainer'
+import MobileCalendar from '../../utils/mobileCalendar'
+import DesktopCalendar from '../../utils/desktopCalendar'
 
 const ModifyFieldView = () => {
     const { id } = useParams()
@@ -14,6 +16,8 @@ const ModifyFieldView = () => {
     const userID = useSelector((state) => state.user?.user?.userID ?? null)
     const t = translations[language]
     const [loading, setLoading] = useState(true)
+    const [reload, setReload] = useState(false)
+    const [isMobile, setIsMobile] = useState(false)
     // Perustietojen muokkaus
     const [modifyIsOpen, setModifyIsOpen] = useState(false)
     const [disableModifyField, setDisableModifyField] = useState(true)
@@ -21,7 +25,7 @@ const ModifyFieldView = () => {
     const [field, setField] = useState([])
     const [name, setName] = useState("")
     const [description, setDescription] = useState("")
-    const [liikaAvailable, setLiikaAvailable] = useState(true)
+    const [liikaAvailable, setLiikaAvailable] = useState(null)
     const [link, setLink] = useState("")
     const [hours, setHours] = useState({
         mon: { open: "", close: "", closed: false },
@@ -43,6 +47,13 @@ const ModifyFieldView = () => {
         { key: "sun", label: "Sunday" }
     ]
 
+    useEffect(() => { // Tällä valitaan käytettävä komponentti näytön koon mukaan
+        const checkScreen = () => setIsMobile(window.innerWidth <= 768)
+        checkScreen() // tarkistetaan alussa näytön koko
+        window.addEventListener("resize", checkScreen)
+        return () => window.removeEventListener("resize", checkScreen)
+    }, [])
+
     useEffect(() => {
         const fetchFieldData = async () => {
             try {
@@ -52,6 +63,8 @@ const ModifyFieldView = () => {
                 })
                 console.log(response)
                 setField(response.field)
+                setHours(response.field.Opening_Hours)
+                setLiikaAvailable(response.field.Liika)
             } catch (error) {
                 console.error(error)
                 // TODO: dispatch kun ei löydy varausjärjestelmää
@@ -60,33 +73,32 @@ const ModifyFieldView = () => {
             }
         }
         fetchFieldData()
-    }, [id, storedToken, userID])
+    }, [id, storedToken, userID, reload])
 
     const handleSaveChanges = async () => {
-        console.log("Tallennetaan muutokset tehtävä")
         const updatedName = name || field.Title
         const updatedDescription = description || field.Description
         const updatedLiikaAvailable = liikaAvailable || field.liikaAvailable
         const updatedLink = link || field.link // Jos kategoria on tyhjä, käytetään oletusarvoa
         const updatedHours = hours || field.Opening_Hours
-
-        /*
         try {
-            const response = await reservationService.modifyRS(storedToken, {
+            const response = await reservationService.modifyField(storedToken, {
                 UserID: userID,
                 Name: updatedName,
                 Description: updatedDescription,
                 Liika: updatedLiikaAvailable,
-                Link: updatedLink,
+                URL: updatedLink,
+                Opening_Hours: updatedHours,
                 FieldID: id,
+                SystemID: field.SystemID
             })
-            setDescription("")
-            setName("")
-            setLink("")
+            setReload((prev) => !prev)
+            setModifyIsOpen(false)
+            // TODO: Tee notifikaatio, että tiedot päivitetty onnistuneesti!
+
         } catch (error) {
             console.error(error)
         }
-            */
     }
 
     const toggleAddNew = () => {
@@ -223,10 +235,7 @@ const ModifyFieldView = () => {
                         </div>
                         <span className="spacer-line"></span>
                         <div className='modify-item'>
-                            <h2>{"Nykyiset aukioloajat"}</h2>
-                            <p>{field.Opening_Hours || "Kenttä on aina auki"}</p>
-                            <h2>{"Uudet aukioloajat"}</h2>
-
+                            <h2>{"Vaihda aukioloaikoja"}</h2>
                             <div>
                                 {weekdays.map(({ key, label }) => (
                                     <div key={key} style={{ marginBottom: "1rem" }}>
@@ -285,6 +294,9 @@ const ModifyFieldView = () => {
                         </button>
                     </div>
                     <span className="spacer-line"></span>
+                </div>
+                <div className='system-modify-item'>
+                    {isMobile ? <MobileCalendar /> : <DesktopCalendar />}
                 </div>
             </div>
             <Link to={-1} className="back-btn" style={{ alignSelf: "center" }}>
