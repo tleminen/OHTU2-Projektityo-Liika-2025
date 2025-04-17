@@ -103,8 +103,8 @@ const Calendar = () => {
   useEffect(() => {
     // Päivitä korostusvalinta, kun selectedRange muuttuu
     if (selectedRange && calendar) {
-      const startTime = selectedRange.start.toString("H:mm") // Käytä DayPilotin muotoilua 24 tunnin muodossa
-      const endTime = selectedRange.end.toString("H:mm") // Käytä DayPilotin muotoilua 24 tunnin muodossa
+      const startTime = selectedRange.start.toString("H:mm") 
+      const endTime = selectedRange.end.toString("H:mm") 
       const highlightText = `${startTime} - ${endTime}`
 
       const highlightEvent = {
@@ -130,7 +130,7 @@ const Calendar = () => {
 
   const handleVaraaClick = async () => {
     if (selectedRange) {
-      const modal = await DayPilot.Modal.prompt("Create a new event:", "Event")
+      const modal = await DayPilot.Modal.prompt("Create a new event..:")
       if (modal.result) {
         calendar.events.add({
           start: selectedRange.start,
@@ -179,7 +179,7 @@ const Calendar = () => {
             Varaa
           </button>
         )}
-        {!selectedRange && <p>Valitse ensin aika kalenterista.</p>}
+        {!selectedRange && <p>Valitse ensin aika kalenterista</p>}
       </div>
     </div>
   )
