@@ -9,6 +9,17 @@
 }
 
 .selected-highlight {
-  background-color: rgb(231, 117, 117) !important; /* Voit vaihtaa haluamaasi väriin */
-  opacity: 0.7 !important; /* Voit säätää läpinäkyvyyttä */
+  background-color: rgb(231, 117, 117) !important;
+  /* Voit vaihtaa haluamaasi väriin */
+  opacity: 0.7 !important;
+  /* Voit säätää läpinäkyvyyttä */
+}
+
+button.modal_default_ok {
+  background-color: #2c9ad9 !important;
+  margin-bottom: 10px;
+}
+
+button.modal_default_cancel {
+  background-color: #b0a8a8 !important;
 }

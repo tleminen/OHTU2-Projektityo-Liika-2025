@@ -110,4 +110,18 @@ const modifyField = async (storedToken, parameters) => {
     return response.data
 }
 
-export default { createReservationSystem, getReservationSystem, getReservationSystems, modifyRS, createField, getFields, getField, modifyField }
+// Vuoron luominen
+const createSlot = async (storedToken, parameters) => {
+    setToken(storedToken)
+    const headers = {
+        headers: { Authorization: token }, // Asetetaan token headeriin
+    }
+    const response = await axios.post(
+        baseUrl + "/reservation/create_slot",
+        parameters,
+        headers
+    )
+    return response.data
+}
+
+export default { createReservationSystem, getReservationSystem, getReservationSystems, modifyRS, createField, getFields, getField, modifyField, createSlot }

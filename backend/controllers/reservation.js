@@ -5,6 +5,7 @@ const ReservationSystems = require("../models/reservationSystems")
 const { Sequelize, where, Op } = require("sequelize")
 const { userExtractor } = require("../utils/middleware")
 const { getReservationSystemList } = require('../services/getReservationSystemList')
+const Slots = require('../models/slots')
 
 const reservationRouter = Router()
 
@@ -344,5 +345,55 @@ reservationRouter.post("/update_field", userExtractor, async (request, response)
         response.status(401).json({ error: "Unauthorized" })
     }
 }) // Kenttävarausjärjestelmän päivittäminen päättyy
+
+// Kentän lisääminen
+reservationRouter.post("/create_slot", userExtractor, async (request, response) => {
+    const {
+        UserID,
+        Type,
+        StartTime,
+        EndTime,
+        Text,
+        SystemID,
+        FieldID,
+    } = request.body
+
+    if (UserID === request.user.dataValues.UserID) {
+        // Eli userExtractorin tokenista ekstraktoima userID
+        // Tarkastetaan onko oikeus luoda yhteistyökumppanille tapahtumia (eli ei ole feikattu postpyyntö tavallisella käyttäjällä)
+        try {
+            const system = await ReservationSystems.findOne({
+                where: {
+                    SystemID: SystemID
+                },
+                attributes: ["ClubID"]
+            })
+            const result = await ClubMembers.findOne({
+                where: {
+                    UserID: UserID,
+                    ClubID: system.ClubID,
+                },
+            })
+            if (!result) {
+                response.status(403).json({ error: "User not part of the System at request" })
+            }
+            const newSlot = await Slots.create({
+                Type: Type,
+                StartTime: StartTime,
+                EndTime: EndTime,
+                Text: Text,
+                FieldID: FieldID,
+            })
+            console.log(newSlot)
+            response.status(201).json({ newSlot: newSlot })
+        } catch (e) {
+            console.error(e)
+            response.status(500).send()
+        }
+    } else {
+        console.error("Invalid token")
+        response.status(401).json({ error: "Unauthorized" })
+    }
+}) // Kenttävarausjärjestelmän luonti päättyy
 
 module.exports = reservationRouter

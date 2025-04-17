@@ -75,6 +75,22 @@
     backdrop-filter: blur(10px);
 }
 
+.edit-field-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    width: 80%;
+    max-width: 100dvw;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    backdrop-filter: brightness(110%);
+}
+
 .add-new-panel {
     width: 100%;
     max-height: 0;
