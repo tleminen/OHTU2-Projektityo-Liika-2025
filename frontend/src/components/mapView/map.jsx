@@ -267,56 +267,90 @@ const Map = ({ startingLocation }) => {
         categories[categoryId].markers = []
       })
       // Lisätään markerit uudelleen
-      const fullList = [...eventList, ...systemList]
-      eventList.forEach((tapahtuma) => {
-        const { coordinates } = tapahtuma.Event_Location
-        const lat = coordinates[1]
-        const lng = coordinates[0]
-        const marker = L.marker([lat, lng]).bindPopup(() => {
-          // Asetetaan markkeri oikeisiin koordinaatteihin ja liitetään siihen popUp
-          const container = document.createElement("div") // Popupin containeri, seuraavana sisältö:
-          container.innerHTML = `
+      const fullList = [...eventList, ...systemList] // Sori koodin toistosta, mutten halunnut laittaa propseina eteenpäin kaikkea.
+      fullList.forEach((tapahtuma) => {
+        if (!tapahtuma.EventID) { // Jos ei Event_Location niin on kenttävarausjärjestelmä
+          const { coordinates } = tapahtuma.Establishment_Location
+          const lat = coordinates[1]
+          const lng = coordinates[0]
+          const marker = L.marker([lat, lng]).bindPopup(() => {
+            // Asetetaan markkeri oikeisiin koordinaatteihin ja liitetään siihen popUp
+            const container = document.createElement("div") // Popupin containeri, seuraavana sisältö:
+            container.innerHTML = `
+    <h1>${tapahtuma.Title}</h1>
+    ${handleDescription(tapahtuma.PopUpText)}<br/>
+    <em>${tapahtuma.ClubName
+              }</em> <br/>
+    <a href="/reservation_system/${tapahtuma.SystemID
+              }" style="color: blue; text-decoration: underline;">
+      ${t.show_event_info}
+    </a>
+  `
+            return container
+          })
+          const categoryID = tapahtuma.CategoryID
+          marker.setIcon(selectIcon(categoryID))
+          // Lisää marker oikeaan kategoriaan
+          if (categories[categoryID]) {
+            // Muuten laitetaan kategoriaikoni
+            categories[categoryID].markers.push(marker)
+            // Lisää markerClusterGroupiin vain, jos kategoria on asetettu näkyväksi
+            if (categories[categoryID].visible) {
+              markerClusterGroup.addLayer(marker)
+            }
+          }
+        } else { // Tapahtumat (ml. yhteistyökumppanien tapahtumat)
+          const { coordinates } = tapahtuma.Event_Location
+          const lat = coordinates[1]
+          const lng = coordinates[0]
+          const marker = L.marker([lat, lng]).bindPopup(() => {
+            // Asetetaan markkeri oikeisiin koordinaatteihin ja liitetään siihen popUp
+            const container = document.createElement("div") // Popupin containeri, seuraavana sisältö:
+            container.innerHTML = `
     <h1>${tapahtuma.Title}</h1>
     <em>📅${parseTimeAndDate(tapahtuma.StartTime)[1]}
           <em> 
     <em>🕒${parseTimeAndDate(tapahtuma.StartTime)[0]} - ${parseTimeAndDate(tapahtuma.EndTime)[0]
-            }<em><br/>
+              }<em><br/>
     ${handleDescription(tapahtuma.Description)}<br/>
     <p style="text-transform: lowercase; padding: 4px 0px; margin:0;">${t.participants
-            }: ${tapahtuma.JoinedCount} / ${tapahtuma.ParticipantMax || "-"}</p>
+              }: ${tapahtuma.JoinedCount} / ${tapahtuma.ParticipantMax || "-"}</p>
     <em>${showUsername({
-              user: tapahtuma.Username,
-              club: tapahtuma.ClubName,
-            })}</em> <br/>
+                user: tapahtuma.Username,
+                club: tapahtuma.ClubName,
+              })}</em> <br/>
     <a href="/events/${tapahtuma.EventID
-            }" style="color: blue; text-decoration: underline;">
+              }" style="color: blue; text-decoration: underline;">
       ${t.show_event_info}
     </a>
   `
-          return container
-        })
-        const categoryID = tapahtuma.CategoryID
-        if (tapahtuma.ClubName) {
-          // Mikäli tapahtuma on yhteistyötapahtuma laitetaan yhteistyökumppanin ikoni
-          marker.setIcon(
-            selectClubIcon({
-              clubName: tapahtuma.ClubName,
-              categoryID: tapahtuma.CategoryID,
-            })
-          )
-        } else {
-          marker.setIcon(selectIcon(categoryID))
-        }
-        // Lisää marker oikeaan kategoriaan
-        if (categories[categoryID]) {
-          // Muuten laitetaan kategoriaikoni
-          categories[categoryID].markers.push(marker)
-          // Lisää markerClusterGroupiin vain, jos kategoria on asetettu näkyväksi
-          if (categories[categoryID].visible) {
-            markerClusterGroup.addLayer(marker)
+            return container
+          })
+          const categoryID = tapahtuma.CategoryID
+          if (tapahtuma.ClubName) {
+            // Mikäli tapahtuma on yhteistyötapahtuma laitetaan yhteistyökumppanin ikoni
+            marker.setIcon(
+              selectClubIcon({
+                clubName: tapahtuma.ClubName,
+                categoryID: tapahtuma.CategoryID,
+              })
+            )
+          } else {
+            marker.setIcon(selectIcon(categoryID))
+          }
+          // Lisää marker oikeaan kategoriaan
+          if (categories[categoryID]) {
+            // Muuten laitetaan kategoriaikoni
+            categories[categoryID].markers.push(marker)
+            // Lisää markerClusterGroupiin vain, jos kategoria on asetettu näkyväksi
+            if (categories[categoryID].visible) {
+              markerClusterGroup.addLayer(marker)
+            }
           }
         }
-      })
+      }
+      )
+
     } catch (error) {
       console.error(error)
     }

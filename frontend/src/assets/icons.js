@@ -33,14 +33,12 @@ export const selectIcon = (categoryID) => {
   return Icongroup[categoryMapping[categoryID]] || null
 }
 
-// eslint-disable-next-line no-unused-vars
 export const selectClubIcon = ({ clubName, categoryID }) => {
-  // categoryID valmiina jos halutaan toteuttaa kategorian mukainen ikoni
-  const muunnos = clubString(clubName)
-  try {
+  // Täällä voidaan toteuttaa myös kategorian mukainen clubiikoni
+  try { // Tarkistetaan onko clubilla omaa ikonia
     return ClubIconGroup[clubString(clubName)]
-  } catch (e) {
-    console.log(e)
+    // eslint-disable-next-line no-unused-vars
+  } catch (e) { // Jos ei ollut niin annetaan kategorian mukainen ikoni
     const categoryMapping = categoryMap
     return Icongroup[categoryMapping[categoryID]] || null
   }

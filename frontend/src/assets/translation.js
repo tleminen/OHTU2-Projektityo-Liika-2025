@@ -1,5 +1,5 @@
-import termsOfServiceText from "./termsOfServiceText";
-import infoText from "./infoText";
+import termsOfServiceText from "./termsOfServiceText"
+import infoText from "./infoText"
 const translations = {
   EN: {
     about_us_text:
@@ -207,7 +207,7 @@ const translations = {
     setEventLocationInfo: "Set the location for the event",
     setStartLocationInfo: "Set the starting location for searching events",
     setParticipants: "Set the number of participants (minimum and maximum number).",
-    show_event_info: "Show event",
+    show_event_info: "Show more",
     start: "Press the map to start",
     startLocation: "Start location",
     startTime: "Starts at",
@@ -587,6 +587,6 @@ const translations = {
     tennis: "Tennis",
     uinti: "Uinti",
   },
-};
+}
 
-export default translations;
+export default translations
