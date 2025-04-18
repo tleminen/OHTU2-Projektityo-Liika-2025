@@ -463,7 +463,8 @@ reservationRouter.post("/get_single_system", async (request, response) => {
                         }
                     ]
                 },
-            ]
+            ],
+            order: [[Fields, 'Name', 'ASC']]
         })
         response.status(200).json(systemWithFields)
     } catch (error) {
