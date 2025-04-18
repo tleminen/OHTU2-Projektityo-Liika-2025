@@ -6,6 +6,7 @@ const { Sequelize, where, Op } = require("sequelize")
 const { userExtractor } = require("../utils/middleware")
 const { getReservationSystemList } = require('../services/getReservationSystemList')
 const Slots = require('../models/slots')
+const { getReservationSystemsNearby } = require('../services/getReservationSystemsNearby')
 
 const reservationRouter = Router()
 
@@ -415,5 +416,29 @@ reservationRouter.post("/get_slots", async (request, response) => {
         response.status(400).send({ error: `User not found` })
     }
 }) // Vuorojen haku kentälle päättyy
+
+/**
+ * Hakee kenttävarausjärjestelmät alueelta
+ * Parametrina leveys- ja pituuspiiri, sekä maksimietäisyys pisteestä
+ * Lisäksi mukana aikaväli jolla haetaan. Default aikaväli on nykyinen päivämäärä ja 00:00 + 30 päivää 23:59
+ * Palauttaa tapahtuman tiedot, sekä osallistujamäärän (aktiivinen tai seuraava esiintymä tapahtumasta)
+ */
+reservationRouter.post("/nearby", async (request, response) => {
+    const {
+        latitude,
+        longitude,
+        radius,
+    } = request.body
+    try {
+        const events = await getReservationSystemsNearby(
+            latitude,
+            longitude,
+            radius,
+        )
+        response.json(events)
+    } catch (error) {
+        response.status(500).json({ error: "Jotain meni pieleen" })
+    }
+}) // Tapahtumahaku päättyy
 
 module.exports = reservationRouter

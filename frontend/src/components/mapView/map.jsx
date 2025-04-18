@@ -11,6 +11,7 @@ import { changeLocation } from "../../store/locationSlice"
 import logo from "../../assets/liika_logo169.png"
 import { useNavigate } from "react-router-dom"
 import eventService from "../../services/eventService"
+import reservationService from "../../services/reservationService"
 import { createRoot } from "react-dom/client"
 import { selectClubIcon, selectIcon } from "../../assets/icons"
 import { categories } from "./utils"
@@ -149,6 +150,12 @@ const Map = ({ startingLocation }) => {
       endDay.setDate(endDay.getDate() + DEFAULT_DAYS) // Asetettu komponentin alussa
       let endDate = endDay.toISOString().split("T")[0]
       let eventList
+      // Haetaan ensin kenttävarausjärjestelmät
+      const systemList = await reservationService.getServices({
+        latitude: center.lat,
+        longitude: center.lng,
+        radius: Math.max(Math.max(width, height) / 2, 10000),
+      })
       if (!time || time.quickTime === -1) {
         // Haetaan normaali haku, refresh-nappulasta esimerkiksi. //TODO: Tallenna filtteri Reduksiin
         eventList = await eventService.getEvents({
@@ -260,6 +267,7 @@ const Map = ({ startingLocation }) => {
         categories[categoryId].markers = []
       })
       // Lisätään markerit uudelleen
+      const fullList = [...eventList, ...systemList]
       eventList.forEach((tapahtuma) => {
         const { coordinates } = tapahtuma.Event_Location
         const lat = coordinates[1]

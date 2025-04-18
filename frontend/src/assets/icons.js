@@ -36,9 +36,7 @@ export const selectIcon = (categoryID) => {
 // eslint-disable-next-line no-unused-vars
 export const selectClubIcon = ({ clubName, categoryID }) => {
   // categoryID valmiina jos halutaan toteuttaa kategorian mukainen ikoni
-  console.log(clubName)
   const muunnos = clubString(clubName)
-  console.log(muunnos)
   try {
     return ClubIconGroup[clubString(clubName)]
   } catch (e) {

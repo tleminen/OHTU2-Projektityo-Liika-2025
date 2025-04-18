@@ -133,4 +133,10 @@ const getSlots = async (parameters) => {
     return response.data
 }
 
-export default { createReservationSystem, getReservationSystem, getReservationSystems, modifyRS, createField, getFields, getField, modifyField, createSlot, getSlots }
+// Hakee kenttävarausjärjestelmät lähistölä
+const getServices = async (parameters) => {
+    const response = await axios.post(baseUrl + "/reservation/nearby", parameters)
+    return response.data
+}
+
+export default { createReservationSystem, getReservationSystem, getReservationSystems, modifyRS, createField, getFields, getField, modifyField, createSlot, getSlots, getServices }
