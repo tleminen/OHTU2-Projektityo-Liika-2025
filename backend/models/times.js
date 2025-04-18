@@ -1,6 +1,5 @@
 const { DataTypes } = require("sequelize")
 const { sequelize } = require("../utils/database")
-const Events = require("./Events")
 
 const Times = sequelize.define(
   "Times",
@@ -19,8 +18,5 @@ const Times = sequelize.define(
   },
   { timestamps: false }
 )
-
-// Yhteys tapahtumiin
-Times.belongsTo(Events, { foreignKey: "EventID" })
 
 module.exports = Times

@@ -120,7 +120,7 @@ reservationRouter.post("/get_single", userExtractor, async (request, response) =
             }
             response.status(200).json(system)
         } catch (error) {
-            console.error("Problems with retreving joined evets for user: " + error)
+            console.error("Problems with retreving system for user: " + error)
             response.status(500).json({ error: "Internal Server Error" })
         }
     } else {
@@ -440,5 +440,36 @@ reservationRouter.post("/nearby", async (request, response) => {
         response.status(500).json({ error: "Jotain meni pieleen" })
     }
 }) // Tapahtumahaku päättyy
+
+// Yksittäisen kenttävarausjärjestelmän tietojen haku käyttäjälle, hakee myös kenttien nimet ja tiedot ja varaukset
+reservationRouter.post("/get_single_system", async (request, response) => {
+    const {
+        SystemID,
+    } = request.body
+    try {
+        const systemWithFields = await ReservationSystems.findOne({
+            where: {
+                SystemID: SystemID
+            },
+            attributes: ["SystemID", "Establishment_Location", "Description", "Title", "ClubID", "Rental", "PopUpText", "CategoryID", "updatedAt",],
+            include: [
+                {
+                    model: Fields,
+                    attributes: ["FieldID", "Name", "Description", "Liika", "Opening_Hours", "updatedAt",],
+                    include: [
+                        {
+                            model: Slots,
+                            attributes: ["SlotID", "Type", "StartTime", "EndTime", "Text", "updatedAt"]
+                        }
+                    ]
+                },
+            ]
+        })
+        response.status(200).json(systemWithFields)
+    } catch (error) {
+        console.error("Problems with retreving system for user: " + error)
+        response.status(500).json({ error: "Internal Server Error" })
+    }
+}) // Yksittäisen haku päättyy
 
 module.exports = reservationRouter

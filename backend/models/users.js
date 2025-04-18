@@ -1,7 +1,6 @@
 const { DataTypes } = require("sequelize")
 const { sequelize } = require("../utils/database")
 const Languages = require("./languages")
-const Clubs = require("./club")
 
 const Users = sequelize.define("Users", {
   UserID: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
@@ -25,7 +24,5 @@ const Users = sequelize.define("Users", {
   },
 })
 
-// Yhteys kieliin (Foreign Key)
-Users.belongsTo(Languages, { foreignKey: "LanguageID" })
 
 module.exports = Users

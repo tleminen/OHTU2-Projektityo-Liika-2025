@@ -168,7 +168,7 @@ const ModifyReservationSystemView = () => {
         const updatedCategoryID = activity.value || system.CategoryID // Jos kategoria on tyhjä, käytetään oletusarvoa
 
         try {
-            const response = await reservationService.modifyRS(storedToken, {
+            await reservationService.modifyRS(storedToken, {
                 UserID: userID,
                 Title: updatedtitle,
                 CategoryID: updatedCategoryID,

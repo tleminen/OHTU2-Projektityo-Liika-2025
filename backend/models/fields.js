@@ -1,6 +1,7 @@
 const { DataTypes } = require("sequelize")
 const { sequelize } = require("../utils/database")
 const ReservationSystems = require('./reservationSystems')
+const Slots = require('./slots')
 
 const Fields = sequelize.define("Fields", {
     FieldID: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
@@ -11,7 +12,5 @@ const Fields = sequelize.define("Fields", {
     Opening_Hours: { type: DataTypes.JSONB, allowNull: true }
 })
 
-// Yhteys käyttäjiin ja kategorioihin
-Fields.belongsTo(ReservationSystems, { foreignKey: "SystemID" })
 
 module.exports = Fields

@@ -40,18 +40,4 @@ const Joins = sequelize.define(
   { timestamps: false }
 )
 
-// Määritellään moni-moneen yhteydet
-Users.belongsToMany(Events, {
-  through: { model: Joins, unique: false },
-  foreignKey: "UserID",
-})
-
-Events.belongsToMany(Users, {
-  through: { model: Joins, unique: false },
-  foreignKey: "EventID",
-})
-
-Times.hasMany(Joins, { foreignKey: "TimeID" })
-Joins.belongsTo(Times, { foreignKey: "TimeID" })
-
 module.exports = Joins

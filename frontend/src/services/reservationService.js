@@ -17,7 +17,7 @@ const createReservationSystem = async (storedToken, parameters) => {
     return response
 }
 
-// Hakee yksittäisen tapahtuman tiedot
+// Hakee yksittäisen tapahtuman tiedot järjestelmän muokkausta varten
 const getReservationSystem = async (storedToken, parameters) => {
     setToken(storedToken)
     const headers = {
@@ -139,4 +139,27 @@ const getServices = async (parameters) => {
     return response.data
 }
 
-export default { createReservationSystem, getReservationSystem, getReservationSystems, modifyRS, createField, getFields, getField, modifyField, createSlot, getSlots, getServices }
+// Hakee yksittäisen kenttävarausjärjestelmän tiedot käyttäjälle
+const getSingleSystem = async (parameters) => {
+    const response = await axios.post(
+        baseUrl + "/reservation/get_single_system",
+        parameters,
+    )
+    return response.data
+}
+
+
+export default {
+    createReservationSystem,
+    getReservationSystem,
+    getReservationSystems,
+    modifyRS,
+    createField,
+    getFields,
+    getField,
+    modifyField,
+    createSlot,
+    getSlots,
+    getServices,
+    getSingleSystem
+}
