@@ -183,6 +183,7 @@ const ModifyReservationSystemView = () => {
             setFieldName("")
             setLink("")
             setReload((prev) => !prev)
+            setModifyRSisOpen(false)
         } catch (error) {
             console.error(error)
         }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useRef } from "react"
 import {
   DayPilotCalendar,
   DayPilotNavigator,
@@ -88,14 +88,12 @@ const DesktopCalendar = ({ field }) => {
     },
   }
 
-  useEffect(() => {// TODO: Hae tapahtumat
-    // Alkuperäiset tapahtumat
+  useEffect(() => {
     const fetchSlots = async () => {
       try {
         const result = await reservationService.getSlots({
           FieldID: field.FieldID,
         })
-        console.log(result)
         const mappedEvents = result.slots.map(slot => ({
           id: slot.SlotID,
           text: slot.Text,
@@ -111,10 +109,9 @@ const DesktopCalendar = ({ field }) => {
       }
     }
     fetchSlots()
-  }, [reload])
+  }, [field.FieldID, reload])
 
-  useEffect(() => {
-    // Päivitä korostusvalinta, kun selectedRange muuttuu
+  useEffect(() => { // Päivitä korostusvalinta, kun selectedRange muuttuu
     if (selectedRange && calendar) {
       const startTime = selectedRange.start.toString("H:mm")
       const endTime = selectedRange.end.toString("H:mm")
@@ -140,6 +137,7 @@ const DesktopCalendar = ({ field }) => {
       calendar.events.remove("selected-range")
     }
   }, [selectedRange, calendar])
+
   const baseDate = (() => {
     const now = new Date(startDate)
     const day = now.getDay() // 0 = Su, 1 = Ma, ..., 6 = La
@@ -149,6 +147,7 @@ const DesktopCalendar = ({ field }) => {
     monday.setHours(0, 0, 0, 0)
     return monday
   })()
+
   const closedEvents = Object.entries(field.Opening_Hours).flatMap(([day, { open, close, closed }], index) => {
     const dayOffset = weekdays.indexOf(day)
     const currentDate = new Date(baseDate)
