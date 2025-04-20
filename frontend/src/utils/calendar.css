@@ -39,4 +39,10 @@ button.modal_default_cancel {
   border-right: 1px solid rgb(146, 146, 146) !important;
   border-bottom: 2px dotted rgba(177, 182, 176, 0.278) !important;
   background: rgba(255, 255, 255, 0.332) !important;
+
+}
+
+.field-calendar-container {
+  display: flex;
+  flex-direction: row;
 }
