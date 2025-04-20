@@ -342,11 +342,11 @@ const EventView = () => {
             </div>
           </div>
           }
-          <p style={{ fontWeight: "lighter" }}>{t.eventLastUpdated}</p>
-          <p style={{ fontWeight: "lighter" }}>
+          <em style={{ fontWeight: "lighter" }}>{t.lastUpdated}</em>
+          <em style={{ fontWeight: "lighter" }}>
             {parseTimeAndDate(event.updatedAt)[1]}{" "}
             {parseTimeAndDate(event.updatedAt)[0]}
-          </p>
+          </em>
           <Link to={"/map"} className="back-btn">
             <span>{t.back}</span>
           </Link>
@@ -424,12 +424,10 @@ const EventView = () => {
             </div>
           ))}
         </div>
-
-        <p style={{ fontWeight: "lighter" }}>{t.eventLastUpdated}</p>
-        <p style={{ fontWeight: "lighter" }}>
+        <em style={{ fontWeight: "lighter" }}>{t.lastUpdated} {" "}
           {parseTimeAndDate(event.updatedAt)[1]}{" "}
           {parseTimeAndDate(event.updatedAt)[0]}
-        </p>
+        </em>
         <Link to={"/map"} className="back-btn">
           <span>{t.back}</span>
         </Link>

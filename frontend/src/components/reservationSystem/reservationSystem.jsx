@@ -3,6 +3,7 @@ import reservationService from '../../services/reservationService'
 import { useSelector } from 'react-redux'
 import translations from '../../assets/translation'
 import { selectCategoryName } from '../../assets/icons'
+import { parseTimeAndDate } from '../../utils/helper'
 
 const ReservationSystem = (SystemID) => {
     const language = useSelector((state) => state.language.language)
@@ -98,6 +99,10 @@ const ReservationSystem = (SystemID) => {
                     ))
                 )}
             </div>
+            <em style={{ fontWeight: "lighter" }}>{t.lastUpdated} {" "}
+                {parseTimeAndDate(system.updatedAt)[1]}{" "}
+                {parseTimeAndDate(system.updatedAt)[0]}
+            </em>
         </div>
     )
 }

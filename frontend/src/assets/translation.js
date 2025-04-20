@@ -111,7 +111,7 @@ const translations = {
     joinedEvents: "Joined events",
     language: "Default language",
     language_update_failure: "Error with changing language",
-    lastUpdated: "Event last updated",
+    lastUpdated: "Updated at",
     leave_event: "Leave event",
     leftSide: "Left side:",
     legalBasisText: "Legal basis and the purpose of processing personal data",
@@ -403,7 +403,7 @@ const translations = {
     joinedEvents: "Tulevat osallistumisesi",
     language: "Oletuskieli",
     language_update_failure: "Virhe kielenvaihdossa",
-    lastUpdated: "Tapahtumaa viimeksi päivitetty",
+    lastUpdated: "Viimeksi päivitetty",
     leave_event: "Peru ilmoittautuminen",
     legalBasisText: "Henkilötietojen käsittelyn oikeusperuste ja tarkoitus",
     liikaDescription:
