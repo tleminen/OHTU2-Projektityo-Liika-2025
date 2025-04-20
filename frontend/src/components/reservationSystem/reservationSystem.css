@@ -60,6 +60,30 @@
     backdrop-filter: blur(10px);
 }
 
+.system-view-item-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    flex-direction: column;
+    max-width: 90%;
+    margin: auto;
+    background-color: rgba(186, 255, 250, 0.157);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    margin-bottom: 20px;
+    margin-top: 20px;
+    text-align: center;
+    gap: 8px;
+    backdrop-filter: blur(10px);
+}
+
+.system-view-item {
+    padding: 0px 8px;
+    border-radius: 10px;
+}
+
 .field-btn-container {
     display: flex;
     justify-content: center;
@@ -106,7 +130,23 @@
 }
 
 /* Paneelin avoin tila */
-.add-new-panel.open {
+.system-view-field-panel.open,
+.open.add-new-panel.open {
+    max-height: 1000vh;
+    opacity: 1;
+}
+
+.system-view-field-panel,
+.field-calendar-panel {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0.7;
+    transition: max-height 0.8s ease;
+}
+
+/* Paneelin avoin tila */
+.field-calendar-panel.open {
+    overflow: visible;
     max-height: 1000vh;
     opacity: 1;
 }
@@ -126,13 +166,19 @@
     flex-direction: column;
     position: sticky;
     height: 70dvh;
+    gap: 10px;
+    margin-right: 10px;
 }
 
 .field-calendar-navigation-button {
-    margin: 10px 0px;
-    padding: 40px 20px;
+    margin: 0;
+    padding: 36px 18px;
     color: black;
-    font-size: larger;
-    background-color: rgba(91, 237, 169, 0.518);
-    border-color: rgba(93, 167, 167, 0.637);
+    font-size: large;
+    background-color: rgba(132, 214, 202, 0.226);
+    border-color: rgba(93, 167, 167, 0.316);
+    backdrop-filter: blur(10px);
+    max-width: 90%;
+    max-width: 10dvw;
+    max-height: 10%;
 }

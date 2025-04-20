@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import reservationService from '../../services/reservationService'
 import { useSelector } from 'react-redux'
 import translations from '../../assets/translation'
@@ -12,7 +12,10 @@ const ReservationSystem = (SystemID) => {
     const t = translations[language]
     const [loading, setLoading] = useState(true)
     const [system, setSystem] = useState(null)
-    // DaypilotNavigaattori
+    const [multiCalendarIsOpen, setMultiCalendarIsOpen] = useState(false)
+    const [fieldsIsOpen, setFieldsIsOpen] = useState(false)
+    const [openFieldId, setOpenFieldId] = useState(null)
+    // DaypilotNavigaattori kalenterikomponenteille
     const date = new Date()
     const [startDate, setStartDate] = useState(date)
     const [reload, setReload] = useState(false)
@@ -36,12 +39,24 @@ const ReservationSystem = (SystemID) => {
         fetchEventInfo()
     }, [SystemID.id])
 
-    /**
-     * Sivupainikkeen painalluksella siirretään kalenterinäkymiä viikolla eteenpäin
-     */
+    // Yksittäisen kentän painallus. Jos painetaan uudelleen nii tulee null.
+    const handleFieldClick = (field) => {
+        setOpenFieldId((prevId) => (prevId === field.FieldID ? null : field.FieldID))
+    }
+
+    const toggleMultiCalendar = () => {
+        setMultiCalendarIsOpen((prev) => !prev)
+        //setDisableCreateField(false)
+    }
+
+    const toggleFields = () => {
+        setFieldsIsOpen((prev) => !prev)
+        //setDisableCreateField(false)
+    }
+
+    // Sivupainikkeen painalluksella siirretään kalenterinäkymiä viikolla eteenpäin
     const handleNextWeek = () => {
         if (startDate instanceof DayPilot.Date) {
-            console.log(startDate)
             setStartDate(startDate.addDays(7))
         } else {
             setStartDate(startDate.setDate(startDate.getDate() + 7))
@@ -49,12 +64,9 @@ const ReservationSystem = (SystemID) => {
         }
     }
 
-    /**
-     * Sivupainikkeen painalluksella siirretään kalenterinäkymiä viikolla taaksepäin
-     */
+    // Sivupainikkeen painalluksella siirretään kalenterinäkymiä viikolla taaksepäin
     const handlePrevWeek = () => {
         if (startDate instanceof DayPilot.Date) {
-            console.log(startDate)
             setStartDate(startDate.addDays(-7))
         } else {
             setStartDate(startDate.setDate(startDate.getDate() - 7))
@@ -67,7 +79,7 @@ const ReservationSystem = (SystemID) => {
      * @param {kenttävarausjärjestelmä} system 
      * @returns Näyttää kenttien varauskalenterit alekkain, navigointi sivupainikkeella tai kalenterilla
      */
-    const fields = (system) => {
+    const multiCalendar = (system) => {
         return (
             <div style={{ display: "flex", flexDirection: "column", alignItems: "anchor-center" }}>
                 <DayPilotNavigator
@@ -92,20 +104,64 @@ const ReservationSystem = (SystemID) => {
                                 key={field.FieldID}
                                 className="system-item-container"
                             >
-                                <div className="event-item">
+                                <div className="system-item">
                                     <div>
-                                        <h3>{t.title}</h3>
-                                        {field.Name}
+                                        <h3>{field.Name}</h3>
+                                        <p style={{ marginBottom: "10px" }}>{field.Description}</p>
                                     </div>
                                     <DesktopMiniCalendar field={field} startDate={startDate} reload={reload} />
                                 </div>
-                                <div className="event-item">
+                                <div className="system-item">
 
                                 </div>
                             </div>
                         ))}
                     </div>
                 </div>
+            </div>
+        )
+    }
+
+    const fields = (system) => {
+        return (
+            <div>
+                {system.Fields.map((field) => (
+                    <div
+                        key={field.FieldID}
+                        className="system-view-item-container"
+                    >
+                        <div className="system-view-item" style={{ display: "flex", flexDirection: "column" }}>
+                            <h3>{field.Name}</h3>
+                            <p style={{ marginBottom: "10px" }}>{field.Description}</p>
+                        </div>
+                        {openFieldId === field.FieldID && (
+                            <button onClick={() => handleFieldClick(field)} className='btn'>
+                                Sulje
+                            </button>
+                        )}
+                        {openFieldId === field.FieldID && (
+                            <div style={{ display: "flex", alignItems: "anchor-center", flexDirection: "row", gap: "10px" }}>
+                                <DayPilotNavigator
+                                    selectMode={"Week"}
+                                    showMonths={1}
+                                    skipMonths={1}
+                                    selectionDay={startDate}
+                                    weekStarts={1}
+                                    onTimeRangeSelected={(args) => {
+                                        setStartDate(args.day)
+                                        setReload((prev) => !prev)
+                                    }}
+                                />
+                                <DesktopMiniCalendar field={field} reload={reload} startDate={startDate} />
+                            </div>
+                        )}
+                        {openFieldId !== field.FieldID && (
+                            <button onClick={() => handleFieldClick(field)} className='btn'>
+                                Avaa
+                            </button>
+                        )}
+                    </div>
+                ))}
             </div>
         )
     }
@@ -156,15 +212,33 @@ const ReservationSystem = (SystemID) => {
 
             <div className='spacer-line' />
             <h2>Kentät</h2>
-            <div className="event-list-items">
+            <em style={{ textAlign: "center", maxWidth: "80%" }}>Voit tarkastella yksittäistä kenttää painamalla sitä tai avata kaikkien kenttien kalenterit nähtäville samaan aikaan</em>
+            <button className='link-btn' onClick={toggleFields}>
+                {!fieldsIsOpen && "Näytä kentät"}
+                {fieldsIsOpen && "Piilota kentät"}
+            </button>
+            <div className={`system-view-field-panel ${fieldsIsOpen ? "open" : ""}`}>
+                <div className="event-list-items">
+                    {system.Fields.length === 0 ? (
+                        <p>{"Ei näytettäviä kenttiä"}</p>
+                    ) : (
+                        fields(system)
+                    )}
+                </div>
+            </div>
+            <button className='link-btn' onClick={toggleMultiCalendar}>
+                {!multiCalendarIsOpen && "Avaa kenttien kalenterit"}
+                {multiCalendarIsOpen && "Sulje kalenterit"}
+            </button>
+            <div className={`field-calendar-panel ${multiCalendarIsOpen ? "open" : ""}`}>
 
-
-                {system.Fields.length === 0 ? (
-                    <p>{"Ei näytettäviä kenttiä"}</p>
-                ) : (
-
-                    fields(system)
-                )}
+                <div className="event-list-items">
+                    {system.Fields.length === 0 ? (
+                        <p>{"Ei näytettäviä kenttiä"}</p>
+                    ) : (
+                        multiCalendar(system)
+                    )}
+                </div>
             </div>
             <em style={{ fontWeight: "lighter" }}>{t.lastUpdated} {" "}
                 {parseTimeAndDate(system.updatedAt)[1]}{" "}
