@@ -5,18 +5,17 @@ import DatePicker from "react-multi-date-picker"
 // eslint-disable-next-line react/prop-types
 const ShortcutButtons = ({ toggleCategory, fetchEvents }) => {
   const [moreIsOpen, setMoreIsOpen] = useState(false)
-  const [catIsOpen, setCatIsOpen] = useState(false)
-  const [timeIsOpen, setTimeIsOpen] = useState(false)
+  const [catIsOpen, setCatIsOpen] = useState(false) // Kategorioiden suoratuksen paneelin näkyvyys
+  const [timeIsOpen, setTimeIsOpen] = useState(false) // Aikavälifiltteröinnin paneelin näkyvyys
   const [timeSelectIsOpen, setTimeSelectIsOpen] = useState(false)
   const [selectedQuick, setSelectedQuick] = useState(null)
   const [overflowVisibility, setOverflowVisibility] = useState(false)
-  const [selectedCategories, setSelectedCategories] = useState({})
+  const [selectedCategories, setSelectedCategories] = useState({}) // Valitut kategoriat
   const [startTime, setStartTime] = useState("")
   const [endTime, setEndTime] = useState("")
   const [dates, setDates] = useState([])
-  const [calendarPosition, setCalendarPosition] = useState("top")
-  // Kenttävarausjärjestelmien toggle
-  const [showReservationSystems, setShowReservationSystems] = useState(true)
+  const [calendarPosition, setCalendarPosition] = useState("top") // Kalenterin avautumissuunta. Muuttuu ikkunan koon mukaan
+  const [showReservationSystems, setShowReservationSystems] = useState(true) // Kenttävarausjärjestelmien toggle
   const panelRef = useRef(null)
   const timeInputRef = useRef(null)
   let quickTime = 0
@@ -259,7 +258,7 @@ const ShortcutButtons = ({ toggleCategory, fetchEvents }) => {
               style={{ backgroundImage: `url(/lajit/${name}.png)` }}
             />
           ))}
-          <button
+          <button // Kenttävarausjärjestelmien suodatuspainike
             className={`category-item ${showReservationSystems ? "active" : ""
               }`}
             onClick={() => setShowReservationSystems((prev) => !prev)}

@@ -56,7 +56,7 @@ const Map = ({ startingLocation }) => {
 
   // Kategorioiden suodatus (poisto)
   const removeCategoryMarkers = (categoryId) => { // Poistetaan kategoriaID:n mukainen
-    if (!categoryId) {
+    if (!categoryId) { // Tällä toteutettu kenttävarausjärjestelmien suodatus pois.
       reservationSystemMarkers.forEach((marker) => {
         markerClusterGroup.removeLayer(marker)
       })
@@ -101,14 +101,13 @@ const Map = ({ startingLocation }) => {
         catSelected.push(Number(categoryId))
       }
     })
-    if (catSelected.length === 0) {
+    if (catSelected.length === 0) { // Mikäli ei ole valittuna kategorioita
       showAllCategories(true)
-    } else {
+    } else { // Kategoria(yksi tai enemmän) valittuna
       showAllCategories(false)
       showCategories(catSelected)
     }
-    if (!showReservationSystems) {
-      console.log("piilota!")
+    if (!showReservationSystems) { // Piilotetaan kenttävarausjärjestelmät jos false
       removeCategoryMarkers()
     }
   }
@@ -157,7 +156,7 @@ const Map = ({ startingLocation }) => {
       let startDay = new Date()
       let today = startDay.toISOString().split("T")[0] // Tämä himmeli tuottaa päivämäärän muotoa: YYYY-MM-DD
       let endDay = new Date(startDay)
-      endDay.setDate(endDay.getDate() + DEFAULT_DAYS) // Asetettu komponentin alussa
+      endDay.setDate(endDay.getDate() + DEFAULT_DAYS) // Arvo asetettu tämän komponentin alussa
       let endDate = endDay.toISOString().split("T")[0]
       let eventList
       // Haetaan ensin kenttävarausjärjestelmät
