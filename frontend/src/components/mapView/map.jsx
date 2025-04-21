@@ -31,6 +31,7 @@ const Map = ({ startingLocation }) => {
   const [isCategoryPanelOpen, setCategoryPanelOpen] = useState(false)
   const timestampRef = useRef(null)
   const markerClusterGroup = L.markerClusterGroup()
+  const reservationSystemMarkers = [] // Täällä pidetään yllä viitettä kenttävarausjärjestelmästä niiden filtteröintiä varten
   const user = useSelector((state) => state.user?.user?.username ?? null)
   const clubs = useSelector((state) => state.user?.user?.clubs ?? {})
   const mapPreferences = useSelector(
@@ -54,12 +55,18 @@ const Map = ({ startingLocation }) => {
   }
 
   // Kategorioiden suodatus (poisto)
-  const removeCategoryMarkers = (categoryId) => {
-    const category = categories[categoryId]
-    if (category && category.markers.length > 0) {
-      category.markers.forEach((marker) => {
+  const removeCategoryMarkers = (categoryId) => { // Poistetaan kategoriaID:n mukainen
+    if (!categoryId) {
+      reservationSystemMarkers.forEach((marker) => {
         markerClusterGroup.removeLayer(marker)
       })
+    } else {
+      const category = categories[categoryId] // categories sisältää markerit
+      if (category && category.markers.length > 0) {
+        category.markers.forEach((marker) => {
+          markerClusterGroup.removeLayer(marker)
+        })
+      }
     }
   }
 
@@ -82,7 +89,7 @@ const Map = ({ startingLocation }) => {
   }
 
   // Kategorian näkyvyyden käsittely
-  const toggleCategory = (selectedCategories) => {
+  const toggleCategory = (selectedCategories, showReservationSystems) => {
     let catSelected = []
 
     Object.entries(selectedCategories).forEach(([categoryId, isSelected]) => {
@@ -94,12 +101,15 @@ const Map = ({ startingLocation }) => {
         catSelected.push(Number(categoryId))
       }
     })
-
     if (catSelected.length === 0) {
       showAllCategories(true)
     } else {
       showAllCategories(false)
       showCategories(catSelected)
+    }
+    if (!showReservationSystems) {
+      console.log("piilota!")
+      removeCategoryMarkers()
     }
   }
 
@@ -290,7 +300,9 @@ const Map = ({ startingLocation }) => {
           })
           const categoryID = tapahtuma.CategoryID
           marker.setIcon(selectIcon(categoryID))
-          // Lisää marker oikeaan kategoriaan
+          // Lisätään viite markerista varausjärjestelmätaulukkoon filtteröintiä varten
+          reservationSystemMarkers.push(marker)
+          // Lisää marker myös oikeaan kategoriaan
           if (categories[categoryID]) {
             // Muuten laitetaan kategoriaikoni
             categories[categoryID].markers.push(marker)

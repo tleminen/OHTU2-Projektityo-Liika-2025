@@ -15,6 +15,8 @@ const ShortcutButtons = ({ toggleCategory, fetchEvents }) => {
   const [endTime, setEndTime] = useState("")
   const [dates, setDates] = useState([])
   const [calendarPosition, setCalendarPosition] = useState("top")
+  // Kenttävarausjärjestelmien toggle
+  const [showReservationSystems, setShowReservationSystems] = useState(true)
   const panelRef = useRef(null)
   const timeInputRef = useRef(null)
   let quickTime = 0
@@ -195,7 +197,7 @@ const ShortcutButtons = ({ toggleCategory, fetchEvents }) => {
    * Lähettää map-komponentille pyynnön filtteröidä
    */
   const handleClicks = () => {
-    toggleCategory(selectedCategories)
+    toggleCategory(selectedCategories, showReservationSystems)
   }
 
   /**
@@ -251,13 +253,18 @@ const ShortcutButtons = ({ toggleCategory, fetchEvents }) => {
           {Object.entries(categoryMap).map(([id, name]) => (
             <button
               key={id}
-              className={`category-item ${
-                selectedCategories[id] ? "active" : ""
-              }`}
+              className={`category-item ${selectedCategories[id] ? "active" : ""
+                }`}
               onClick={() => handleCategoryClick(Number(id))}
               style={{ backgroundImage: `url(/lajit/${name}.png)` }}
             />
           ))}
+          <button
+            className={`category-item ${showReservationSystems ? "active" : ""
+              }`}
+            onClick={() => setShowReservationSystems((prev) => !prev)}
+            style={{ backgroundImage: `url(/lajit/liikatemp.png)` }}
+          />
         </div>
       </div>
       <button
@@ -361,41 +368,36 @@ const ShortcutButtons = ({ toggleCategory, fetchEvents }) => {
         </div>
         <div className="quick-time-select-container">
           <button
-            className={`quick-time-select ${
-              selectedQuick === 1 ? "selected" : ""
-            }`}
+            className={`quick-time-select ${selectedQuick === 1 ? "selected" : ""
+              }`}
             onClick={() => handleQuickTime(1)}
           >
             Filtteröi
           </button>
           <button
-            className={`quick-time-select ${
-              selectedQuick === 2 ? "selected" : ""
-            }`}
+            className={`quick-time-select ${selectedQuick === 2 ? "selected" : ""
+              }`}
             onClick={() => handleQuickTime(2)}
           >
             3 h
           </button>
           <button
-            className={`quick-time-select ${
-              selectedQuick === 3 ? "selected" : ""
-            }`}
+            className={`quick-time-select ${selectedQuick === 3 ? "selected" : ""
+              }`}
             onClick={() => handleQuickTime(3)}
           >
             1 d
           </button>
           <button
-            className={`quick-time-select ${
-              selectedQuick === 4 ? "selected" : ""
-            }`}
+            className={`quick-time-select ${selectedQuick === 4 ? "selected" : ""
+              }`}
             onClick={() => handleQuickTime(4)}
           >
             7 d
           </button>
           <button
-            className={`quick-time-select ${
-              selectedQuick === 5 ? "selected" : ""
-            }`}
+            className={`quick-time-select ${selectedQuick === 5 ? "selected" : ""
+              }`}
             onClick={() => handleQuickTime(5)}
           >
             1 kk
