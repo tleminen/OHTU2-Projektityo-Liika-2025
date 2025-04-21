@@ -198,7 +198,6 @@ const ReservationSystem = (SystemID) => {
                 className="event-view-icon"
             />
             <h1>{system.Title}</h1>
-            <p>{system.Description}</p>
             {system.Rental ? (<div style={{
                 display: "flex",
                 alignItems: "anchor-center"
@@ -209,7 +208,9 @@ const ReservationSystem = (SystemID) => {
                 height={100}
                 className="event-view-icon"
             />}</div>) : ("")}
-
+            <div className='spacer-line' />
+            <h2>Info</h2>
+            <p style={{ textAlign: "center", maxWidth: "80%" }}>{system.Description}</p>
             <div className='spacer-line' />
             <h2>Kentät</h2>
             <em style={{ textAlign: "center", maxWidth: "80%" }}>Voit tarkastella yksittäistä kenttää painamalla sitä tai avata kaikkien kenttien kalenterit nähtäville samaan aikaan</em>
