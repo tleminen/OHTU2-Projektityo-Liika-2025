@@ -18,12 +18,12 @@ import ChangeLanguage from "./components/accountView/changeInfo/changeLanguage"
 import ChangeMap from "./components/accountView/changeInfo/changeMap"
 import AboutView from './components/aboutView'
 import PrivacyStatementView from './components/privacyStatementView'
-import CreateReservationSystem from './components/reservationSystem'
 import PartnerChoisesView from './components/createEventView/partnerChoisesView'
 import ModifyReservationSystemView from './components/reservationSystem/modifyReservationSystem'
 import ListReservationSystems from './components/reservationSystem/listReservationSystems'
 import ModifyFieldView from './components/reservationSystem/modifyField'
 import ReservationSystemView from './components/reservationSystem'
+import CreateReservationSystem from './components/reservationSystem/createReservationSystem'
 
 const App = () => {
   return (
