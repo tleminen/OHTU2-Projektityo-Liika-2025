@@ -88,6 +88,19 @@ const Map = ({ startingLocation }) => {
     return description
   }
 
+  const handleRental = (Rental) => {
+    if (Rental) {
+      return (
+        `<img
+        src="/rentalEquipmentAvailable.png"
+        alt="Logo"
+        width=60
+        height=60
+        className="event-view-icon"
+      />`)
+    } else return (`<div></div>`)
+  }
+
   // Kategorian näkyvyyden käsittely
   const toggleCategory = (selectedCategories, showReservationSystems) => {
     let catSelected = []
@@ -279,6 +292,7 @@ const Map = ({ startingLocation }) => {
       const fullList = [...eventList, ...systemList] // Sori koodin toistosta, mutten halunnut laittaa propseina eteenpäin kaikkea.
       fullList.forEach((tapahtuma) => {
         if (!tapahtuma.EventID) { // Jos ei Event_Location niin on kenttävarausjärjestelmä
+          console.log(tapahtuma)
           const { coordinates } = tapahtuma.Establishment_Location
           const lat = coordinates[1]
           const lng = coordinates[0]
@@ -286,14 +300,19 @@ const Map = ({ startingLocation }) => {
             // Asetetaan markkeri oikeisiin koordinaatteihin ja liitetään siihen popUp
             const container = document.createElement("div") // Popupin containeri, seuraavana sisältö:
             container.innerHTML = `
-    <h1>${tapahtuma.Title}</h1>
-    ${handleDescription(tapahtuma.PopUpText)}<br/>
-    <em>${tapahtuma.ClubName
-              }</em> <br/>
-    <a href="/reservation_system/${tapahtuma.SystemID
-              }" style="color: blue; text-decoration: underline;">
-      ${t.show_event_info}
-    </a>
+    <div class="popup-wrapper">
+    <div class="popup-info">
+      <h1>${tapahtuma.Title}</h1>
+      ${handleDescription(tapahtuma.PopUpText)}<br/>
+      <em>${tapahtuma.ClubName}</em> <br/>
+      <a href="/reservation_system/${tapahtuma.SystemID}" class="event-link">
+        ${t.show_event_info}
+      </a>
+    </div>
+    <div class="popup-right">
+    ${handleRental(tapahtuma.Rental)}
+    </div>
+  </div>
   `
             return container
           })

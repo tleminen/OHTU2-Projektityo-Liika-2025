@@ -597,6 +597,22 @@ ol {
   max-width: 100%;
 }
 
+.popup-wrapper {
+  display: flex;
+}
+
+.popup-info {
+  max-width: 103%;
+}
+
+.popup-right {
+  margin-left: -20px;
+  justify-self: end;
+  align-self: end;
+  transform: translateX(20px) translateY(8px);
+  max-width: fit-content;
+}
+
 /*ala paneelille tyyli*/
 .footer {
   width: 100%;

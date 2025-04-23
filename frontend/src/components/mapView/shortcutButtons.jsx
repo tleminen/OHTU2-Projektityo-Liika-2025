@@ -262,7 +262,7 @@ const ShortcutButtons = ({ toggleCategory, fetchEvents }) => {
             className={`category-item ${showReservationSystems ? "active" : ""
               }`}
             onClick={() => setShowReservationSystems((prev) => !prev)}
-            style={{ backgroundImage: `url(/lajit/liikatemp.png)` }}
+            style={{ backgroundImage: `url(/reservationSystemIcon.png)` }}
           />
         </div>
       </div>

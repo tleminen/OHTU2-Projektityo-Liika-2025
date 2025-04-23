@@ -202,7 +202,7 @@ const ReservationSystem = (SystemID) => {
                 display: "flex",
                 alignItems: "anchor-center"
             }}>Tarjoamme vuokrausta {<img
-                src={`/TEMPok.png`}
+                src={`/rentalEquipmentAvailable.png`}
                 alt="Logo"
                 width={100}
                 height={100}
