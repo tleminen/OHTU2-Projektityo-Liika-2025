@@ -46,3 +46,29 @@ button.modal_default_cancel {
   display: flex;
   flex-direction: row;
 }
+
+/* Pikkukalenterin värit*/
+.navigator_default_title,
+.navigator_default_titleleft,
+.navigator_default_titleright {
+  background: rgba(150, 248, 255, 0.358) !important;
+  backdrop-filter: brightness(110%);
+}
+
+.navigator_default_dayheader {
+  background: rgba(150,
+      248,
+      255,
+      0.224) !important;
+  backdrop-filter: brightness(110%);
+}
+
+.navigator_default_main {
+  background: rgba(150, 248, 255, 0.093) !important;
+  backdrop-filter: brightness(110%);
+}
+
+.navigator_default_weekend {
+  background-color: rgba(49, 103, 107, 0.108) !important;
+  backdrop-filter: brightness(110%);
+}

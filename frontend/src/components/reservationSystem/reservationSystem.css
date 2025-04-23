@@ -146,6 +146,7 @@
 
 /* Paneelin avoin tila */
 .field-calendar-panel.open {
+    margin-top: 10px;
     overflow: visible;
     max-height: 1000vh;
     opacity: 1;
@@ -172,13 +173,22 @@
 
 .field-calendar-navigation-button {
     margin: 0;
-    padding: 36px 18px;
+    padding: 40px 0px;
     color: black;
     font-size: large;
-    background-color: rgba(132, 214, 202, 0.226);
+    background-color: rgba(251, 255, 254, 0.125);
     border-color: rgba(93, 167, 167, 0.316);
     backdrop-filter: blur(10px);
     max-width: 90%;
     max-width: 10dvw;
     max-height: 10%;
+}
+
+.field-calendar-navigation-button:hover {
+    border-color: rgba(93, 167, 167, 0.496);
+    backdrop-filter: blur(10px) brightness(110%);
+}
+
+.field-calendar-navigation-button:active {
+    transform: scale(0.95);
 }

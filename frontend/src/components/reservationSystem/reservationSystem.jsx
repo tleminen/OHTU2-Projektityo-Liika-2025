@@ -95,8 +95,20 @@ const ReservationSystem = (SystemID) => {
                 />
                 <div className='field-calendar-container'>
                     <div className='field-calendar-navigation'>
-                        <button className='field-calendar-navigation-button' onClick={handleNextWeek}>{"⇨"}</button>
-                        <button className='field-calendar-navigation-button' onClick={handlePrevWeek}>{"⇦"}</button>
+                        <button className='field-calendar-navigation-button' onClick={handleNextWeek}>{<img
+                            src="/weekArrowRight.png"
+                            alt="Logo"
+                            width={60}
+                            height={60}
+                            className="event-view-icon"
+                        />}</button>
+                        <button className='field-calendar-navigation-button' onClick={handlePrevWeek}>{<img
+                            src="/weekArrowLeft.png"
+                            alt="Logo"
+                            width={60}
+                            height={60}
+                            className="event-view-icon"
+                        />}</button>
                     </div>
                     <div>
                         {system.Fields.map((field) => (

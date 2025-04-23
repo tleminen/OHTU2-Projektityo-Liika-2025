@@ -306,7 +306,7 @@ const Map = ({ startingLocation }) => {
       ${handleDescription(tapahtuma.PopUpText)}<br/>
       <em>${tapahtuma.ClubName}</em> <br/>
       <a href="/reservation_system/${tapahtuma.SystemID}" class="event-link">
-        ${t.show_event_info}
+        ${t.show_reservation_info}
       </a>
     </div>
     <div class="popup-right">
