@@ -144,7 +144,7 @@ button:focus-visible {
   display: block;
 }
 
-/*rekisteröinti ja kirjautumispainikkeiden container*/
+/*vaakasuunnan container*/
 .containerX {
   display: flex;
   gap: 10px;
@@ -717,21 +717,21 @@ ol {
     font-size: 120%;
   }
 
+  .login-register-container {
+    flex-direction: column;
+  }
+
+  .register-frontpage-btn {
+    scale: 0.9;
+  }
+
   .input-field {
     min-width: 200px;
     max-width: 90%;
   }
 
-  .register-frontpage-btn {
-    padding: 10px 35px;
-    border-radius: 10px;
-    font-size: 1.5rem;
-  }
-
   .login-frontpage-btn {
-    padding: 10px 35px;
-    border-radius: 10px;
-    font-size: 1.5rem;
+    scale: 0.9;
   }
 
   .back-btn {
@@ -750,16 +750,17 @@ ol {
     font-size: medium;
   }
 
+  .login-register-container {
+    flex-direction: column;
+    gap: 0px;
+  }
+
   .register-frontpage-btn {
-    padding: 4px 10px;
-    border-radius: 10px;
-    font-size: 1.2rem;
+    scale: 0.65;
   }
 
   .login-frontpage-btn {
-    padding: 4px 10px;
-    border-radius: 10px;
-    font-size: 1.2rem;
+    scale: 0.65;
   }
 
   .back-btn {

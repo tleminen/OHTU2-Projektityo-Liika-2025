@@ -1,20 +1,20 @@
-import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import translations from "../../assets/translation";
-import { useState } from 'react';
+import { useSelector } from "react-redux"
+import { useNavigate } from "react-router-dom"
+import translations from "../../assets/translation"
+import { useState } from 'react'
 
 const SignedOut = () => {
-  const language = useSelector((state) => state.language.language);
-  const t = translations[language];
-  const [disabled, setDisabled] = useState(false);
+  const language = useSelector((state) => state.language.language)
+  const t = translations[language]
+  const [disabled, setDisabled] = useState(false)
 
-  const navigate = useNavigate();
+  const navigate = useNavigate()
   const navigateTo = (path) => {
     setDisabled(true)
-    navigate(`/${path}`);
-  };
+    navigate(`/${path}`)
+  }
   return (
-    <div className="containerX">
+    <div className="login-register-container">
       <button
         className="login-frontpage-btn"
         onClick={() => navigateTo("login")}
@@ -30,7 +30,7 @@ const SignedOut = () => {
         {t.register}
       </button>
     </div>
-  );
-};
+  )
+}
 
-export default SignedOut;
+export default SignedOut

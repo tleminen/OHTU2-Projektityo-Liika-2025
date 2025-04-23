@@ -4,7 +4,7 @@ const ICONSIZE = [64, 64]
 const ICONANCHOR = [32, 32]
 const POPUPANCHOR = [0, -16]
 const SHADOWSIZE = [80, 80]
-const SHADOWICONANCHOR = [39, 39]
+const SHADOWICONANCHOR = [40, 40]
 
 export const categoryMap = {
   1: "amerikkalainen_jalkapallo",
@@ -31,6 +31,15 @@ export const categoryMap = {
 export const selectIcon = (categoryID) => {
   const categoryMapping = categoryMap
   return Icongroup[categoryMapping[categoryID]] || null
+}
+
+export const selectSystemIcon = (categoryID) => {
+  const categoryMapping = categoryMap
+  const icon = Icongroup[categoryMapping[categoryID]] || null
+  icon.options.shadowUrl = "/lajit/white_squircle2.png"
+  icon.options.shadowSize = [60, 60]
+  icon.options.shadowAnchor = [30, 30]
+  return icon
 }
 
 export const selectClubIcon = ({ clubName, categoryID }) => {

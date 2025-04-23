@@ -13,7 +13,7 @@ import { useNavigate } from "react-router-dom"
 import eventService from "../../services/eventService"
 import reservationService from "../../services/reservationService"
 import { createRoot } from "react-dom/client"
-import { selectClubIcon, selectIcon } from "../../assets/icons"
+import { selectClubIcon, selectIcon, selectSystemIcon } from "../../assets/icons"
 import { categories } from "./utils"
 import ShortcutButtons from "./shortcutButtons"
 import { DarkOverlay, LiikaOverlay, UserOverlay } from "./layers/overlayLayers"
@@ -317,7 +317,7 @@ const Map = ({ startingLocation }) => {
             return container
           })
           const categoryID = tapahtuma.CategoryID
-          marker.setIcon(selectIcon(categoryID))
+          marker.setIcon(selectSystemIcon(categoryID))
           // Lisätään viite markerista varausjärjestelmätaulukkoon filtteröintiä varten
           reservationSystemMarkers.push(marker)
           // Lisää marker myös oikeaan kategoriaan
