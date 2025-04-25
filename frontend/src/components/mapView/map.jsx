@@ -434,7 +434,7 @@ const Map = ({ startingLocation }) => {
     )
 
     const map = L.map("map", {
-      center: [startingLocation.o_lat, startingLocation.o_lng],
+      center: [startingLocation.lat, startingLocation.lng],
       zoom: startingLocation.zoom,
       layers: [osm, liikaLayer],
     })

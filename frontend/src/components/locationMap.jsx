@@ -34,10 +34,12 @@ const LocationMap = ({ onLocationChange, oldLocation }) => {
       layers: [osm, liikaLayer],
     })
 
+
+    L.Control.geocoder().addTo(map)
     // Tarkastetaan ensin, että kartalla on aloitussijainti:
     if (!startingLocation.o_lat) {
       console.log("Ei aloituskordinaatteja..\nAsetetaan defaultit")
-      ;(startingLocation.o_lat = 62.6013), (startingLocation.o_lng = 29.7639)
+        ; (startingLocation.o_lat = 62.6013), (startingLocation.o_lng = 29.7639)
       startingLocation.zoom = 14
     }
     // Asetetaan nämä aluksi, jos käyttäjä unohtaakin klikata karttaa

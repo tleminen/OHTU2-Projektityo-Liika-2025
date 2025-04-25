@@ -203,6 +203,7 @@ const ChangeMap = () => {
               backgroundColor: `rgba(${r}, ${g}, ${b}, ${a * 0.01})`,
             }}
           />
+          <em style={{ marginBottom: "8px" }}>{t.setHomeLocation}</em>
           <LocationMap
             onLocationChange={handleOnLocationChange}
             oldLocation={oldLocation}
