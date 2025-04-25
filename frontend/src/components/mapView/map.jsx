@@ -19,6 +19,7 @@ import ShortcutButtons from "./shortcutButtons"
 import { DarkOverlay, LiikaOverlay, UserOverlay } from "./layers/overlayLayers"
 import { parseTimeAndDate } from "../../utils/helper"
 import translations from "../../assets/translation"
+import homeIcon from "../../assets/home.png"
 
 const DEFAULT_DAYS = 31
 
@@ -32,6 +33,7 @@ const Map = ({ startingLocation }) => {
   const timestampRef = useRef(null)
   const markerClusterGroup = L.markerClusterGroup({ spiderfyDistanceMultiplier: 3 }) // Säätää klusterin spreadin pituutta
   const reservationSystemMarkers = [] // Täällä pidetään yllä viitettä kenttävarausjärjestelmästä niiden filtteröintiä varten
+  const searchMarkers = [] // Haut tallennetaan tänne. Refresh poistaa kartalta
   const user = useSelector((state) => state.user?.user?.username ?? null)
   const clubs = useSelector((state) => state.user?.user?.clubs ?? {})
   const mapPreferences = useSelector(
@@ -388,6 +390,9 @@ const Map = ({ startingLocation }) => {
   }
 
   const onClickRefresh = async (map, time) => {
+    searchMarkers.forEach((marker) => { // Poistetaan haku
+      map.removeLayer(marker)
+    })
     await refreshMarkers(map, time)
   }
 
@@ -439,8 +444,62 @@ const Map = ({ startingLocation }) => {
       layers: [osm, liikaLayer],
     })
 
+    const homeButton = L.control({ position: "topright" })
+    homeButton.onAdd = () => {
+      const container = L.DomUtil.create("div")
+      L.DomEvent.disableClickPropagation(container)
+      const root = createRoot(container)
+
+      const handleClick = () => {
+        //Move map¨
+        const homeLocation = [startingLocation.o_lat, startingLocation.o_lng]
+        map.flyTo(homeLocation, startingLocation.zoom)
+      }
+
+      root.render(
+        <div className="refresh-events">
+          <button
+            className="pika-painike-refresh"
+            onClick={handleClick}>
+            <img className="refresh-image"
+              src={homeIcon}
+              width={30}
+              height={30}
+            /></button>
+        </div>
+      )
+      return container
+    }
+    homeButton.addTo(map)
+
     //Search bar
-    L.Control.geocoder().addTo(map)
+    const geocoder = L.Control.geocoder({
+      defaultMarkGeocode: false // estetään oletustoiminto
+    }).addTo(map)
+
+    geocoder.on("markgeocode", function (e) {
+      const { center } = e.geocode
+
+      map.flyTo(center, 17)
+      const address = e.geocode.properties.address
+      const road = address.road || ""
+      const house_number = address.house_number || ""
+      const postcode = address.postcode || ""
+      const city = address.city || ""
+      const state = address.state || ""
+      const country = address.country || ""
+
+      const printAddress1 = `${road} ${house_number},  `
+      const printAddress2 = `${postcode} ${city},`
+      const printAddress3 = `${state} ${country}`
+
+      // Lisätään marker popupilla
+      const searchResultMarker = L.marker(center)
+        .addTo(map)
+        .bindPopup(`<p>${printAddress1}<br/>${printAddress2}<br/>${printAddress3}</p>`)
+        .openPopup()
+      searchMarkers.push(searchResultMarker)
+    })
 
     // Lisää uuden layerit täällä
     const overlays = {
