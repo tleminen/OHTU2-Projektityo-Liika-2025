@@ -444,34 +444,6 @@ const Map = ({ startingLocation }) => {
       layers: [osm, liikaLayer],
     })
 
-    const homeButton = L.control({ position: "topright" })
-    homeButton.onAdd = () => {
-      const container = L.DomUtil.create("div")
-      L.DomEvent.disableClickPropagation(container)
-      const root = createRoot(container)
-
-      const handleClick = () => {
-        //Move map¨
-        const homeLocation = [startingLocation.o_lat, startingLocation.o_lng]
-        map.flyTo(homeLocation, startingLocation.zoom)
-      }
-
-      root.render(
-        <div className="refresh-events">
-          <button
-            className="pika-painike-refresh"
-            onClick={handleClick}>
-            <img className="refresh-image"
-              src={homeIcon}
-              width={30}
-              height={30}
-            /></button>
-        </div>
-      )
-      return container
-    }
-    homeButton.addTo(map)
-
     //Search bar
     const geocoder = L.Control.geocoder({
       defaultMarkGeocode: false // estetään oletustoiminto
@@ -509,6 +481,34 @@ const Map = ({ startingLocation }) => {
     }
 
     L.control.layers(overlays).addTo(map)
+
+    const homeButton = L.control({ position: "topright" })
+    homeButton.onAdd = () => {
+      const container = L.DomUtil.create("div")
+      L.DomEvent.disableClickPropagation(container)
+      const root = createRoot(container)
+
+      const handleClick = () => {
+        //Move map¨
+        const homeLocation = [startingLocation.o_lat, startingLocation.o_lng]
+        map.flyTo(homeLocation, startingLocation.zoom)
+      }
+
+      root.render(
+        <div className="refresh-events">
+          <button
+            className="pika-painike-refresh"
+            onClick={handleClick}>
+            <img className="refresh-image"
+              src={homeIcon}
+              width={30}
+              height={30}
+            /></button>
+        </div>
+      )
+      return container
+    }
+    homeButton.addTo(map)
 
     const fetchEvents = (time) => {
       if (!time) {
