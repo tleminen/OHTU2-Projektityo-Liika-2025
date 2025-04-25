@@ -19,7 +19,6 @@ const CreateReservationSystem = () => {
     const storedToken = useSelector((state) => state.user?.user?.token ?? null)
     const [selectedClub, setSelectedClub] = useState(null)
     const [errors, setErrors] = useState({})
-    const [activity, setActivity] = useState({})
     const [event_location, setEventLocation] = useState("")
     const [title, setTitle] = useState("")
     const [description, setDescription] = useState("")
@@ -48,10 +47,6 @@ const CreateReservationSystem = () => {
 
     const handleLocationChange = (newLocation) => {
         setEventLocation(newLocation)
-    }
-
-    const handleChange = (selectedOption) => {
-        setActivity(selectedOption)
     }
 
     const handleChangeEquipment = (event) => {
@@ -83,24 +78,13 @@ const CreateReservationSystem = () => {
     }
 
     const handleSubmit = async (event) => {
-        console.log("Submit painettu")
         event.preventDefault()
         setDisabled(true)
         const clubID = selectedClub
-        const categoryID = activity.value
-        console.log(title)
-        console.log(categoryID)
-        console.log(popUpText)
-        console.log(event_location)
-        console.log(description)
-        console.log(rentalAvailable)
-        console.log(clubID)
-        console.log(userID)
         setErrors({})
         try {
             const response = await reservationService.createReservationSystem(storedToken, {
                 title,
-                categoryID,
                 popUpText,
                 event_location,
                 description,
@@ -150,20 +134,6 @@ const CreateReservationSystem = () => {
                             />
                         </div>
                         {errors.title && <div className="error-forms">{errors.title}</div>}
-                        <div className="form-item">
-                            <h3>{t.activity}</h3>
-                            <Select
-                                className={`input-field ${errors.categoryID ? "error" : ""}`}
-                                placeholder={t.activity}
-                                value={activity}
-                                onChange={handleChange}
-                                options={options()}
-                                isSearchable={true}
-                            />
-                        </div>
-                        {errors.categoryID && (
-                            <div className="error-forms">{errors.categoryID}</div>
-                        )}
                         <div className="form-item">
                             <h3>{"Pop-up teksti"}</h3> {/*TODO: Kovakoodaukset*/}
                             <textarea

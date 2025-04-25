@@ -3,25 +3,31 @@ import Header from "../header"
 import Footer from "../footer"
 import { useSelector } from "react-redux"
 import translations from "../../assets/translation"
+import Select from "react-select"
 import { useEffect, useState } from 'react'
 import reservationService from '../../services/reservationService'
 import NotificationContainer from '../notification/notificationContainer'
 import MobileCalendar from '../../utils/mobileCalendar'
 import DesktopCalendar from '../../utils/desktopCalendar'
+import { selectCategoryName } from '../../assets/icons'
 
 const ModifyFieldView = () => {
     const { id } = useParams()
     const language = useSelector((state) => state.language.language)
     const storedToken = useSelector((state) => state.user?.user?.token ?? null)
     const userID = useSelector((state) => state.user?.user?.userID ?? null)
+    const categories = useSelector((state) => state.categories.categories)
     const t = translations[language]
     const [loading, setLoading] = useState(true)
     const [reload, setReload] = useState(false)
     const [isMobile, setIsMobile] = useState(false)
+    const [errors, setErrors] = useState({})
     // Perustietojen muokkaus
     const [modifyIsOpen, setModifyIsOpen] = useState(false)
     const [disableModifyField, setDisableModifyField] = useState(true)
     // Kentät
+    const [activity, setActivity] = useState({})
+    const [fieldCategories, setFieldCategories] = useState([])
     const [field, setField] = useState([])
     const [name, setName] = useState("")
     const [description, setDescription] = useState("")
@@ -65,6 +71,11 @@ const ModifyFieldView = () => {
                 setField(response.field)
                 setHours(response.field.Opening_Hours)
                 setLiikaAvailable(response.field.Liika)
+                const prevCats = response.field.FieldCategories.map((cat) => ({
+                    value: cat.CategoryID,
+                    label: t[selectCategoryName([cat.CategoryID])],
+                }))
+                setFieldCategories(prevCats)
             } catch (error) {
                 console.error(error)
                 // TODO: dispatch kun ei löydy varausjärjestelmää
@@ -81,6 +92,7 @@ const ModifyFieldView = () => {
         const updatedLiikaAvailable = liikaAvailable || field.liikaAvailable
         const updatedLink = link || field.link // Jos kategoria on tyhjä, käytetään oletusarvoa
         const updatedHours = hours || field.Opening_Hours
+        const updatedActivities = fieldCategories.map((cat) => cat.value)
         try {
             const response = await reservationService.modifyField(storedToken, {
                 UserID: userID,
@@ -90,7 +102,8 @@ const ModifyFieldView = () => {
                 URL: updatedLink,
                 Opening_Hours: updatedHours,
                 FieldID: id,
-                SystemID: field.SystemID
+                SystemID: field.SystemID,
+                fieldCategories: updatedActivities,
             })
             setReload((prev) => !prev)
             setModifyIsOpen(false)
@@ -104,6 +117,49 @@ const ModifyFieldView = () => {
     const toggleAddNew = () => {
         setModifyIsOpen((prev) => !prev)
         setDisableModifyField(false)
+    }
+
+    const handleChange = (selectedOption) => {
+        setActivity(selectedOption)
+    }
+
+    // Vaihtoehdot lajeille
+    const options = () => {
+        try {
+            return categories.map((cat) => ({
+                value: cat.CategoryID,
+                label: t[selectCategoryName([cat.CategoryID])],
+            }))
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const handleAddActivity = () => {
+        if (Object.keys(activity).length === 0) return
+        if (fieldCategories.some(item => item.value === activity.value)) return // Ei anneta lisätä uudelleen
+        setFieldCategories((prev) => [...prev, activity])
+    }
+
+    const removeFromActivities = (toRemove) => {
+        setFieldCategories((prev) =>
+            prev.filter(
+                (cat) => cat.value !== toRemove.value
+            )
+        )
+    }
+
+    const currentActivities = () => {
+        console.log(fieldCategories)
+        return (
+            fieldCategories.map((cat) => (
+                <div
+                    key={cat.value}
+                    style={{ display: "flex", flexDirection: "row", flexWrap: "wrap", alignItems: "center", gap: "8px" }}>
+                    <p>{`${cat.label}`}</p>
+                    <button className='btn' onClick={() => removeFromActivities(cat)}>X</button>
+                </div>))
+        )
     }
 
     if (loading) {
@@ -209,6 +265,21 @@ const ModifyFieldView = () => {
                             </div>
                             <span className="spacer-line"></span>
                             <div className='modify-item'>
+                                <h2>{"Kentän laji / lajit"}</h2>
+                                <div style={{ display: "flex", flexDirection: "row", flexWrap: "wrap", alignItems: "center", gap: "40px" }}>
+                                    {currentActivities()}
+                                </div>
+                                <Select
+                                    className={`input-field ${errors.categoryID ? "error" : ""}`}
+                                    placeholder={t.activity}
+                                    value={activity}
+                                    onChange={handleChange}
+                                    options={options()}
+                                    isSearchable={true}
+                                />
+                                <button className='btn' onClick={handleAddActivity}>Lisää laji</button>
+                                <em>Tämän merkinnän avulla käyttäjät näkevät, että kyseisellä kentällä saattaa olla tarjolla Liika-vuoroja. Merkitseminen ei velvoita järjestämään Liika-vuoroja. Merkki on tarkoitettu helpottamaan käyttäjiä Liika-vuorojen etsimisessä.</em>
+                                <span className="spacer-line"></span>
                                 <h2>{"Kentällä saattaa olla Liika-vuoroja"}</h2>
                                 <input
                                     type="checkbox"

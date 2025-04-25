@@ -1,19 +1,16 @@
 import { Link, useParams } from "react-router-dom"
 import Header from "../header"
 import Footer from "../footer"
-import Select from "react-select"
 import { useSelector } from "react-redux"
 import translations from "../../assets/translation"
 import { useEffect, useState } from 'react'
 import reservationService from '../../services/reservationService'
 import NotificationContainer from '../notification/notificationContainer'
-import { selectCategoryName } from '../../assets/icons'
 import LocationMap from '../locationMap'
 
 const ModifyReservationSystemView = () => {
     const { id } = useParams()
     const language = useSelector((state) => state.language.language)
-    const categories = useSelector((state) => state.categories.categories)
     const storedToken = useSelector((state) => state.user?.user?.token ?? null)
     const userID = useSelector((state) => state.user?.user?.userID ?? null)
     const t = translations[language]
@@ -24,7 +21,6 @@ const ModifyReservationSystemView = () => {
     // Varausjärjestelmän muokkaus
     const [disableSave, setDisableSave] = useState(true)
     const [description, setDescription] = useState("")
-    const [activity, setActivity] = useState({})
     const [title, setTitle] = useState("")
     const [popUpText, setPopUpText] = useState("")
     const [rentalAvailable, setRentalAvailable] = useState(null)
@@ -49,10 +45,6 @@ const ModifyReservationSystemView = () => {
                 })
                 console.log(response)
                 setSystem(response)
-                setActivity({
-                    value: response.CategoryID,
-                    label: t[selectCategoryName([response.CategoryID])],
-                })
                 setRentalAvailable(response.Rental)
                 // Haetaan järjestelmään kuuluvat kentät
                 const getFields = await reservationService.getFields(storedToken, {
@@ -75,21 +67,6 @@ const ModifyReservationSystemView = () => {
         }
         fetchSystemData()
     }, [id, reload, storedToken, t, userID])
-
-    const handleChange = (selectedOption) => {
-        setActivity(selectedOption)
-        setDisableSave(false)
-    }
-    const options = () => {
-        try {
-            return categories.map((cat) => ({
-                value: cat.CategoryID,
-                label: t[selectCategoryName([cat.CategoryID])],
-            }))
-        } catch (error) {
-            console.log(error)
-        }
-    }
 
     const handleTitleChange = (value) => {
         setTitle(value)
@@ -150,7 +127,7 @@ const ModifyReservationSystemView = () => {
                     fri: { open: "", close: "", closed: false },
                     sat: { open: "", close: "", closed: false },
                     sun: { open: "", close: "", closed: false }
-                }
+                },
             })
             console.log(response)
             setReload((prev) => !prev)
@@ -165,13 +142,11 @@ const ModifyReservationSystemView = () => {
         const updatedtitle = title || system.Title
         const updatedDescription = description || system.Description
         const updatedPopUpText = popUpText || system.PopUpText
-        const updatedCategoryID = activity.value || system.CategoryID // Jos kategoria on tyhjä, käytetään oletusarvoa
 
         try {
             await reservationService.modifyRS(storedToken, {
                 UserID: userID,
                 Title: updatedtitle,
-                CategoryID: updatedCategoryID,
                 Establishment_Location: establishment_location,
                 Description: updatedDescription,
                 Rental: rentalAvailable,
@@ -300,31 +275,6 @@ const ModifyReservationSystemView = () => {
                                 className="input-field"
                                 onChange={(e) => handlePopUpChange(e.target.value)}
                                 required={true}
-                            />
-                        </div>
-                        <span className="spacer-line"></span>
-                        <div className='system-modify-item'>
-                            <h2>{t.currentActivity}</h2>
-                            <p className="old-event-value">
-                                {t[selectCategoryName([system.CategoryID])]}
-                            </p>
-                            <img
-                                src={`/lajit/${selectCategoryName([system.CategoryID])}.png`}
-                                alt="Logo"
-                                width={100}
-                                height={100}
-                                className="event-view-icon"
-                            />
-                            <h2>{"Valitse uusi laji"}</h2>
-                            <Select
-                                className="input-field"
-                                placeholder={t.activity}
-                                value={activity}
-                                onChange={handleChange}
-                                options={options()}
-                                isSearchable={true}
-                                required={true}
-                                menuPlacement='top'
                             />
                         </div>
                         <span className="spacer-line"></span>

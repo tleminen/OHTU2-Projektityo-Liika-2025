@@ -1,13 +1,9 @@
-const { Router, request } = require("express")
-const ClubMembers = require("../models/clubMember")
-const Fields = require("../models/fields")
-const ReservationSystems = require("../models/reservationSystems")
+const { Router } = require("express")
 const { Sequelize, where, Op } = require("sequelize")
 const { userExtractor } = require("../utils/middleware")
 const { getReservationSystemList } = require('../services/getReservationSystemList')
-const Slots = require('../models/slots')
 const { getReservationSystemsNearby } = require('../services/getReservationSystemsNearby')
-const { FieldCategories } = require('../models')
+const { FieldCategories, ClubMembers, Fields, ReservationSystems, Slots, sequelize } = require('../models')
 
 const reservationRouter = Router()
 
@@ -17,7 +13,6 @@ const reservationRouter = Router()
 reservationRouter.post("/create", userExtractor, async (request, response) => {
     const {
         title,
-        categoryID,
         popUpText,
         event_location,
         description,
@@ -55,7 +50,6 @@ reservationRouter.post("/create", userExtractor, async (request, response) => {
                         ClubID: clubID,
                         Rental: rentalAvailable,
                         PopUpText: popUpText,
-                        CategoryID: categoryID
                     })
                     console.log(reservationSystem)
                     response.status(201).json({ SystemID: reservationSystem.dataValues.SystemID })
@@ -135,7 +129,6 @@ reservationRouter.post("/update_system", userExtractor, async (request, response
     const {
         UserID,
         Title,
-        CategoryID,
         Establishment_Location,
         Description,
         Rental,
@@ -159,7 +152,6 @@ reservationRouter.post("/update_system", userExtractor, async (request, response
             const newRS = await ReservationSystems.update(
                 {
                     Title: Title,
-                    CategoryID: CategoryID,
                     PopUpText: PopUpText,
                     Description: Description,
                     Rental: Rental,
@@ -281,6 +273,12 @@ reservationRouter.post("/get_field", async (request, response) => {
                 FieldID: FieldID,
             },
             attributes: ["FieldID", "Name", "Description", "Liika", "URL", "Opening_Hours", "SystemID"],
+            include: [
+                {
+                    model: FieldCategories, // Linkki FieldCategories-tauluun
+                    attributes: ["CategoryID"], // Voit lisätä lisää attribuutteja, jos haluat
+                }
+            ]
         })
         response.status(200).json({
             field,
@@ -302,6 +300,7 @@ reservationRouter.post("/update_field", userExtractor, async (request, response)
         Opening_Hours,
         FieldID,
         SystemID,
+        fieldCategories,
     } = request.body
 
     if (UserID === request.user?.dataValues?.UserID ?? "NAN") {
@@ -322,6 +321,7 @@ reservationRouter.post("/update_field", userExtractor, async (request, response)
             if (!result) {
                 response.status(403).json({ error: "Not part of the club at request" })
             }
+            const transaction = await sequelize.transaction()
             const newRS = await Fields.update(
                 {
                     Name: Name,
@@ -335,8 +335,18 @@ reservationRouter.post("/update_field", userExtractor, async (request, response)
                         SystemID: SystemID,
                         FieldID: FieldID,
                     }
-                }
+                },
+                { transaction }
             )
+            const field = await Fields.findByPk(FieldID)
+            if (!field) {
+                return res.status(404).json({ error: 'Field not found' })
+            }
+
+            // Tämä korvaa kentän kategoriat annetuilla ID:eillä:
+            await field.setCategories(fieldCategories)
+
+            await transaction.commit()
             response.status(200).send({ message: "Field updated succesfully." })
         } catch (error) {
             console.error("Error updating field: " + error)

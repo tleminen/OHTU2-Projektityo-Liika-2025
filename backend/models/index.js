@@ -44,7 +44,6 @@ Times.hasMany(Joins, { foreignKey: "TimeID" })
 Users.belongsTo(Languages, { foreignKey: "LanguageID" })
 
 ReservationSystems.belongsTo(Clubs, { foreignKey: "ClubID" })
-ReservationSystems.belongsTo(Categories, { foreignKey: "CategoryID" })
 ReservationSystems.hasMany(Fields, { foreignKey: "SystemID" })
 // Yhteys käyttäjiin ja kategorioihin
 Fields.belongsTo(ReservationSystems, { foreignKey: "SystemID" })
