@@ -293,6 +293,7 @@ const Map = ({ startingLocation }) => {
         categories[categoryId].markers = []
       })
       // Lisätään markerit uudelleen
+      console.log(systemList)
       const fullList = [...eventList, ...systemList] // Sori koodin toistosta, mutten halunnut laittaa propseina eteenpäin kaikkea.
       fullList.forEach((tapahtuma) => {
         if (!tapahtuma.EventID) { // Jos ei Event_Location niin on kenttävarausjärjestelmä
@@ -319,19 +320,22 @@ const Map = ({ startingLocation }) => {
   `
             return container
           })
-          const categoryID = tapahtuma.CategoryID
-          marker.setIcon(selectSystemIcon(categoryID))
+          // Muokataan const categoryID = tapahtuma.CategoryID
+          marker.setIcon(selectSystemIcon())
           // Lisätään viite markerista varausjärjestelmätaulukkoon filtteröintiä varten
           reservationSystemMarkers.push(marker)
           // Lisää marker myös oikeaan kategoriaan
-          if (categories[categoryID]) {
-            // Muuten laitetaan kategoriaikoni
-            categories[categoryID].markers.push(marker)
-            // Lisää markerClusterGroupiin vain, jos kategoria on asetettu näkyväksi
-            if (categories[categoryID].visible) {
-              markerClusterGroup.addLayer(marker)
+          tapahtuma.FieldCategoryIDs.forEach((categoryID) => {
+            if (categories[categoryID]) {
+              // Muuten laitetaan kategoriaikoni
+              categories[categoryID].markers.push(marker)
+
+              // Lisää markerClusterGroupiin vain, jos kategoria on asetettu näkyväksi
+              if (categories[categoryID].visible) {
+                markerClusterGroup.addLayer(marker)
+              }
             }
-          }
+          })
         } else { // Tapahtumat (ml. yhteistyökumppanien tapahtumat)
           const { coordinates } = tapahtuma.Event_Location
           const lat = coordinates[1]

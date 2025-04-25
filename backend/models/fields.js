@@ -1,7 +1,5 @@
 const { DataTypes } = require("sequelize")
 const { sequelize } = require("../utils/database")
-const ReservationSystems = require('./reservationSystems')
-const Slots = require('./slots')
 
 const Fields = sequelize.define("Fields", {
     FieldID: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },

@@ -34,12 +34,25 @@ export const selectIcon = (categoryID) => {
 }
 
 export const selectSystemIcon = (categoryID) => {
-  const categoryMapping = categoryMap
-  const icon = Icongroup[categoryMapping[categoryID]] || null
-  icon.options.shadowUrl = "/lajit/white_squircle2.png"
-  icon.options.shadowSize = [60, 60]
-  icon.options.shadowAnchor = [30, 30]
-  return icon
+  if (!categoryID) {
+    const icon = L.icon({
+      iconUrl: "/reservationSystemIcon.png", // Tulee olla public-kansiossa
+      iconSize: ICONSIZE, // Ikonin koko pixeleinä
+      iconAnchor: ICONANCHOR, // Minkä verran offsettiä painalluskohdasta
+      popupAnchor: POPUPANCHOR, // -""-
+      shadowUrl: "/lajit/white_squircle2.png", // Varjon polku
+      shadowSize: [60, 60], // Varjon koko
+      shadowAnchor: [30, 30], // Varjon ankkuripiste
+    })
+    return icon
+  } else {
+    const categoryMapping = categoryMap
+    const icon = Icongroup[categoryMapping[categoryID]] || null
+    icon.options.shadowUrl = "/lajit/white_squircle2.png"
+    icon.options.shadowSize = [60, 60]
+    icon.options.shadowAnchor = [30, 30]
+    return icon
+  }
 }
 
 export const selectClubIcon = ({ clubName, categoryID }) => {

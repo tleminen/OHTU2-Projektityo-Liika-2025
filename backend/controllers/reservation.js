@@ -7,6 +7,7 @@ const { userExtractor } = require("../utils/middleware")
 const { getReservationSystemList } = require('../services/getReservationSystemList')
 const Slots = require('../models/slots')
 const { getReservationSystemsNearby } = require('../services/getReservationSystemsNearby')
+const { FieldCategories } = require('../models')
 
 const reservationRouter = Router()
 
@@ -451,21 +452,44 @@ reservationRouter.post("/get_single_system", async (request, response) => {
             where: {
                 SystemID: SystemID
             },
-            attributes: ["SystemID", "Establishment_Location", "Description", "Title", "ClubID", "Rental", "PopUpText", "CategoryID", "updatedAt",],
+            attributes: [
+                "SystemID",
+                "Establishment_Location",
+                "Description",
+                "Title",
+                "ClubID",
+                "Rental",
+                "PopUpText",
+                "updatedAt",
+            ],
             include: [
                 {
                     model: Fields,
-                    attributes: ["FieldID", "Name", "Description", "Liika", "Opening_Hours", "updatedAt",],
+                    attributes: [
+                        "FieldID",
+                        "Name",
+                        "Description",
+                        "Liika",
+                        "Opening_Hours",
+                        "updatedAt",
+                    ],
                     include: [
                         {
+                            model: FieldCategories, // Linkitetään FieldCategories, mutta ei tarvitse hakea muuta kuin CategoryID
+                            attributes: ["CategoryID"], // Hae vain CategoryID
+                        },
+                        {
                             model: Slots,
-                            attributes: ["SlotID", "Type", "StartTime", "EndTime", "Text", "updatedAt"]
+                            attributes: ["SlotID", "Type", "StartTime", "EndTime", "Text", "updatedAt"],
                         }
                     ]
                 },
             ],
-            order: [[Fields, 'Name', 'ASC']]
+            order: [
+                [Fields, "Name", "ASC"], // Kentät nimittäin järjestettynä
+            ]
         })
+
         response.status(200).json(systemWithFields)
     } catch (error) {
         console.error("Problems with retreving system for user: " + error)

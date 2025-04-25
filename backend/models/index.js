@@ -10,6 +10,7 @@ const Languages = require("./languages")
 const Fields = require('./fields')
 const ReservationSystems = require('./reservationSystems')
 const Slots = require('./slots')
+const FieldCategories = require('./fieldCategories')
 
 // Määrittelemällä relaatiot ja viemällä kaikki mallit kerralla, tietokanta rakentuu oikein
 Users.hasMany(Events, { foreignKey: "UserID" })
@@ -50,6 +51,22 @@ Fields.belongsTo(ReservationSystems, { foreignKey: "SystemID" })
 Fields.hasMany(Slots, { foreignKey: "FieldID" })
 Slots.belongsTo(Fields, { foreignKey: "FieldID" })
 
+// --- many-to-many assosiaatiot Fields <-> Categories ---
+Fields.belongsToMany(Categories, {
+  through: FieldCategories,
+  foreignKey: "FieldID",
+  otherKey: "CategoryID",
+})
+Categories.belongsToMany(Fields, {
+  through: FieldCategories,
+  foreignKey: "CategoryID",
+  otherKey: "FieldID",
+})
+
+Fields.belongsTo(FieldCategories, {
+  foreignKey: "FieldID",
+})
+
 // Viedään kaikki mallit kerralla
 module.exports = {
   sequelize,
@@ -63,5 +80,6 @@ module.exports = {
   Languages,
   Fields,
   ReservationSystems,
-  Slots
+  Slots,
+  FieldCategories,
 }
