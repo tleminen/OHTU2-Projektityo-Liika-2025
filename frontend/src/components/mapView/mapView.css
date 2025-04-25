@@ -182,6 +182,12 @@
   padding-bottom: 30px;
 }
 
+.category-list-container {
+  display: flex;
+  flex-direction: column;
+  align-items: anchor-center;
+}
+
 /* Kategorian nappilista */
 .category-list {
   display: flex;
@@ -207,6 +213,17 @@
 /* Aktiivinen kategoria: Läpinäkyvä punainen peite */
 .category-item.active {
   filter: brightness(0.5) sepia(1) hue-rotate(90deg) saturate(500%);
+}
+
+/*Kategorian hakupalkki*/
+.category-search {
+  max-width: 100%;
+  min-width: 50%;
+  padding: 4px;
+  border-radius: 7px;
+  border-width: 1px;
+  backdrop-filter: blur(10px);
+  background-color: #fefefed3;
 }
 
 /* Avattava paneeli */

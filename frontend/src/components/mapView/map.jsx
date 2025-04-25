@@ -292,7 +292,6 @@ const Map = ({ startingLocation }) => {
       const fullList = [...eventList, ...systemList] // Sori koodin toistosta, mutten halunnut laittaa propseina eteenpäin kaikkea.
       fullList.forEach((tapahtuma) => {
         if (!tapahtuma.EventID) { // Jos ei Event_Location niin on kenttävarausjärjestelmä
-          console.log(tapahtuma)
           const { coordinates } = tapahtuma.Establishment_Location
           const lat = coordinates[1]
           const lng = coordinates[0]
@@ -538,6 +537,7 @@ const Map = ({ startingLocation }) => {
           toggleCategoryPanel={toggleCategoryPanel}
           fetchEvents={fetchEvents}
           onClose={() => setCategoryPanelOpen(false)}
+          t={t}
         />
       )
       return container

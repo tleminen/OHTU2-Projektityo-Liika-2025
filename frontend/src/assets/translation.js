@@ -90,6 +90,7 @@ const translations = {
     everyPersonText:
       "Every person in the register has the right to check the data stored in the register and demand the correction of any incorrect information or the completion of incomplete information. If a person wants to check the data stored about them or demand correction the request must be sent in writing to the register holder. If necessary, the register holder can ask the requester to provide their identification. The register holder responds to the correction or inspection request within the time set in the EU Data Protection Regulation (usually within a month)",
     fetchVisibleAreaEvents: "Fetches events in the visible map area, but at least within a 10 km radius.",
+    fieldFilter: "Sport locations",
     filterByDate: "Filter events by date",
     filterBySport: "Filter events by sport",
     forgot_pw: "Forgot password?",
@@ -190,13 +191,14 @@ const translations = {
       "Regular transfers of data and transfer of data outside the EU or EEA",
     save: "Save",
     saveChanges: "Save changes",
+    searchCategory: "Search for activity...",
+    searchEvents: "Search for events from June 25, 2025, to July 7, 2025, that are held between 10:00 AM and 12:00 PM.",
     searchLocation: "Search for a location on the map",
     send: "Send",
     sendConfirmationCode:
       "Press 'Send' to receive the confirmation code in your email.",
     scheduledDates: "Scheduled dates",
     scheduleMoreDates: "Schedule more dates",
-    searchEvents: "Search for events from June 25, 2025, to July 7, 2025, that are held between 10:00 AM and 12:00 PM.",
     selectedLanguage: "Language",
     selectEndDate: "2. Select the end date of the search area",
     selectEventDateTime: "Select the event date and time (start date, start time, and end time).",
@@ -382,6 +384,7 @@ const translations = {
     everyPersonText:
       "Jokaisella rekisterissä olevalla henkilöllä on oikeus tarkastaa rekisteriin tallennetut tiedot ja vaatia virheellisten tietojen korjaamista tai puutteellisten tietojen täydentämistä. Jos henkilö haluaa tarkastaa itseään koskevat tiedot tai vaatia tietojen korjaamista, pyyntö tulee lähettää kirjallisesti rekisterinpitäjälle. Tarvittaessa rekisterinpitäjä voi pyytää pyynnön tekijää toimittamaan henkilöllisyytensä todentavan tiedon. Rekisterinpitäjä vastaa korjaus- tai tarkastuspyyntöön EU:n tietosuoja-asetuksessa (yleensä kuukauden sisällä) määrätyssä ajassa.",
     fetchVisibleAreaEvents: "Hakee kartalla näkyvän alueen tapahtumat, kuitenkin vähintään 10 km etäisyydeltä.",
+    fieldFilter: "Urheilupaikat",
     filterByDate: "Suodata tapahtumia ajankohdan mukaan",
     filterBySport: "Suodata tapahtumia lajin mukaan",
     forgot_pw: "Unohtuiko salasana?",
@@ -484,8 +487,9 @@ const translations = {
     regularTransferText:
       "Tietojen säännöllinen siirto ja tietojen siirto EU:n tai EEA:n ulkopuolelle",
     save: "Tallenna",
-    searchLocation: "Hae sijaintia kartalta",
+    searchCategory: "Hae lajia...",
     searchEvents: "Etsi tapahtumat ajalta 25.6.2025-7.7.2025 jotka järjestetään kello 10 ja 12 välillä",
+    searchLocation: "Hae sijaintia kartalta",
     send: "Lähetä",
     sendConfirmationCode:
       "Paina 'Lähetä' saadaksesi vahvistuskoodin sähköpostiisi.",

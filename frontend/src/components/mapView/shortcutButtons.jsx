@@ -1,9 +1,10 @@
+/* eslint-disable react/prop-types */
 import { useState, useEffect, useRef } from "react"
 import { categoryMap } from "../../assets/icons"
 import DatePicker from "react-multi-date-picker"
 
 // eslint-disable-next-line react/prop-types
-const ShortcutButtons = ({ toggleCategory, fetchEvents }) => {
+const ShortcutButtons = ({ toggleCategory, fetchEvents, t }) => {
   const [moreIsOpen, setMoreIsOpen] = useState(false)
   const [catIsOpen, setCatIsOpen] = useState(false) // Kategorioiden suoratuksen paneelin näkyvyys
   const [timeIsOpen, setTimeIsOpen] = useState(false) // Aikavälifiltteröinnin paneelin näkyvyys
@@ -16,6 +17,7 @@ const ShortcutButtons = ({ toggleCategory, fetchEvents }) => {
   const [dates, setDates] = useState([])
   const [calendarPosition, setCalendarPosition] = useState("top") // Kalenterin avautumissuunta. Muuttuu ikkunan koon mukaan
   const [showReservationSystems, setShowReservationSystems] = useState(true) // Kenttävarausjärjestelmien toggle
+  const [searchTerm, setSearchTerm] = useState("") // Hakupalkki kategorialle
   const panelRef = useRef(null)
   const timeInputRef = useRef(null)
   let quickTime = 0
@@ -36,6 +38,12 @@ const ShortcutButtons = ({ toggleCategory, fetchEvents }) => {
     window.addEventListener("resize", handleResize)
     return () => window.removeEventListener("resize", handleResize)
   }, [])
+
+  // eslint-disable-next-line no-unused-vars
+  const filteredCategories = Object.entries(categoryMap).filter(([id, name]) =>
+    // eslint-disable-next-line react/prop-types
+    t[name].toLowerCase().includes(searchTerm.toLowerCase())
+  )
 
   /**
    * Tämä funktio hoitaa aikafiltteröinnin tietojen keräyksen ja pyytää map-komponenttia suorittamaan fetchEvents
@@ -246,23 +254,32 @@ const ShortcutButtons = ({ toggleCategory, fetchEvents }) => {
         onClick={toggleCatPanel}
       />
       <div className={`category-panel ${catIsOpen ? "open" : ""}`}>
-        {" "}
         {/*Kategorioiden suodatupaneeli*/}
-        <div className="category-list" onClick={handleClicks()}>
-          {Object.entries(categoryMap).map(([id, name]) => (
+        <div className='category-list-container'>
+          <div className="category-list">
+            {filteredCategories.map(([id, name]) => (
+              <button
+                key={id}
+                title={t[name]}
+                className={`category-item ${selectedCategories[id] ? "active" : ""}`}
+                onClick={() => handleCategoryClick(Number(id))}
+                style={{ backgroundImage: `url(/lajit/${name}.png)` }}
+              />
+            ))}
             <button
-              key={id}
-              className={`category-item ${selectedCategories[id] ? "active" : ""
-                }`}
-              onClick={() => handleCategoryClick(Number(id))}
-              style={{ backgroundImage: `url(/lajit/${name}.png)` }}
+              className={`category-item ${showReservationSystems ? "active" : ""}`}
+              onClick={() => setShowReservationSystems((prev) => !prev)}
+              style={{ backgroundImage: `url(/reservationSystemIcon.png)` }}
+              // eslint-disable-next-line react/prop-types
+              title={t.fieldFilter}
             />
-          ))}
-          <button // Kenttävarausjärjestelmien suodatuspainike
-            className={`category-item ${showReservationSystems ? "active" : ""
-              }`}
-            onClick={() => setShowReservationSystems((prev) => !prev)}
-            style={{ backgroundImage: `url(/reservationSystemIcon.png)` }}
+          </div>
+          <input
+            type="text"
+            placeholder={t.searchCategory} // TODO: Kovakoodaus
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="category-search"
           />
         </div>
       </div>
