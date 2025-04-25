@@ -129,17 +129,7 @@ const ListReservationSystems = () => {
                                                 {system.Title}
                                             </div>
                                         </div>
-                                        <div className="event-item">
-                                            <img
-                                                src={`/lajit/${selectCategoryName([
-                                                    system.CategoryID,
-                                                ])}.png`}
-                                                alt="Logo"
-                                                width={100}
-                                                height={100}
-                                                className="event-view-icon"
-                                            />
-                                        </div>
+
                                     </Link>
                                 ))
                             )}
