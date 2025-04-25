@@ -256,7 +256,7 @@ const ShortcutButtons = ({ toggleCategory, fetchEvents, t }) => {
       <div className={`category-panel ${catIsOpen ? "open" : ""}`}>
         {/*Kategorioiden suodatupaneeli*/}
         <div className='category-list-container'>
-          <div className="category-list">
+          <div className="category-list" onClick={handleClicks()}>
             {filteredCategories.map(([id, name]) => (
               <button
                 key={id}
