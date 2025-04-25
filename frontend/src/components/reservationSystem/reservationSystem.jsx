@@ -27,7 +27,6 @@ const ReservationSystem = (SystemID) => {
                     SystemID: SystemID.id,
                 })
                 setSystem(systemData)
-                console.log(systemData)
             } catch (error) {
                 console.error(error)
                 // TODO Notifikaatio ettei onnistunut
@@ -74,6 +73,19 @@ const ReservationSystem = (SystemID) => {
         }
     }
 
+    const categoryImages = (field) => {
+        return (
+            field.FieldCategories.map((category) => (
+                <div key={category.CategoryID}>
+                    <img src={`/lajit/${selectCategoryName(category.CategoryID)}.png`}
+                        width={100}
+                        height={100}
+                    />
+                </div>
+            ))
+        )
+    }
+
     /**
      * 
      * @param {kenttävarausjärjestelmä} system 
@@ -118,10 +130,16 @@ const ReservationSystem = (SystemID) => {
                             >
                                 <div className="system-item">
                                     <div>
+                                        <div className='field-category-container'>
+                                            {categoryImages(field)}
+                                        </div>
                                         <h3>{field.Name}</h3>
                                         <p style={{ marginBottom: "10px" }}>{field.Description}</p>
                                     </div>
                                     <DesktopMiniCalendar field={field} startDate={startDate} reload={reload} />
+                                    <div>
+                                        <p>{field.URL}</p>
+                                    </div>
                                 </div>
                                 <div className="system-item">
 
@@ -143,6 +161,9 @@ const ReservationSystem = (SystemID) => {
                         className="system-view-item-container"
                     >
                         <div className="system-view-item" style={{ display: "flex", flexDirection: "column" }}>
+                            <div className='field-category-container'>
+                                {categoryImages(field)}
+                            </div>
                             <h3>{field.Name}</h3>
                             <p style={{ marginBottom: "10px" }}>{field.Description}</p>
                         </div>
@@ -200,15 +221,6 @@ const ReservationSystem = (SystemID) => {
 
     return (
         <div className='event-view'>
-            <img
-                src={`/lajit/${selectCategoryName([
-                    system.CategoryID,
-                ])}.png`}
-                alt="Logo"
-                width={100}
-                height={100}
-                className="event-view-icon"
-            />
             <h1>{system.Title}</h1>
             {system.Rental ? (<div style={{
                 display: "flex",

@@ -63,6 +63,8 @@ Categories.belongsToMany(Fields, {
   otherKey: "FieldID",
 })
 
+Fields.hasMany(FieldCategories, { foreignKey: 'FieldID' })
+
 Fields.belongsTo(FieldCategories, {
   foreignKey: "FieldID",
 })

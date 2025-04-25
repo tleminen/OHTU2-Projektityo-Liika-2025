@@ -470,6 +470,7 @@ reservationRouter.post("/get_single_system", async (request, response) => {
                         "Name",
                         "Description",
                         "Liika",
+                        "URL",
                         "Opening_Hours",
                         "updatedAt",
                     ],
