@@ -30,7 +30,7 @@ const Map = ({ startingLocation }) => {
   const [timeStamp, setTimeStamp] = useState("") // Aikaleima, milloin päivitetty
   const [isCategoryPanelOpen, setCategoryPanelOpen] = useState(false)
   const timestampRef = useRef(null)
-  const markerClusterGroup = L.markerClusterGroup()
+  const markerClusterGroup = L.markerClusterGroup({ spiderfyDistanceMultiplier: 3 }) // Säätää klusterin spreadin pituutta
   const reservationSystemMarkers = [] // Täällä pidetään yllä viitettä kenttävarausjärjestelmästä niiden filtteröintiä varten
   const user = useSelector((state) => state.user?.user?.username ?? null)
   const clubs = useSelector((state) => state.user?.user?.clubs ?? {})
@@ -38,6 +38,8 @@ const Map = ({ startingLocation }) => {
     (state) => state.user?.user?.mapPreferences ?? null
   )
   var first = true
+
+  markerClusterGroup.spi
 
   useEffect(() => {
     if (timestampRef.current) {
