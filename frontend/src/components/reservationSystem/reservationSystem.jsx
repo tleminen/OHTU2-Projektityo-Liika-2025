@@ -6,6 +6,7 @@ import { selectCategoryName } from '../../assets/icons'
 import { formatUrl, parseTimeAndDate } from '../../utils/helper'
 import DesktopMiniCalendar from '../../utils/dektopMiniCalendar'
 import { DayPilot, DayPilotNavigator } from '@daypilot/daypilot-lite-react'
+import translationService from '../../services/translationService'
 
 const ReservationSystem = (SystemID) => {
     const language = useSelector((state) => state.language.language)
@@ -19,6 +20,8 @@ const ReservationSystem = (SystemID) => {
     const date = new Date()
     const [startDate, setStartDate] = useState(date)
     const [reload, setReload] = useState(false)
+    // Järjestelmän tiedot
+    const [systemDescription, setSystemDescription] = useState("")
 
     useEffect(() => {
         const fetchEventInfo = async () => {
@@ -27,6 +30,7 @@ const ReservationSystem = (SystemID) => {
                     SystemID: SystemID.id,
                 })
                 setSystem(systemData)
+                setSystemDescription(systemData.Description)
             } catch (error) {
                 console.error(error)
                 // TODO Notifikaatio ettei onnistunut
@@ -84,6 +88,15 @@ const ReservationSystem = (SystemID) => {
                 </div>
             ))
         )
+    }
+
+    const handleTranslateSystemInfo = async () => {
+        try {
+            const translation = await translationService.getSystemDescription({ SystemID: SystemID })
+            setSystemDescription(translation)
+        } catch (e) {
+            console.error("Error with translation", e)
+        }
     }
 
     /**
@@ -237,7 +250,8 @@ const ReservationSystem = (SystemID) => {
             />}</div>) : ("")}
             <div className='spacer-line' />
             <h2>Info</h2>
-            <p style={{ maxWidth: "80%", whiteSpace: 'pre-line' }}>{system.Description}</p>
+            <p style={{ maxWidth: "80%", whiteSpace: 'pre-line' }}>{systemDescription}</p>
+            <button className='translate-btn' onClick={handleTranslateSystemInfo}>Translate</button>
             <div className='spacer-line' />
             <h2>Kentät</h2>
             <em style={{ textAlign: "center", maxWidth: "80%" }}>Voit tarkastella yksittäistä kenttää painamalla sitä tai avata kaikkien kenttien kalenterit nähtäville samaan aikaan</em>
