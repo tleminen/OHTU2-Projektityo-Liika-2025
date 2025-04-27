@@ -460,7 +460,7 @@ const ModifyEvent = () => {
         </div>
         <div className="own-event-item">
           <h2>{t.currentDescription}</h2>
-          <p className="old-event-value">{event.Description}</p>
+          <p className="old-event-value" style={{ textAlign: "left", marginBottom: "10px", whiteSpace: 'pre-line' }}>{event.Description}</p>
           <span className="spacer-line"></span>
           <h2>{t.newDescription}</h2>
           <textarea

@@ -8,3 +8,11 @@ export const parseTimeAndDate = (isoDate) => {
   ).padStart(2, "0")}.${date.getFullYear()}`
   return [time, dateStr]
 }
+
+export const formatUrl = (url) => {
+  if (!url) return null
+  if (url.startsWith('http://') || url.startsWith('https://')) {
+    return url
+  }
+  return `https://${url}`
+}

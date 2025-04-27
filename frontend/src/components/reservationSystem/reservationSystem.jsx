@@ -3,7 +3,7 @@ import reservationService from '../../services/reservationService'
 import { useSelector } from 'react-redux'
 import translations from '../../assets/translation'
 import { selectCategoryName } from '../../assets/icons'
-import { parseTimeAndDate } from '../../utils/helper'
+import { formatUrl, parseTimeAndDate } from '../../utils/helper'
 import DesktopMiniCalendar from '../../utils/dektopMiniCalendar'
 import { DayPilot, DayPilotNavigator } from '@daypilot/daypilot-lite-react'
 
@@ -134,12 +134,11 @@ const ReservationSystem = (SystemID) => {
                                             {categoryImages(field)}
                                         </div>
                                         <h3>{field.Name}</h3>
-                                        <p style={{ marginBottom: "10px" }}>{field.Description}</p>
+                                        <p style={{ textAlign: "left", marginBottom: "10px", whiteSpace: 'pre-line' }}>{field.Description}</p>
                                     </div>
                                     <DesktopMiniCalendar field={field} startDate={startDate} reload={reload} />
-                                    <div>
-                                        <p>{field.URL}</p>
-                                    </div>
+                                    {field.URL && <div style={{ marginTop: "8px" }}><em>Varaukset: </em> <a href={`${formatUrl(field.URL)}`} style={{ wordBreak: "break-all" }} target="_blank"
+                                        rel="noopener">{formatUrl(field.URL)}</a></div>}
                                 </div>
                                 <div className="system-item">
 
@@ -165,7 +164,7 @@ const ReservationSystem = (SystemID) => {
                                 {categoryImages(field)}
                             </div>
                             <h3>{field.Name}</h3>
-                            <p style={{ marginBottom: "10px" }}>{field.Description}</p>
+                            <p style={{ textAlign: "left", marginBottom: "10px", whiteSpace: 'pre-line' }}>{field.Description}</p>
                         </div>
                         {openFieldId === field.FieldID && (
                             <button onClick={() => handleFieldClick(field)} className='btn'>
@@ -173,19 +172,23 @@ const ReservationSystem = (SystemID) => {
                             </button>
                         )}
                         {openFieldId === field.FieldID && (
-                            <div style={{ display: "flex", alignItems: "anchor-center", flexDirection: "row", gap: "10px" }}>
-                                <DayPilotNavigator
-                                    selectMode={"Week"}
-                                    showMonths={1}
-                                    skipMonths={1}
-                                    selectionDay={startDate}
-                                    weekStarts={1}
-                                    onTimeRangeSelected={(args) => {
-                                        setStartDate(args.day)
-                                        setReload((prev) => !prev)
-                                    }}
-                                />
-                                <DesktopMiniCalendar field={field} reload={reload} startDate={startDate} />
+                            <div>
+                                <div style={{ display: "flex", alignItems: "anchor-center", flexDirection: "row", gap: "10px" }}>
+                                    <DayPilotNavigator
+                                        selectMode={"Week"}
+                                        showMonths={1}
+                                        skipMonths={1}
+                                        selectionDay={startDate}
+                                        weekStarts={1}
+                                        onTimeRangeSelected={(args) => {
+                                            setStartDate(args.day)
+                                            setReload((prev) => !prev)
+                                        }}
+                                    />
+                                    <DesktopMiniCalendar field={field} reload={reload} startDate={startDate} />
+                                </div>
+                                {field.URL && <div style={{ marginTop: "8px" }}><em>Varaukset: </em> <a href={`${formatUrl(field.URL)}`} style={{ wordBreak: "break-all" }} target="_blank"
+                                    rel="noopener">{formatUrl(field.URL)}</a></div>}
                             </div>
                         )}
                         {openFieldId !== field.FieldID && (
@@ -234,7 +237,7 @@ const ReservationSystem = (SystemID) => {
             />}</div>) : ("")}
             <div className='spacer-line' />
             <h2>Info</h2>
-            <p style={{ textAlign: "center", maxWidth: "80%" }}>{system.Description}</p>
+            <p style={{ maxWidth: "80%", whiteSpace: 'pre-line' }}>{system.Description}</p>
             <div className='spacer-line' />
             <h2>Kentät</h2>
             <em style={{ textAlign: "center", maxWidth: "80%" }}>Voit tarkastella yksittäistä kenttää painamalla sitä tai avata kaikkien kenttien kalenterit nähtäville samaan aikaan</em>

@@ -6,7 +6,6 @@ import translations from "../../assets/translation"
 import { useEffect, useState } from 'react'
 import reservationService from '../../services/reservationService'
 import NotificationContainer from '../notification/notificationContainer'
-import { selectCategoryName } from '../../assets/icons'
 import "./reservationSystem.css"
 
 const ListReservationSystems = () => {

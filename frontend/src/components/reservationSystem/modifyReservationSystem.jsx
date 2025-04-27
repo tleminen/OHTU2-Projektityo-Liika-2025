@@ -252,7 +252,7 @@ const ModifyReservationSystemView = () => {
                         <span className="spacer-line"></span>
                         <div className='system-modify-item'>
                             <h2>{"Nykyinen kuvaus"}</h2>
-                            <p>{system.Description}</p>
+                            <p style={{ textAlign: "left", marginBottom: "10px", whiteSpace: 'pre-line' }}>{system.Description}</p>
                             <h2>{"Uusi kuvaus"}</h2>
                             <textarea
                                 type="text"

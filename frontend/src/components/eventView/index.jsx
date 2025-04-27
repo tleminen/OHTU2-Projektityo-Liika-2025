@@ -301,7 +301,7 @@ const EventView = () => {
             {event.ParticipantMin} - {event.ParticipantMax}
           </p>
           <h2>{t.description}</h2>
-          <div style={{ maxWidth: "600px", marginBottom: "10px" }}>
+          <div style={{ maxWidth: "600px", textAlign: "left", marginBottom: "10px", whiteSpace: 'pre-line' }}>
             {event.Description}
           </div>
           <h3>{t.enterEmailToJoinEvent}</h3>
@@ -403,7 +403,7 @@ const EventView = () => {
           {event.ParticipantMin} - {event.ParticipantMax}
         </p>
         <h2>{t.description}</h2>
-        <div style={{ maxWidth: "600px", marginBottom: "10px" }}>
+        <div style={{ maxWidth: "600px", textAlign: "left", marginBottom: "10px", whiteSpace: 'pre-line' }}>
           {event.Description}
         </div>
         <h2>{t.join}</h2>
