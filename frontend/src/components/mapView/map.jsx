@@ -20,6 +20,7 @@ import { DarkOverlay, LiikaOverlay, UserOverlay } from "./layers/overlayLayers"
 import { parseTimeAndDate } from "../../utils/helper"
 import translations from "../../assets/translation"
 import homeIcon from "../../assets/home.png"
+import translationService from '../../services/translationService'
 
 const DEFAULT_DAYS = 31
 
@@ -35,7 +36,9 @@ const Map = ({ startingLocation }) => {
   const reservationSystemMarkers = [] // Täällä pidetään yllä viitettä kenttävarausjärjestelmästä niiden filtteröintiä varten
   const searchMarkers = [] // Haut tallennetaan tänne. Refresh poistaa kartalta
   const user = useSelector((state) => state.user?.user?.username ?? null)
+  const userID = useSelector((state) => state.user?.user?.userID ?? null)
   const clubs = useSelector((state) => state.user?.user?.clubs ?? {})
+  const storedToken = useSelector((state) => state.user?.user?.token ?? null)
   const mapPreferences = useSelector(
     (state) => state.user?.user?.mapPreferences ?? null
   )
@@ -293,7 +296,6 @@ const Map = ({ startingLocation }) => {
         categories[categoryId].markers = []
       })
       // Lisätään markerit uudelleen
-      console.log(systemList)
       const fullList = [...eventList, ...systemList] // Sori koodin toistosta, mutten halunnut laittaa propseina eteenpäin kaikkea.
       fullList.forEach((tapahtuma) => {
         if (!tapahtuma.EventID) { // Jos ei Event_Location niin on kenttävarausjärjestelmä
@@ -307,17 +309,36 @@ const Map = ({ startingLocation }) => {
     <div class="popup-wrapper">
     <div class="popup-info">
       <h1>${tapahtuma.Title}</h1>
-      ${handleDescription(tapahtuma.PopUpText)}<br/>
-      <em>${tapahtuma.ClubName}</em> <br/>
-      <a href="/reservation_system/${tapahtuma.SystemID}" class="event-link">
-        ${t.show_reservation_info}
-      </a>
-    </div>
-    <div class="popup-right">
+      <div id="description-text">
+      ${handleDescription(tapahtuma.PopUpText)}</div>
+      <em>${tapahtuma.ClubName}</em> <br />
+            <a href="/reservation_system/${tapahtuma.SystemID}" class="event-link">
+              ${t.show_reservation_info}
+            </a>
+    </div >
+  <div class="popup-right">
+  <div id="translate-button-container"></div>
     ${handleRental(tapahtuma.Rental)}
-    </div>
   </div>
+  </div >
   `
+            if (user && language === "EN") { // Jos käyttäjä ja kieli englanniksi
+              const buttonContainer = container.querySelector("#translate-button-container")
+              const button = document.createElement("button")
+              button.className = "translate-btn"
+              button.textContent = "translate"
+              button.addEventListener("click", async () => {
+                button.disabled = true
+                // Simuloitu uusi teksti
+                const translatedText = await translationService.getTranslation(storedToken, { text: handleDescription(tapahtuma.PopUpText), UserID: userID })
+                // Haetaan description-div ja päivitetään sen sisältö
+                const descriptionDiv = container.querySelector("#description-text")
+                descriptionDiv.innerHTML = translatedText
+
+                console.log("Teksti käännetty")
+              })
+              buttonContainer.appendChild(button)
+            }
             return container
           })
           // Muokataan const categoryID = tapahtuma.CategoryID
@@ -344,23 +365,23 @@ const Map = ({ startingLocation }) => {
             // Asetetaan markkeri oikeisiin koordinaatteihin ja liitetään siihen popUp
             const container = document.createElement("div") // Popupin containeri, seuraavana sisältö:
             container.innerHTML = `
-    <h1>${tapahtuma.Title}</h1>
+  < h1 > ${tapahtuma.Title}</h1 >
     <em>📅${parseTimeAndDate(tapahtuma.StartTime)[1]}
-          <em> 
-    <em>🕒${parseTimeAndDate(tapahtuma.StartTime)[0]} - ${parseTimeAndDate(tapahtuma.EndTime)[0]
-              }<em><br/>
-    ${handleDescription(tapahtuma.Description)}<br/>
-    <p style="text-transform: lowercase; padding: 4px 0px; margin:0;">${t.participants
+      <em>
+        <em>🕒${parseTimeAndDate(tapahtuma.StartTime)[0]} - ${parseTimeAndDate(tapahtuma.EndTime)[0]
+              }<em><br />
+            ${handleDescription(tapahtuma.Description)}<br />
+            <p style="text-transform: lowercase; padding: 4px 0px; margin:0;">${t.participants
               }: ${tapahtuma.JoinedCount} / ${tapahtuma.ParticipantMax || "-"}</p>
-    <em>${showUsername({
+            <em>${showUsername({
                 user: tapahtuma.Username,
                 club: tapahtuma.ClubName,
-              })}</em> <br/>
-    <a href="/events/${tapahtuma.EventID
+              })}</em> <br />
+            <a href="/events/${tapahtuma.EventID
               }" style="color: blue; text-decoration: underline;">
-      ${t.show_event_info}
-    </a>
-  `
+              ${t.show_event_info}
+            </a>
+            `
             return container
           })
           const categoryID = tapahtuma.CategoryID
@@ -472,7 +493,7 @@ const Map = ({ startingLocation }) => {
       // Lisätään marker popupilla
       const searchResultMarker = L.marker(center)
         .addTo(map)
-        .bindPopup(`<p>${printAddress1}<br/>${printAddress2}<br/>${printAddress3}</p>`)
+        .bindPopup(`<p>${printAddress1}<br />${printAddress2}<br />${printAddress3}</p>`)
         .openPopup()
       searchMarkers.push(searchResultMarker)
     })

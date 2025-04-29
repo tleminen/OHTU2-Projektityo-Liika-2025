@@ -12,4 +12,18 @@ const getSystemDescription = async (credentials) => {
     return response.data
 }
 
-export default { getSystemDescription }
+// Hakee käännöksen
+const getTranslation = async (storedToken, parameters) => {
+    setToken(storedToken)
+    const headers = {
+        headers: { Authorization: token }, // Asetetaan token headeriin
+    }
+    const response = await axios.post(
+        baseUrl + "/translate/",
+        parameters,
+        headers
+    )
+    return response.data
+}
+
+export default { getSystemDescription, getTranslation }

@@ -373,6 +373,10 @@
   cursor: pointer;
 }
 
+#translate-button-container {
+  justify-items: left;
+}
+
 /*Käytetään !important ohittamaan leafletin omat css-määrittelyt */
 .rmdp-wrapper {
   border-radius: 20px !important;

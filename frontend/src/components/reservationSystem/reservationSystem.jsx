@@ -22,6 +22,8 @@ const ReservationSystem = (SystemID) => {
     const [reload, setReload] = useState(false)
     // Järjestelmän tiedot
     const [systemDescription, setSystemDescription] = useState("")
+    // Käännökset
+    const [systemInfoIsDisabled, setSystemInfoIsDisabled] = useState(false)
 
     useEffect(() => {
         const fetchEventInfo = async () => {
@@ -91,6 +93,7 @@ const ReservationSystem = (SystemID) => {
     }
 
     const handleTranslateSystemInfo = async () => {
+        setSystemInfoIsDisabled(true)
         try {
             const translation = await translationService.getSystemDescription({ SystemID: SystemID })
             setSystemDescription(translation)
@@ -251,7 +254,7 @@ const ReservationSystem = (SystemID) => {
             <div className='spacer-line' />
             <h2>Info</h2>
             <p style={{ maxWidth: "80%", whiteSpace: 'pre-line' }}>{systemDescription}</p>
-            <button className='translate-btn' onClick={handleTranslateSystemInfo}>Translate</button>
+            <button className='translate-btn' onClick={handleTranslateSystemInfo} disabled={systemInfoIsDisabled} >Translate</button>
             <div className='spacer-line' />
             <h2>Kentät</h2>
             <em style={{ textAlign: "center", maxWidth: "80%" }}>Voit tarkastella yksittäistä kenttää painamalla sitä tai avata kaikkien kenttien kalenterit nähtäville samaan aikaan</em>
