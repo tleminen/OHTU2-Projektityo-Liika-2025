@@ -19,6 +19,7 @@ import {
   EventLeaveSuccess
 } from "../notification/notificationTemplates.js"
 import NotificationContainer from "../notification/notificationContainer.jsx"
+import translationService from '../../services/translationService.js'
 
 
 
@@ -36,6 +37,8 @@ const EventView = () => {
   const dispatch = useDispatch()
   const [disableButton, setDisableButton] = useState(false)
   const storedToken = useSelector((state) => state.user?.user?.token ?? null)
+  // Käännökset
+  const [translateBtnIsDisabled, setTranslateBtnIsDisabled] = useState(false)
 
   useEffect(() => {
     const fetchEventInfo = async () => {
@@ -55,6 +58,40 @@ const EventView = () => {
     fetchEventInfo()
   }, [id])
 
+  const handleTranslate = async () => {
+    setTranslateBtnIsDisabled(true)
+
+    // Luodaan inputObject ja annetaan sille helpot avainarvoparit
+    const inputObject = {
+      systemDescription: event.Description,
+    }
+
+    let toLanguage = "en"
+    switch (language) { // Lisää tänne kieliä kun niitä tulee valintoihin
+      case "EN":
+        toLanguage = "en"
+        break
+      default:
+        toLanguage = "en" // fallback
+    }
+    try {
+      const translated = await translationService.getTranslations(storedToken, {
+        UserID: userID,
+        inputObject,
+        toLanguage
+      })
+      // Päivitetään system olio uusilla käännöksillä
+      const translatedEvent = {
+        ...event,
+        Description: translated.systemDescription,
+      }
+      // Asetetaan käännökset näkyville
+      setEvent(translatedEvent)
+    } catch (e) {
+      console.error("Error with translation", e) // TODO: Notify käännöksen epäonnistumisesta
+      setTranslateBtnIsDisabled(false)
+    }
+  }
 
 
   // Tapahtumaan liittymisen painikkeen handleri
@@ -279,7 +316,7 @@ const EventView = () => {
             className="event-view-icon" // Ei taida toimia tää className??
           />
           <h1>{event.Title}</h1>
-          <h2>{"Tulevat tapahtumapäivät"}</h2>
+          <h2>{t.upcomingEventDays}</h2>
           <div className="time-parent">
             {times.map((time, index) => (
               <div key={index} className="time-child">
@@ -371,7 +408,9 @@ const EventView = () => {
       <Header />
       <NotificationContainer />
       <div className="event-view">
-        <span className="spacer-line"></span>
+        <div className='translate-btn-container-top-right'> {/*Käännöksen tuottamisen painike*/}
+          <button className='translate-btn' onClick={handleTranslate} disabled={translateBtnIsDisabled} >Translate</button>
+        </div>
         {showUsername({ user: event.Username, club: event.ClubName })}
         <img
           src={`/lajit/${selectCategoryName([event.CategoryID])}.png`}
@@ -381,7 +420,7 @@ const EventView = () => {
           className="event-view-icon" // Ei taida toimia tää className??
         />
         <h1>{event.Title}</h1>
-        <h2>{"Tulevat tapahtumapäivät"}</h2>
+        <h2>{t.upcomingEventDays}</h2>
         <div className="time-parent">
           {times.map((time, index) => (
             <div key={index} className="time-child">

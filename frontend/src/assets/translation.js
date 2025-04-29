@@ -228,6 +228,7 @@ const translations = {
     thePrinciplesText: "The principles of registry protection",
     theRightText:
       "The right to inspect and the right to demand correction of information",
+    upcomingEventDays: "Scheduled event dates",
     updateMapEvents: "Update the events on the map",
     username: "Username",
     username_update_error: "Failed to change username",
@@ -526,6 +527,7 @@ const translations = {
     thePrinciplesText: "Rekisterin suojaamisen periaatteet",
     theRightText:
       "Oikeus tarkastaa tiedot ja oikeus vaatia tietojen korjaamista",
+    upcomingEventDays: "Tulevat tapahtumapäivät",
     updateMapEvents: "Päivitä kartan tapahtumat",
     username: "Käyttäjätunnus",
     username_update_error:

@@ -50,12 +50,12 @@ const EventList = (listType) => {
         setClubEvents(groupedEvents)
       } else if (listType.listType === "joined") {
         try {
-          const events = await eventService.getUserJoinedEvents(
+          const response = await eventService.getUserJoinedEvents(
             storedToken,
             userID
           )
-          if (events) {
-            setEvents(events)
+          if (response) {
+            setEvents(response)
           }
         } catch (error) {
           console.error("Virhe haettaessa käyttäjän tapahtumia: " + error)
