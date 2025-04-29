@@ -309,15 +309,15 @@ const Map = ({ startingLocation }) => {
     <div class="popup-wrapper">
     <div class="popup-info">
       <h1>${tapahtuma.Title}</h1>
-      <div id="description-text">
+      <div id="description-text" style="white-space: pre-line margin-top: 2px">
       ${handleDescription(tapahtuma.PopUpText)}</div>
       <em>${tapahtuma.ClubName}</em> <br />
             <a href="/reservation_system/${tapahtuma.SystemID}" class="event-link">
               ${t.show_reservation_info}
             </a>
+            <div id="translate-button-container" style= "position: absolute; bottom: 14px; right: 10px"></div>
     </div >
   <div class="popup-right">
-  <div id="translate-button-container"></div>
     ${handleRental(tapahtuma.Rental)}
   </div>
   </div >
@@ -365,12 +365,13 @@ const Map = ({ startingLocation }) => {
             // Asetetaan markkeri oikeisiin koordinaatteihin ja liitetään siihen popUp
             const container = document.createElement("div") // Popupin containeri, seuraavana sisältö:
             container.innerHTML = `
-  < h1 > ${tapahtuma.Title}</h1 >
+  <h1> ${tapahtuma.Title}</h1 >
     <em>📅${parseTimeAndDate(tapahtuma.StartTime)[1]}
       <em>
         <em>🕒${parseTimeAndDate(tapahtuma.StartTime)[0]} - ${parseTimeAndDate(tapahtuma.EndTime)[0]
-              }<em><br />
-            ${handleDescription(tapahtuma.Description)}<br />
+              }<em>
+              <div id="description-text" style="white-space: pre-line margin-top: 2px">
+            <p style="white-space: pre-line; margin-top: 2px"">${handleDescription(tapahtuma.Description)}</p></div>
             <p style="text-transform: lowercase; padding: 4px 0px; margin:0;">${t.participants
               }: ${tapahtuma.JoinedCount} / ${tapahtuma.ParticipantMax || "-"}</p>
             <em>${showUsername({
@@ -379,9 +380,27 @@ const Map = ({ startingLocation }) => {
               })}</em> <br />
             <a href="/events/${tapahtuma.EventID
               }" style="color: blue; text-decoration: underline;">
-              ${t.show_event_info}
+              ${t.show_event_info}              
             </a>
+  <div id="translate-button-container" style= "position: absolute; bottom: 14px; right: 10px"></div>
             `
+            if (user && language === "EN") { // Jos käyttäjä ja kieli englanniksi
+              const buttonContainer = container.querySelector("#translate-button-container")
+              const button = document.createElement("button")
+              button.className = "translate-btn"
+              button.textContent = "translate"
+              button.addEventListener("click", async () => {
+                button.disabled = true
+                // Simuloitu uusi teksti
+                const translatedText = await translationService.getTranslation(storedToken, { text: handleDescription(tapahtuma.Description), UserID: userID })
+                // Haetaan description-div ja päivitetään sen sisältö
+                const descriptionDiv = container.querySelector("#description-text")
+                descriptionDiv.innerHTML = translatedText
+
+                console.log("Teksti käännetty")
+              })
+              buttonContainer.appendChild(button)
+            }
             return container
           })
           const categoryID = tapahtuma.CategoryID

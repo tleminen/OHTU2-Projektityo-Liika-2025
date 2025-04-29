@@ -375,6 +375,7 @@
 
 #translate-button-container {
   justify-items: left;
+  margin-right: 0px;
 }
 
 /*Käytetään !important ohittamaan leafletin omat css-määrittelyt */

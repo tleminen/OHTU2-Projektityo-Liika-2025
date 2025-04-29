@@ -11,6 +11,8 @@ import translationService from '../../services/translationService'
 const ReservationSystem = (SystemID) => {
     const language = useSelector((state) => state.language.language)
     const t = translations[language]
+    const storedToken = useSelector((state) => state.user?.user?.token ?? null)
+    const UserID = useSelector((state) => state.user?.user?.userID ?? null)
     const [loading, setLoading] = useState(true)
     const [system, setSystem] = useState(null)
     const [multiCalendarIsOpen, setMultiCalendarIsOpen] = useState(false)
@@ -20,10 +22,8 @@ const ReservationSystem = (SystemID) => {
     const date = new Date()
     const [startDate, setStartDate] = useState(date)
     const [reload, setReload] = useState(false)
-    // Järjestelmän tiedot
-    const [systemDescription, setSystemDescription] = useState("")
     // Käännökset
-    const [systemInfoIsDisabled, setSystemInfoIsDisabled] = useState(false)
+    const [translateBtnIsDisabled, setTranslateBtnIsDisabled] = useState(false)
 
     useEffect(() => {
         const fetchEventInfo = async () => {
@@ -32,7 +32,6 @@ const ReservationSystem = (SystemID) => {
                     SystemID: SystemID.id,
                 })
                 setSystem(systemData)
-                setSystemDescription(systemData.Description)
             } catch (error) {
                 console.error(error)
                 // TODO Notifikaatio ettei onnistunut
@@ -92,13 +91,45 @@ const ReservationSystem = (SystemID) => {
         )
     }
 
-    const handleTranslateSystemInfo = async () => {
-        setSystemInfoIsDisabled(true)
+    const handleTranslate = async () => {
+        setTranslateBtnIsDisabled(true)
+
+        // Luodaan inputObject ja annetaan sille helpot avainarvoparit
+        const inputObject = {
+            systemDescription: system.Description,
+        }
+        // Sitten annetaan dynaamiset avain-arvoparit
+        system.Fields.forEach((field, index) => {
+            inputObject[`field_${index}`] = field.Description
+        })
+        let toLanguage = "en"
+        switch (language) { // Lisää tänne kieliä kun niitä tulee valintoihin
+            case "EN":
+                toLanguage = "en"
+                break
+            default:
+                toLanguage = "en" // fallback
+        }
         try {
-            const translation = await translationService.getSystemDescription({ SystemID: SystemID })
-            setSystemDescription(translation)
+            const translated = await translationService.getTranslations(storedToken, {
+                UserID,
+                inputObject,
+                toLanguage
+            })
+            // Päivitetään system olio uusilla käännöksillä
+            const translatedSystem = {
+                ...system,
+                Description: translated.systemDescription,
+                Fields: system.Fields.map((field, index) => ({
+                    ...field,
+                    Description: translated[`field_${index}`] || field.Description
+                }))
+            }
+            // Asetetaan käännökset näkyville
+            setSystem(translatedSystem)
         } catch (e) {
-            console.error("Error with translation", e)
+            console.error("Error with translation", e) // TODO: Notify epäonnistumisesta
+            setTranslateBtnIsDisabled(false)
         }
     }
 
@@ -240,6 +271,9 @@ const ReservationSystem = (SystemID) => {
 
     return (
         <div className='event-view'>
+            <div className='translate-btn-container-top-right'> {/*Käännöksen tuottamisen painike*/}
+                <button className='translate-btn' onClick={handleTranslate} disabled={translateBtnIsDisabled} >Translate</button>
+            </div>
             <h1>{system.Title}</h1>
             {system.Rental ? (<div style={{
                 display: "flex",
@@ -253,8 +287,7 @@ const ReservationSystem = (SystemID) => {
             />}</div>) : ("")}
             <div className='spacer-line' />
             <h2>Info</h2>
-            <p style={{ maxWidth: "80%", whiteSpace: 'pre-line' }}>{systemDescription}</p>
-            <button className='translate-btn' onClick={handleTranslateSystemInfo} disabled={systemInfoIsDisabled} >Translate</button>
+            <p style={{ maxWidth: "80%", whiteSpace: 'pre-line' }}>{system.Description}</p>
             <div className='spacer-line' />
             <h2>Kentät</h2>
             <em style={{ textAlign: "center", maxWidth: "80%" }}>Voit tarkastella yksittäistä kenttää painamalla sitä tai avata kaikkien kenttien kalenterit nähtäville samaan aikaan</em>
