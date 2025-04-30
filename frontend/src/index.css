@@ -642,6 +642,7 @@ ol {
 
 .popup-info {
   max-width: 103%;
+  min-width: 200px;
 }
 
 .popup-right {
