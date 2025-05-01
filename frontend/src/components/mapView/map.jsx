@@ -21,6 +21,7 @@ import { parseTimeAndDate, translateOn } from "../../utils/helper"
 import translations from "../../assets/translation"
 import homeIcon from "../../assets/home.png"
 import translationService from '../../services/translationService'
+import { changeDeviceSettings } from '../../store/deviceSettingsSlice'
 
 const DEFAULT_DAYS = 31
 
@@ -42,6 +43,7 @@ const Map = ({ startingLocation }) => {
   const mapPreferences = useSelector(
     (state) => state.user?.user?.mapPreferences ?? null
   )
+  const deviceSettings = useSelector((state) => state.deviceSettings?.deviceSettings ?? null)
   var first = true
 
   markerClusterGroup.spi
@@ -465,6 +467,25 @@ const Map = ({ startingLocation }) => {
     const liikaLayer = new LiikaOverlay()
     const darkLayer = new DarkOverlay()
     const userLayer = new UserOverlay(mapPreferences)
+
+    const selectLayer = () => {
+      if (!deviceSettings) {
+        return liikaLayer
+      }
+      switch (deviceSettings.layer) {
+        case "liika": {
+          return liikaLayer
+        }
+        case "dark": {
+          return darkLayer
+        }
+        case "user": {
+          return userLayer
+        }
+      }
+    }
+
+    const firstLayer = selectLayer()
     // Luo karttaelementti kun komponentti mounttaa
 
     // Tarkastetaan ensin, että kartalla on aloitussijainti:
@@ -485,7 +506,7 @@ const Map = ({ startingLocation }) => {
     const map = L.map("map", {
       center: [startingLocation.lat, startingLocation.lng],
       zoom: startingLocation.zoom,
-      layers: [osm, liikaLayer],
+      layers: [osm, firstLayer],
     })
 
     //Search bar
@@ -710,6 +731,30 @@ const Map = ({ startingLocation }) => {
           zoom: zoomLevel,
         })
       )
+    })
+
+    map.on("baselayerchange", function (e) {
+      console.log("Overlay lisätty:", e.name)
+      switch (e.name) {
+        case "Dark": {
+          dispatch(changeDeviceSettings({
+            layer: "dark"
+          }))
+          break
+        }
+        case "User": {
+          dispatch(changeDeviceSettings({
+            layer: "user"
+          }))
+          break
+        }
+        case "Liika": {
+          dispatch(changeDeviceSettings({
+            layer: "liika"
+          }))
+          break
+        }
+      }
     })
 
     map.addLayer(markerClusterGroup)

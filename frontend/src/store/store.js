@@ -5,6 +5,7 @@ import categoriesReducer from "./categoriesSlice"
 import userReducer from "./userSlice"
 import eventReducer from "./eventSlice"
 import notificationReducer from "./notificationSlice"
+import deviceSettingsReducer from "./deviceSettingsSlice"
 
 export const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ export const store = configureStore({
     user: userReducer,
     event: eventReducer,
     notifications: notificationReducer,
+    deviceSettings: deviceSettingsReducer,
   },
 })
 //Notifikaatioiden testiin (poista kun löydät)
