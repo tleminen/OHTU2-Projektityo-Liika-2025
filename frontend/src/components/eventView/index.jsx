@@ -9,7 +9,7 @@ import "./eventView.css"
 import { selectCategoryName } from "../../assets/icons"
 import { addEvent, removeEvent } from "../../store/eventSlice"
 import StaticMap from "../../utils/staticMap"
-import { parseTimeAndDate } from "../../utils/helper"
+import { parseTimeAndDate, translateLanguage, translateOn } from "../../utils/helper"
 import SendEmail from "../../utils/sendEmail.jsx"
 import { addNotification } from "../../store/notificationSlice.js"
 import {
@@ -66,14 +66,8 @@ const EventView = () => {
       systemDescription: event.Description,
     }
 
-    let toLanguage = "en"
-    switch (language) { // Lisää tänne kieliä kun niitä tulee valintoihin
-      case "EN":
-        toLanguage = "en"
-        break
-      default:
-        toLanguage = "en" // fallback
-    }
+    const toLanguage = translateLanguage(language)
+
     try {
       const translated = await translationService.getTranslations(storedToken, {
         UserID: userID,
@@ -408,9 +402,9 @@ const EventView = () => {
       <Header />
       <NotificationContainer />
       <div className="event-view">
-        <div className='translate-btn-container-top-right'> {/*Käännöksen tuottamisen painike*/}
+        {translateOn(language) && <div className='translate-btn-container-top-right'> {/*Käännöksen tuottamisen painike*/}
           <button className='translate-btn' onClick={handleTranslate} disabled={translateBtnIsDisabled} >Translate</button>
-        </div>
+        </div>}
         {showUsername({ user: event.Username, club: event.ClubName })}
         <img
           src={`/lajit/${selectCategoryName([event.CategoryID])}.png`}

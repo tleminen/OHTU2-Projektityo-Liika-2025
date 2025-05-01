@@ -16,3 +16,19 @@ export const formatUrl = (url) => {
   }
   return `https://${url}`
 }
+
+export const translateOn = (language) => {
+  if (language === "EN") {
+    return true
+  }
+  return false
+}
+
+export const translateLanguage = (language) => {
+  switch (language) { // Lisää tänne kieliä kun niitä tulee valintoihin
+    case "EN":
+      return "en"
+    default:
+      return "en" // fallback
+  }
+}

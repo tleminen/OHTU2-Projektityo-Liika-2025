@@ -17,7 +17,7 @@ import { selectClubIcon, selectIcon, selectSystemIcon } from "../../assets/icons
 import { categories } from "./utils"
 import ShortcutButtons from "./shortcutButtons"
 import { DarkOverlay, LiikaOverlay, UserOverlay } from "./layers/overlayLayers"
-import { parseTimeAndDate } from "../../utils/helper"
+import { parseTimeAndDate, translateOn } from "../../utils/helper"
 import translations from "../../assets/translation"
 import homeIcon from "../../assets/home.png"
 import translationService from '../../services/translationService'
@@ -322,7 +322,7 @@ const Map = ({ startingLocation }) => {
   </div>
   </div >
   `
-            if (user && language === "EN") { // Jos käyttäjä ja kieli englanniksi
+            if (user && translateOn(language)) { // Jos käyttäjä ja kieli englanniksi
               const buttonContainer = container.querySelector("#translate-button-container")
               const button = document.createElement("button")
               button.className = "translate-btn"

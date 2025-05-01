@@ -240,6 +240,7 @@ button:focus-visible {
   min-width: fit-content;
   cursor: pointer;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.291);
+  overflow: visible;
 }
 
 .translate-btn:disabled {
@@ -648,9 +649,9 @@ ol {
 .popup-right {
   margin-left: -20px;
   justify-self: end;
-  align-self: top;
   transform: translateX(20px);
   max-width: fit-content;
+  max-height: fit-content;
 }
 
 /*ala paneelille tyyli*/

@@ -3,7 +3,7 @@ import reservationService from '../../services/reservationService'
 import { useSelector } from 'react-redux'
 import translations from '../../assets/translation'
 import { selectCategoryName } from '../../assets/icons'
-import { formatUrl, parseTimeAndDate } from '../../utils/helper'
+import { formatUrl, parseTimeAndDate, translateOn } from '../../utils/helper'
 import DesktopMiniCalendar from '../../utils/dektopMiniCalendar'
 import { DayPilot, DayPilotNavigator } from '@daypilot/daypilot-lite-react'
 import translationService from '../../services/translationService'
@@ -271,9 +271,9 @@ const ReservationSystem = (SystemID) => {
 
     return (
         <div className='event-view'>
-            <div className='translate-btn-container-top-right'> {/*Käännöksen tuottamisen painike*/}
+            {translateOn(language) && <div className='translate-btn-container-top-right'> {/*Käännöksen tuottamisen painike*/}
                 <button className='translate-btn' onClick={handleTranslate} disabled={translateBtnIsDisabled} >Translate</button>
-            </div>
+            </div>}
             <h1>{system.Title}</h1>
             {system.Rental ? (<div style={{
                 display: "flex",
