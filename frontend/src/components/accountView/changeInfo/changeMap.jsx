@@ -6,7 +6,6 @@ import "../../../index.css"
 import "../accountView.css"
 import { Link } from "react-router-dom"
 import userService from "../../../services/userService.js"
-import LocationMap from "../../locationMap.jsx"
 import { useEffect, useState } from "react"
 import { changeLocation } from "../../../store/locationSlice.js"
 import { changeUser } from "../../../store/userSlice.js"
@@ -17,6 +16,7 @@ import {
   TokenNotFound,
   MapUpdateError
 } from "../../notification/notificationTemplates.js"
+import LocationMap from '../../../utils/locationMap.jsx'
 
 const ChangeMap = () => {
   const language = useSelector((state) => state.language.language)

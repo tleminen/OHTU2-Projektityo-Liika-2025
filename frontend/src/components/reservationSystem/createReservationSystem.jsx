@@ -3,12 +3,11 @@ import translations from '../../assets/translation'
 import Header from '../header'
 import NotificationContainer from '../notification/notificationContainer'
 import Footer from '../footer'
-import Select from "react-select"
 import { useState } from 'react'
 import { selectCategoryName } from '../../assets/icons'
-import LocationMap from '../locationMap'
 import reservationService from '../../services/reservationService'
 import { Link } from 'react-router-dom'
+import LocationMap from '../../utils/locationMap'
 
 const CreateReservationSystem = () => {
     const language = useSelector((state) => state.language.language)

@@ -6,7 +6,7 @@ import translations from "../../assets/translation"
 import { useEffect, useState } from 'react'
 import reservationService from '../../services/reservationService'
 import NotificationContainer from '../notification/notificationContainer'
-import LocationMap from '../locationMap'
+import LocationMap from '../../utils/locationMap'
 
 const ModifyReservationSystemView = () => {
     const { id } = useParams()

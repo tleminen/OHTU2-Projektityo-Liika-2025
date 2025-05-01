@@ -194,6 +194,7 @@ const translations = {
     ready_account: "Already have an account?",
     rentalAvailable: "Rental equipment available",
     register: "Sign up",
+    registerForFreeText: "It is not required to register to our service. You can start by just clicking the map and search around for events and activies.\nRegistered users have helpful features such as automated translations to descriptions and list of joined events.\nRegistering is free and takes only up to few minutes!",
     rememberFilter: "Remember to also press 'Filter' in this case",
     registeredEvents: "View the events you have registered for",
     registerPrompt: "Enter your email address, desired username, and password.",
@@ -510,6 +511,7 @@ const translations = {
     rentalAvailable: "Välineiden vuokrausta tarjolla",
     rememberFilter: "Muista myös tällöin painaa 'filtteröi'",
     register: "Rekisteröidy",
+    registerForFreeText: "Palvelun käyttö on maksutonta ja rekisteröityminen on vapaaehtoista.\nVoit siirtyä etsimään tapahtumia ja tekemistä klikkaamalla karttaa.\nRekisteröityneellä käyttäjällä on käytössään lukuisia helpottavia ominaisuuksia kuten kartan aloitussijainnin asetus, sekä listaus liitytyistä tapahtumista.\nRekisteröityminen on maksutonta ja vie vain muutaman minuutin.",
     registeredEvents: "Näe tapahtumat, joihin olet ilmoittautunut",
     registerPrompt:
       "Syötä sähköpostiosoitteesi, haluamasi käyttäjätunnus ja salasana.",

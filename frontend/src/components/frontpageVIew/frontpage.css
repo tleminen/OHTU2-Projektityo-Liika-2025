@@ -33,6 +33,14 @@
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
+  flex-direction: column;
+  align-items: center;
+}
+
+.login-register-buttons {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
 }
 
 .placeholder {
@@ -162,6 +170,11 @@
   /* Säilyttää saman rivivälin */
   display: inline;
   text-shadow: 2px 2px 5px rgba(26, 26, 26, 0.5);
+}
+
+.button-container {
+  display: flex;
+  flex-direction: column;
 }
 
 @media (max-width: 580px) {

@@ -3,7 +3,7 @@ import L from "leaflet"
 import "leaflet/dist/leaflet.css"
 import "../index.css"
 import { useSelector } from "react-redux"
-import { LiikaOverlay } from "./mapView/layers/overlayLayers"
+import { LiikaOverlay } from "../components/mapView/layers/overlayLayers"
 
 // eslint-disable-next-line react/prop-types
 const LocationMap = ({ onLocationChange, oldLocation }) => {

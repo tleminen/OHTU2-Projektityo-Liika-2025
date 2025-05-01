@@ -303,7 +303,7 @@ const ReservationSystem = (SystemID) => {
 
     return (
         <div className='event-view'>
-            {translateOn(language) && <div className='translate-btn-container-top-right'> {/*Käännöksen tuottamisen painike*/}
+            {UserID && translateOn(language) && <div className='translate-btn-container-top-right'> {/*Käännöksen tuottamisen painike*/}
                 <button className='translate-btn' onClick={handleTranslate} disabled={translateBtnIsDisabled} >Translate</button>
             </div>}
             <h1>{system.Title}</h1>

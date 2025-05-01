@@ -3,7 +3,6 @@ import { useEffect, useRef, useState } from "react"
 import translations from "../../assets/translation.js"
 import { useNavigate } from "react-router-dom"
 import registerService from "../../services/registerService.js"
-import LocationMap from "../locationMap.jsx"
 import "./register.css"
 import { changeLocation } from "../../store/locationSlice.js"
 import { changeUser } from "../../store/userSlice.js"
@@ -21,6 +20,7 @@ import {
   EmailAlreadyRegistered,
 } from "../notification/notificationTemplates.js"
 import { Link } from "react-router-dom"
+import LocationMap from '../../utils/locationMap.jsx'
 
 const RegisterForm = () => {
   const language = useSelector((state) => state.language.language)

@@ -2,9 +2,11 @@ import { useEffect } from "react"
 import L from "leaflet"
 import "leaflet/dist/leaflet.css"
 import "../index.css"
+import { LiikaOverlay } from '../components/mapView/layers/overlayLayers'
 
 // eslint-disable-next-line react/prop-types
 const StaticMap = ({ mapCenter }) => {
+  const liikaLayer = new LiikaOverlay()
   useEffect(() => {
     // Luo karttaelementti kun komponentti mounttaa
     // Tarkastetaan ensin, että kartalla on aloitussijainti:
@@ -13,16 +15,21 @@ const StaticMap = ({ mapCenter }) => {
       mapCenter = [29.7639, 62.6013]
     }
 
+    // Lisää OpenStreetMap-laatta
+    var osm = L.tileLayer(
+      "https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png",
+      {
+        attribution:
+          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      }
+    )
+
     const map = L.map("map", {
       center: [mapCenter[1], mapCenter[0]],
       zoom: 15,
+      layers: [osm, liikaLayer],
     })
 
-    // Lisää OpenStreetMap-laatta
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      attribution:
-        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-    }).addTo(map)
 
     // Luo marker, joka asetetaan kartan keskelle
     L.marker(map.getCenter(), {

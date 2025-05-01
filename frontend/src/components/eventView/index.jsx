@@ -293,7 +293,7 @@ const EventView = () => {
       <div
         className="fullpage"
         style={{
-          backgroundImage: "url('/backgroundpicture.jpg')",
+          backgroundImage: "url('/alternativebackgroundpicture.png')",
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",

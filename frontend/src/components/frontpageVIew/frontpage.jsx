@@ -16,12 +16,11 @@ const Frontpage = () => {
   const t = translations[language]
   const user = useSelector((state) => state.user.user)
 
-  const singedOrNot = () => {
+  const isSingedIn = () => {
     if (user === null) {
-      return <SignedOut />
-    } else {
-      return <SignedIn />
+      return (false)
     }
+    return true
   }
 
   return (
@@ -35,7 +34,7 @@ const Frontpage = () => {
       }}
     >
       <Header backButton={true} />
-      <NotificationContainer/>
+      <NotificationContainer />
       <div className="frontpage">
         <div className="map-container">
           <div className="text-background2">
@@ -56,7 +55,7 @@ const Frontpage = () => {
               onClick={() => navigateTo("map")}
             />
           </div>
-          <div className="button-container">{singedOrNot(user)}</div>
+          <div className="button-container">{isSingedIn() ? <SignedIn /> : <SignedOut />}</div>
           <div className="text-background">
             <h5 className="frontpage-descriptive-text">
               <style className={"text-h6"}>Liika.eu</style> {t.welcomeText}
@@ -69,6 +68,7 @@ const Frontpage = () => {
             </div>
           </div>
         </div>
+        {!isSingedIn() && <em style={{ textAlign: "center", whiteSpace: 'pre-line' }}>{t.registerForFreeText}</em>}
       </div>
       <Footer />
     </div>

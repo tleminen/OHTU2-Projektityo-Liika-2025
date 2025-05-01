@@ -9,7 +9,6 @@ import eventService from "../../services/eventService"
 import { addEvent, removeEvent } from "../../store/eventSlice"
 import { selectCategoryName } from "../../assets/icons"
 import { parseTimeAndDate } from "../../utils/helper"
-import LocationMap from "../locationMap"
 import "./modifyEventView.css"
 import DatePicker from "react-multi-date-picker"
 import { addNotification } from "../../store/notificationSlice.js"
@@ -22,6 +21,7 @@ import {
   EventLeaveFailure
 } from "../notification/notificationTemplates.js"
 import NotificationContainer from "../notification/notificationContainer.jsx"
+import LocationMap from '../../utils/locationMap.jsx'
 
 
 const ModifyEvent = () => {

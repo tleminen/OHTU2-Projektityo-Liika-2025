@@ -2,7 +2,6 @@
 import { useDispatch, useSelector } from "react-redux"
 import { useState } from "react"
 import translations from "../../assets/translation.js"
-import LocationMap from "../locationMap.jsx"
 import "./createEvent.css"
 import Select from "react-select"
 import eventService from "../../services/eventService.js"
@@ -19,6 +18,7 @@ import {
 
 import { createEventUnSignedValidation } from "../../utils/validationSchemas.js"
 import { createEventValidation } from "../../utils/validationSchemas.js"
+import LocationMap from '../../utils/locationMap.jsx'
 
 const CreateEventForm = ({ club }) => {
   const language = useSelector((state) => state.language.language)

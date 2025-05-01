@@ -15,20 +15,23 @@ const SignedOut = () => {
   }
   return (
     <div className="login-register-container">
-      <button
-        className="login-frontpage-btn"
-        onClick={() => navigateTo("login")}
-        disabled={disabled}
-      >
-        {t.login}
-      </button>
-      <button
-        className="register-frontpage-btn"
-        onClick={() => navigateTo("register")}
-        disabled={disabled}
-      >
-        {t.register}
-      </button>
+      <div className="login-register-buttons">
+        <button
+          className="login-frontpage-btn"
+          onClick={() => navigateTo("login")}
+          disabled={disabled}
+        >
+          {t.login}
+        </button>
+        <button
+          className="register-frontpage-btn"
+          onClick={() => navigateTo("register")}
+          disabled={disabled}
+        >
+          {t.register}
+        </button>
+      </div>
+
     </div>
   )
 }
