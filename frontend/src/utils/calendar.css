@@ -56,10 +56,7 @@ button.modal_default_cancel {
 }
 
 .navigator_default_dayheader {
-  background: rgba(150,
-      248,
-      255,
-      0.224) !important;
+
   backdrop-filter: brightness(110%);
 }
 
@@ -71,4 +68,11 @@ button.modal_default_cancel {
 .navigator_default_weekend {
   background-color: rgba(49, 103, 107, 0.108) !important;
   backdrop-filter: brightness(110%);
+}
+
+.navigator_default_weeknumber {
+  color: rgba(32, 27, 190, 0.76) !important;
+  border-right: #2c9ad973;
+  border-right-style: groove;
+  border-right-width: 1px;
 }

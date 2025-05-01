@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux'
 import translations from '../../assets/translation'
 import { selectCategoryName } from '../../assets/icons'
 import { formatUrl, parseTimeAndDate, translateOn } from '../../utils/helper'
-import DesktopMiniCalendar from '../../utils/dektopMiniCalendar'
+import MiniCalendar from '../../utils/miniCalendar'
 import { DayPilot, DayPilotNavigator } from '@daypilot/daypilot-lite-react'
 import translationService from '../../services/translationService'
 
@@ -19,6 +19,7 @@ const ReservationSystem = (SystemID) => {
     const [fieldsIsOpen, setFieldsIsOpen] = useState(false)
     const [openFieldId, setOpenFieldId] = useState(null)
     // DaypilotNavigaattori kalenterikomponenteille
+    const [isMobile, setIsMobile] = useState(false)
     const date = new Date()
     const [startDate, setStartDate] = useState(date)
     const [reload, setReload] = useState(false)
@@ -43,6 +44,13 @@ const ReservationSystem = (SystemID) => {
         fetchEventInfo()
     }, [SystemID.id])
 
+    useEffect(() => { // Tällä valitaan käytettävä komponentti näytön koon mukaan
+        const checkScreen = () => setIsMobile(window.innerWidth <= 768)
+        checkScreen() // tarkistetaan alussa näytön koko
+        window.addEventListener("resize", checkScreen)
+        return () => window.removeEventListener("resize", checkScreen)
+    }, [])
+
     // Yksittäisen kentän painallus. Jos painetaan uudelleen nii tulee null.
     const handleFieldClick = (field) => {
         setOpenFieldId((prevId) => (prevId === field.FieldID ? null : field.FieldID))
@@ -60,21 +68,39 @@ const ReservationSystem = (SystemID) => {
 
     // Sivupainikkeen painalluksella siirretään kalenterinäkymiä viikolla eteenpäin
     const handleNextWeek = () => {
-        if (startDate instanceof DayPilot.Date) {
-            setStartDate(startDate.addDays(7))
+        if (isMobile) {
+            if (startDate instanceof DayPilot.Date) {
+                setStartDate(startDate.addDays(1))
+            } else {
+                setStartDate(startDate.setDate(startDate.getDate() + 1))
+                setReload((prev) => !prev)
+            }
         } else {
-            setStartDate(startDate.setDate(startDate.getDate() + 7))
-            setReload((prev) => !prev)
+            if (startDate instanceof DayPilot.Date) {
+                setStartDate(startDate.addDays(7))
+            } else {
+                setStartDate(startDate.setDate(startDate.getDate() + 7))
+                setReload((prev) => !prev)
+            }
         }
     }
 
     // Sivupainikkeen painalluksella siirretään kalenterinäkymiä viikolla taaksepäin
     const handlePrevWeek = () => {
-        if (startDate instanceof DayPilot.Date) {
-            setStartDate(startDate.addDays(-7))
+        if (isMobile) {
+            if (startDate instanceof DayPilot.Date) {
+                setStartDate(startDate.addDays(-1))
+            } else {
+                setStartDate(startDate.setDate(startDate.getDate() - 1))
+                setReload((prev) => !prev)
+            }
         } else {
-            setStartDate(startDate.setDate(startDate.getDate() - 7))
-            setReload((prev) => !prev)
+            if (startDate instanceof DayPilot.Date) {
+                setStartDate(startDate.addDays(-7))
+            } else {
+                setStartDate(startDate.setDate(startDate.getDate() - 7))
+                setReload((prev) => !prev)
+            }
         }
     }
 
@@ -133,6 +159,11 @@ const ReservationSystem = (SystemID) => {
         }
     }
 
+    const selectSelectMode = () => {
+        if (isMobile) return "Day"
+        return "Week"
+    }
+
     /**
      * 
      * @param {kenttävarausjärjestelmä} system 
@@ -140,9 +171,9 @@ const ReservationSystem = (SystemID) => {
      */
     const multiCalendar = (system) => {
         return (
-            <div style={{ display: "flex", flexDirection: "column", alignItems: "anchor-center" }}>
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "anchor-center", flexWrap: "wrap" }}>
                 <DayPilotNavigator
-                    selectMode={"Week"}
+                    selectMode={selectSelectMode()}
                     showMonths={1}
                     skipMonths={1}
                     selectionDay={startDate}
@@ -183,7 +214,7 @@ const ReservationSystem = (SystemID) => {
                                         <h3>{field.Name}</h3>
                                         <p style={{ textAlign: "left", marginBottom: "10px", whiteSpace: 'pre-line' }}>{field.Description}</p>
                                     </div>
-                                    <DesktopMiniCalendar field={field} startDate={startDate} reload={reload} />
+                                    {isMobile ? <MiniCalendar field={field} reload={reload} startDate={startDate} isMobile={true} /> : <MiniCalendar field={field} reload={reload} startDate={startDate} isMobile={false} />}
                                     {field.URL && <div style={{ marginTop: "8px" }}><em>{t.bookAt}: </em> <a href={`${formatUrl(field.URL)}`} style={{ wordBreak: "break-all" }} target="_blank"
                                         rel="noopener">{formatUrl(field.URL)}</a></div>}
                                 </div>
@@ -220,10 +251,11 @@ const ReservationSystem = (SystemID) => {
                         )}
                         {openFieldId === field.FieldID && (
                             <div>
-                                <div style={{ display: "flex", alignItems: "anchor-center", flexDirection: "row", gap: "10px" }}>
+                                <div style={{ display: "flex", alignItems: "anchor-center", flexDirection: "row", gap: "10px", flexWrap: "wrap", justifyContent: "center" }}>
                                     <DayPilotNavigator
-                                        selectMode={"Week"}
+                                        selectMode={selectSelectMode()}
                                         showMonths={1}
+                                        showWeekNumbers={true}
                                         skipMonths={1}
                                         selectionDay={startDate}
                                         weekStarts={1}
@@ -232,7 +264,7 @@ const ReservationSystem = (SystemID) => {
                                             setReload((prev) => !prev)
                                         }}
                                     />
-                                    <DesktopMiniCalendar field={field} reload={reload} startDate={startDate} />
+                                    {isMobile ? <MiniCalendar field={field} reload={reload} startDate={startDate} isMobile={true} /> : <MiniCalendar field={field} reload={reload} startDate={startDate} isMobile={false} />}
                                 </div>
                                 {field.URL && <div style={{ marginTop: "8px" }}><em>{t.bookAt}: </em> <a href={`${formatUrl(field.URL)}`} style={{ wordBreak: "break-all" }} target="_blank"
                                     rel="noopener">{formatUrl(field.URL)}</a></div>}

@@ -1,7 +1,6 @@
-import React, { useState, useEffect, useRef } from "react"
+import React, { useState, useEffect } from "react"
 import {
     DayPilotCalendar,
-    DayPilotNavigator,
     DayPilot,
 } from "@daypilot/daypilot-lite-react"
 import "./calendar.css"
@@ -37,7 +36,7 @@ const typeColorMap = {
 }
 
 // eslint-disable-next-line react/prop-types
-const DesktopMiniCalendar = ({ field, startDate, reload }) => {
+const MiniCalendar = ({ field, startDate, reload, isMobile }) => {
     const weekdays = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun']
     const language = useSelector((state) => state.language.language)
     const storedToken = useSelector((state) => state.user?.user?.token ?? null)
@@ -234,28 +233,55 @@ const DesktopMiniCalendar = ({ field, startDate, reload }) => {
         calendar.events.update(e)
     }
 
-    return (
-        <div style={styles.wrap}>
-            <div>
+    if (isMobile) {
+        return (
+            <div style={styles.wrap}>
+                <div>
 
+                </div>
+                <div style={styles.main}>
+                    <DayPilotCalendar
+                        {...config}
+                        cellHeight={25}
+                        events={events}
+                        startDate={startDate}
+                        controlRef={setCalendar}
+                        hourWidth={50}
+                        viewType='Days'
+                        days={3}
+                    />
+                    {selectedRange && (
+                        <button style={styles.button} onClick={handleDoSlot}>
+                            Merkitse vuoro
+                        </button>
+                    )}
+                </div>
             </div>
-            <div style={styles.main}>
-                <DayPilotCalendar
-                    {...config}
-                    cellHeight={25}
-                    events={events}
-                    startDate={startDate}
-                    controlRef={setCalendar}
-                    hourWidth={50}
-                />
-                {selectedRange && (
-                    <button style={styles.button} onClick={handleDoSlot}>
-                        Merkitse vuoro
-                    </button>
-                )}
+        )
+    } else {
+        return (
+            <div style={styles.wrap}>
+                <div>
+
+                </div>
+                <div style={styles.main}>
+                    <DayPilotCalendar
+                        {...config}
+                        cellHeight={25}
+                        events={events}
+                        startDate={startDate}
+                        controlRef={setCalendar}
+                        hourWidth={50}
+                    />
+                    {selectedRange && (
+                        <button style={styles.button} onClick={handleDoSlot}>
+                            Merkitse vuoro
+                        </button>
+                    )}
+                </div>
             </div>
-        </div>
-    )
+        )
+    }
 }
 
-export default DesktopMiniCalendar
+export default MiniCalendar
