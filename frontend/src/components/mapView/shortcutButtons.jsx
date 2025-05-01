@@ -2,9 +2,9 @@
 import { useState, useEffect, useRef } from "react"
 import { categoryMap } from "../../assets/icons"
 import DatePicker from "react-multi-date-picker"
+import { changeDeviceSettings } from '../../store/deviceSettingsSlice'
 
-// eslint-disable-next-line react/prop-types
-const ShortcutButtons = ({ toggleCategory, fetchEvents, t }) => {
+const ShortcutButtons = ({ toggleCategory, fetchEvents, t, dispatch }) => {
   const [moreIsOpen, setMoreIsOpen] = useState(false)
   const [catIsOpen, setCatIsOpen] = useState(false) // Kategorioiden suoratuksen paneelin näkyvyys
   const [timeIsOpen, setTimeIsOpen] = useState(false) // Aikavälifiltteröinnin paneelin näkyvyys
@@ -41,7 +41,6 @@ const ShortcutButtons = ({ toggleCategory, fetchEvents, t }) => {
 
   // eslint-disable-next-line no-unused-vars
   const filteredCategories = Object.entries(categoryMap).filter(([id, name]) =>
-    // eslint-disable-next-line react/prop-types
     t[name].toLowerCase().includes(searchTerm.toLowerCase())
   )
 
@@ -204,6 +203,11 @@ const ShortcutButtons = ({ toggleCategory, fetchEvents, t }) => {
    * Lähettää map-komponentille pyynnön filtteröidä
    */
   const handleClicks = () => {
+    /* TODO: Tässä yksi vaihtoehto categorioiden talletukseen storeen. lataus on se vaikea puoli
+    dispatch(changeDeviceSettings({
+      selectedCategories: selectedCategories
+    }))
+      */
     toggleCategory(selectedCategories, showReservationSystems)
   }
 
@@ -270,7 +274,6 @@ const ShortcutButtons = ({ toggleCategory, fetchEvents, t }) => {
               className={`category-item ${showReservationSystems ? "active" : ""}`}
               onClick={() => setShowReservationSystems((prev) => !prev)}
               style={{ backgroundImage: `url(/reservationSystemIcon.png)` }}
-              // eslint-disable-next-line react/prop-types
               title={t.fieldFilter}
             />
           </div>

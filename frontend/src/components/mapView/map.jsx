@@ -34,8 +34,8 @@ const Map = ({ startingLocation }) => {
   const [isCategoryPanelOpen, setCategoryPanelOpen] = useState(false)
   const timestampRef = useRef(null)
   const markerClusterGroup = L.markerClusterGroup({ spiderfyDistanceMultiplier: 3 }) // Säätää klusterin spreadin pituutta
-  const reservationSystemMarkers = [] // Täällä pidetään yllä viitettä kenttävarausjärjestelmästä niiden filtteröintiä varten
-  const searchMarkers = [] // Haut tallennetaan tänne. Refresh poistaa kartalta
+  const reservationSystemMarkers = [] // Täällä pidetään yllä viitettä kenttävarausjärjestelmistä niiden filtteröintiä varten
+  const searchMarkers = [] // Osoitteen haun marker tallennetaan tänne. Refresh poistaa sen kartalta
   const user = useSelector((state) => state.user?.user?.username ?? null)
   const userID = useSelector((state) => state.user?.user?.userID ?? null)
   const clubs = useSelector((state) => state.user?.user?.clubs ?? {})
@@ -45,8 +45,6 @@ const Map = ({ startingLocation }) => {
   )
   const deviceSettings = useSelector((state) => state.deviceSettings?.deviceSettings ?? null)
   var first = true
-
-  markerClusterGroup.spi
 
   useEffect(() => {
     if (timestampRef.current) {
@@ -154,6 +152,7 @@ const Map = ({ startingLocation }) => {
     })
   }
 
+  // Piilotetaan sähköpostiosoitteet ja rekisteröimättömät nimet
   const showUsername = ({ user, club }) => {
     if (club) {
       return club
@@ -336,8 +335,6 @@ const Map = ({ startingLocation }) => {
                 // Haetaan description-div ja päivitetään sen sisältö
                 const descriptionDiv = container.querySelector("#description-text")
                 descriptionDiv.innerHTML = translatedText
-
-                console.log("Teksti käännetty")
               })
               buttonContainer.appendChild(button)
             }
@@ -436,7 +433,7 @@ const Map = ({ startingLocation }) => {
   }
 
   const onClickRefresh = async (map, time) => {
-    searchMarkers.forEach((marker) => { // Poistetaan haku
+    searchMarkers.forEach((marker) => { // Poistetaan haun markkeri
       map.removeLayer(marker)
     })
     await refreshMarkers(map, time)
@@ -664,6 +661,7 @@ const Map = ({ startingLocation }) => {
           fetchEvents={fetchEvents}
           onClose={() => setCategoryPanelOpen(false)}
           t={t}
+          dispatch={dispatch}
         />
       )
       return container
