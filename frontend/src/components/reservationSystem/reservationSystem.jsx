@@ -184,7 +184,7 @@ const ReservationSystem = (SystemID) => {
                                         <p style={{ textAlign: "left", marginBottom: "10px", whiteSpace: 'pre-line' }}>{field.Description}</p>
                                     </div>
                                     <DesktopMiniCalendar field={field} startDate={startDate} reload={reload} />
-                                    {field.URL && <div style={{ marginTop: "8px" }}><em>Varaukset: </em> <a href={`${formatUrl(field.URL)}`} style={{ wordBreak: "break-all" }} target="_blank"
+                                    {field.URL && <div style={{ marginTop: "8px" }}><em>{t.bookAt}: </em> <a href={`${formatUrl(field.URL)}`} style={{ wordBreak: "break-all" }} target="_blank"
                                         rel="noopener">{formatUrl(field.URL)}</a></div>}
                                 </div>
                                 <div className="system-item">
@@ -215,7 +215,7 @@ const ReservationSystem = (SystemID) => {
                         </div>
                         {openFieldId === field.FieldID && (
                             <button onClick={() => handleFieldClick(field)} className='btn'>
-                                Sulje
+                                {t.close}
                             </button>
                         )}
                         {openFieldId === field.FieldID && (
@@ -234,13 +234,13 @@ const ReservationSystem = (SystemID) => {
                                     />
                                     <DesktopMiniCalendar field={field} reload={reload} startDate={startDate} />
                                 </div>
-                                {field.URL && <div style={{ marginTop: "8px" }}><em>Varaukset: </em> <a href={`${formatUrl(field.URL)}`} style={{ wordBreak: "break-all" }} target="_blank"
+                                {field.URL && <div style={{ marginTop: "8px" }}><em>{t.bookAt}: </em> <a href={`${formatUrl(field.URL)}`} style={{ wordBreak: "break-all" }} target="_blank"
                                     rel="noopener">{formatUrl(field.URL)}</a></div>}
                             </div>
                         )}
                         {openFieldId !== field.FieldID && (
                             <button onClick={() => handleFieldClick(field)} className='btn'>
-                                Avaa
+                                {t.open}
                             </button>
                         )}
                     </div>
@@ -263,7 +263,7 @@ const ReservationSystem = (SystemID) => {
         return (
 
             <div className="event-view">
-                <p>{"Kenttävarausjärjestelmän lataus epäonnistui" /*TODO: Kielellistä*/}</p>
+                <p>{t.reservationSystemLoadFailed}</p>
             </div>
         )
     }
@@ -278,7 +278,7 @@ const ReservationSystem = (SystemID) => {
             {system.Rental ? (<div style={{
                 display: "flex",
                 alignItems: "anchor-center"
-            }}>Tarjoamme vuokrausta {<img
+            }}>{t.rentalAvailable} {<img
                 src={`/rentalEquipmentAvailable.png`}
                 alt="Logo"
                 width={100}
@@ -286,33 +286,33 @@ const ReservationSystem = (SystemID) => {
                 className="event-view-icon"
             />}</div>) : ("")}
             <div className='spacer-line' />
-            <h2>Info</h2>
+            <h2>{t.info}</h2>
             <p style={{ maxWidth: "80%", whiteSpace: 'pre-line' }}>{system.Description}</p>
             <div className='spacer-line' />
-            <h2>Kentät</h2>
-            <em style={{ textAlign: "center", maxWidth: "80%" }}>Voit tarkastella yksittäistä kenttää painamalla sitä tai avata kaikkien kenttien kalenterit nähtäville samaan aikaan</em>
+            <h2>{t.fields}</h2>
+            <em style={{ textAlign: "center", maxWidth: "80%" }}>{t.fieldsInfoText}</em>
             <button className='link-btn' onClick={toggleFields}>
-                {!fieldsIsOpen && "Näytä kentät"}
-                {fieldsIsOpen && "Piilota kentät"}
+                {!fieldsIsOpen && t.showFields}
+                {fieldsIsOpen && t.hideFields}
             </button>
             <div className={`system-view-field-panel ${fieldsIsOpen ? "open" : ""}`}>
                 <div className="event-list-items">
                     {system.Fields.length === 0 ? (
-                        <p>{"Ei näytettäviä kenttiä"}</p>
+                        <p>{t.noFieldsToShow}</p>
                     ) : (
                         fields(system)
                     )}
                 </div>
             </div>
             <button className='link-btn' onClick={toggleMultiCalendar}>
-                {!multiCalendarIsOpen && "Avaa kenttien kalenterit"}
-                {multiCalendarIsOpen && "Sulje kalenterit"}
+                {!multiCalendarIsOpen && t.openFieldCalendars}
+                {multiCalendarIsOpen && t.closeFieldCalendars}
             </button>
             <div className={`field-calendar-panel ${multiCalendarIsOpen ? "open" : ""}`}>
 
                 <div className="event-list-items">
                     {system.Fields.length === 0 ? (
-                        <p>{"Ei näytettäviä kenttiä"}</p>
+                        <p>{t.noFieldsToShow}</p>
                     ) : (
                         multiCalendar(system)
                     )}

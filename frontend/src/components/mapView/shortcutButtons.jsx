@@ -350,7 +350,7 @@ const ShortcutButtons = ({ toggleCategory, fetchEvents, t }) => {
                 }}
               />
               {/* Näytettävä aika */}
-              <span>{startTime || "Alkaen"}</span> {/*TODO: KOVAKOODAUS*/}
+              <span>{startTime || t.from}</span> {/*TODO: KOVAKOODAUS*/}
             </div>
 
             <div className="time-select-item">
@@ -378,7 +378,7 @@ const ShortcutButtons = ({ toggleCategory, fetchEvents, t }) => {
                 }}
               />
               {/* Näytettävä aika */}
-              <span>{endTime || "Päättyen"}</span> {/*TODO: KOVAKOODAUS*/}
+              <span>{endTime || t.to}</span> {/*TODO: KOVAKOODAUS*/}
             </div>
           </div>
         </div>
@@ -388,7 +388,7 @@ const ShortcutButtons = ({ toggleCategory, fetchEvents, t }) => {
               }`}
             onClick={() => handleQuickTime(1)}
           >
-            Filtteröi
+            {t.filter}
           </button>
           <button
             className={`quick-time-select ${selectedQuick === 2 ? "selected" : ""
@@ -422,7 +422,7 @@ const ShortcutButtons = ({ toggleCategory, fetchEvents, t }) => {
             className="clear-button" /* Nollaa ajan valinnan */
             onClick={() => handleClearTimeFilter()}
           >
-            Clear
+            {t.clear}
           </button>
         </div>
       </div>
