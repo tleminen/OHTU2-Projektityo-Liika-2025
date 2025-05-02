@@ -10,6 +10,7 @@ import { loginValidation } from "../../utils/validationSchemas.js"
 import { addNotification } from "../../store/notificationSlice.js"
 import { UserFailure } from "../notification/notificationTemplates.js"
 import { changeLanguage } from "../../store/languageSlice.js"
+import { changeDeviceSettings } from '../../store/deviceSettingsSlice.js'
 
 const LoginForm = () => {
   const language = useSelector((state) => state.language.language)
@@ -21,7 +22,7 @@ const LoginForm = () => {
   const [password, setPassword] = useState("")
   const [showPassword, setShowPassword] = useState(false)
   const [errors, setErrors] = useState({})
-  const [disabled, setDisabled] = useState(false);
+  const [disabled, setDisabled] = useState(false)
 
   // Tallennetaan muuttujaan return arvo
   const schema = loginValidation()
@@ -47,7 +48,6 @@ const LoginForm = () => {
         let zoom
         if (user.mapZoom) {
           zoom = user.mapZoom
-          console.log(zoom)
         } else {
           zoom = 10
         }
@@ -68,6 +68,12 @@ const LoginForm = () => {
             lat: user.location[1],
             lng: user.location[0],
             zoom: zoom,
+          })
+        )
+        dispatch(
+          changeDeviceSettings({
+            selectedCategories: {},
+            showSystems: true
           })
         )
         dispatch(changeLanguage(user.language))

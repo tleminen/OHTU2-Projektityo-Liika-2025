@@ -24,6 +24,7 @@ import translationService from '../../services/translationService'
 import { changeDeviceSettings } from '../../store/deviceSettingsSlice'
 
 const DEFAULT_DAYS = 31
+let showSystems = true
 
 const Map = ({ startingLocation }) => {
   const navigate = useNavigate()
@@ -36,15 +37,17 @@ const Map = ({ startingLocation }) => {
   const markerClusterGroup = L.markerClusterGroup({ spiderfyDistanceMultiplier: 3 }) // Säätää klusterin spreadin pituutta
   const reservationSystemMarkers = [] // Täällä pidetään yllä viitettä kenttävarausjärjestelmistä niiden filtteröintiä varten
   const searchMarkers = [] // Osoitteen haun marker tallennetaan tänne. Refresh poistaa sen kartalta
-  const user = useSelector((state) => state.user?.user?.username ?? null)
-  const userID = useSelector((state) => state.user?.user?.userID ?? null)
-  const clubs = useSelector((state) => state.user?.user?.clubs ?? {})
+  const storedUser = useSelector((state) => state.user?.user ?? null)
+  // Asetetaan kirjautuneen tiedot tai null
+  const user = storedUser?.username ?? null
+  const userID = storedUser?.userID ?? null
+  const clubs = storedUser?.clubs ?? {}
+
   const storedToken = useSelector((state) => state.user?.user?.token ?? null)
   const mapPreferences = useSelector(
     (state) => state.user?.user?.mapPreferences ?? null
   )
   const deviceSettings = useSelector((state) => state.deviceSettings?.deviceSettings ?? null)
-  var first = true
 
   useEffect(() => {
     if (timestampRef.current) {
@@ -111,6 +114,7 @@ const Map = ({ startingLocation }) => {
   // Kategorian näkyvyyden käsittely
   const toggleCategory = (selectedCategories, showReservationSystems) => {
     let catSelected = []
+    showSystems = showReservationSystems // Varausjärjestelmien näyttämisen tieto tarvitaan myös tallessa täällä map.jsx kun tehdään refreshMarkers
 
     Object.entries(selectedCategories).forEach(([categoryId, isSelected]) => {
       // Käydään läpi paneelin valinnat
@@ -121,7 +125,7 @@ const Map = ({ startingLocation }) => {
         catSelected.push(Number(categoryId))
       }
     })
-    if (catSelected.length === 0) { // Mikäli ei ole valittuna kategorioita
+    if (catSelected.length === 0) { // Mikäli ei ole valittuna kategorioita niin näytetään kaikki
       showAllCategories(true)
     } else { // Kategoria(yksi tai enemmän) valittuna
       showAllCategories(false)
@@ -305,7 +309,7 @@ const Map = ({ startingLocation }) => {
           const lng = coordinates[0]
           const marker = L.marker([lat, lng]).bindPopup(() => {
             // Asetetaan markkeri oikeisiin koordinaatteihin ja liitetään siihen popUp
-            const container = document.createElement("div") // Popupin containeri, seuraavana sisältö:
+            const container = document.createElement("div") // Kenttävarausjärjestelmän Popupin containeri, seuraavana sisältö:
             container.innerHTML = `
     <div class="popup-wrapper">
     <div class="popup-info">
@@ -356,6 +360,10 @@ const Map = ({ startingLocation }) => {
               }
             }
           })
+          // Ja lopuksi poistetaan vielä näkyvistä jos filtteröity pois..:
+          if (!showSystems) {
+            markerClusterGroup.removeLayer(marker)
+          }
         } else { // Tapahtumat (ml. yhteistyökumppanien tapahtumat)
           const { coordinates } = tapahtuma.Event_Location
           const lat = coordinates[1]
@@ -466,7 +474,7 @@ const Map = ({ startingLocation }) => {
     const userLayer = new UserOverlay(mapPreferences)
 
     const selectLayer = () => {
-      if (!deviceSettings) {
+      if (deviceSettings === null || deviceSettings.layer === null) {
         return liikaLayer
       }
       switch (deviceSettings.layer) {
@@ -479,6 +487,8 @@ const Map = ({ startingLocation }) => {
         case "user": {
           return userLayer
         }
+        default:
+          return liikaLayer
       }
     }
 
@@ -648,6 +658,15 @@ const Map = ({ startingLocation }) => {
     }
     pikapainikkeet.addTo(map)
 
+    let initialSelections = {}
+    if (deviceSettings && deviceSettings.selectedCategories !== null) {
+      initialSelections = deviceSettings.selectedCategories
+    }
+    let initialShowSystems = true
+    if (deviceSettings && deviceSettings.showSystems !== null) {
+      initialShowSystems = deviceSettings.showSystems
+    }
+
     const shortcutbuttons = L.control({ position: "topleft" })
     shortcutbuttons.onAdd = () => {
       const container = L.DomUtil.create("div")
@@ -662,6 +681,8 @@ const Map = ({ startingLocation }) => {
           onClose={() => setCategoryPanelOpen(false)}
           t={t}
           dispatch={dispatch}
+          initialSelections={initialSelections}
+          initialShowSystems={initialShowSystems}
         />
       )
       return container
@@ -756,9 +777,9 @@ const Map = ({ startingLocation }) => {
     })
 
     map.addLayer(markerClusterGroup)
-    if (first) {
-      onClickRefresh(map)
-      first = false
+    onClickRefresh(map)
+    if (deviceSettings && deviceSettings.selectedCategories !== null) {
+      toggleCategory(deviceSettings.selectedCategories, deviceSettings.showSystems)
     }
 
     return () => {

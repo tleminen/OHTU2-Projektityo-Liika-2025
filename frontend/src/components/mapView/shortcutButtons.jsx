@@ -4,19 +4,19 @@ import { categoryMap } from "../../assets/icons"
 import DatePicker from "react-multi-date-picker"
 import { changeDeviceSettings } from '../../store/deviceSettingsSlice'
 
-const ShortcutButtons = ({ toggleCategory, fetchEvents, t, dispatch }) => {
+const ShortcutButtons = ({ toggleCategory, fetchEvents, t, dispatch, initialSelections, initialShowSystems }) => {
   const [moreIsOpen, setMoreIsOpen] = useState(false)
   const [catIsOpen, setCatIsOpen] = useState(false) // Kategorioiden suoratuksen paneelin näkyvyys
   const [timeIsOpen, setTimeIsOpen] = useState(false) // Aikavälifiltteröinnin paneelin näkyvyys
   const [timeSelectIsOpen, setTimeSelectIsOpen] = useState(false)
   const [selectedQuick, setSelectedQuick] = useState(null)
   const [overflowVisibility, setOverflowVisibility] = useState(false)
-  const [selectedCategories, setSelectedCategories] = useState({}) // Valitut kategoriat
+  const [selectedCategories, setSelectedCategories] = useState(initialSelections) // Valitut kategoriat
   const [startTime, setStartTime] = useState("")
   const [endTime, setEndTime] = useState("")
   const [dates, setDates] = useState([])
   const [calendarPosition, setCalendarPosition] = useState("top") // Kalenterin avautumissuunta. Muuttuu ikkunan koon mukaan
-  const [showReservationSystems, setShowReservationSystems] = useState(true) // Kenttävarausjärjestelmien toggle
+  const [showReservationSystems, setShowReservationSystems] = useState(initialShowSystems) // Kenttävarausjärjestelmien toggle
   const [searchTerm, setSearchTerm] = useState("") // Hakupalkki kategorialle
   const panelRef = useRef(null)
   const timeInputRef = useRef(null)
@@ -203,11 +203,10 @@ const ShortcutButtons = ({ toggleCategory, fetchEvents, t, dispatch }) => {
    * Lähettää map-komponentille pyynnön filtteröidä
    */
   const handleClicks = () => {
-    /* TODO: Tässä yksi vaihtoehto categorioiden talletukseen storeen. lataus on se vaikea puoli
     dispatch(changeDeviceSettings({
-      selectedCategories: selectedCategories
+      selectedCategories: selectedCategories,
+      showSystems: showReservationSystems
     }))
-      */
     toggleCategory(selectedCategories, showReservationSystems)
   }
 
