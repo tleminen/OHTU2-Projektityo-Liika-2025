@@ -145,7 +145,7 @@ const ListReservationSystems = () => {
                     </div>
                 ))}
             </div>
-            <Link to={'/'} className="back-btn" style={{ alignSelf: "center" }}>
+            <Link to={-1} className="back-btn" style={{ alignSelf: "center" }}>
                 <span>{t.back}</span>
             </Link>
             <Footer />
