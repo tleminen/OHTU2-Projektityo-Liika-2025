@@ -8,13 +8,13 @@ trigger:
 
 variables:
   # Azure Resource Manager connection created during pipeline creation
-  azureSubscription: "d286dd5e-a396-4834-b31e-488cafae38d9"
+  azureSubscription: "40689dd1-093b-4198-87a6-8848e9402bfe"
 
   # Web app name
-  webAppName: "LiikaEU"
+  webAppName: "Liika"
 
   # Environment name
-  environmentName: "LiikaEU"
+  environmentName: "Liika"
 
 stages:
 - stage: Build
@@ -67,7 +67,7 @@ stages:
         deploy:
           steps:
           - task: AzureRmWebAppDeployment@4
-            displayName: "Azure App Service Deploy: LiikaEU"
+            displayName: "Azure App Service Deploy: Liika"
             inputs:
               azureSubscription: $(azureSubscription)
               appType: webAppLinux
