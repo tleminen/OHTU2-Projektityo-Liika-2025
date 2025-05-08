@@ -1,10 +1,7 @@
-import { Link } from "react-router-dom"
-import Header from "../header"
-import Footer from "../footer"
 import { useSelector } from "react-redux"
 import translations from "../../assets/translation"
 import TouchVisualizer from './touchLogger'
-import TermsOfService from '../termsOfServiceView/termsOfService'
+import MapView from '../mapView'
 
 const GenAIView = () => {
     const language = useSelector((state) => state.language.language)
@@ -20,13 +17,9 @@ const GenAIView = () => {
                 backgroundRepeat: "no-repeat",
             }}
         >
-            <Header />
-            <TermsOfService />
+            <MapView />
             <TouchVisualizer isVisible={true} />
-            <Link to={"/"} className="back-btn" style={{ alignSelf: "center" }}>
-                <span>{t.back}</span>
-            </Link>
-            <Footer />
+
         </div>
     )
 }

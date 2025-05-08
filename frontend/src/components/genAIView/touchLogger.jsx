@@ -1,13 +1,12 @@
-import React, { useEffect, useRef } from "react"
+import React, { useEffect, useRef, useState } from "react"
 
 const TouchVisualizer = ({ isVisible }) => {
     const canvasRef = useRef(null)
     const pathsRef = useRef([])
-    const touchesRef = useRef({})
-    const lastSampleTimeRef = useRef(0)
+    const [confidence, setConfidence] = useState(85)
+    const [person, setPerson] = useState("Mikko")
 
-    // ⏱ Aseta näytteenottoväli (ms)
-    const SAMPLING_INTERVAL_MS = 16 // ~60 Hz
+    const personList = ["Mikko", "Anna", "Liisa", "Oscar", "Noora", "Teemu", "Kaisa", "Dennis"]
 
     useEffect(() => {
         const canvas = canvasRef.current
@@ -29,37 +28,63 @@ const TouchVisualizer = ({ isVisible }) => {
 
         const canvas = canvasRef.current
         const ctx = canvas.getContext("2d")
-        const activePaths = {}
+        const activeTouches = {}
+
+        const randomAdjustConfidence = () => {
+            setConfidence(prev => {
+                const change = Math.random() < 0.5 ? -1 : 1
+                const amount = Math.floor(Math.random() * 2) + 1 // 1–2
+                const newValue = Math.max(70, Math.min(92, prev + change * amount))
+                return newValue
+            })
+
+            // 5 % todennäköisyydellä vaihdetaan henkilö
+            if (Math.random() < 0.002) {
+                setPerson(prev => {
+                    let next
+                    do {
+                        next = personList[Math.floor(Math.random() * personList.length)]
+                    } while (next === prev)
+                    return next
+                })
+            }
+        }
 
         const handleTouchStart = (e) => {
             for (const touch of e.touches) {
-                const id = touch.identifier
-                const radius = ((touch.radiusX ?? 10) + (touch.radiusY ?? 10)) / 2
-                touchesRef.current[id] = touch
-                activePaths[id] = [{
+                activeTouches[touch.identifier] = [{
                     x: touch.clientX,
                     y: touch.clientY,
+                    time: Date.now(),
                     pressure: touch.force ?? 0.5,
-                    radius,
-                    time: Date.now()
+                    radius: ((touch.radiusX ?? 10) + (touch.radiusY ?? 10)) / 2
                 }]
             }
+            randomAdjustConfidence()
         }
 
         const handleTouchMove = (e) => {
             for (const touch of e.touches) {
-                touchesRef.current[touch.identifier] = touch
+                if (activeTouches[touch.identifier]) {
+                    activeTouches[touch.identifier].push({
+                        x: touch.clientX,
+                        y: touch.clientY,
+                        time: Date.now(),
+                        pressure: touch.force ?? 0.5,
+                        radius: ((touch.radiusX ?? 10) + (touch.radiusY ?? 10)) / 2
+                    })
+                }
             }
+            randomAdjustConfidence()
         }
 
         const handleTouchEnd = (e) => {
             for (const touch of e.changedTouches) {
-                const id = touch.identifier
-                if (activePaths[id] && activePaths[id].length > 1) {
-                    addPath(activePaths[id])
+                const points = activeTouches[touch.identifier]
+                delete activeTouches[touch.identifier]
+                if (points && points.length > 1) {
+                    addPath(points)
                 }
-                delete activePaths[id]
-                delete touchesRef.current[id]
             }
         }
 
@@ -76,57 +101,12 @@ const TouchVisualizer = ({ isVisible }) => {
             }, 50)
         }
 
-        const draw = (timestamp) => {
+        const draw = () => {
             ctx.clearRect(0, 0, canvas.width, canvas.height)
-
-            // Näytteenotto
-            if (timestamp - lastSampleTimeRef.current >= SAMPLING_INTERVAL_MS) {
-                for (const id in touchesRef.current) {
-                    const touch = touchesRef.current[id]
-                    const radius = ((touch.radiusX ?? 10) + (touch.radiusY ?? 10)) / 2
-                    const point = {
-                        x: touch.clientX,
-                        y: touch.clientY,
-                        pressure: touch.force ?? 0.5,
-                        radius,
-                        time: Date.now()
-                    }
-                    if (!activePaths[id]) activePaths[id] = []
-                    activePaths[id].push(point)
-                }
-                lastSampleTimeRef.current = timestamp
-            }
-
-            // Piirretään aktiiviset viivat
-            for (const id in activePaths) {
-                const points = activePaths[id]
-                if (points.length < 2) continue
-
-                ctx.beginPath()
-                for (let i = 0; i < points.length - 1; i++) {
-                    const p1 = points[i]
-                    const p2 = points[i + 1]
-
-                    const avgPressure = (p1.pressure + p2.pressure) / 2
-                    const avgRadius = (p1.radius + p2.radius) / 2
-
-                    const width = 2 + 8 * avgPressure + 0.3 * avgRadius
-                    const hue = 200 + Math.min(avgRadius, 30) * 3.3
-                    const brightness = Math.min(1, 0.2 + avgPressure * 0.8)
-
-                    ctx.lineWidth = width
-                    ctx.strokeStyle = `hsla(${hue}, 100%, 50%, ${brightness})`
-                    ctx.moveTo(p1.x, p1.y)
-                    ctx.lineTo(p2.x, p2.y)
-                }
-                ctx.lineCap = "round"
-                ctx.stroke()
-            }
-
-            // Piirretään haalistuvat viivat
             for (const path of pathsRef.current) {
                 if (path.points.length < 2) continue
                 ctx.beginPath()
+
                 for (let i = 0; i < path.points.length - 1; i++) {
                     const p1 = path.points[i]
                     const p2 = path.points[i + 1]
@@ -134,23 +114,27 @@ const TouchVisualizer = ({ isVisible }) => {
                     const avgPressure = (p1.pressure + p2.pressure) / 2
                     const avgRadius = (p1.radius + p2.radius) / 2
 
-                    const width = 2 + 8 * avgPressure + 0.3 * avgRadius
-                    const hue = 200 + Math.min(avgRadius, 30) * 3.3
-                    const brightness = Math.min(1, 0.2 + avgPressure * 0.8)
-
+                    const baseWidth = 2
+                    const pressureFactor = 8
+                    const radiusFactor = 0.3
+                    const width = baseWidth + pressureFactor * avgPressure + radiusFactor * avgRadius
                     ctx.lineWidth = width
+
+                    const brightness = Math.min(1, 0.2 + avgPressure * 0.8)
+                    const hue = 200 + Math.min(avgRadius, 30) * 3.3
                     ctx.strokeStyle = `hsla(${hue}, 100%, 50%, ${brightness * path.opacity})`
+
                     ctx.moveTo(p1.x, p1.y)
                     ctx.lineTo(p2.x, p2.y)
                 }
+
                 ctx.lineCap = "round"
                 ctx.stroke()
             }
-
             requestAnimationFrame(draw)
         }
 
-        requestAnimationFrame(draw)
+        draw()
 
         window.addEventListener("touchstart", handleTouchStart, { passive: true })
         window.addEventListener("touchmove", handleTouchMove, { passive: true })
@@ -166,18 +150,35 @@ const TouchVisualizer = ({ isVisible }) => {
     if (!isVisible) return null
 
     return (
-        <canvas
-            ref={canvasRef}
-            style={{
+        <>
+            <div style={{
                 position: "fixed",
-                top: 0,
+                top: "1%",
                 left: 0,
-                width: "100dvw",
-                height: "100dvh",
-                pointerEvents: "none",
-                zIndex: 9999
-            }}
-        />
+                width: "100%",
+                textAlign: "center",
+                fontSize: "1.5rem",
+                color: "#fff",
+                textShadow: "0 0 5px #000",
+                zIndex: 10000,
+                pointerEvents: "none"
+            }}>
+                <div>Tunnistustaso: {confidence}%</div>
+                <div>Henkilö: {person}</div>
+            </div>
+            <canvas
+                ref={canvasRef}
+                style={{
+                    position: "fixed",
+                    top: 0,
+                    left: 0,
+                    width: "100dvw",
+                    height: "100dvh",
+                    pointerEvents: "none",
+                    zIndex: 9999
+                }}
+            />
+        </>
     )
 }
 
