@@ -6,7 +6,7 @@ require("dotenv").config()
  * @returns tekstin käännettynä
  */
 const translateText = async (text) => {
-    const response = await fetch('https://api.cognitive.microsofttranslator.com/translate?api-version=3.0&to=en', {
+    const response = await globalThis.fetch('https://api.cognitive.microsofttranslator.com/translate?api-version=3.0&to=en', {
         method: 'POST',
         headers: {
             'Ocp-Apim-Subscription-Key': `${process.env.TRANSLATION_API_KEY}`,
@@ -27,7 +27,7 @@ const translateText = async (text) => {
  * @returns Palauttaa objektin käännettynä
  */
 const translateTexts = async (texts, toLanguage) => {
-    const response = await fetch(`https://api.cognitive.microsofttranslator.com/translate?api-version=3.0&to=${toLanguage}`, {
+    const response = await globalThis.fetch(`https://api.cognitive.microsofttranslator.com/translate?api-version=3.0&to=${toLanguage}`, {
         method: 'POST',
         headers: {
             'Ocp-Apim-Subscription-Key': `${process.env.TRANSLATION_API_KEY}`,
