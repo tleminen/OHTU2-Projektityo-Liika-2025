@@ -39,7 +39,7 @@ const TouchVisualizer = ({ isVisible }) => {
             })
 
             // 5 % todennäköisyydellä vaihdetaan henkilö
-            if (Math.random() < 0.002) {
+            if (Math.random() < 0.004) {
                 setPerson(prev => {
                     let next
                     do {
