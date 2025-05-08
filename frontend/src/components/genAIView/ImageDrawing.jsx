@@ -115,17 +115,10 @@ const DrawingOverImage = () => {
     }, [path, blueDots])
 
     return (
-        <div style={{ textAlign: "center" }}>
+        <div style={{ textAlign: "center", minHeight: "100dvh" }}>
             {/* Yläpalkki: kuvan valinta */}
             <div style={{
-                position: "fixed",
-                top: 0,
-                width: "100%",
-                backgroundColor: "#f9f9f9",
-                padding: "0.5rem",
-                boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
-                zIndex: 1000
-            }}>
+            }} className='joined-view'>
                 <input type="file" accept="image/*" onChange={handleImageUpload} />
             </div>
 
@@ -165,7 +158,7 @@ const DrawingOverImage = () => {
 
             {image && (
                 <div style={{ marginTop: "1rem" }}>
-                    <button className='join-btn' onClick={handleDone}>Valmis</button>
+                    <button className='btn' onClick={handleDone}>Valmis</button>
                 </div>
             )}
 
