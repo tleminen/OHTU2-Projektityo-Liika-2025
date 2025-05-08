@@ -1,4 +1,5 @@
 require("dotenv").config()
+const axios = require("axios")
 
 /**
  * Kääntää merkkijonon englanniksi
@@ -6,18 +7,22 @@ require("dotenv").config()
  * @returns tekstin käännettynä
  */
 const translateText = async (text) => {
-    const response = await globalThis.fetch('https://api.cognitive.microsofttranslator.com/translate?api-version=3.0&to=en', {
-        method: 'POST',
-        headers: {
-            'Ocp-Apim-Subscription-Key': `${process.env.TRANSLATION_API_KEY}`,
-            'Ocp-Apim-Subscription-Region': `${process.env.TRANSLATION_RESOURCE_REGION}`,
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify([{ Text: text }])
-    })
-
-    const data = await response.json()
-    return data[0].translations[0].text
+    try {
+        const response = await axios.post('https://api.cognitive.microsofttranslator.com/translate?api-version=3.0&to=en',
+            [{ Text: text }],
+            {
+                headers: {
+                    'Ocp-Apim-Subscription-Key': `${process.env.TRANSLATION_API_KEY}`,
+                    'Ocp-Apim-Subscription-Region': `${process.env.TRANSLATION_RESOURCE_REGION}`,
+                    'Content-Type': 'application/json'
+                }
+            }
+        )
+        return response.data[0].translations[0].text
+    } catch (error) {
+        console.error('Error in translation:', error)
+        throw error
+    }
 }
 
 /**
@@ -27,17 +32,22 @@ const translateText = async (text) => {
  * @returns Palauttaa objektin käännettynä
  */
 const translateTexts = async (texts, toLanguage) => {
-    const response = await globalThis.fetch(`https://api.cognitive.microsofttranslator.com/translate?api-version=3.0&to=${toLanguage}`, {
-        method: 'POST',
-        headers: {
-            'Ocp-Apim-Subscription-Key': `${process.env.TRANSLATION_API_KEY}`,
-            'Ocp-Apim-Subscription-Region': `${process.env.TRANSLATION_RESOURCE_REGION}`,
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(texts)
-    })
-    const data = await response.json()
-    return data
+    try {
+        const response = await axios.post(`https://api.cognitive.microsofttranslator.com/translate?api-version=3.0&to=${toLanguage}`,
+            texts,
+            {
+                headers: {
+                    'Ocp-Apim-Subscription-Key': `${process.env.TRANSLATION_API_KEY}`,
+                    'Ocp-Apim-Subscription-Region': `${process.env.TRANSLATION_RESOURCE_REGION}`,
+                    'Content-Type': 'application/json'
+                }
+            }
+        )
+        return response.data
+    } catch (error) {
+        console.error('Error in translating texts:', error)
+        throw error
+    }
 }
 
 module.exports = { translateText, translateTexts }
