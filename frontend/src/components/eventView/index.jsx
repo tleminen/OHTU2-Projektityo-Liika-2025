@@ -461,7 +461,7 @@ const EventView = () => {
           {parseTimeAndDate(event.updatedAt)[1]}{" "}
           {parseTimeAndDate(event.updatedAt)[0]}
         </em>
-        <Link to={"/map"} className="back-btn">
+        <Link to={-1} className="back-btn">
           <span>{t.back}</span>
         </Link>
         <span className="spacer-line"></span>

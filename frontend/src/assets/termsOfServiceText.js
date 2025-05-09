@@ -6,14 +6,14 @@ class termsOfServiceText {
 Service Provider:
 Liika
 
-Domain Name-webservice (referred to as” service”, or “product” in the document) requires the user to abide by these terms of use. The Domain Name is a map service owned by Liika. The content of the service has been made and developed by Liika and it is maintained by Liika as well. Liika is the sole service provider for the product. Use of the service requires the acceptance of these terms, so it is important that the reader understands them well.
+Liika-webservice (referred to as” service”, or “product” in the document) requires the user to abide by these terms of use. The Domain Name is a map service owned by Liika. The content of the service has been made and developed by Liika and it is maintained by Liika as well. Liika is the sole service provider for the product. Use of the service requires the acceptance of these terms, so it is important that the reader understands them well.
 The aim of the service is to aid users notify others of their intention to play group sports or other similar activities. Users can notify others of an event or users can join an event created by another user. Using the Liika-service users can see what activities or events there are near them or in their chosen city. Liika is not an event organizer nor does Liika have anything to do with any event a user has notified others of.
 
 ”Liika” refers to :
           -Service provider Liika
-          - “Liika-service”
-          -”Liika-product”
-          -”Liika website”
+          - ”Liika-service”
+          - ”Liika-product”
+          - ”Liika website”
 
 2.     Copyrights
 
@@ -41,15 +41,15 @@ Liika reserves the right to change the content, operation, and these terms of us
 Palveluntarjoaja:
 Liika
 
-Domainin nimi-verkkopalvelun (jäljempänä ”palvelu”) käyttöön sovelletaan näitä käyttöehtoja. Palvelu on Liikan omistama karttapalvelu. Palvelun sisällön on tuottanut Liika ja sitä ylläpitää Liika. Palveluntuottajilla ja palveluntarjoajalla tarkoitetaan yksinomaan Liikaa. Palvelunkäyttö edellyttää näiden ehtojen hyväksymistä, joten on tärkeää, että ymmärrät ne hyvin.
+Liika-verkkopalvelun (jäljempänä ”palvelu”) käyttöön sovelletaan näitä käyttöehtoja. Palvelu on Liikan omistama karttapalvelu. Palvelun sisällön on tuottanut Liika ja sitä ylläpitää Liika. Palveluntuottajilla ja palveluntarjoajalla tarkoitetaan yksinomaan Liikaa. Palvelunkäyttö edellyttää näiden ehtojen hyväksymistä, joten on tärkeää, että ymmärrät ne hyvin.
 
 Palvelun käyttötarkoituksena on helpottaa urheiluun liittyvien tapahtumien ilmoittamista ja niihin liittymistä. Käyttäjät voivat ilmoittaa tapahtumia ja liittyä tapahtumiin. Liika-palvelun avulla käyttäjät voivat nähdä eri tapahtumia ja aktiviteetteja valitussa kaupungissa. Liika ei ole tapahtumien järjestäjä, eikä Liika osallistu millään tavalla tapahtuman järjestämiseen.
 
 ”Liika” tarkoittaa:
-          -Palveluntarjoaja Liika
-          -Palveluntuottaja Liika
-          -”Liika-sivu”
-          -”Käyttäjä” tai ”sinä” Liika-palvelua
+          - ”Palveluntarjoaja Liika”
+          - ”Palveluntuottaja Liika”
+          - ”Liika-sivu”
+          - ”Liika-palvelua”
 
 2.     Tekijänoikeudet
 
