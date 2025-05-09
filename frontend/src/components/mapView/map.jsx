@@ -17,7 +17,7 @@ import { selectClubIcon, selectIcon, selectSystemIcon } from "../../assets/icons
 import { categories } from "./utils"
 import ShortcutButtons from "./shortcutButtons"
 import { DarkOverlay, LiikaOverlay, UserOverlay } from "./layers/overlayLayers"
-import { parseTimeAndDate, translateOn } from "../../utils/helper"
+import { parseTimeAndDate, translateLanguage, translateOn } from "../../utils/helper"
 import translations from "../../assets/translation"
 import homeIcon from "../../assets/home.png"
 import translationService from '../../services/translationService'
@@ -334,11 +334,16 @@ const Map = ({ startingLocation }) => {
               button.textContent = "translate"
               button.addEventListener("click", async () => {
                 button.disabled = true
-                // Simuloitu uusi teksti
-                const translatedText = await translationService.getTranslation(storedToken, { text: handleDescription(tapahtuma.PopUpText), UserID: userID })
+                // inputObjekti kääntäjälle
+                const inputObject = {
+                  description: handleDescription(tapahtuma.PopUpText)
+                }
+                const toLanguage = translateLanguage(language)
+                const translatedText = await translationService.getTranslations(storedToken, { UserID: userID, inputObject, toLanguage })
                 // Haetaan description-div ja päivitetään sen sisältö
                 const descriptionDiv = container.querySelector("#description-text")
-                descriptionDiv.innerHTML = translatedText
+                console.log(translatedText.description)
+                descriptionDiv.innerHTML = translatedText.description
               })
               buttonContainer.appendChild(button)
             }

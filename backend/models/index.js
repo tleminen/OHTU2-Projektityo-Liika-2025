@@ -11,6 +11,7 @@ const Fields = require('./fields')
 const ReservationSystems = require('./reservationSystems')
 const Slots = require('./slots')
 const FieldCategories = require('./fieldCategories')
+const Settings = require(`./settings`)
 
 // Määrittelemällä relaatiot ja viemällä kaikki mallit kerralla, tietokanta rakentuu oikein
 Users.hasMany(Events, { foreignKey: "UserID" })
@@ -83,4 +84,5 @@ module.exports = {
   ReservationSystems,
   Slots,
   FieldCategories,
+  Settings
 }

@@ -5,6 +5,7 @@ const morgan = require("morgan")
 const middleware = require("./utils/middleware")
 const { initializeDB } = require("./utils/database")
 const resetDB = require("./dummyData/index.js")
+const { resetTranslateTokens } = require("./services/resetTranslateTokens.js")
 const {
   sequelize,
   Users,
@@ -15,6 +16,7 @@ const {
   ClubMember,
   Joins,
   Languages,
+  Settings
 } = require("./models/index")
 
 const fs = require("fs")
@@ -71,5 +73,9 @@ app.get("*", (req, res) => {
 
 // Loppuun laitetaan unknownEndpoint ja virheenKorjaus
 app.use(middleware.unknownEndpoint)
+
+setInterval(() => {
+  resetTranslateTokens()
+}, 60 * 1000 * 15) // Ajo joka 15. minuutti
 
 module.exports = app

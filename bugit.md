@@ -1,17 +1,16 @@
 Bugit
 
-Spriderfy ongelma cluistergroupissa:
-Customising Spiderfy shape positions
-You can also provide a custom function as an option to MarkerClusterGroup to override the spiderfy shape positions. The example below implements linear spiderfy positions which overrides the default circular shape.
-https://github.com/Leaflet/Leaflet.markercluster?tab=readme-ov-file#customising-spiderfy-shape-positions
-
 TODO: Jos ei tarvittavia tietoja lataamiseen (redux) niin navigate("/") ja localstorage.clear()
+
+//Kriittiset!
+Kenttien poisto
+Varausjärjestelmien poisto
+Tapahtuman kellonajan muokkaus!
 
 MapView:
 
 -Kirjautumaton:
 
-- css-poikkeamia
 - Notifikaatio kirjautumattoman tapahtumaluonnille jos jo rekisteröity! (error)
 
 Yksittäisen tapahtuman näkymä:
@@ -31,7 +30,6 @@ Validate tehtävä. Nyt voi luoda tapahtumia miten sattuu
 
 EventView:
 Kun rämppää osallistu/poistu näppäintä jää näkymään, että olisi tapahtumassa vaikka sieltä on poistunut.
-Notifikaatiot eivät lataudu kunnolla, koodi valmis muuten Chatti(enkä mä) ymmärrä mistä ongelma kiikastaa.
 
 Backend:
 
