@@ -24,8 +24,6 @@ import ListReservationSystems from './components/reservationSystem/listReservati
 import ModifyFieldView from './components/reservationSystem/modifyField'
 import ReservationSystemView from './components/reservationSystem'
 import CreateReservationSystem from './components/reservationSystem/createReservationSystem'
-import GenAIView from './components/genAIView'
-import GenAIImageView from './components/genAIView/imageIndex'
 
 const App = () => {
   return (
@@ -62,8 +60,6 @@ const App = () => {
       <Route path='/reservation_system/:id' element={<ReservationSystemView />} />
       <Route path='/us' element={<AboutView />} />
       <Route path='/privacy' element={<PrivacyStatementView />} />
-      <Route path='/ollin_yökoodailut' element={<GenAIView />} />
-      <Route path='/ollin_yökoodailut2' element={<GenAIImageView />} />
     </Routes>
   )
 }
