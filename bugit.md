@@ -1,28 +1,37 @@
-Bugit
+# Bugit
+
+## Yleinen
 
 TODO: Jos ei tarvittavia tietoja lataamiseen (redux) niin navigate("/") ja localstorage.clear()
 
-//Kriittiset!
-Kenttien poisto
-Varausjärjestelmien poisto
-Tapahtuman kellonajan muokkaus!
+# //Kriittiset!
 
-MapView:
+- Kenttien poisto
+- Varausjärjestelmien poisto
+- Firefox ja Safarituki
+
+# // Vähemmän kriittiset näkymittäin
+
+## Tapahtuman muokkaus:
+
+Muutosten tallennuksesta ei tule mitään informaatiota, laitetty nyt vaan navigoimaan pois
+
+## MapView:
 
 -Kirjautumaton:
 
 - Notifikaatio kirjautumattoman tapahtumaluonnille jos jo rekisteröity! (error)
 
-Yksittäisen tapahtuman näkymä:
+## Yksittäisen tapahtuman näkymä:
 
 - Poista menneiden tapahtumien haku!
 - // TODO: Jos mennään suoraan linkillä tapahtumaan niin userEvents ei ole haettu vielä reduxiin!
 
-Oman tapahtuman muokkaus:
+## Oman tapahtuman muokkaus:
 
 - Vanhat tapahtumat listana jossa osallistujamäärä, ei voi enää perua tapahtumaa
 
-Login:
+## Login:
 
 CreateEvent:
 Tapahtuman kesto pitäisi olla yli 0min?

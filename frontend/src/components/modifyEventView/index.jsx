@@ -103,7 +103,7 @@ const ModifyEvent = () => {
   }
 
   // Päivitä tapahtumaa
-  const handleUpdateEvent = () => {
+  const handleUpdateEvent = async () => {
     const updatedtitle = title || event.Title
 
     const updatedStartTime =
@@ -114,7 +114,7 @@ const ModifyEvent = () => {
     const updatedDescription = description || event.Description
     const updatedCategoryID = activity.value || event.CategoryID // Jos kategoria on tyhjä, käytetään oletusarvoa
 
-    eventService.modifyEvent(storedToken, {
+    const response = await eventService.modifyEvent(storedToken, {
       Title: updatedtitle,
       UserID: userID,
       CategoryID: updatedCategoryID,
@@ -127,6 +127,12 @@ const ModifyEvent = () => {
       Description: updatedDescription,
       EventID: id,
     })
+    if (response.status === 200) {
+      console.log("joo")
+      navigate("/created_events")
+      //TODO: Notifikaatio että onnistui
+    }
+    //TODO: Errornotifikaatio, ettei onnistunut
   }
 
   // Poista tapahtuman päivä

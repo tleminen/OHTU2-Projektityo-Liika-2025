@@ -565,8 +565,8 @@ eventRouter.post("/update", userExtractor, async (req, res) => {
 
             await Times.update(
               {
-                StartTime: `${date} ${StartTime}:00.000+2`,
-                EndTime: `${date} ${EndTime}:00.000+2`,
+                StartTime: `${date} ${StartTime}`,
+                EndTime: `${date} ${EndTime}`,
               },
               {
                 where: { TimeID: oldTime.TimeID },
@@ -584,8 +584,8 @@ eventRouter.post("/update", userExtractor, async (req, res) => {
 
           await Times.create(
             {
-              StartTime: `${date} ${StartTime}:00.000+2`,
-              EndTime: `${date} ${EndTime}:00.000+2`,
+              StartTime: `${date} ${StartTime}`,
+              EndTime: `${date} ${EndTime}`,
               EventID: EventID,
             },
             { transaction }
