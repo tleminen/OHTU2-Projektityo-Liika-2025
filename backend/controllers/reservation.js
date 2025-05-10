@@ -190,6 +190,7 @@ reservationRouter.post("/create_field", userExtractor, async (request, response)
         SystemID,
         ClubID,
         Opening_Hours,
+        fieldCategories
     } = request.body
 
     if (userID === request.user.dataValues.UserID) {
@@ -202,7 +203,6 @@ reservationRouter.post("/create_field", userExtractor, async (request, response)
                     ClubID: ClubID,
                 },
             })
-            console.log(system)
             if (!system) {
                 response.status(403).json({ error: "User not part of the System at request" })
             }
@@ -212,7 +212,6 @@ reservationRouter.post("/create_field", userExtractor, async (request, response)
                     UserID: userID
                 },
             })
-            console.log(clubMem)
             if (!clubMem) {
                 response.status(403).json({ error: "User not part of the System at request" })
             }
@@ -223,8 +222,11 @@ reservationRouter.post("/create_field", userExtractor, async (request, response)
                 URL: URL,
                 Opening_Hours: Opening_Hours,
                 SystemID: SystemID,
-            })
+            }
+            )
             console.log(newField)
+            // Tämä korvaa kentän kategoriat annetuilla ID:eillä:
+            await newField.setCategories(fieldCategories)
             response.status(201).json({ NewField: newField })
         } catch (e) {
             console.error(e)
@@ -342,7 +344,6 @@ reservationRouter.post("/update_field", userExtractor, async (request, response)
             if (!field) {
                 return res.status(404).json({ error: 'Field not found' })
             }
-
             // Tämä korvaa kentän kategoriat annetuilla ID:eillä:
             await field.setCategories(fieldCategories)
 

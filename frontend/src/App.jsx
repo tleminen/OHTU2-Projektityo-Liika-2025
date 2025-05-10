@@ -18,7 +18,7 @@ import ChangeLanguage from "./components/accountView/changeInfo/changeLanguage"
 import ChangeMap from "./components/accountView/changeInfo/changeMap"
 import AboutView from './components/aboutView'
 import PrivacyStatementView from './components/privacyStatementView'
-import PartnerChoisesView from './components/createEventView/partnerChoisesView'
+import PartnerChoisesView from './components/reservationSystem/partnerChoisesView'
 import ModifyReservationSystemView from './components/reservationSystem/modifyReservationSystem'
 import ListReservationSystems from './components/reservationSystem/listReservationSystems'
 import ModifyFieldView from './components/reservationSystem/modifyField'

@@ -1,7 +1,6 @@
 
 import Footer from "../footer"
 import Header from "../header"
-import "./createEvent.css"
 import NotificationContainer from "../notification/notificationContainer"
 import PartnerChoises from './partnerChoises'
 

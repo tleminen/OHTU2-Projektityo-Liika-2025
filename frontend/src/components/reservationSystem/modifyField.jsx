@@ -264,7 +264,7 @@ const ModifyFieldView = () => {
                                 <em>Voit kirjoittaa tähän esimerkiksi kenttään liittyviä erityispiirteitä ja käyttöehtoja</em>
                             </div>
                             <span className="spacer-line"></span>
-                            <div className='modify-item'>
+                            <div className='modify-item'> {/*Nämä itemit ovat samassa modify itemissä, koska tuo select menee se alemman alle muuten*/}
                                 <h2>{"Kentän laji / lajit"}</h2>
                                 <div style={{ display: "flex", flexDirection: "row", flexWrap: "wrap", alignItems: "center", gap: "40px" }}>
                                     {currentActivities()}
@@ -278,9 +278,7 @@ const ModifyFieldView = () => {
                                     isSearchable={true}
                                 />
                                 <button className='btn' onClick={handleAddActivity}>Lisää laji</button>
-                                <em>Tämän merkinnän avulla käyttäjät näkevät, että kyseisellä kentällä saattaa olla tarjolla Liika-vuoroja. Merkitseminen ei velvoita järjestämään Liika-vuoroja. Merkki on tarkoitettu helpottamaan käyttäjiä Liika-vuorojen etsimisessä.</em>
-                                <span className="spacer-line"></span>
-                                <h2>{"Kentällä saattaa olla Liika-vuoroja"}</h2>
+                                <span className="spacer-line"></span>                                <h2>{"Kentällä saattaa olla Liika-vuoroja"}</h2>
                                 <input
                                     type="checkbox"
                                     checked={liikaAvailable}

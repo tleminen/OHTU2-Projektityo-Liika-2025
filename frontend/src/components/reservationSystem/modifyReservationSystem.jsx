@@ -1,4 +1,5 @@
 import { Link, useParams } from "react-router-dom"
+import Select from "react-select"
 import Header from "../header"
 import Footer from "../footer"
 import { useSelector } from "react-redux"
@@ -7,17 +8,20 @@ import { useEffect, useState } from 'react'
 import reservationService from '../../services/reservationService'
 import NotificationContainer from '../notification/notificationContainer'
 import LocationMap from '../../utils/locationMap'
+import { selectCategoryName } from '../../assets/icons'
 
 const ModifyReservationSystemView = () => {
     const { id } = useParams()
     const language = useSelector((state) => state.language.language)
     const storedToken = useSelector((state) => state.user?.user?.token ?? null)
     const userID = useSelector((state) => state.user?.user?.userID ?? null)
+    const categories = useSelector((state) => state.categories?.categories ?? {})
     const t = translations[language]
     const [loading, setLoading] = useState(true)
     const [modifyRSisOpen, setModifyRSisOpen] = useState(false)
     const [addNewIsOpen, setAddNewIsOpen] = useState(false)
     const [system, setSystem] = useState(null)
+    const [errors, setErrors] = useState({})
     // Varausjärjestelmän muokkaus
     const [disableSave, setDisableSave] = useState(true)
     const [description, setDescription] = useState("")
@@ -28,9 +32,11 @@ const ModifyReservationSystemView = () => {
     // Kentät
     const [fields, setFields] = useState([])
     // Kentän lisäyksen kentät
+    const [activity, setActivity] = useState({})
     const [disableCreateField, setDisableCreateField] = useState(true)
     const [fieldName, setFieldName] = useState("")
     const [fieldDescription, setFieldDescription] = useState("")
+    const [fieldCategories, setFieldCategories] = useState([])
     const [liikaAvailable, setLiikaAvailable] = useState(true)
     const [link, setLink] = useState("")
     const [reload, setReload] = useState(false)
@@ -43,7 +49,6 @@ const ModifyReservationSystemView = () => {
                     SystemID: id,
                     userID: userID,
                 })
-                console.log(response)
                 setSystem(response)
                 setRentalAvailable(response.Rental)
                 // Haetaan järjestelmään kuuluvat kentät
@@ -51,7 +56,6 @@ const ModifyReservationSystemView = () => {
                     SystemID: id,
                     userID: userID,
                 })
-                console.log(getFields)
                 setFields(getFields)
                 setAddNewIsOpen(false)
                 setPopUpText("")
@@ -107,9 +111,56 @@ const ModifyReservationSystemView = () => {
         setDisableSave(false)
     }
 
+    const currentActivities = () => {
+        return (
+            fieldCategories.map((cat) => (
+                <div
+                    key={cat.value}
+                    style={{ display: "flex", flexDirection: "row", flexWrap: "wrap", alignItems: "center", gap: "8px" }}>
+                    <p>{`${cat.label}`}</p>
+                    <button className='btn' onClick={() => removeFromActivities(cat)}>X</button>
+                </div>))
+        )
+    }
+
+    // Lajin valinnan handleri
+    const handleChange = (selectedOption) => {
+        setActivity(selectedOption)
+    }
+
+    // Vaihtoehdot lajeille
+    const options = () => {
+        try {
+            return categories.map((cat) => ({
+                value: cat.CategoryID,
+                label: t[selectCategoryName([cat.CategoryID])],
+            }))
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+
+    // Lisätään uusi laji kentälle
+    const handleAddActivity = () => {
+        if (Object.keys(activity).length === 0) return
+        if (fieldCategories.some(item => item.value === activity.value)) return // Ei anneta lisätä uudelleen
+        setFieldCategories((prev) => [...prev, activity])
+    }
+
+    // Poistetaan laji kentältä
+    const removeFromActivities = (toRemove) => {
+        setFieldCategories((prev) =>
+            prev.filter(
+                (cat) => cat.value !== toRemove.value
+            )
+        )
+    }
+
     const handleNewField = async () => {
-        console.log("Luodaan uusi kenttä")
         setDisableCreateField(true)
+
+        const fieldActivities = fieldCategories.map((cat) => cat.value)
         try {
             const response = await reservationService.createField(storedToken, {
                 userID: userID,
@@ -119,6 +170,7 @@ const ModifyReservationSystemView = () => {
                 URL: link,
                 SystemID: id,
                 ClubID: system.ClubID,
+                fieldCategories: fieldActivities,
                 Opening_Hours: {
                     mon: { open: "", close: "", closed: false },
                     tue: { open: "", close: "", closed: false },
@@ -129,7 +181,6 @@ const ModifyReservationSystemView = () => {
                     sun: { open: "", close: "", closed: false }
                 },
             })
-            console.log(response)
             setReload((prev) => !prev)
         } catch (error) {
             console.error(error)
@@ -137,7 +188,6 @@ const ModifyReservationSystemView = () => {
     }
 
     const handleSaveChanges = async () => {
-        console.log("Tallennetaan muutokset")
         setDisableSave(true)
         const updatedtitle = title || system.Title
         const updatedDescription = description || system.Description
@@ -359,6 +409,20 @@ const ModifyReservationSystemView = () => {
                         </div>
                         <span className="spacer-line"></span>
                         <div className='system-modify-item'>
+                            <h2>{"Kentän laji / lajit"}</h2>
+                            <div style={{ display: "flex", flexDirection: "row", flexWrap: "wrap", alignItems: "center", gap: "40px" }}>
+                                {currentActivities()}
+                            </div>
+                            <Select
+                                className={`input-field ${errors.categoryID ? "error" : ""}`}
+                                placeholder={t.activity}
+                                value={activity}
+                                onChange={handleChange}
+                                options={options()}
+                                isSearchable={true}
+                            />
+                            <button className='btn' onClick={handleAddActivity}>Lisää laji</button>
+                            <span className="spacer-line"></span>
                             <h2>{"Liikavuoromahdollisuus"}</h2>
                             <input
                                 type="checkbox"
@@ -366,6 +430,7 @@ const ModifyReservationSystemView = () => {
                                 className="input-field"
                                 onChange={handleChangeLiika}
                             />
+                            <em>Tämän merkinnän avulla käyttäjät näkevät, että kyseisellä kentällä saattaa olla tarjolla Liika-vuoroja. Merkitseminen ei velvoita järjestämään Liika-vuoroja. Merkki on tarkoitettu helpottamaan käyttäjiä Liika-vuorojen etsimisessä.</em>
                         </div>
                         <span className="spacer-line"></span>
                         <div className='system-modify-item'>
