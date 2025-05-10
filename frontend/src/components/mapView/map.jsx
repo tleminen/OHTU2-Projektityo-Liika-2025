@@ -403,13 +403,14 @@ const Map = ({ startingLocation }) => {
               button.textContent = "translate"
               button.addEventListener("click", async () => {
                 button.disabled = true
-                // Simuloitu uusi teksti
-                const translatedText = await translationService.getTranslation(storedToken, { text: handleDescription(tapahtuma.Description), UserID: userID })
+                const inputObject = {
+                  description: handleDescription(tapahtuma.Description)
+                }
+                const toLanguage = translateLanguage(language)
+                const translatedText = await translationService.getTranslations(storedToken, { UserID: userID, inputObject, toLanguage })
                 // Haetaan description-div ja päivitetään sen sisältö
                 const descriptionDiv = container.querySelector("#description-text")
-                descriptionDiv.innerHTML = translatedText
-
-                console.log("Teksti käännetty")
+                descriptionDiv.innerHTML = translatedText.description
               })
               buttonContainer.appendChild(button)
             }
