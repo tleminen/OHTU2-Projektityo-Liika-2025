@@ -14,7 +14,7 @@ const {
   sequelize,
   ClubMembers,
 } = require("../models")
-const { Sequelize } = require("sequelize")
+const { Sequelize, where } = require("sequelize")
 const Users = require("../models/users")
 const { sendEmail } = require("../services/email")
 const {
@@ -313,8 +313,7 @@ eventRouter.post("/create_event_unsigned", async (req, res) => {
     await transaction.rollback()
     res.status(500).json({ error: "Internal Server Error" })
   }
-})
-//Tapahtuman luonti kirjautumaton päättyy
+}) //Tapahtuman luonti kirjautumaton päättyy
 
 // Liity tapahtumaan
 eventRouter.post("/join_event", userExtractor, async (req, res) => {
@@ -335,9 +334,7 @@ eventRouter.post("/join_event", userExtractor, async (req, res) => {
     console.error("Invalid token")
     res.status(401).json({ error: "Unauthorized" })
   }
-})
-
-// Tapahtumaan liittyminen kirjautumaton
+}) // Tapahtumaan liittyminen kirjautumaton
 eventRouter.post("/join_event_unsigned", async (req, res) => {
   const { Email, EventID, TimeID } = req.body
   console.log("email eventRouter: " + Email)
@@ -372,9 +369,7 @@ eventRouter.post("/join_event_unsigned", async (req, res) => {
     console.error("Käyttäjän luominen epäonnistui:", error)
     // Tässä voit käsitellä virheen
   }
-})
-
-// Liittyminen tapahtumaan kirjautumaton päättyy
+}) // Liittyminen tapahtumaan kirjautumaton päättyy
 
 // Poistu tapahtumasta
 eventRouter.post("/leave_event", userExtractor, async (req, res) => {
@@ -544,8 +539,6 @@ eventRouter.post("/update", userExtractor, async (req, res) => {
         {
           Title: Title,
           CategoryID: CategoryID,
-          StartTime: StartTime,
-          EndTime: EndTime,
           ParticipantMin: ParticipantsMin,
           ParticipantMax: ParticipantsMax,
           Description: Description,
@@ -559,10 +552,32 @@ eventRouter.post("/update", userExtractor, async (req, res) => {
             4326
           ),
         },
-        { where: { EventID: EventID }, transaction }
+        { where: { EventID: EventID }, },
+        { transaction }
       )
 
-      // Lisätään tapahtuman uudet ajat
+      if (StartTime || EndTime) {
+        const oldTimes = await Times.findAll({ where: { EventID }, transaction })
+
+        await Promise.all(
+          oldTimes.map(async (oldTime) => {
+            const date = oldTime.StartTime.toISOString().split("T")[0] // säilytetään vanha päivämäärä
+
+            await Times.update(
+              {
+                StartTime: `${date} ${StartTime}:00.000+2`,
+                EndTime: `${date} ${EndTime}:00.000+2`,
+              },
+              {
+                where: { TimeID: oldTime.TimeID },
+                transaction,
+              }
+            )
+          })
+        )
+      }
+
+      // Lisätään tapahtuman uudet ajat myös
       await Promise.all(
         Dates.map(async (timestamp) => {
           const date = new Date(timestamp).toISOString().split("T")[0] // YYYY-MM-DD

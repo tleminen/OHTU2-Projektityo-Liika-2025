@@ -71,7 +71,7 @@ const translations = {
     enterConfirmationCode:
       "Enter the confirmation code you received and accept the terms of service.",
     enterEmailToJoinEvent: "Enter your email to join the event",
-    enterNewInfoEditable: "Enter new information only in the editable fields",
+    enterNewInfoEditable: "Enter new information only in the fields you want to edit. Leave others blank or default",
     enterEventAndSport: "Enter the event name and select the sport",
     error_updating_map: "Error with updating map settings",
     euGeneralDataText:

@@ -78,7 +78,6 @@ const ModifyEvent = () => {
         EventID: id,
         TimeID: Number(selectedTime.TimeID),
       })
-      console.log(response)
       dispatch(addNotification(EventJoinSuccess(t.event_joined)))
       dispatch(
         addEvent({
@@ -157,7 +156,6 @@ const ModifyEvent = () => {
           prevTimes.filter((t) => t.TimeID !== time.TimeID)
         )
       }
-      console.log(response)
     } catch (error) {
       console.error("Virhe poistettaessa tapahtumaa" + error) //TODO NOTIYFY
       dispatch(addNotification(EventDeletionFailure(t.event_deletion_failure)))
@@ -184,7 +182,6 @@ const ModifyEvent = () => {
         EventID: Number(id),
         TimeID: Number(selectedTime.TimeID),
       })
-      console.log(response)
       dispatch(addNotification(EventLeaveSuccess(t.event_left))) // TODO: Lisää notifikaatio?
       dispatch(
         removeEvent({
