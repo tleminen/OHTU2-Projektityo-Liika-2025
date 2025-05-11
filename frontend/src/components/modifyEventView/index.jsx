@@ -28,6 +28,7 @@ const ModifyEvent = () => {
   const { id } = useParams()
   const [event, setEvent] = useState(null)
   const [times, setTimes] = useState([])
+  const [pastTimes, setPastTimes] = useState([]) // Menneiden tapahtumaaikojen lista
   const [loading, setLoading] = useState(true)
   const storedToken = useSelector((state) => state.user?.user?.token ?? null)
   const language = useSelector((state) => state.language.language)
@@ -55,7 +56,14 @@ const ModifyEvent = () => {
           EventID: id,
         })
         setEvent(eventData)
-        setTimes(eventData.Times)
+
+        console.log(eventData.Times)
+        const pastTimes = eventData.Times.filter(
+          (time) => new Date(time.EndTime) <= new Date()
+        )
+        setPastTimes(pastTimes)
+        const futureTimes = eventData.Times.filter((time) => new Date(time.StartTime) > new Date())
+        setTimes(futureTimes)
         setActivity({
           value: eventData.CategoryID,
           label: t[selectCategoryName([eventData.CategoryID])],
@@ -349,6 +357,21 @@ const ModifyEvent = () => {
             required={true}
           />
         </div>
+        {pastTimes.length > 0 && <div className="own-event-item">
+          <h2>{t.pastEventDates}</h2>
+          <div className="time-parent">
+            {pastTimes.map((time, index) => (
+              <div key={index} className="time-child">
+                {parseTimeAndDate(time.StartTime)[1]}
+                <div className="counter-icon">
+                  <span>
+                    {time.JoinedCount}/{event.ParticipantMax}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>}
         <div className="own-event-item">
           <h2>{t.scheduledDates}</h2>
           <div className="time-parent">

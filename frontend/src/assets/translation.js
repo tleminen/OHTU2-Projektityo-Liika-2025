@@ -180,6 +180,7 @@ const translations = {
     password: "Password",
     password_ph: "Password",
     passwordAgain: "Password again",
+    pastEventDates: "Past event dates",
     pressFilter: "3. Press 'Filter'",
     pressToAddEvent: "Press 'Create Event' to add the event to the map.",
     privacy: "Privacy",
@@ -498,6 +499,7 @@ const translations = {
     password: "Salasana",
     password_ph: "Salasana",
     passwordAgain: "Salasana uudestaan",
+    pastEventDates: "Menneet tapahtumat",
     privacy: "Rekisteriseloste",
     privacy_statement: "Tietosuoja- ja rekisteriseloste",
     privacyStatementText:
