@@ -341,7 +341,7 @@ const translations = {
     clear: "Nollaa",
     close: "Sulje",
     closeFieldCalendars: "Sulje kalenterit",
-    createdEvents: "Tulevat tapahtumasi",
+    createdEvents: "Sinun tapahtumasi",
     combineSearch: "• Voit myös yhdistellä hakuasi esimerkiksi seuraavasti:",
     confirm: "Vahvista",
     confirmPassword: "Vahvista salasana kirjoittamalla se uudelleen.",
