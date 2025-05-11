@@ -436,7 +436,7 @@ const translations = {
     ipAddTextFull:
       "Verkkosivuston kävijöiden IP-osoitteita ja palvelun toiminnan kannalta välttämättömiä evästeitä käsitellään oikeutettuun etuun perustuen, esimerkiksi tietoturvan varmistamiseksi ja verkkosivuston kävijöiden tilastotietojen keräämiseksi silloin, kun ne voidaan katsoa henkilötiedoiksi. Tarvittaessa pyydetään erillinen suostumus kolmannen osapuolen evästeille.",
     join: "Ilmoittaudu",
-    joinedEvents: "Tulevat osallistumisesi",
+    joinedEvents: "Ilmoittautumiset",
     language: "Oletuskieli",
     language_update_failure: "Virhe kielenvaihdossa",
     lastUpdated: "Tietoja on päivitetty viimeksi",
