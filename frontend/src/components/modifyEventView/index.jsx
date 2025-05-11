@@ -115,8 +115,8 @@ const ModifyEvent = () => {
     const updatedtitle = title || event.Title
 
     const updatedStartTime =
-      startTime || parseTimeAndDate(times[0].StartTime)[0]
-    const updatedEndTime = endTime || parseTimeAndDate(times[0].EndTime)[0]
+      startTime || times[0] && parseTimeAndDate(times[0].StartTime)[0] || pastTimes[0] && parseTimeAndDate(pastTimes[0].StartTime)[0]
+    const updatedEndTime = endTime || times[0] && parseTimeAndDate(times[0].EndTime)[0] || pastTimes[0] && parseTimeAndDate(pastTimes[0].EndTime)[0]
     const updatedParticipantsMin = participantsMin || event.ParticipantMin
     const updatedParticipantsMax = participantsMax || event.ParticipantMax
     const updatedDescription = description || event.Description
@@ -152,6 +152,7 @@ const ModifyEvent = () => {
     }
     try {
       var response = null
+      /*
       if (times.length === 1) {
         response = await eventService.deleteEvent(storedToken, {
           UserID: userID,
@@ -160,16 +161,17 @@ const ModifyEvent = () => {
 
         })
         navigate("/created_events")
-      } else {
-        response = await eventService.deleteEventTime(storedToken, {
-          UserID: userID,
-          TimeID: time.TimeID,
-        })
-        // Päivitä frontendin times-tila poistamalla kyseinen aika listasta
-        setTimes((prevTimes) =>
-          prevTimes.filter((t) => t.TimeID !== time.TimeID)
-        )
-      }
+      } else { */
+
+      response = await eventService.deleteEventTime(storedToken, {
+        UserID: userID,
+        TimeID: time.TimeID,
+      })
+      // Päivitä frontendin times-tila poistamalla kyseinen aika listasta
+      setTimes((prevTimes) =>
+        prevTimes.filter((t) => t.TimeID !== time.TimeID)
+      )
+      //}
     } catch (error) {
       console.error("Virhe poistettaessa tapahtumaa" + error) //TODO NOTIYFY
       dispatch(addNotification(EventDeletionFailure(t.event_deletion_failure)))
