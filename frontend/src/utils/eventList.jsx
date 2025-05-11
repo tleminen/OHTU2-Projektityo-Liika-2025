@@ -16,6 +16,11 @@ const EventList = (listType) => {
   const t = translations[language]
   const [events, setEvents] = useState([])
   const [clubEvents, setClubEvents] = useState([])
+  const [upcomingEvents, setUpcomingEvents] = useState([])
+  const [upcomingClubEvents, setUpcomingClubEvents] = useState([])
+  const [pastEvents, setPastEvents] = useState([])
+  const [pastClubEvents, setPastClubEvents] = useState([])
+  const [activeTab, setActiveTab] = useState("upcoming")
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -26,35 +31,39 @@ const EventList = (listType) => {
             userID
           )
           if (events) {
+            setUpcomingEvents(events)
             setEvents(events)
           }
+
+          // Haetaan clubiroolin luodut tapahtumat
+          const clubEvents = await eventService.getClubCreatedEvents(
+            storedToken,
+            { UserID: userID, Clubs: clubs }
+          )
+          const clubIds = clubs.map((club) => club.ClubID) // Tehdään taulukko clubIDitä
+          const groupedEvents = clubIds.map((clubId) => {
+            const club = clubs.find((c) => c.ClubID === clubId)
+            return {
+              club: {
+                ClubID: clubId,
+                clubName: club?.Name || "Tuntematon klubi",
+              },
+              events: clubEvents.filter((event) => event.ClubID === clubId),
+            }
+          })
+          setUpcomingClubEvents(groupedEvents)
+          setClubEvents(groupedEvents)
         } catch (error) {
           console.error("Virhe haettaessa käyttäjän tapahtumia: " + error)
         }
-        // TODO: Hae käyttäjän clubiroolin tapahtumat
-        const clubEvents = await eventService.getClubCreatedEvents(
-          storedToken,
-          { UserID: userID, Clubs: clubs }
-        )
-        const clubIds = clubs.map((club) => club.ClubID) // Tehdään taulukko clubIDitä
-        const groupedEvents = clubIds.map((clubId) => {
-          const club = clubs.find((c) => c.ClubID === clubId)
-          return {
-            club: {
-              ClubID: clubId,
-              clubName: club?.Name || "Tuntematon klubi",
-            },
-            events: clubEvents.filter((event) => event.ClubID === clubId),
-          }
-        })
-        setClubEvents(groupedEvents)
       } else if (listType.listType === "joined") {
-        try {
+        try { // Haetaan käyttäjän liitytyt tapahtumat jos on siis liityttyjen näkymä
           const response = await eventService.getUserJoinedEvents(
             storedToken,
             userID
           )
           if (response) {
+            setUpcomingEvents(response)
             setEvents(response)
           }
         } catch (error) {
@@ -64,6 +73,64 @@ const EventList = (listType) => {
     }
     fetchEvents()
   }, [userID, storedToken, listType])
+
+  const handleTabChange = async (tab) => {
+    setActiveTab(tab)
+    if (tab === "upcoming") {
+      setEvents(upcomingEvents)
+      setClubEvents(upcomingClubEvents)
+    } else {
+      if (pastEvents.length === 0) {
+        if (listType.listType === "created") {
+          try {
+            const clubEvents = await eventService.getClubCreatedEventsPast(
+              storedToken,
+              { UserID: userID, Clubs: clubs }
+            )
+            // Haetaan clubiroolin luodut menneet tapahtumat
+            const clubIds = clubs.map((club) => club.ClubID)
+            const groupedEvents = clubIds.map((clubId) => {
+              const club = clubs.find((c) => c.ClubID === clubId)
+              return {
+                club: {
+                  ClubID: clubId,
+                  clubName: club?.Name || "Tuntematon klubi",
+                },
+                events: clubEvents.filter((event) => event.ClubID === clubId),
+              }
+            })
+            setPastClubEvents(groupedEvents)
+            setClubEvents(groupedEvents)
+            // Haetaan käyttäjän luomat menneet tapahtumat
+            const events = await eventService.getUserCreatedEventsPast(
+              storedToken, userID)
+            if (events) {
+              setPastEvents(events)
+              setEvents(events)
+            }
+          } catch (error) {
+            console.error("Virhe haettaessa käyttäjän tapahtumia: " + error)
+          }
+        } else {
+          try {
+            const response = await eventService.getUserJoinedEventsPast(
+              storedToken,
+              userID
+            )
+            if (response) {
+              setPastEvents(response)
+              setEvents(response)
+            }
+          } catch (error) {
+            console.error("Virhe haettaessa käyttäjän tapahtumia: " + error)
+          }
+        }
+      } else {
+        setEvents(pastEvents)
+        setClubEvents(pastClubEvents)
+      }
+    }
+  }
 
   const header = () => {
     if (listType.listType === "created") {
@@ -83,9 +150,22 @@ const EventList = (listType) => {
 
   return (
     <div className="joined-view">
+      <div className="tab-container">
+        <div
+          className={`tab ${activeTab === "upcoming" ? "active-tab" : ""}`}
+          onClick={() => handleTabChange("upcoming")}
+        >
+          {t.showUpcomingEvents}
+        </div>
+        <div
+          className={`tab ${activeTab === "past" ? "active-tab" : ""}`}
+          onClick={() => handleTabChange("past")}
+        >
+          {t.showPastEvents}
+        </div>
+      </div>
       <div className="event-container">
         {header()}
-
         <div className="event-list-items">
           {events.map((event, index) => (
             <Link

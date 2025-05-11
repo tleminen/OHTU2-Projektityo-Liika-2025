@@ -25,6 +25,9 @@ const {
   getUserJoinedEvents,
   getUserCreatedEvents,
   getClubCreatedEvents,
+  getUserJoinedEventsPast,
+  getUserCreatedEventsPast,
+  getClubCreatedEventsPast,
 } = require("../services/getUserJoinedEvents")
 const { userExtractor } = require("../utils/middleware")
 
@@ -434,12 +437,46 @@ eventRouter.post("/userJoinedEvents", userExtractor, async (req, res) => {
   }
 })
 
+// Hakee käyttäjän menneet liitytyt tapahtumat (data)
+eventRouter.post("/userJoinedEventsPast/", userExtractor, async (req, res) => {
+  const { UserID } = req.body
+  if (UserID === req.user?.dataValues?.UserID ?? "NAN") {
+    try {
+      const events = await getUserJoinedEventsPast(UserID)
+      res.json(events)
+    } catch (error) {
+      console.error("Problems with retreving joined events with full data")
+      res.status(500).json({ error: "Internal Server Error" })
+    }
+  } else {
+    console.error("Invalid token")
+    res.status(401).json({ error: "Unauthorized" })
+  }
+})
+
 // Käyttäjän luomat tapahtumat
 eventRouter.post("/userCreatedEvents", userExtractor, async (req, res) => {
   const { UserID } = req.body
   if (UserID === req.user?.dataValues?.UserID ?? "NAN") {
     try {
       const events = await getUserCreatedEvents(UserID)
+      res.json(events)
+    } catch (error) {
+      console.error("Problems with retreving joined events with full data")
+      res.status(500).json({ error: "Internal Server Error" })
+    }
+  } else {
+    console.error("Invalid token")
+    res.status(401).json({ error: "Unauthorized" })
+  }
+})
+
+// Käyttäjän luomat menneet tapahtumat
+eventRouter.post("/userCreatedEventsPast", userExtractor, async (req, res) => {
+  const { UserID } = req.body
+  if (UserID === req.user?.dataValues?.UserID ?? "NAN") {
+    try {
+      const events = await getUserCreatedEventsPast(UserID)
       res.json(events)
     } catch (error) {
       console.error("Problems with retreving joined events with full data")
@@ -458,8 +495,24 @@ eventRouter.post("/club_created_events", userExtractor, async (req, res) => {
     try {
       // Haetaan tapahtumat, joiden ClubID on mukana listassa
       const events = await getClubCreatedEvents(Clubs)
+      res.json(events)
+    } catch (error) {
+      console.error("Virhe haettaessa yhteistyökumppanin tapahtumia:", error)
+      res.status(500).json({ error: "Internal Server Error" })
+    }
+  } else {
+    console.error("Invalid token")
+    res.status(401).json({ error: "Unauthorized" })
+  }
+})
 
-      console.log(events)
+// Yhteistyökumppanin menneiden tapahtumien haku
+eventRouter.post("/club_created_eventsPast", userExtractor, async (req, res) => {
+  const { UserID, Clubs } = req.body
+  if (UserID === req.user?.dataValues?.UserID ?? "NAN") {
+    try {
+      // Haetaan tapahtumat, joiden ClubID on mukana listassa
+      const events = await getClubCreatedEventsPast(Clubs)
       res.json(events)
     } catch (error) {
       console.error("Virhe haettaessa yhteistyökumppanin tapahtumia:", error)

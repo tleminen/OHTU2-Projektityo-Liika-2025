@@ -146,6 +146,22 @@ const getUserJoinedEvents = async (storedToken, UserID) => {
   return response.data
 }
 
+// Hakee käyttäjän liitytyt menneet tapahtumat
+const getUserJoinedEventsPast = async (storedToken, UserID) => {
+  setToken(storedToken)
+  const headers = {
+    headers: { Authorization: token }, // Asetetaan token headeriin
+  }
+  const response = await axios.post(
+    baseUrl + "/events/userJoinedEventsPast",
+    {
+      UserID,
+    },
+    headers
+  )
+  return response.data
+}
+
 // Hakee käyttäjän liitytyt tapahtumat
 const getUserCreatedEvents = async (storedToken, UserID) => {
   setToken(storedToken)
@@ -162,6 +178,23 @@ const getUserCreatedEvents = async (storedToken, UserID) => {
   return response.data
 }
 
+// Hakee käyttäjän liitytyt menneet tapahtumat
+const getUserCreatedEventsPast = async (storedToken, UserID) => {
+  setToken(storedToken)
+  const headers = {
+    headers: { Authorization: token }, // Asetetaan token headeriin
+  }
+  const response = await axios.post(
+    baseUrl + "/events/userCreatedEventsPast",
+    {
+      UserID,
+    },
+    headers
+  )
+  return response.data
+}
+
+// Hakee klubin luomat tapahtumat
 const getClubCreatedEvents = async (storedToken, parameters) => {
   setToken(storedToken)
   const headers = {
@@ -169,6 +202,20 @@ const getClubCreatedEvents = async (storedToken, parameters) => {
   }
   const response = await axios.post(
     baseUrl + "/events/club_created_events",
+    parameters,
+    headers
+  )
+  return response.data
+}
+
+// Hakee klubin luomat menneet tapahtumat
+const getClubCreatedEventsPast = async (storedToken, parameters) => {
+  setToken(storedToken)
+  const headers = {
+    headers: { Authorization: token }, // Asetetaan token headeriin
+  }
+  const response = await axios.post(
+    baseUrl + "/events/club_created_eventsPast",
     parameters,
     headers
   )
@@ -234,4 +281,7 @@ export default {
   deleteEvent,
   modifyEvent,
   getEventsQuick,
+  getClubCreatedEventsPast,
+  getUserCreatedEventsPast,
+  getUserJoinedEventsPast,
 }
