@@ -69,7 +69,7 @@ const DesktopCalendar = ({ field }) => {
         {
           text: "Delete",
           onClick: async (args) => {
-            calendar.events.remove(args.source)
+            await deleteEvent(args.source)
           },
         },
         {
@@ -225,6 +225,11 @@ const DesktopCalendar = ({ field }) => {
       alert("Please select a time range first.")
     }
   }
+
+  const deleteEvent = async (e) => {
+    calendar.events.remove(e)
+  }
+
 
   const editEvent = async (e) => {
     const modal = await DayPilot.Modal.prompt("Update event text:", e.text())
