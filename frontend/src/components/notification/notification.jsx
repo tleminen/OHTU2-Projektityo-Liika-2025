@@ -5,7 +5,7 @@ import { removeNotification } from "../../store/notificationSlice"
 // eslint-disable-next-line react/prop-types
 const Notification = ({ id, message, type, duration }) => {
   const dispatch = useDispatch()
-  const delay = duration ? duration : 4000
+  const delay = duration ? duration : 40000 // default kesto on 4000
 
   useEffect(() => {
     const timer = setTimeout(() => {
