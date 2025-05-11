@@ -24,23 +24,24 @@ Muutosten tallennuksesta ei tule mitään informaatiota, laitetty nyt vaan navig
 
 ## Yksittäisen tapahtuman näkymä:
 
-- Poista menneiden tapahtumien haku!
 - // TODO: Jos mennään suoraan linkillä tapahtumaan niin userEvents ei ole haettu vielä reduxiin!
 
 ## Oman tapahtuman muokkaus:
 
-- Vanhat tapahtumat listana jossa osallistujamäärä, ei voi enää perua tapahtumaa
-
 ## Login:
 
-CreateEvent:
+## CreateEvent:
+
 Tapahtuman kesto pitäisi olla yli 0min?
 Validate tehtävä. Nyt voi luoda tapahtumia miten sattuu
 
-EventView:
+## EventView:
+
 Kun rämppää osallistu/poistu näppäintä jää näkymään, että olisi tapahtumassa vaikka sieltä on poistunut.
 
-Backend:
+## Backend:
+
+# Muuta
 
 Liika ei toimi FireFoxissa
 Chatin vastaus:
@@ -54,9 +55,3 @@ Chatin vastaus:
     "Source map error: NetworkError when attempting to fetch resource."
         Leafletin ja sen marker cluster -lisäosan tiedostot eivät lataudu.
         Tämä voi johtua verkko-ongelmista, palvelimen estosta, tai CDN-ongelmista."
-
-Kysymyksiä ja muita huomioita:
-Järjestäjän nimi, mihin kaikkialle näkyviin?
-
-Yhteistyökumppanien tapahtumat:
-Nyt muokkausoikeus vain tapahtuman luoneella. Varmaan jää niin? Hieman monimutkainen toteuttaa muuten.
