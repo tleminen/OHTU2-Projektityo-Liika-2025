@@ -422,8 +422,8 @@ const ModifyEvent = () => {
         <div className="own-event-item">
           <h2>{t.currentTime}</h2>
           <p className="old-event-value">
-            {parseTimeAndDate(times[0].StartTime)[0]} -{" "}
-            {parseTimeAndDate(times[0].EndTime)[0]}
+            {times[0] && parseTimeAndDate(times[0].StartTime)[0] || pastTimes[0] && parseTimeAndDate(pastTimes[0].StartTime)[0]} -{" "}
+            {times[0] && parseTimeAndDate(times[0].EndTime)[0] || pastTimes[0] && parseTimeAndDate(pastTimes[0].EndTime)[0]}
           </p>
           <span className="spacer-line"></span>
           <h2>{t.newTiming}</h2>
