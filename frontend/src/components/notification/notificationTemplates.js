@@ -10,6 +10,12 @@
     type: "error",
   })
 
+  const EmailSendWait = (t) => ({
+    id: Date.now(),
+    message: t,
+    type: "warning"
+  })
+
   const OtpRobotCheck = (t) => ({
     id: Date.now(),
     message: t,
@@ -133,7 +139,8 @@
 
 export {
   EmailSentSuccess, 
-  EmailSentFailure, 
+  EmailSentFailure,
+  EmailSendWait,
   OtpRobotCheck, 
   OtpVerified, 
   OtpNotVerified, 

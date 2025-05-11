@@ -18,9 +18,10 @@ import {
   OtpVerified,
   OtpNotVerified,
   EmailAlreadyRegistered,
+  EmailSendWait,
 } from "../notification/notificationTemplates.js"
 import { Link } from "react-router-dom"
-import LocationMap from '../../utils/locationMap.jsx'
+import LocationMap from "../../utils/locationMap.jsx"
 
 const RegisterForm = () => {
   const language = useSelector((state) => state.language.language)
@@ -41,6 +42,8 @@ const RegisterForm = () => {
   const [loader, setLoader] = useState(false)
   const [blockRegister, setBlockRegister] = useState(true)
   const [termsAccepted, setTermsAccepted] = useState(false)
+  const [resendCooldown, setResendCooldown] = useState(0)
+  const [canResendOtp, setCanResendOtp] = useState(false)
 
   const schema = registerValidation()
   const schemaOtp = otpValidation()
@@ -56,6 +59,19 @@ const RegisterForm = () => {
   useEffect(() => {
     otpInputRefs.current = otpInputRefs.current.slice(0, 6) // Varmista, että ref-taulukko on oikean kokoinen
   }, [])
+
+  useEffect(() => {
+    let timer
+    if (resendCooldown > 0) {
+      timer = setTimeout(() => {
+        setResendCooldown((prev) => prev - 1)
+      }, 1000)
+    } else if (resendCooldown === 0 && otpSent && !canResendOtp) {
+      // Cooldown on päättynyt, OTP on lähetetty aiemmin, ja emme ole vielä sallineet uudelleenlähetystä
+      setCanResendOtp(true)
+    }
+    return () => clearTimeout(timer)
+  }, [resendCooldown, otpSent, canResendOtp])
 
   const handleReadyState = () => {
     setBlockRegister(true)
@@ -98,16 +114,48 @@ const RegisterForm = () => {
         email: email,
         language: language,
       })
-      console.log(response.data)
+      console.log(response)
       dispatch(addNotification(EmailSentSuccess(t.email_sent))) // Lähetä onnistumisilmoitus
 
       // Jos OTP lähetettiin onnistuneesti, päivitä tila
       setOtpSent(true)
       setLoader(false)
       setBlockRegister(false)
+      setCanResendOtp(false)
+      setResendCooldown(30)
     } catch (error) {
       console.error(t.email_send_error, error)
 
+      dispatch(addNotification(EmailSentFailure(t.email_send_error))) // Lähetä virheilmoitus
+      setLoader(false)
+    }
+  }
+
+  const handleResendOtp = async () => {
+    if (loader) {
+      dispatch(addNotification(EmailSendWait(t.email_send_wait)))
+      return
+    }
+
+    setLoader(true)
+
+    try {
+      const response = await registerService.sendOtp({
+        email: email,
+        language: language,
+      })
+      console.log(response)
+      dispatch(addNotification(EmailSentSuccess(t.email_sent)))
+      setOtp("") // Tyhjennetään vanha OTP käyttäjän syötteestä
+      otpInputRefs.current.forEach((input) => {
+        // Tyhjennetään myös yksittäiset input-kentät visuaalisesti
+        if (input) input.value = ""
+      })
+      setLoader(false)
+      setCanResendOtp(false)
+      setResendCooldown(30)
+    } catch (error) {
+      console.error(t.email_send_error, error)
       dispatch(addNotification(EmailSentFailure(t.email_send_error))) // Lähetä virheilmoitus
       setLoader(false)
     }
@@ -157,8 +205,9 @@ const RegisterForm = () => {
     } catch (error) {
       if (error.response) {
         if (error.response.status == 400) {
-          dispatch(addNotification(EmailAlreadyRegistered(t.email_already_registered))) // Lähetä virheilmoitus
-
+          dispatch(
+            addNotification(EmailAlreadyRegistered(t.email_already_registered))
+          ) // Lähetä virheilmoitus
         } else {
           console.error(t.otp_not_verified, error)
           dispatch(addNotification(OtpNotVerified(t.otp_send_error))) // Lähetä virheilmoitus
@@ -325,6 +374,26 @@ const RegisterForm = () => {
                 />
               ))}
             </div>
+            <div
+              className="resend-otp-container"
+            >
+              {loader && <div className="loader"></div>}
+              {canResendOtp && resendCooldown === 0 ? (
+                // Jos uudelleenlähetys on sallittu JA cooldown on nolla, näytä nappi:
+                <button
+                  onClick={handleResendOtp}
+                  className="btn-link-otp"
+                  type="button"
+                >
+                  {t.resend_otp || "Lähetä koodi uudelleen"}
+                </button>
+              ) : (
+                <p className="btn-link-otp">
+                  {t.can_resend_in}{" "}
+                  {resendCooldown} {t.seconds}
+                </p>
+              )}
+            </div>
           </div>
         )
       ) : (
@@ -347,7 +416,8 @@ const RegisterForm = () => {
       {errors.otp && <div className="error-forms">{errors.otp}</div>}
 
       {/* Lisätään käyttöehtojen checkbox */}
-      <div className="terms-container">{`${t.terms_of_service_accept}`}&nbsp;
+      <div className="terms-container">
+        {`${t.terms_of_service_accept}`}&nbsp;
         <Link to="/termsOfService" target="_blank">
           {t.terms_of_service_accept_terms}
         </Link>
